@@ -2,16 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Home.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Home.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -60,37 +71,49 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1590613847436</updated>
-      <workItem from="1590613849059" duration="241000" />
+      <workItem from="1590613849059" duration="2369000" />
     </task>
+    <task id="LOCAL-00001" summary="Slight Changes">
+      <created>1590614267302</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590614267302</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Slight Changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Slight Changes" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="585" y="147" key="CommitChangelistDialog2" timestamp="1590614243939">
+    <state x="585" y="147" key="CommitChangelistDialog2" timestamp="1590614266557">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="585" y="147" key="CommitChangelistDialog2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614243939" />
-    <state width="1899" height="285" key="GridCell.Tab.0.bottom" timestamp="1590614229717">
+    <state x="585" y="147" key="CommitChangelistDialog2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614266557" />
+    <state width="1899" height="285" key="GridCell.Tab.0.bottom" timestamp="1590615789733">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614229717" />
-    <state width="1899" height="285" key="GridCell.Tab.0.center" timestamp="1590614229716">
+    <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590615789733" />
+    <state width="1899" height="285" key="GridCell.Tab.0.center" timestamp="1590615789733">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614229716" />
-    <state width="1899" height="285" key="GridCell.Tab.0.left" timestamp="1590614229716">
+    <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590615789733" />
+    <state width="1899" height="285" key="GridCell.Tab.0.left" timestamp="1590615789733">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614229716" />
-    <state width="1899" height="285" key="GridCell.Tab.0.right" timestamp="1590614229716">
+    <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590615789733" />
+    <state width="1899" height="285" key="GridCell.Tab.0.right" timestamp="1590615789733">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614229716" />
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590614228998">
+    <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590615789733" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590614271745">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614228998" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590614271745" />
   </component>
 </project>

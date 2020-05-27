@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@200&family=Roboto:wght@300&display=swap');
+
+.head {
+    text-align: center;
+    margin-top: 5px;
+}
+
+body {
+    background-color: #292929;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    color: white;
+}
+
+.title {
+    font-size: 120px;
+    font-weight: normal;
+    font-family: 'Muli', sans-serif;
+}
+
+.subtitle {
+    font-family: 'Muli', sans-serif;
+    font-size: 32px;
+    margin-left: 4rem;
+    margin-top: -7rem;
+}
+
+.section {
+    margin-top: 4rem;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: normal;
+}
