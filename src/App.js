@@ -1,12 +1,27 @@
 import React from 'react';
-import Main from './Main.js';
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
+
+import Header from "./global/Header.js";
+import Footer from "./global/Footer.js";
+import PageHandler from "./handle/PageHandler";
+import Home from "./pages/home";
 
 function App() {
-  return (
-      <div className="App">
-        <Main />
-      </div>
-  );
+    return (
+        <BrowserRouter>
+            <div className="App">
+                <div className="container">
+                    <Header />
+                    <Switch>
+                        <Route path='/:page' component={PageHandler}/>
+                        <Route path='/' component={Home}/>
+                        <Route component={() => 404} />
+                    </Switch>
+                </div>
+                <Footer />
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App;
