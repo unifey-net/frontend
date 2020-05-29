@@ -18,7 +18,7 @@ export default function Header() {
 
     return (
         <div className="site-header">
-            <span className="title"><Link to="/" className="unifey">Unifey</Link></span>
+            <span className="title"><Link to="/" className="unifey"><img src="/favicon.png" height={38} width={38} alt="Logo"/></Link></span>
             <div>
                 <ul className="site-header-links">
                     {
