@@ -9,11 +9,10 @@ body {
 }
 
 .container {
-
   min-height: calc(100vh - 70px);
 }
 
-span, h1, h2, h3, h4, h5, h6, p, a {
+span, h1, h2, h3, h4, h5, h6, p, a, label {
   color: $text-color;
 }
 
@@ -21,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $default-header-font;
 }
 
-p, a, span {
+p, a, span, label {
   font-family: $default-font;
 }
 

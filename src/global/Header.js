@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom"
-import { Avatar, Badge } from "antd"
+import { Avatar } from "antd"
 import { UserOutlined } from '@ant-design/icons';
+import UserView from "../posts/UserView"
 
 export default function Header() {
     let pages = [
@@ -17,7 +18,7 @@ export default function Header() {
 
     return (
         <div className="site-header">
-            <span><Link to="/" className="unifey">Unifey</Link></span>
+            <span className="title"><Link to="/" className="unifey">Unifey</Link></span>
             <div>
                 <ul className="site-header-links">
                     {
@@ -28,7 +29,8 @@ export default function Header() {
                         )
                     }
                 </ul>
-            </div>
+            </div>{/* TODO */}
+            <UserView/>
         </div>
     );
 }

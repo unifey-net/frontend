@@ -5,6 +5,7 @@ import Header from "./global/Header.js";
 import Footer from "./global/Footer.js";
 import PageHandler from "./handle/PageHandler";
 import Home from "./pages/home";
+import ViewUser from "./handle/UserPage.js";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <div className="container">
                     <Header />
                     <Switch>
+                        <Route path='/@:user' component={ViewUser}/>
                         <Route path='/:page' component={PageHandler}/>
                         <Route path='/' component={Home}/>
                         <Route component={() => 404} />

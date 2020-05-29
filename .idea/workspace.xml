@@ -19,30 +19,25 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Small changes">
-      <change afterPath="$PROJECT_DIR$/src/NotFound.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/_footer.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/_header.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/_variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/base.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/about.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/home.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/notfound.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/tos.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/handle/PageHandler.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/about.js" afterDir="false" />
+    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Add SCSS stuff, about pages, footer &amp; header updates.">
+      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/feed.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/login.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/scss/pages/viewuser.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handle/AuthenticationManager.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handle/LoginPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handle/UserPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/feed.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/posts/Feed.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/posts/Post.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/posts/UserPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/posts/UserView.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/Footer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/scss/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/_header.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/scss/base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/base.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/global/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/footer.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/Home.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tos/Tos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/tos.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +48,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="SCSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -71,6 +67,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets/scss/pages" />
+    <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -81,14 +78,15 @@
     <property name="ts.external.directory.path" value="C:\Users\Shoga\AppData\Local\JetBrains\Toolbox\apps\WebStorm\ch-0\201.7223.93\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\projects\react\unifey\src\assets\scss\pages" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\projects\react\unifey\src\handle" />
       <recent name="E:\projects\react\unifey\src\pages" />
       <recent name="E:\projects\react\unifey\public" />
       <recent name="E:\projects\react\unifey\src" />
       <recent name="E:\projects\react\unify\src\home" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\projects\react\unifey\src\assets\scss\pages" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -124,7 +122,9 @@
       <workItem from="1590613849059" duration="2577000" />
       <workItem from="1590616678900" duration="1350000" />
       <workItem from="1590618291065" duration="8378000" />
-      <workItem from="1590674235521" duration="10369000" />
+      <workItem from="1590674235521" duration="16194000" />
+      <workItem from="1590713141664" duration="1514000" />
+      <workItem from="1590773033052" duration="8086000" />
     </task>
     <task id="LOCAL-00001" summary="Slight Changes">
       <created>1590614267302</created>
@@ -147,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590627733838</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add SCSS stuff, about pages, footer &amp; header updates.">
+      <created>1590686506222</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1590686506222</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,13 +175,14 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Slight Changes" />
     <MESSAGE value="Add home page &amp; react router" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add home page &amp; react router" />
+    <MESSAGE value="Add SCSS stuff, about pages, footer &amp; header updates." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add SCSS stuff, about pages, footer &amp; header updates." />
   </component>
   <component name="WindowStateProjectService">
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590676034748">
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590774651714">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590676034748" />
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590774651714" />
     <state x="690" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590623906402">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -183,41 +191,49 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="585" y="147" key="CommitChangelistDialog2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590627615764" />
-    <state width="1899" height="285" key="GridCell.Tab.0.bottom" timestamp="1590685803587">
+    <state width="1899" height="297" key="GridCell.Tab.0.bottom" timestamp="1590779706823">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590685803587" />
-    <state width="1899" height="285" key="GridCell.Tab.0.center" timestamp="1590685803587">
+    <state width="1899" height="297" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590779706823" />
+    <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
+    <state width="1899" height="297" key="GridCell.Tab.0.center" timestamp="1590779706823">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590685803587" />
-    <state width="1899" height="285" key="GridCell.Tab.0.left" timestamp="1590685803587">
+    <state width="1899" height="297" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590779706823" />
+    <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
+    <state width="1899" height="297" key="GridCell.Tab.0.left" timestamp="1590779706823">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590685803587" />
-    <state width="1899" height="285" key="GridCell.Tab.0.right" timestamp="1590685803587">
+    <state width="1899" height="297" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590779706823" />
+    <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
+    <state width="1899" height="297" key="GridCell.Tab.0.right" timestamp="1590779706823">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590685803587" />
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590674250652">
+    <state width="1899" height="297" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590779706823" />
+    <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590686508307">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590674250652" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590686508307" />
+    <state x="2396" y="133" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1590690610783">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2396" y="133" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590690610783" />
     <state x="769" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1590674248658">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="769" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590674248658" />
-    <state x="667" y="288" width="585" height="534" key="find.popup" timestamp="1590684046234">
+    <state x="667" y="288" width="585" height="534" key="find.popup" timestamp="1590780546839">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="667" y="288" width="585" height="534" key="find.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590684046234" />
-    <state x="616" y="258" key="run.anything.popup" timestamp="1590675107804">
+    <state x="667" y="288" width="585" height="534" key="find.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590780546839" />
+    <state x="616" y="258" key="run.anything.popup" timestamp="1590780139326">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="616" y="258" key="run.anything.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590675107804" />
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1590675004690">
+    <state x="616" y="258" key="run.anything.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590780139326" />
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1590777174717">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590675004690" />
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590777174717" />
   </component>
 </project>

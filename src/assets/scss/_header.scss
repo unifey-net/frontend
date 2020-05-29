@@ -7,13 +7,25 @@
   padding-left: 32px;
   padding-right: 32px;
 
-  span {
+  .title {
     margin-top: 12px;
     font-size: 32px;
   }
 
   .unifey {
     text-decoration: none;
+  }
+
+  .user {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    margin-top: 12px;
+
+    .avatar {
+      position: relative;
+      padding-left: 6px;
+    }
   }
 }
 

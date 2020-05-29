@@ -1,0 +1,15 @@
+.login-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  .loading {
+    display: none;
+  }
+
+  .login-inputs {
+    input {
+      margin-bottom: 16px;
+    }
+  }
+}
