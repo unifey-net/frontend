@@ -5,46 +5,73 @@ import "../assets/scss/pages/login.scss"
 import {login, signedIn} from "./AuthenticationManager"
 import { withRouter, Redirect } from "react-router-dom"
 
+import { Form, Input, Button, Checkbox, Layout, message } from "antd";
+
 class LoginPage extends React.Component {
-    render () {
+
+
+    render() {
         if (signedIn())
             return (<Redirect to="/"/>)
 
         return (
             <div className="login-container">
                 <h1 className="title">Login</h1>
-                <form onSubmit={(e) => this.formLogin(e)}>
-                    <div className="login-inputs">
-                        <label>Username</label>
-                        <br/>
-                        <input id="username"/>
-                        <br/>
 
-                        <label>Password</label>
-                        <br/>
-                        <input id="password"/>
-                        <br/>
+                <div className="form-container">
+                    <Form
+                        name="basic"
+                        initialValues={{
+                            remember: false
+                        }}
+                        onFinish={(values) => {
+                            this.formLogin(values);
+                        }}
+                        onFinishFailed={() => {}}
+                    >
+                        <Form.Item
+                            label="Username"
+                            name="username"
+                            rules={[{
+                                required: true,
+                                message: 'Please input your username!'
+                            }]}
+                        >
+                            <Input id="username" />
+                        </Form.Item>
 
-                        <button type="submit">Login</button>
-                        <br/>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[{
+                                required: true,
+                                message: 'Please input your password!'
+                            }]}
+                        >
+                            <Input.Password id="password" />
+                        </Form.Item>
 
-                        <div id="loading" className="loading">
-                            <Spin size="small" />
-                            <p id="status"/>
-                        </div>
-                    </div>
-                </form>
+                        <Form.Item name="remember" valuePropName="checked">
+                            <Checkbox>Remember me</Checkbox>
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </div>
             </div>
         );
     }
 
-    formLogin(e) {
-        e.preventDefault();
-
-        let user = document.querySelector("#username")
-        let pass = document.querySelector("#password")
-
-        login(user.value, pass.value, (success, token) => {
+    /**
+     * TODO use remember me
+     * @param values
+     */
+    formLogin(values) {
+        login(values["username"], values["password"], (success, token) => {
             console.log(success)
 
             if (!success) {

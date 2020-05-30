@@ -1,17 +1,27 @@
 import React from "react";
 import UserView from "./UserView";
 import { UpOutlined, DownOutlined, FlagOutlined } from "@ant-design/icons";
+import Popconfirm from "antd/es/popconfirm";
+import { message } from "antd"
+import { getOtherUserDataById} from "../handle/AuthenticationManager";
 
 export default class Post extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            upVote: 5000000,
-            downVote: 10000,
+            vote: 0,
             upVoted: false,
+            author: "Loading...",
             downVoted: false
         }
+
+        getOtherUserDataById(this.props.author, (success, data) => {
+            if (success)
+                this.setState({
+                    author: data.username
+                })
+        })
     }
 
     render() {
@@ -19,57 +29,79 @@ export default class Post extends React.Component {
            <div className="post-container">
                <div className="post-title">
                    <p className="title">{this.props.title}</p>
-                   <UserView id={this.props.owner}/>
+                   <UserView id={this.state.author}/>
                </div>
                <div className="post-content">
                    <p>{this.props.content}</p>
                </div>
                <div className="post-management">
-                   <div className="votes">
-                       <p className={this.state.upVoted ? "upvoted" : ""}><UpOutlined onClick={(e) => this.upvote() }/> {this.state.upVote}</p>
-
-                       <p className={this.state.downVoted ? "downvoted" : ""}><DownOutlined onClick={(e) => this.downvote()} /> {this.state.downVote}</p>
+                   <div className="vote-container">
+                       <p className={this.state.upVoted ? "upvoted" : ""}><UpOutlined onClick={(e) => this.upVote() }/></p>
+                       <p className={this.state.downVoted ? "downvoted" : ""}><DownOutlined onClick={(e) => this.downVote()} /></p>
+                       <p>{this.state.vote}</p>
                    </div>
-                   <p className="report"><FlagOutlined onClick={(e) => this.report(e)} /></p>
+                   <Popconfirm
+                       title="Are you sure you want to report this?"
+                       onConfirm={() => {
+                           let key = "reporting-" + this.props.id
+
+                           message.loading({ content: 'Loading...', key });
+
+                           setTimeout(() => {
+                               message.success({ content: "Successfully reported!", key, duration: 2 });
+                           }, 1000);
+
+                           // TODO
+                       }}
+                       onCancel={() => {}}
+                       okText="Yes"
+                       cancelText="No"
+                   >
+                       <FlagOutlined/>
+                   </Popconfirm>
                </div>
            </div>
        );
     }
 
-    downvote() {
-        if (this.state.downVoted)
-            this.setState({downVote: this.state.downVote - 1})
-        else this.setState({downVote: this.state.downVote + 1})
-
-        if (this.state.upVoted) {
-            this.setState({upVote: this.state.upVote - 1})
-            this.setState({upVoted: false})
-        }
-
-        this.setState({downVoted: !this.state.downVoted})
-    }
-
-    upvote() {
-        if (this.state.upVoted)
-            this.setState({upVote: this.state.upVote - 1})
-        else this.setState({upVote: this.state.upVote + 1})
-
+    downVote() {
         if (this.state.downVoted) {
-            this.setState({downVote: this.state.downVote - 1})
-            this.setState({downVoted: false})
+            this.setState({
+                downVoted: false,
+                vote: this.state.vote + 1
+            })
+        } else if (this.state.upVoted) {
+            this.setState({
+                downVoted: true,
+                upVoted: false,
+                vote: this.state.vote - 2
+            })
+        } else {
+            this.setState({
+                downVoted: true,
+                vote: this.state.vote - 1
+            })
         }
-
-        this.setState({upVoted: !this.state.upVoted})
-        this.setState({downVoted: false})
-
     }
 
-    /**
-     * Todo: Implement reporting posts.
-     *
-     * @param e
-     */
-    report(e) {
-        alert("Report Invoked for: " + this.props.title)
+    upVote() {
+        if (this.state.upVoted) {
+            this.setState({
+                upVoted: false,
+                vote: this.state.vote - 1
+            })
+        } else if (this.state.downVoted) {
+            this.setState({
+                upVoted: true,
+                downVoted: false,
+                vote: this.state.vote + 2
+            })
+        } else {
+            this.setState({
+                upVoted: true,
+                downVoted: false,
+                vote: this.state.vote + 1
+            })
+        }
     }
 }

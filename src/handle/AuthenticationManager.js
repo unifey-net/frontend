@@ -17,6 +17,73 @@ export const signedIn = () => {
     return getToken() != null
 }
 
+
+export const getOtherUserDataById = (id, callback) => {
+    fetch(`http://localhost:8080/user/id/${id}`, {
+        method: 'GET',
+        headers: {
+            "Authorization": "bearer " + getToken()
+        }
+    })
+        .then((content) => {
+            if (content.ok) {
+                content.text()
+                    .then((str) => {
+                        let data =  JSON.parse(str).payload
+
+                        callback(true, data)
+                    })
+            } else
+                callback(false, null)
+        })
+        .catch(() => {
+            callback(false, null)
+        })
+}
+
+export const getOtherProfile = (name, callback) => {
+    fetch(`http://localhost:8080/user/name/${name}/profile`, {
+        method: 'GET'
+    })
+        .then((content) => {
+            if (content.ok) {
+                content.text()
+                    .then((str) => {
+                        let data =  JSON.parse(str).payload
+
+                        callback(true, data)
+                    })
+            } else
+                callback(false, null)
+        })
+        .catch(() => {
+            callback(false, null)
+        })
+}
+
+export const getProfile = (callback) => {
+    fetch(`http://localhost:8080/user/profile`, {
+        method: 'GET',
+        headers: {
+            "Authorization": "bearer " + getToken()
+        }
+    })
+        .then((content) => {
+            if (content.ok) {
+                content.text()
+                    .then((str) => {
+                        let data =  JSON.parse(str).payload
+
+                        callback(true, data)
+                    })
+            } else
+                callback(false, null)
+        })
+        .catch(() => {
+            callback(false, null)
+        })
+}
+
 export const getOtherUserData = (name, callback) => {
     fetch(`http://localhost:8080/user/name/${name}`, {
         method: 'GET',

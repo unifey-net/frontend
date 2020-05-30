@@ -1,15 +1,13 @@
 .login-container {
   text-align: center;
-  display: flex;
-  flex-direction: column;
 
-  .loading {
-    display: none;
+  .title {
+    font-size: 78px
   }
 
-  .login-inputs {
-    input {
-      margin-bottom: 16px;
-    }
+  .form-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 }

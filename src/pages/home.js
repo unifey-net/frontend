@@ -1,7 +1,12 @@
 import React from "react";
 import "../assets/scss/pages/home.scss"
+import { message } from "antd"
 
 export default function Home() {
+    if ((new URLSearchParams(window.location.search)).get("loginSuccess")) {
+        message.success('You are now logged in!', 1);
+    }
+
     return (
         <div>
             <div className="head">
