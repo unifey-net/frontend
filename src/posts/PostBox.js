@@ -1,6 +1,6 @@
 import React from "react";
-import {getOtherUserDataById, getToken} from "../handle/AuthenticationManager";
-import UserView from "./UserView";
+import {getOtherUserDataById, getToken} from "../api/AuthenticationManager";
+import UserView from "../api/user/UserView";
 import {DownOutlined, FlagOutlined, UpOutlined} from "@ant-design/icons";
 import Popconfirm from "antd/es/popconfirm";
 import {message, Input, Button, Modal} from "antd";

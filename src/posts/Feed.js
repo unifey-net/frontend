@@ -2,8 +2,8 @@ import React from "react"
 import Post from "./Post.js"
 import "../assets/scss/pages/feed.scss"
 import Card from "antd/es/card";
-import UserView from "./UserView";
-import {getToken} from "../handle/AuthenticationManager";
+import UserView from "../api/user/UserView";
+import {getToken} from "../api/AuthenticationManager";
 
 import { ReactDOM } from "react-dom"
 import PostBox from "./PostBox";
@@ -24,7 +24,6 @@ export default class Feed extends React.Component {
     }
 
     getPosts() {
-        console.log("invoke andy")
         fetch(`http://localhost:8080/feeds/${this.props.id}`, {
             method: 'GET',
             headers: {
@@ -32,29 +31,26 @@ export default class Feed extends React.Component {
             }
         })
             .then((resp) => {
-                console.log(resp.ok);
-                console.log(resp.status);
-                resp.text()
-                    .then((content) => {
-                        let js = JSON.parse(content).payload
+                if (resp.ok) {
+                    resp.text().then((content) => {
+                            let js = JSON.parse(content).posts
 
-                        let posts = []
-                        for (let i = 0; js.length > i; i++) {
-                            let post = js[i]
+                            let posts = []
+                            for (let i = 0; js.length > i; i++) {
+                                let post = js[i]
 
-                            posts.push(post);
-                        }
+                                posts.push(post);
+                            }
 
-                        posts.sort(function(a,b){
-                            return new Date(a.createdAt) - new Date(b.createdAt)
-                        });
+                            posts.sort(function(a,b){
+                                return new Date(a.createdAt) - new Date(b.createdAt)
+                            });
 
-                        this.setState({
-                            posts: posts
+                            this.setState({
+                                posts: posts
+                            })
                         })
-
-                        this.render()
-                    })
+                } else resp.text().then((text) => console.log(text))
             })
 
     }
@@ -67,7 +63,7 @@ export default class Feed extends React.Component {
                     {
                         this.state.posts.map((post, index) =>
                             <li key={index}>
-                                <Post id={post.id} created={post.createdAt} title={post.title} content={post.content} vote={post.upvotes - post.downvotes} author={post.authorUid}/>
+                                <Post id={post.post.id} created={post.post.createdAt} title={post.post.title} content={post.post.content} vote={post.post.upvotes - post.post.downvotes} author={post.owner.username}/>
                             </li>
                         )
                     }

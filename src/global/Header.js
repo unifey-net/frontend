@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom"
 import { Avatar } from "antd"
 import { UserOutlined } from '@ant-design/icons';
-import UserView from "../posts/UserView"
+import UserView from "../api/user/UserView"
+import SelfView from "../api/user/SelfView";
 
 export default function Header() {
     let pages = [
@@ -30,7 +31,7 @@ export default function Header() {
                     }
                 </ul>
             </div>{/* TODO */}
-            <UserView/>
+            <SelfView/>
         </div>
     );
 }

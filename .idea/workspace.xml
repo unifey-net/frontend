@@ -19,28 +19,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Change Unifey to logo">
+    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Update styling on pages &amp; make feeds work with backend">
+      <change afterPath="$PROJECT_DIR$/src/api/ApiHandler.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/user/SelfView.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/user/UserView.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/_header.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/_header.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/base.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/base.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/pages/feed.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/pages/feed.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/pages/login.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/pages/login.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/scss/pages/viewuser.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/scss/pages/viewuser.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handle/AuthenticationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/handle/AuthenticationManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/global/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/Header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/handle/AuthenticationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuthenticationManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handle/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/handle/LoginPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handle/UserPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/handle/UserPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/feed.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/posts/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/Feed.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/posts/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/UserPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/PostBox.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/UserView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/UserView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/PostBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/PostBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/posts/UserView.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +59,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/assets/scss/pages" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../unifey-docs" />
     <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -81,11 +72,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\projects\react\unifey\src\api\user" />
+      <recent name="E:\projects\react\unifey\src\api" />
       <recent name="E:\projects\react\unifey\src\handle" />
       <recent name="E:\projects\react\unifey\src\pages" />
       <recent name="E:\projects\react\unifey\public" />
-      <recent name="E:\projects\react\unifey\src" />
-      <recent name="E:\projects\react\unify\src\home" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\projects\react\unifey\src\assets\scss\pages" />
@@ -132,7 +123,13 @@
       <workItem from="1590806750426" duration="9674000" />
       <workItem from="1590848811667" duration="5481000" />
       <workItem from="1590859513724" duration="5839000" />
-      <workItem from="1590875498054" duration="1624000" />
+      <workItem from="1590875498054" duration="4467000" />
+      <workItem from="1590888415431" duration="1172000" />
+      <workItem from="1590894813599" duration="638000" />
+      <workItem from="1590950953815" duration="1110000" />
+      <workItem from="1591130824523" duration="7000" />
+      <workItem from="1591144977544" duration="16000" />
+      <workItem from="1591228851920" duration="2929000" />
     </task>
     <task id="LOCAL-00001" summary="Slight Changes">
       <created>1590614267302</created>
@@ -176,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590783262790</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Update styling on pages &amp; make feeds work with backend">
+      <created>1590877184208</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1590877184208</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,13 +204,14 @@
     <MESSAGE value="Add SCSS stuff, about pages, footer &amp; header updates." />
     <MESSAGE value="Login page, user view, authenticate to backend &amp; more" />
     <MESSAGE value="Change Unifey to logo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change Unifey to logo" />
+    <MESSAGE value="Update styling on pages &amp; make feeds work with backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update styling on pages &amp; make feeds work with backend" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590876085697">
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590888916631">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590876085697" />
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590888916631" />
     <state x="690" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590623906402">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -215,30 +220,34 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="585" y="147" key="CommitChangelistDialog2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590627615764" />
-    <state width="1899" height="250" key="GridCell.Tab.0.bottom" timestamp="1590875891487">
+    <state x="740" y="309" key="FileChooserDialogImpl" timestamp="1590954881706">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="250" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590875891487" />
+    <state x="740" y="309" key="FileChooserDialogImpl/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590954881706" />
+    <state width="1882" height="247" key="GridCell.Tab.0.bottom" timestamp="1590893337365">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state width="1882" height="247" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337365" />
     <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1899" height="250" key="GridCell.Tab.0.center" timestamp="1590875891487">
+    <state width="1882" height="247" key="GridCell.Tab.0.center" timestamp="1590893337364">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="250" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590875891487" />
+    <state width="1882" height="247" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
     <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1899" height="250" key="GridCell.Tab.0.left" timestamp="1590875891486">
+    <state width="1882" height="247" key="GridCell.Tab.0.left" timestamp="1590893337364">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="250" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590875891486" />
+    <state width="1882" height="247" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
     <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1899" height="250" key="GridCell.Tab.0.right" timestamp="1590875891487">
+    <state width="1882" height="247" key="GridCell.Tab.0.right" timestamp="1590893337364">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1899" height="250" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590875891487" />
+    <state width="1882" height="247" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
     <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590783304959">
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590877438274">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590783304959" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590877438274" />
     <state x="2396" y="133" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1590690610783">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -251,17 +260,17 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2291" y="-28" width="1633" height="1038" maximized="true" key="dock-window-1/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590852756001" />
-    <state x="667" y="288" width="585" height="534" key="find.popup" timestamp="1590808607716">
+    <state x="667" y="288" width="585" height="592" key="find.popup" timestamp="1591230947146">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="667" y="288" width="585" height="534" key="find.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590808607716" />
+    <state x="667" y="288" width="585" height="592" key="find.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591230947146" />
     <state x="616" y="258" key="run.anything.popup" timestamp="1590780139326">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="616" y="258" key="run.anything.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590780139326" />
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1590865705321">
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup" timestamp="1591231332741">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590865705321" />
+    <state x="623" y="257" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591231332741" />
   </component>
 </project>

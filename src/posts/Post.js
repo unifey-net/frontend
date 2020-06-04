@@ -1,9 +1,9 @@
 import React from "react";
-import UserView from "./UserView";
+import UserView from "../api/user/UserView";
 import { UpOutlined, DownOutlined, FlagOutlined } from "@ant-design/icons";
 import Popconfirm from "antd/es/popconfirm";
 import { message } from "antd"
-import { getOtherUserDataById} from "../handle/AuthenticationManager";
+import {getUserById} from "../api/AuthenticationManager";
 
 export default class Post extends React.Component {
     constructor(props) {
@@ -12,16 +12,9 @@ export default class Post extends React.Component {
         this.state = {
             vote: 0,
             upVoted: false,
-            author: "Loading...",
+            author: this.props.author,
             downVoted: false
         }
-
-        getOtherUserDataById(this.props.author, (success, data) => {
-            if (success)
-                this.setState({
-                    author: data.username
-                })
-        })
     }
 
     render() {
@@ -29,7 +22,7 @@ export default class Post extends React.Component {
            <div className="post-container">
                <div className="post-title">
                    <p className="title">{this.props.title}</p>
-                   <UserView id={this.state.author}/>
+                   <UserView username={this.state.author}/>
                </div>
                <div className="post-content">
                    <p>{this.props.content}</p>

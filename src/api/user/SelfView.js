@@ -1,36 +1,34 @@
 import React from "react";
 import {Avatar} from "antd";
 import {UserOutlined} from "@ant-design/icons";
-import { signedIn, getUserData } from "../handle/AuthenticationManager";
-import { Link } from "react-router-dom"
+import {getSelf, getUserByName, signedIn} from "../AuthenticationManager";
 
-export default class UserView extends React.Component {
+export default class SelfView extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            username: "Signed Out"
+            username: "",
+            signedIn: false
         }
 
         if (signedIn()) {
-            getUserData((success, data) => {
-                if (success) {
+            getSelf((data) => {
+                if (data != null) {
                     this.setState({
-                        username: data.username
+                        username: data.username,
+                        signedIn: true
                     })
-
-                    this.render();
                 }
             })
         }
     }
 
-    // TODO change back to Link maybe?
     render() {
-        if (this.state.username === "Signed Out") {
+        if (!this.state.signedIn) {
             return (
                 <div className="user">
-                    <span className="name"><a href={`/login`}><Avatar size={38} className="avatar" src={<UserOutlined/>}/></a></span>
+                    <span className="name"><a href={`/login`}><Avatar size={38} className="avatar" icon={<UserOutlined/>}/></a></span>
                 </div>
             );
         }

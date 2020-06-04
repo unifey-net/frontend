@@ -2,7 +2,7 @@ import React from "react";
 import "../assets/scss/pages/home.scss"
 import { Spin } from "antd"
 import "../assets/scss/pages/login.scss"
-import {login, signedIn} from "./AuthenticationManager"
+import {login, signedIn} from "../api/AuthenticationManager"
 import { withRouter, Redirect } from "react-router-dom"
 
 import { Form, Input, Button, Checkbox, Layout, message } from "antd";

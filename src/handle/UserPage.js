@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import React from "react";
 import "../assets/scss/pages/viewuser.scss"
 import Feed from "../posts/Feed";
-import {getOtherProfile, getOtherUserData, userExists} from "./AuthenticationManager";
 
 
 import { CalendarOutlined, GlobalOutlined } from "@ant-design/icons"
@@ -11,6 +10,7 @@ import { CalendarOutlined, GlobalOutlined } from "@ant-design/icons"
 import {Descriptions, Empty} from "antd";
 import MessageOutlined from "@ant-design/icons/lib/icons/MessageOutlined";
 import Avatar from "antd/es/avatar";
+import {getUserByName} from "../api/AuthenticationManager";
 
 class UserPage extends React.Component {
     constructor(props) {
@@ -25,31 +25,25 @@ class UserPage extends React.Component {
                 discord: "N/A"
             }
         }
+    }
 
-        // TODO use /full
-        getOtherProfile(this.props.name, (success, data) => {
-            if (success) {
+    componentDidMount() {
+        getUserByName(this.props.name, (data) => {
+            if (data != null) {
                 this.setState({
-                    profile: {
-                        location: data.location,
-                        discord: data.discord,
-                        description: data.description
-                    }
-                })
-            } else {
-                ReactDOM.render(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />, document.getElementById("user-container"))
-            }
-        })
-
-        getOtherUserData(this.props.name, (success, data) => {
-            if (success) {
-                this.setState({
-                    id: data.uid,
+                    id: data.id,
                     name: data.username,
-                    createdAt: data.createdAt
+                    createdAt: data.createdAt,
+                    profile: {
+                        location: data.profile.location,
+                        discord: data.profile.discord,
+                        description: data.profile.description
+                    }
                 })
 
                 ReactDOM.render(<Feed id={`uf_${this.state.id}`}/>, document.getElementById("user-feed"))
+            } else {
+                ReactDOM.render(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />, document.getElementById("user-container"))
             }
         })
     }
