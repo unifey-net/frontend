@@ -19,19 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Update styling on pages &amp; make feeds work with backend">
-      <change afterPath="$PROJECT_DIR$/src/api/ApiHandler.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/user/SelfView.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/user/UserView.js" afterDir="false" />
+    <list default="true" id="2b22a56a-c449-46f1-960e-f884fd2eff10" name="Default Changelist" comment="Align with backend">
+      <change afterPath="$PROJECT_DIR$/src/api/CommunityHandler.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handle/CommunityPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/global/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/global/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handle/AuthenticationManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/AuthenticationManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handle/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/handle/LoginPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/handle/UserPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/handle/UserPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/Feed.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/Feed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/Post.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/Post.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/PostBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/posts/PostBox.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/posts/UserView.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +61,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
     <property name="ts.external.directory.path" value="C:\Users\Shoga\AppData\Local\JetBrains\Toolbox\apps\WebStorm\ch-0\201.7223.93\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
@@ -129,7 +123,8 @@
       <workItem from="1590950953815" duration="1110000" />
       <workItem from="1591130824523" duration="7000" />
       <workItem from="1591144977544" duration="16000" />
-      <workItem from="1591228851920" duration="2929000" />
+      <workItem from="1591228851920" duration="4059000" />
+      <workItem from="1591293648563" duration="2751000" />
     </task>
     <task id="LOCAL-00001" summary="Slight Changes">
       <created>1590614267302</created>
@@ -180,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590877184208</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Align with backend">
+      <created>1591232059851</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1591232059851</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,13 +207,14 @@
     <MESSAGE value="Login page, user view, authenticate to backend &amp; more" />
     <MESSAGE value="Change Unifey to logo" />
     <MESSAGE value="Update styling on pages &amp; make feeds work with backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update styling on pages &amp; make feeds work with backend" />
+    <MESSAGE value="Align with backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="Align with backend" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590888916631">
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591293682132">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590888916631" />
+    <state x="702" y="356" key="#com.intellij.fileTypes.FileTypeChooser/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591293682132" />
     <state x="690" y="301" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1590623906402">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -224,30 +227,34 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="740" y="309" key="FileChooserDialogImpl/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590954881706" />
-    <state width="1882" height="247" key="GridCell.Tab.0.bottom" timestamp="1590893337365">
+    <state width="1899" height="249" key="GridCell.Tab.0.bottom" timestamp="1591233019769">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1882" height="247" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337365" />
+    <state width="1899" height="249" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591233019769" />
     <state width="1899" height="285" key="GridCell.Tab.0.bottom/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1882" height="247" key="GridCell.Tab.0.center" timestamp="1590893337364">
+    <state width="1899" height="249" key="GridCell.Tab.0.center" timestamp="1591233019769">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1882" height="247" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
+    <state width="1899" height="249" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591233019769" />
     <state width="1899" height="285" key="GridCell.Tab.0.center/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1882" height="247" key="GridCell.Tab.0.left" timestamp="1590893337364">
+    <state width="1899" height="249" key="GridCell.Tab.0.left" timestamp="1591233019768">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1882" height="247" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
+    <state width="1899" height="249" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591233019768" />
     <state width="1899" height="285" key="GridCell.Tab.0.left/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state width="1882" height="247" key="GridCell.Tab.0.right" timestamp="1590893337364">
+    <state width="1899" height="249" key="GridCell.Tab.0.right" timestamp="1591233019769">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state width="1882" height="247" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590893337364" />
+    <state width="1899" height="249" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591233019769" />
     <state width="1899" height="285" key="GridCell.Tab.0.right/0.30.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1590691567550" />
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1590877438274">
+    <state x="461" y="199" key="SettingsEditor" timestamp="1591294076530">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
-    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1590877438274" />
+    <state x="461" y="199" key="SettingsEditor/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591294076530" />
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2" timestamp="1591232066685">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="444" y="181" key="Vcs.Push.Dialog.v2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591232066685" />
     <state x="2396" y="133" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1590690610783">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>

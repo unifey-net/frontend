@@ -9,6 +9,7 @@ import UserPage from "./handle/UserPage";
 import PageHandler from "./handle/PageHandler";
 import Home from "./pages/home";
 import Footer from "./global/Footer";
+import CommunityPage from "./handle/CommunityPage";
 
 ReactDOM.render(
         <BrowserRouter>
@@ -16,8 +17,9 @@ ReactDOM.render(
             <div className="container">
                 <Switch>
                     <Route path='/@:user' component={UserPage}/>
+                    <Route path='/c/:community' component={CommunityPage}/>
                     <Route path='/:page' component={PageHandler}/>
-                    <Route path='/' component={Home}/>
+                    <Route exact path='/' component={Home}/>
                     <Route component={() => 404} />
                 </Switch>
             </div>
