@@ -22,8 +22,10 @@ export const getToken = () => {
  *
  * @returns {*}
  */
-export const logout = () =>
+export const logout = () => {
     cookies.remove("token")
+    localStorage.removeItem("self_data")
+}
 
 /**
  * If you're signed in.
@@ -99,6 +101,13 @@ export const getId = (name, callback) => {
  * @param callback
  */
 export const getSelf = (callback) => {
+    let local = localStorage.getItem("self_data")
+
+    if (local != null && local !== "") {
+        callback(JSON.parse(local).payload)
+        return
+    }
+
     fetch(`http://localhost:8080/user`, {
         method: 'GET',
         headers: {
@@ -109,6 +118,8 @@ export const getSelf = (callback) => {
             if (content.ok) {
                 content.text()
                     .then((str) => {
+                        localStorage.setItem("self_data", str)
+
                         let data =  JSON.parse(str).payload
 
                         callback(data)

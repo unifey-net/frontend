@@ -4,13 +4,13 @@ import React from "react";
 import "../assets/scss/pages/viewuser.scss"
 import Feed from "../posts/Feed";
 
-
-import { CalendarOutlined, GlobalOutlined } from "@ant-design/icons"
+import {CalendarOutlined, GlobalOutlined, StarOutlined} from "@ant-design/icons"
 
 import {Descriptions, Empty} from "antd";
 import MessageOutlined from "@ant-design/icons/lib/icons/MessageOutlined";
 import Avatar from "antd/es/avatar";
 import {getUserByName} from "../api/AuthenticationManager";
+import {getRoleName} from "../api/RoleHandler";
 
 class UserPage extends React.Component {
     constructor(props) {
@@ -34,6 +34,7 @@ class UserPage extends React.Component {
                     id: data.id,
                     name: data.username,
                     createdAt: data.createdAt,
+                    role: data.role,
                     profile: {
                         location: data.profile.location,
                         discord: data.profile.discord,
@@ -68,7 +69,14 @@ class UserPage extends React.Component {
                 </Descriptions.Item>
             )
         } else {
-            discord = (<div/>)
+            discord = (<></>)
+        }
+
+        let staff = (<></>)
+        if (this.state.role !== 0) {
+            staff = <Descriptions.Item label={<span>Staff Member</span>}>
+                {getRoleName(this.state.role)}
+            </Descriptions.Item>
         }
 
         return (
@@ -79,6 +87,7 @@ class UserPage extends React.Component {
                     </Descriptions.Item>
                     {location}
                     {discord}
+                    {staff}
                 </Descriptions>
 
                 <br/>

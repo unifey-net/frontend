@@ -11,9 +11,15 @@ export default class SelfView extends React.Component {
             username: "",
             signedIn: false
         }
+    }
 
+    componentDidMount() {
+        console.log("Signed In: " + signedIn())
         if (signedIn()) {
+
+
             getSelf((data) => {
+                console.log(data);
                 if (data != null) {
                     this.setState({
                         username: data.username,
