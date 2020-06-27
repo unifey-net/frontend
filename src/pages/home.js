@@ -8,7 +8,7 @@ export default function Home() {
     }
 
     return (
-        <div>
+        <div className="home-container">
             <div className="head">
                 <h1 className="title">Unifey</h1>
                 <p className="subtitle">deez nuts</p>

@@ -42,8 +42,9 @@ export const signedIn = () => {
  * @param name
  * @param callback
  */
-export const getUserByName = (name, callback) => {
-    getId(name, (id) => getUserById(id, callback))
+export const getUserByName = async (name) => {
+    let id = await getId(name)
+    return getUserById(id.payload)
 }
 
 /**
@@ -52,23 +53,10 @@ export const getUserByName = (name, callback) => {
  * @param id
  * @param callback
  */
-export const getUserById = (id, callback) => {
-    fetch(`${BASE_URL}/user/id/${id}`, {
+export const getUserById = async (id) => {
+    return await fetch(`${BASE_URL}/user/id/${id.toString()}`, {
         method: 'GET'
-    })
-        .then((resp) => {
-            if (resp.ok) {
-                resp.text()
-                    .then((text) => {
-                        let id = JSON.parse(text).payload
-
-                        callback(id)
-                    })
-            } else {
-                callback(null)
-            }
-        })
-        .catch(() => callback(null))
+    }).then((resp) => resp.json())
 }
 
 /**
@@ -77,57 +65,37 @@ export const getUserById = (id, callback) => {
  * @param name
  * @param callback
  */
-export const getId = (name, callback) => {
-    fetch(`${BASE_URL}/user/name/${name}`, {
+export const getId = async (name) => {
+    return await fetch(`${BASE_URL}/user/name/${name}`, {
         method: 'GET'
-    })
-        .then((resp) => {
-            if (resp.ok) {
-                resp.text()
-                    .then((text) => {
-                        let id = JSON.parse(text).payload
-
-                        callback(id)
-                    })
-            } else {
-                callback(null)
-            }
-        })
-        .catch(() => callback(null))
+    }).then((resp) => resp.json())
 }
 
 /**
  * Get self.
  * @param callback
  */
-export const getSelf = (callback) => {
+export const getSelf = async () => {
     let local = localStorage.getItem("self_data")
 
     if (local != null && local !== "") {
-        callback(JSON.parse(local).payload)
-        return
+        return JSON.parse(local).payload;
     }
 
-    fetch(`http://localhost:8080/user`, {
+    return await fetch(`${BASE_URL}/user`, {
         method: 'GET',
         headers: {
             "Authorization": "bearer " + getToken()
         }
     })
         .then((content) => {
-            if (content.ok) {
-                content.text()
-                    .then((str) => {
-                        localStorage.setItem("self_data", str)
+            content.text().then((str) => {
+                localStorage.setItem("self_data", str);
 
-                        let data =  JSON.parse(str).payload
+                let data = JSON.parse(str).payload;
 
-                        callback(data)
-                    })
-            } else callback(null)
-        })
-        .catch(() => {
-            callback(null)
+                return data
+            });
         })
 }
 
@@ -145,7 +113,7 @@ export const login = (username, pass, callback) => {
     formData.append("username", username)
     formData.append("password", pass)
 
-    fetch('http://localhost:8080/authenticate', {
+    fetch(`${BASE_URL}/authenticate`, {
         method: 'POST',
         body: formData
     }).then((content) => {

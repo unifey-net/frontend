@@ -72,10 +72,8 @@ class LoginPage extends React.Component {
      */
     formLogin(values) {
         login(values["username"], values["password"], (success, token) => {
-            console.log(success)
-
             if (!success) {
-                document.querySelector("#status").textContent = "Invalid username or password!"
+                message.error("Invalid username or password!")
             } else {
                 window.location.reload(false);
             }

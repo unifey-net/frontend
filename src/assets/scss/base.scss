@@ -25,6 +25,10 @@ p, a, span, label {
   font-family: $default-font;
 }
 
+a {
+  color: #918f91
+}
+
 a:hover {
   color: $link-color;
 }

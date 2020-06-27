@@ -1,4 +1,7 @@
-.about, .about-message {
-  margin-top: 16rem;
-  text-align: center;
+.about-container {
+  margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

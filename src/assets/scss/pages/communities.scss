@@ -1,0 +1,17 @@
+.communities-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .communities-list {
+        margin-top: 4rem;
+        display: flex;
+        list-style: none;
+
+        li {
+            font-size: 16px;
+        }
+    }
+}

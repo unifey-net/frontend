@@ -1,36 +1,41 @@
-import {useRouteMatch} from "react-router-dom";
-import ReactDOM from 'react-dom';
-import React from "react";
-import "../assets/scss/pages/viewuser.scss"
+import { useRouteMatch } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import "../assets/scss/pages/viewuser.scss";
 import Feed from "../posts/Feed";
 
-import {CalendarOutlined, GlobalOutlined, StarOutlined} from "@ant-design/icons"
+import {
+    CalendarOutlined,
+    GlobalOutlined,
+    StarOutlined,
+} from "@ant-design/icons";
 
-import {Descriptions, Empty} from "antd";
+import { Descriptions, Empty, Spin, Skeleton } from "antd";
 import MessageOutlined from "@ant-design/icons/lib/icons/MessageOutlined";
 import Avatar from "antd/es/avatar";
-import {getUserByName} from "../api/AuthenticationManager";
-import {getRoleName} from "../api/RoleHandler";
+import { getUserByName } from "../api/AuthenticationManager";
+import { getRoleName } from "../api/RoleHandler";
+import { BASE_URL } from "../api/ApiHandler";
 
-class UserPage extends React.Component {
-    constructor(props) {
-        super(props);
+import {LoadingOutlined} from "@ant-design/icons"
 
-        this.state = {
-            id: 0,
-            name: this.props.name,
-            createdAt: 0,
-            profile: {
-                location: "N/A",
-                discord: "N/A"
-            }
-        }
-    }
+export default function UserPage(props) {
+    const {
+        params: { name },
+    } = useRouteMatch();
 
-    componentDidMount() {
-        getUserByName(this.props.name, (data) => {
-            if (data != null) {
-                this.setState({
+    let [user, setUser] = useState({
+        id: -1,
+    });
+
+    const loadUser = async () => {
+        let preData = await getUserByName(name)
+        
+        if (preData !== undefined && preData.payload !== undefined) {
+            let data = preData.payload;
+
+            setUser((prevState) => {
+                return {
+                    ...prevState,
                     id: data.id,
                     name: data.username,
                     createdAt: data.createdAt,
@@ -38,70 +43,77 @@ class UserPage extends React.Component {
                     profile: {
                         location: data.profile.location,
                         discord: data.profile.discord,
-                        description: data.profile.description
-                    }
-                })
-
-                ReactDOM.render(<Feed id={`uf_${this.state.id}`}/>, document.getElementById("user-feed"))
-            } else {
-                ReactDOM.render(<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />, document.getElementById("user-container"))
-            }
-        })
-    }
-
-    render() {
-        let location;
-        if (this.state.profile.location !== "") {
-            location = (
-                <Descriptions.Item label={<span>Location <GlobalOutlined /></span>}>
-                    {this.state.profile.location}
-                </Descriptions.Item>
-            )
+                        description: data.profile.description,
+                    },
+                };
+            });
         } else {
-            location = (<div/>)
+            setUser((prevState) => {
+                return {
+                    ...prevState,
+                    id: -2
+                }
+            })
         }
+    };
 
-        let discord;
-        if (this.state.profile.discord !== "") {
-            discord = (
-                <Descriptions.Item label={<span>Discord <MessageOutlined /></span>}>
-                    {this.state.profile.discord}
-                </Descriptions.Item>
-            )
-        } else {
-            discord = (<></>)
-        }
+    useEffect(() => {
+        loadUser()
+    }, []);
 
-        let staff = (<></>)
-        if (this.state.role !== 0) {
-            staff = <Descriptions.Item label={<span>Staff Member</span>}>
-                {getRoleName(this.state.role)}
-            </Descriptions.Item>
-        }
+    return (
+        <div className="user-container">
+            {user.id !== -1 && user.id !== -2 && (
+                <>
+                    <h1 className="user-header">
+                        {user.name}{" "}
+                        <Avatar
+                            size={32}
+                            src={`${BASE_URL}/user/name/${user.name}/picture`}
+                        />
+                    </h1>
 
-        return (
-            <div className="user-container" id="user-container">
-                <Descriptions title={<h1>{this.state.name} <Avatar size={112} src={`http://localhost:8080/user/name/${this.state.name}/picture`}/></h1>}>
-                    <Descriptions.Item label={<span>Joined <CalendarOutlined/></span>}>
-                        {new Date(this.state.createdAt).toLocaleString()}
-                    </Descriptions.Item>
-                    {location}
-                    {discord}
-                    {staff}
-                </Descriptions>
+                    <br />
 
-                <br/>
+                    <div className="user-feed">
+                        <Feed id={`uf_${user.id}`} />
 
-                <div id="user-feed"/>
-            </div>
-        );
-    }
-}
+                        <div className="user-about">
+                            <h2>{user.name}</h2>
+                            <p>{user.profile.description}</p>
 
-export default function ViewUser() {
-    const {
-        params: { user }
-    } = useRouteMatch()
+                            <h3>Created On</h3>
+                            <p>{new Date(user.createdAt).toLocaleString()}</p>
 
-    return (<UserPage name={user} />)
+                            {user.profile.location !== "" && (
+                                <>
+                                    <h3>Location</h3>
+                                    <p>{user.profile.location}</p>
+                                </>
+                            )}
+
+                            {user.profile.discord !== "" && (
+                                <>
+                                    <h3>Discord</h3>
+                                    <p>{user.profile.discord}</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {user.id === -1 && (
+                <div className="empty-container">
+                    <Spin indicator={<LoadingOutlined />}></Spin>
+                </div>
+            )}
+
+            {user.id === -2 && (
+                <div className="empty-container">
+                    <Empty />
+                </div>
+            )}
+        </div>
+    );
 }

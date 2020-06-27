@@ -1,100 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
 import UserView from "../api/user/UserView";
 import { UpOutlined, DownOutlined, FlagOutlined } from "@ant-design/icons";
 import Popconfirm from "antd/es/popconfirm";
-import { message } from "antd"
-import {getUserById} from "../api/AuthenticationManager";
+import { message } from "antd";
 
-export default class Post extends React.Component {
-    constructor(props) {
-        super(props);
+/**
+ * A post
+ * @param {*} props 
+ */
+export default function Post(props) {
+    let [vote, setVote] = useState(0);
+    let [hasDownVoted, setDownVoted] = useState(false);
+    let [hasUpVoted, setUpVoted] = useState(false);
 
-        this.state = {
-            vote: 0,
-            upVoted: false,
-            author: this.props.author,
-            downVoted: false
-        }
-    }
-
-    render() {
-       return (
-           <div className="post-container">
-               <div className="post-title">
-                   <p className="title">{this.props.title}</p>
-                   <UserView username={this.state.author}/>
-               </div>
-               <div className="post-content">
-                   <p>{this.props.content}</p>
-               </div>
-               <div className="post-management">
-                   <div className="vote-container">
-                       <p className={this.state.upVoted ? "upvoted" : ""}><UpOutlined onClick={(e) => this.upVote() }/></p>
-                       <p className={this.state.downVoted ? "downvoted" : ""}><DownOutlined onClick={(e) => this.downVote()} /></p>
-                       <p>{this.state.vote}</p>
-                   </div>
-                   <Popconfirm
-                       title="Are you sure you want to report this?"
-                       onConfirm={() => {
-                           let key = "reporting-" + this.props.id
-
-                           message.loading({ content: 'Loading...', key });
-
-                           setTimeout(() => {
-                               message.success({ content: "Successfully reported!", key, duration: 2 });
-                           }, 1000);
-
-                           // TODO
-                       }}
-                       onCancel={() => {}}
-                       okText="Yes"
-                       cancelText="No"
-                   >
-                       <FlagOutlined/>
-                   </Popconfirm>
-               </div>
-           </div>
-       );
-    }
-
-    downVote() {
-        if (this.state.downVoted) {
-            this.setState({
-                downVoted: false,
-                vote: this.state.vote + 1
-            })
-        } else if (this.state.upVoted) {
-            this.setState({
-                downVoted: true,
-                upVoted: false,
-                vote: this.state.vote - 2
-            })
+    const upVote = () => {
+        if (hasUpVoted) {
+            setVote((prevVote) => prevVote - 1)
+            setUpVoted(false)
+        } else if (hasDownVoted) {
+            setVote((prevVote) => prevVote + 2)
+            setUpVoted(true)
+            setDownVoted(false)
         } else {
-            this.setState({
-                downVoted: true,
-                vote: this.state.vote - 1
-            })
+            setVote((prevVote) => prevVote + 1)
+            setUpVoted(true)
         }
     }
 
-    upVote() {
-        if (this.state.upVoted) {
-            this.setState({
-                upVoted: false,
-                vote: this.state.vote - 1
-            })
-        } else if (this.state.downVoted) {
-            this.setState({
-                upVoted: true,
-                downVoted: false,
-                vote: this.state.vote + 2
-            })
+    const downVote = () => {
+        if (hasUpVoted) {
+            setVote((prevVote) => prevVote - 2);
+            setDownVoted(true);
+            setUpVoted(false);
+        } else if (hasDownVoted) {
+            setVote((prevVote) => prevVote + 1);
+            setDownVoted(false);
         } else {
-            this.setState({
-                upVoted: true,
-                downVoted: false,
-                vote: this.state.vote + 1
-            })
+            setVote((prevVote) => prevVote - 1);
+            setDownVoted(true);
         }
     }
+
+    const reportPost = async () => {
+    }
+
+    return (
+        <div className="post-container">
+            <div className="post-title">
+                <p className="title">{props.title}</p>
+                <UserView username={props.author} />
+            </div>
+            <div className="post-content">
+                <p>{props.content}</p>
+            </div>
+            <div className="post-management">
+                <div className="vote-container">
+                    <p className={hasUpVoted ? "upvoted" : ""}>
+                        <UpOutlined onClick={upVote} />
+                    </p>
+                    <p className={hasDownVoted ? "downvoted" : ""}>
+                        <DownOutlined onClick={downVote} />
+                    </p>
+                    <p>{vote}</p>
+                </div>
+                <Popconfirm
+                    title="Are you sure you want to report this?"
+                    onConfirm={() => {
+                        let key = "reporting-" + props.id;
+
+                        message.loading({ content: "Loading...", key });
+
+                        setTimeout(() => {
+                            message.success({
+                                content: "Successfully reported!",
+                                key,
+                                duration: 2,
+                            });
+                        }, 1000);
+
+                        // TODO
+                    }}
+                    onCancel={() => {}}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <FlagOutlined />
+                </Popconfirm>
+            </div>
+        </div>
+    );
 }

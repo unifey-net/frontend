@@ -1,74 +1,93 @@
-import React from "react"
-import Post from "./Post.js"
-import "../assets/scss/pages/feed.scss"
-import Card from "antd/es/card";
-import UserView from "../api/user/UserView";
-import {getToken} from "../api/AuthenticationManager";
+import React, { useState, useEffect } from "react";
+import Post from "./Post.js";
+import "../assets/scss/pages/feed.scss";
+import { getToken } from "../api/AuthenticationManager";
 
-import { ReactDOM } from "react-dom"
+import { Empty, Skeleton } from "antd"
+
 import PostBox from "./PostBox";
+import { BASE_URL } from "../api/ApiHandler";
+import { LoadingOutlined } from "@ant-design/icons";
 
-export default class Feed extends React.Component {
-    constructor(props) {
-        super(props);
+export default function Feed(props) {
+    let [posts, setPosts] = useState([]);
+    let [loadedPosts, setLoadedPosts] = useState(false)
 
-        this.getPosts = this.getPosts.bind(this);
-
-        this.state = {
-            posts: []
-        }
-    }
-
-    componentDidMount() {
-        this.getPosts()
-    }
-
-    getPosts() {
-        fetch(`http://localhost:8080/feeds/${this.props.id}`, {
-            method: 'GET',
+    const loadPosts = async () => {
+        let resp = await fetch(`${BASE_URL}/feeds/${props.id}`, {
+            method: "GET",
             headers: {
-                "Authorization": "bearer " + getToken()
-            }
-        })
-            .then((resp) => {
-                if (resp.ok) {
-                    resp.text().then((content) => {
-                            let js = JSON.parse(content).posts
+                Authorization: "bearer " + getToken(),
+            },
+        }).then((resp) => resp.json());
 
-                            let posts = []
-                            for (let i = 0; js.length > i; i++) {
-                                let post = js[i]
+        let js = resp.posts;
 
-                                posts.push(post);
-                            }
+        let posts = [];
+        for (let i = 0; js.length > i; i++) {
+            let post = js[i];
 
-                            posts.sort(function(a,b){
-                                return new Date(a.createdAt) - new Date(b.createdAt)
-                            });
+            posts.push(post);
+        }
 
-                            this.setState({
-                                posts: posts
-                            })
-                        })
-                } else resp.text().then((text) => console.log(text))
-            })
+        posts.sort(function (a, b) {
+            return new Date(a.createdAt) - new Date(b.createdAt);
+        });
 
-    }
+        setPosts(posts);
+        setLoadedPosts(true)
+    };
 
-    render() {
-        return (
-            <div>
-                <PostBox feed={this.props.id} action={this.getPosts} />
-                <ul className="feed-container">
-                    {
-                        this.state.posts.map((post, index) =>
+    useEffect(() => {
+        loadPosts();
+    }, []);
+
+    return (
+        <div>
+            <PostBox feed={props.id} action={loadPosts} />
+            <ul className="feed-container">
+                {loadedPosts && posts.length === 0 && <Empty />}
+
+                {loadedPosts && posts.length !== 0 && (
+                    <>
+                        {posts.map((post, index) => (
                             <li key={index}>
-                                <Post id={post.post.id} created={post.post.createdAt} title={post.post.title} content={post.post.content} vote={post.post.upvotes - post.post.downvotes} author={post.owner.username}/>
+                                <Post
+                                    id={post.post.id}
+                                    created={post.post.createdAt}
+                                    title={post.post.title}
+                                    content={post.post.content}
+                                    vote={
+                                        post.post.upvotes - post.post.downvotes
+                                    }
+                                    author={post.owner.username}
+                                />
                             </li>
-                        )
-                    }
-                </ul>
-            </div>
-        );
-    }
+                        ))}
+                    </>
+                )}
+
+                {!loadedPosts && (
+                    <>
+                        <Skeleton
+                            title={{ width: "12rem" }}
+                            paragraph={{ width: "26rem", rows: 4 }}
+                        />
+                        <Skeleton
+                            title={{ width: "12rem" }}
+                            paragraph={{ width: "26rem", rows: 4 }}
+                        />
+                        <Skeleton
+                            title={{ width: "12rem" }}
+                            paragraph={{ width: "26rem", rows: 4 }}
+                        />
+                        <Skeleton
+                            title={{ width: "12rem" }}
+                            paragraph={{ width: "26rem", rows: 4 }}
+                        />
+                    </>
+                )}
+            </ul>
+        </div>
+    );
 }

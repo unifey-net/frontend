@@ -6,15 +6,14 @@ import {getToken} from "./AuthenticationManager";
  * @param name
  * @param callback
  */
-export const getCommunityByName = (name, callback) => {
-    fetch(`${BASE_URL}/community/name/${name}`)
-        .then((resp) => {
-            if (resp.ok) {
-                resp.json()
-                    .then((json) => callback(json))
-            } else callback(null)
-        })
-        .catch(() => callback(null))
+export const getCommunityByName = async (name) => {
+    return await fetch(`${BASE_URL}/community/name/${name}`)
+        .then((resp) => resp.json())
+}
+
+export const getAllCommunities = async () => {
+    return await fetch(`${BASE_URL}/community`)
+        .then(resp => resp.json())
 }
 
 /**

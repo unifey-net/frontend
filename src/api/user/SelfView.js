@@ -1,48 +1,49 @@
-import React from "react";
-import {Avatar} from "antd";
-import {UserOutlined} from "@ant-design/icons";
-import {getSelf, getUserByName, signedIn} from "../AuthenticationManager";
+import React, { useEffect, useState } from "react";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { getSelf, getUserByName, signedIn } from "../AuthenticationManager";
+import { BASE_URL } from "../ApiHandler";
 
-export default class SelfView extends React.Component {
-    constructor(props) {
-        super(props);
+export default function SelfView() {
+    let [username, setUsername] = useState("");
+    let [signedIn, setSignedIn] = useState(false);
 
-        this.state = {
-            username: "",
-            signedIn: false
-        }
-    }
+    useEffect(() => {
+        const loadData = async () => {
+            let self = await getSelf();
 
-    componentDidMount() {
-        console.log("Signed In: " + signedIn())
-        if (signedIn()) {
+            if (self != null && self !== undefined) {
+                setSignedIn(true);
+                setUsername(self.username);
+            }
+        };
 
+        loadData();
+    }, []);
 
-            getSelf((data) => {
-                console.log(data);
-                if (data != null) {
-                    this.setState({
-                        username: data.username,
-                        signedIn: true
-                    })
-                }
-            })
-        }
-    }
+    return (
+        <div className="user-view-container">
+            {signedIn && (
+                <a href={`/u/${username}`}>
+                    {username}
+                    <Avatar
+                        size={38}
+                        className="avatar"
+                        src={`${BASE_URL}/user/name/${username}/picture`}
+                    />
+                </a>
+            )}
 
-    render() {
-        if (!this.state.signedIn) {
-            return (
-                <div className="user">
-                    <span className="name"><a href={`/login`}><Avatar size={38} className="avatar" icon={<UserOutlined/>}/></a></span>
-                </div>
-            );
-        }
-
-        return (
-            <div className="user">
-                <span className="name"><a href={`/@${this.state.username}`}><Avatar size={38} className="avatar" src={`http://localhost:8080/user/name/${this.state.username}/picture`}/></a></span>
-            </div>
-        );
-    }
+            {!signedIn && (
+                <a href={`/login`}>
+                    {username}
+                    <Avatar
+                        size={38}
+                        className="avatar"
+                        icon={<UserOutlined />}
+                    />
+                </a>
+            )}
+        </div>
+    );
 }
