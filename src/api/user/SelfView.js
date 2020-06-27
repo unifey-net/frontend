@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { getSelf, getUserByName, signedIn } from "../AuthenticationManager";
+import { getSelf } from "../AuthenticationManager";
 import { BASE_URL } from "../ApiHandler";
 
 export default function SelfView() {

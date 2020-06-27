@@ -1,16 +1,9 @@
 import { useRouteMatch } from "react-router-dom";
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/community.scss";
 import Feed from "../posts/Feed";
-
-import { CalendarOutlined } from "@ant-design/icons";
-
-import { Descriptions, Empty, Spin } from "antd";
-import Avatar from "antd/es/avatar";
+import { Empty, Spin } from "antd";
 import { getCommunityByName } from "../api/CommunityHandler";
-import BookOutlined from "@ant-design/icons/lib/icons/BookOutlined";
-import { BASE_URL } from "../api/ApiHandler";
 import {LoadingOutlined} from "@ant-design/icons"
 
 export default function ViewCommunity(props) {
@@ -23,32 +16,32 @@ export default function ViewCommunity(props) {
         name: community,
     });
 
-    const loadData = async () => {
-        let data = await getCommunityByName(community);
-
-        if (data != null && data.community !== undefined) {
-            setCom((prevState) => {
-                return {
-                    ...prevState,
-                    id: data.community.id,
-                    name: data.community.name,
-                    createdAt: data.community.createdAt,
-                    desc: data.community.description,
-                };
-            });
-        } else {
-            setCom((prevState) => {
-                return {
-                    ...prevState,
-                    id: -2,
-                };
-            });
-        }
-    };
-
     useEffect(() => {
+        const loadData = async () => {
+            let data = await getCommunityByName(community);
+
+            if (data != null && data.community !== undefined) {
+                setCom((prevState) => {
+                    return {
+                        ...prevState,
+                        id: data.community.id,
+                        name: data.community.name,
+                        createdAt: data.community.createdAt,
+                        desc: data.community.description,
+                    };
+                });
+            } else {
+                setCom((prevState) => {
+                    return {
+                        ...prevState,
+                        id: -2,
+                    };
+                });
+            }
+        };
+
         loadData();
-    }, []);
+    }, [community]);
 
     return (
         <div className="community-container">

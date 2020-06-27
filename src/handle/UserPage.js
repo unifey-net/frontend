@@ -3,17 +3,9 @@ import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/viewuser.scss";
 import Feed from "../posts/Feed";
 
-import {
-    CalendarOutlined,
-    GlobalOutlined,
-    StarOutlined,
-} from "@ant-design/icons";
-
-import { Descriptions, Empty, Spin, Skeleton } from "antd";
-import MessageOutlined from "@ant-design/icons/lib/icons/MessageOutlined";
+import { Empty, Spin } from "antd";
 import Avatar from "antd/es/avatar";
 import { getUserByName } from "../api/AuthenticationManager";
-import { getRoleName } from "../api/RoleHandler";
 import { BASE_URL } from "../api/ApiHandler";
 
 import {LoadingOutlined} from "@ant-design/icons"
@@ -27,39 +19,39 @@ export default function UserPage(props) {
         id: -1,
     });
 
-    const loadUser = async () => {
-        let preData = await getUserByName(name)
-        
-        if (preData !== undefined && preData.payload !== undefined) {
-            let data = preData.payload;
-
-            setUser((prevState) => {
-                return {
-                    ...prevState,
-                    id: data.id,
-                    name: data.username,
-                    createdAt: data.createdAt,
-                    role: data.role,
-                    profile: {
-                        location: data.profile.location,
-                        discord: data.profile.discord,
-                        description: data.profile.description,
-                    },
-                };
-            });
-        } else {
-            setUser((prevState) => {
-                return {
-                    ...prevState,
-                    id: -2
-                }
-            })
-        }
-    };
-
     useEffect(() => {
+         const loadUser = async () => {
+             let preData = await getUserByName(name);
+
+             if (preData !== undefined && preData.payload !== undefined) {
+                 let data = preData.payload;
+
+                 setUser((prevState) => {
+                     return {
+                         ...prevState,
+                         id: data.id,
+                         name: data.username,
+                         createdAt: data.createdAt,
+                         role: data.role,
+                         profile: {
+                             location: data.profile.location,
+                             discord: data.profile.discord,
+                             description: data.profile.description,
+                         },
+                     };
+                 });
+             } else {
+                 setUser((prevState) => {
+                     return {
+                         ...prevState,
+                         id: -2,
+                     };
+                 });
+             }
+         };
+
         loadUser()
-    }, []);
+    }, [name]);
 
     return (
         <div className="user-container">

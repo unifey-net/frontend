@@ -1,5 +1,4 @@
 import {BASE_URL} from "./ApiHandler";
-import {getToken} from "./AuthenticationManager";
 
 /**
  * Get a community by it's name.

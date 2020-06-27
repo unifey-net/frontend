@@ -42,6 +42,17 @@ export default function Post(props) {
     }
 
     const reportPost = async () => {
+        let key = "reporting-" + props.id;
+
+        message.loading({ content: "Loading...", key });
+
+        setTimeout(() => {
+            message.success({
+                content: "Successfully reported!",
+                key,
+                duration: 2,
+            });
+        }, 1000);
     }
 
     return (
@@ -65,21 +76,7 @@ export default function Post(props) {
                 </div>
                 <Popconfirm
                     title="Are you sure you want to report this?"
-                    onConfirm={() => {
-                        let key = "reporting-" + props.id;
-
-                        message.loading({ content: "Loading...", key });
-
-                        setTimeout(() => {
-                            message.success({
-                                content: "Successfully reported!",
-                                key,
-                                duration: 2,
-                            });
-                        }, 1000);
-
-                        // TODO
-                    }}
+                    onConfirm={reportPost}
                     onCancel={() => {}}
                     okText="Yes"
                     cancelText="No"

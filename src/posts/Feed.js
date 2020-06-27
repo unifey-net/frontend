@@ -7,7 +7,6 @@ import { Empty, Skeleton } from "antd"
 
 import PostBox from "./PostBox";
 import { BASE_URL } from "../api/ApiHandler";
-import { LoadingOutlined } from "@ant-design/icons";
 
 export default function Feed(props) {
     let [posts, setPosts] = useState([]);
@@ -35,11 +34,11 @@ export default function Feed(props) {
         });
 
         setPosts(posts);
-        setLoadedPosts(true)
+        setLoadedPosts(true);
     };
 
     useEffect(() => {
-        loadPosts();
+        loadPosts()
     }, []);
 
     return (

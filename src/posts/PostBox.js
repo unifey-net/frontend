@@ -32,7 +32,7 @@ export default function PostBox(props) {
         formData.append("content", content.value);
         formData.append("title", title.value);
 
-        let resp = await fetch(`${BASE_URL}/feeds/${props.feed}`, {
+        await fetch(`${BASE_URL}/feeds/${props.feed}`, {
             method: "POST",
             headers: {
                 Authorization: "bearer " + getToken(),
