@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
-import { Avatar } from "antd"
-import { UserOutlined } from '@ant-design/icons';
-import UserView from "../api/user/UserView"
-import SelfView from "../api/user/SelfView";
-import history from "../handle/History"
+import {SelfView} from "../api/user/View";
+import history from "../api/History"
 
 export default function Header() {
     let [page, setPage] = useState(window.location.pathname)
@@ -36,7 +33,7 @@ export default function Header() {
         <div className="site-header">
             <span className="title">
                 <Link to="/" className="unifey">
-                    <img src="/favicon.png" height={38} width={38} alt="Logo" />
+                    <img src="/favicon.jpg" height={38} width={38} alt="Logo" />
                 </Link>
             </span>
             <div>

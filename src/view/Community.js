@@ -1,12 +1,12 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/community.scss";
-import Feed from "../posts/Feed";
+import Feed from "../components/feed/Feed";
 import { Empty, Spin } from "antd";
-import { getCommunityByName } from "../api/CommunityHandler";
+import { getCommunityByName } from "../api/community/Community";
 import {LoadingOutlined} from "@ant-design/icons"
 
-export default function ViewCommunity(props) {
+export default function Community(props) {
     const {
         params: { community },
     } = useRouteMatch();
@@ -28,6 +28,8 @@ export default function ViewCommunity(props) {
                         name: data.community.name,
                         createdAt: data.community.createdAt,
                         desc: data.community.description,
+                        selfRole: data.selfRole,
+                        postRole: data.community.postRole
                     };
                 });
             } else {
@@ -52,7 +54,7 @@ export default function ViewCommunity(props) {
                     <br />
 
                     <div className="community-feed">
-                        <Feed id={`cf_${com.id}`} />
+                        <Feed id={`cf_${com.id}`} postBox={com.selfRole >= com.postRole} />
 
                         <div className="community-about">
                             <h2>{com.name}</h2>
@@ -65,7 +67,7 @@ export default function ViewCommunity(props) {
                 </>
             )}
             {com.id === -1 && (
-                <div className="empty-container">
+                <div className="empty-container spin-container">
                     <Spin indicator={<LoadingOutlined />}></Spin>
                 </div>
             )}

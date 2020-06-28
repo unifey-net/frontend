@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getAllCommunities } from "../api/CommunityHandler";
+import { getAllCommunities } from "../api/community/Community";
 
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";

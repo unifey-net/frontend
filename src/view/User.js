@@ -1,16 +1,17 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/viewuser.scss";
-import Feed from "../posts/Feed";
+
+import { getUserByName } from "../api/user/User"
+import Feed from "../components/feed/Feed"
 
 import { Empty, Spin } from "antd";
 import Avatar from "antd/es/avatar";
-import { getUserByName } from "../api/AuthenticationManager";
 import { BASE_URL } from "../api/ApiHandler";
 
-import {LoadingOutlined} from "@ant-design/icons"
+import { LoadingOutlined } from "@ant-design/icons";
 
-export default function UserPage(props) {
+export default function User() {
     const {
         params: { name },
     } = useRouteMatch();
@@ -20,37 +21,38 @@ export default function UserPage(props) {
     });
 
     useEffect(() => {
-         const loadUser = async () => {
-             let preData = await getUserByName(name);
+        const loadUser = async () => {
+            let response = await getUserByName(name);
+            let preData = await response.json()
 
-             if (preData !== undefined && preData.payload !== undefined) {
-                 let data = preData.payload;
+            if (preData !== undefined && preData.payload !== undefined && response.ok) {
+                let data = preData.payload;
 
-                 setUser((prevState) => {
-                     return {
-                         ...prevState,
-                         id: data.id,
-                         name: data.username,
-                         createdAt: data.createdAt,
-                         role: data.role,
-                         profile: {
-                             location: data.profile.location,
-                             discord: data.profile.discord,
-                             description: data.profile.description,
-                         },
-                     };
-                 });
-             } else {
-                 setUser((prevState) => {
-                     return {
-                         ...prevState,
-                         id: -2,
-                     };
-                 });
-             }
-         };
+                setUser((prevState) => {
+                    return {
+                        ...prevState,
+                        id: data.id,
+                        name: data.username,
+                        createdAt: data.createdAt,
+                        role: data.role,
+                        profile: {
+                            location: data.profile.location,
+                            discord: data.profile.discord,
+                            description: data.profile.description,
+                        },
+                    };
+                });
+            } else {
+                setUser((prevState) => {
+                    return {
+                        ...prevState,
+                        id: -2,
+                    };
+                });
+            }
+        };
 
-        loadUser()
+        loadUser();
     }, [name]);
 
     return (

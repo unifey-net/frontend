@@ -11,7 +11,6 @@ export default function Home() {
         <div className="home-container">
             <div className="head">
                 <h1 className="title">Unifey</h1>
-                <p className="subtitle">deez nuts</p>
             </div>
 
             <div className="section-container">

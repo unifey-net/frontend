@@ -1,82 +1,88 @@
 @import "../variables";
 
 .feed-container {
-  display: flex;
-  align-items: center;
-  justify-content: normal;
-  flex-direction: column-reverse;
-  list-style: none;
-  margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: normal;
+    flex-direction: column-reverse;
+    list-style: none;
+    margin-top: 16px;
 }
 
 .post-box-container {
-  margin-bottom: 16px;
-  text-align: center;
+    margin-bottom: 16px;
+    text-align: center;
 }
 
 .post-container {
-  background-color: #171616;
-  padding: 16px;
-  min-width: 500px;
-  min-height: 300px;
-  max-height: 580px;
-  max-width: 600px;
-  margin-bottom: 16px;
-  border-radius: 3px;
-  line-break: normal;
-
-  .post-content {
-    min-height: 256px;
-    max-height: 516px;
-  }
-
-  .post-title {
-    .title {
-      font-family: $default-header-font;
-      font-size: 24px;
-      margin-right: 24px;
-    }
-
-    display: flex;
-    height: 32px;
+    background-color: #171616;
+    padding: 16px;
+    min-width: 500px;
+    min-height: 300px;
+    max-height: 580px;
+    max-width: 600px;
     margin-bottom: 16px;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+    border-radius: 3px;
+    line-break: normal;
 
-  .post-management {
-    display: flex;
-    height: 32px;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .vote-container {
-      display: flex;
-      flex-direction: row;
-
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-      .downvoted {
-        .anticon {
-          color: red;
-        }
-      }
-
-      .upvoted {
-        .anticon {
-          color: lightgreen;
-        }
-      }
+    .post-content {
+        min-height: 256px;
+        max-height: 516px;
     }
 
-    p {
-      padding-right: 16px;
-      padding-left: 16px;
+    .post-title {
+        .title {
+            font-family: $default-header-font;
+            font-size: 24px;
+            margin-right: 24px;
+        }
+
+        display: flex;
+        height: 32px;
+        margin-bottom: 16px;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .user-view-container {
+          .ant-avatar {
+            margin-left: 8px;
+          }
+        }
     }
-  }
+
+    .post-management {
+        display: flex;
+        height: 32px;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .vote-container {
+            display: flex;
+            flex-direction: row;
+
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            .downvoted {
+                .anticon {
+                    color: red;
+                }
+            }
+
+            .upvoted {
+                .anticon {
+                    color: lightgreen;
+                }
+            }
+        }
+
+        p {
+            padding-right: 16px;
+            padding-left: 16px;
+        }
+    }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import '../assets/scss/pages/tos.scss';
 
-function Tos() {
+export default function Tos() {
     return (
         <div className="tos-container">
             <h1>Terms and conditions</h1>
@@ -37,5 +37,3 @@ function Tos() {
         </div>
     );
 }
-
-export default Tos;

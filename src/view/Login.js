@@ -1,20 +1,25 @@
 import React from "react";
-import "../assets/scss/pages/home.scss"
-import { Spin } from "antd"
-import "../assets/scss/pages/login.scss"
-import {login, signedIn} from "../api/AuthenticationManager"
-import { withRouter, Redirect } from "react-router-dom"
-
+import "../assets/scss/pages/home.scss";
+import "../assets/scss/pages/login.scss";
+import { login, signedIn } from "../api/user/User";
+import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, Layout, message } from "antd";
 
-class LoginPage extends React.Component {
+export default function Login() {
+    const loginForm = async (values) => {
+        let response = login(values["username"], values["password"]);
 
-
-    render() {
-        if (signedIn())
-            return (<Redirect to="/"/>)
-
-        return (
+        if (response == null) {
+            message.error("Invalid username or password!");
+        } else {
+        }
+    };
+    
+    if (signedIn()) 
+        return (<Redirect to="/" />) 
+    
+    return (
+        <>
             <div className="login-container">
                 <h1 className="title">Login</h1>
 
@@ -22,20 +27,20 @@ class LoginPage extends React.Component {
                     <Form
                         name="basic"
                         initialValues={{
-                            remember: false
+                            remember: false,
                         }}
-                        onFinish={(values) => {
-                            this.formLogin(values);
-                        }}
+                        onFinish={loginForm}
                         onFinishFailed={() => {}}
                     >
                         <Form.Item
                             label="Username"
                             name="username"
-                            rules={[{
-                                required: true,
-                                message: 'Please input your username!'
-                            }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your username!",
+                                },
+                            ]}
                         >
                             <Input id="username" />
                         </Form.Item>
@@ -43,10 +48,12 @@ class LoginPage extends React.Component {
                         <Form.Item
                             label="Password"
                             name="password"
-                            rules={[{
-                                required: true,
-                                message: 'Please input your password!'
-                            }]}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your password!",
+                                },
+                            ]}
                         >
                             <Input.Password id="password" />
                         </Form.Item>
@@ -63,22 +70,7 @@ class LoginPage extends React.Component {
                     </Form>
                 </div>
             </div>
-        );
-    }
-
-    /**
-     * TODO use remember me
-     * @param values
-     */
-    formLogin(values) {
-        login(values["username"], values["password"], (success, token) => {
-            if (!success) {
-                message.error("Invalid username or password!")
-            } else {
-                window.location.reload(false);
-            }
-        })
-    }
+            );
+        </>
+    );
 }
-
-export default withRouter(LoginPage)

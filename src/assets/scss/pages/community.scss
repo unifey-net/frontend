@@ -21,10 +21,16 @@
       padding: 16px;
       height: min-content;
       margin-top: 2.7rem;
+
+      max-width: 300px;
     }
   }
 
   .empty-container {
     margin-top: 4rem;
+  }
+
+  .spin-container {
+    text-align: center;
   }
 }

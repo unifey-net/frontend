@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { getToken } from "../api/AuthenticationManager";
+import { getToken } from "../../api/user/User";
 import { message, Input, Button, Modal } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/lib/icons/PlusCircleOutlined";
-import { BASE_URL } from "../api/ApiHandler";
+import { BASE_URL } from "../../api/ApiHandler";
 
 const { TextArea } = Input;
 

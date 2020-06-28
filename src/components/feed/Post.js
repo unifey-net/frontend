@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserView from "../api/user/UserView";
+import {UserView} from "../../api/user/View";
 import { UpOutlined, DownOutlined, FlagOutlined } from "@ant-design/icons";
 import Popconfirm from "antd/es/popconfirm";
 import { message } from "antd";

@@ -4,24 +4,32 @@ import * as serviceWorker from "./serviceWorker";
 import { Route, Router, Switch } from "react-router-dom";
 
 import "./assets/scss/base.scss";
-import Header from "./global/Header";
-import UserPage from "./handle/UserPage";
-import PageHandler from "./handle/PageHandler";
-import Home from "./pages/home";
-import Footer from "./global/Footer";
-import CommunityPage from "./handle/CommunityPage";
+import Community from "./view/Community";
+import Tos from "./view/Tos"
+import About from "./view/About";
+import Communities from "./view/Communities";
+import history from "./api/History"
+import User from "./view/User";
+import Login from "./view/Login";
+import Home from "./view/Home";
 
-import history from "./handle/History"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
 
 ReactDOM.render(
     <Router history={history}>
         <Header />
         <div className="container">
             <Switch>
-                <Route path="/u/:name" component={UserPage} />
-                <Route path="/c/:community" component={CommunityPage} />
-                <Route path="/:page" component={PageHandler} />
+                <Route path="/u/:name" component={User} />
+                <Route path="/c/:community" component={Community} />
+
+                <Route exact path="/tos" component={Tos} />
                 <Route exact path="/" component={Home} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/communities" component={Communities} />
+                <Route exact path="/login" component={Login} />
+
                 <Route component={() => 404} />
             </Switch>
         </div>

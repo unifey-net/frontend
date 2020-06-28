@@ -18,6 +18,21 @@ export default function About() {
                     </a>
                     .
                 </p>
+
+                <h1>Can I view Unifey's code?</h1>
+                <p>
+                    Yes. Unifey's frontend and backend are open-source, and
+                    available to view at our{" "}
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://github.com/unifey-net"
+                    >
+                        GitHub
+                    </a>
+                    .
+                </p>
+
                 <h1>Want to reserve a name for the future in Unifey?</h1>
                 <p>
                     You can reserve a name{" "}
