@@ -26,17 +26,10 @@ export default function Feed(props) {
         if (resp.ok) {
             let data = await resp.json();
 
-            let js = data.posts;
+            let posts = data.posts;
 
-            let posts = [];
-            for (let i = 0; js.length > i; i++) {
-                let post = js[i];
-
-                posts.push(post);
-            }
-
-            posts.sort(function (a, b) {
-                return new Date(a.createdAt) - new Date(b.createdAt);
+            posts.sort((a, b) => {
+                return b.post.createdAt - a.post.createdAt;
             });
 
             setPosts((prevState) => {

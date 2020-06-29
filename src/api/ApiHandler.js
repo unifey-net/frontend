@@ -5,4 +5,4 @@
  */
 export const BASE_URL = "http://localhost:8077"
 
-export const VERSION = "0.3.1"
+export const VERSION = "0.3.2"
