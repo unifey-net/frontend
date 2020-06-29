@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Avatar } from "antd"
+import React from "react";
+import { Avatar, Menu, Dropdown, Button } from "antd"
 import { UserOutlined } from "@ant-design/icons"
-import { getImageUrl, getSelf } from "./User"
+import { getImageUrl } from "./User"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 /**
  * The top right avatar in a post.
@@ -22,36 +24,52 @@ export function UserView(props) {
  * The signed in user's image. If not signed in, redirect to login.
  */
 export function SelfView() {
-    let [username, setUsername] = useState("");
-    let [signedIn, setSignedIn] = useState(false);
+    let self = useSelector(store => store.auth)
+    console.log(self)
+    let name = self.user.username
 
-    useEffect(() => {
-        const loadData = async () => {
-            let self = await getSelf();
-
-            if (self != null && self !== undefined) {
-                setSignedIn(true);
-                setUsername(self.username);
-            }
-        };
-
-        loadData();
-    }, []);
+    const menu = (
+        <Menu>
+            <Menu.Item key="0">
+                <Link to={`/u/${name}`}>View my Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="1">
+                <Link to={`/logout`}>Sign Out</Link>
+            </Menu.Item>
+            <Menu.Item key="3" disabled>
+                Settings
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <div className="user-view-container">
-            {signedIn && (
-                <a href={`/u/${username}`}>
-                    {username}
-                    <Avatar size={38} className="avatar" src={getImageUrl(username)} />
-                </a>
+            {self.isLoggedIn && (
+                <Dropdown overlay={menu}>
+                    <Button
+                        className="ant-dropdown-link"
+                        onClick={(e) => e.preventDefault()}
+                        type="link"
+                    >
+                        {name}
+                        <Avatar
+                            size={38}
+                            className="avatar"
+                            src={getImageUrl(name)}
+                        />
+                    </Button>
+                </Dropdown>
             )}
 
-            {!signedIn && (
-                <a href={`/login`}>
+            {!self.isLoggedIn && (
+                <Link to={`/login`}>
                     Login
-                    <Avatar size={38} className="avatar" icon={<UserOutlined />} />
-                </a>
+                    <Avatar
+                        size={38}
+                        className="avatar"
+                        icon={<UserOutlined />}
+                    />
+                </Link>
             )}
         </div>
     );

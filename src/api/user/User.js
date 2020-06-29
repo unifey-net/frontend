@@ -1,5 +1,8 @@
 import { BASE_URL } from "../ApiHandler"
 import Cookies from "universal-cookie"
+import { logIn, logOut } from "../../redux/action";
+import React from "react"
+import store from "../../redux/store"
 
 const cookies = new Cookies();
 
@@ -15,32 +18,8 @@ export const getImageUrl = (user) => {
  * Get self.
  * @param callback
  */
-export const getSelf = async () => {
-    let local = localStorage.getItem("self_data")
-
-    if (local != null && local !== "") {
-        return JSON.parse(local).payload;
-    }
-
-    return await fetch(`${BASE_URL}/user`, {
-        method: 'GET',
-        headers: {
-            "Authorization": "bearer " + getToken()
-        }
-    })
-        .then((content) => {
-            content.text().then((str) => {
-
-                let data = JSON.parse(str).payload;
-
-                if (data === "Invalid token")
-                    return null
-
-                localStorage.setItem("self_data", str);
-                
-                return data
-            });
-        })
+export const getSelf = async () =>  {
+    return store.getState().auth.user;
 }
 
 /**
@@ -102,24 +81,19 @@ export const getUserById = async (id) => {
  * @returns {null|*}
  */
 export const getToken = () => {
-    let token = cookies.get("token")
-
-    if (token == null || token === "")
+    if (!signedIn)
         return null
 
-    return token
+    let token = store.getState().auth.token
+
+    return token !== "" ? token : null
 }
 
 /**
  * When the token expires.
  */
 export const getExpire = () => {
-    let expire = cookies.get("expire")
-
-    if (expire == null || expire === "")
-        return null
-    
-        return expire
+    return store.getState().auth.expire;
 }
 
 /**
@@ -134,8 +108,7 @@ export const isExpired = () =>
  * @returns {*}
  */
 export const logout = () => {
-    cookies.remove("token")
-    localStorage.removeItem("self_data")
+    store.dispatch(logOut())
 }
 
 /**
@@ -159,26 +132,20 @@ export const login = async (username, pass) => {
     formData.append("username", username)
     formData.append("password", pass)
 
-    return await fetch(`${BASE_URL}/authenticate`, {
+    let auth = await fetch(`${BASE_URL}/authenticate`, {
         method: 'POST',
         body: formData
-    }).then((content) => {
-        if (content.ok) {
-            content.json().then((json) => {
-                let token = json.token;
-
-                cookies.set("token", token, {
-                    path: "/",
-                    sameSite: "Strict",
-                });
-
-                cookies.set("expire", new Date().getTime() + (1000 * 60 * 60 * 24), {
-                    path: "/",
-                    sameSite: "Strict"
-                })
-
-                return token;
-            });
-        } else return null
     })
+
+    if (!auth.ok)
+        return false
+
+    let data = await auth.json()
+
+    let user = data.user;
+    let token = data.token;
+
+    store.dispatch(logIn(token.token, user, new Date().getTime() + (1000 * 60 * 60 * 24)))
+
+    return true
 }

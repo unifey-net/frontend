@@ -1,40 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
-import { Route, Router, Switch } from "react-router-dom";
 
 import "./assets/scss/base.scss";
-import Community from "./view/Community";
-import Tos from "./view/Tos"
-import About from "./view/About";
-import Communities from "./view/Communities";
-import history from "./api/History"
-import User from "./view/User";
-import Login from "./view/Login";
-import Home from "./view/Home";
-
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import { Provider } from "react-redux";
+import App from "./App"
+import store from "./redux/store"
 
 ReactDOM.render(
-    <Router history={history}>
-        <Header />
-        <div className="container">
-            <Switch>
-                <Route path="/u/:name" component={User} />
-                <Route path="/c/:community" component={Community} />
-
-                <Route exact path="/tos" component={Tos} />
-                <Route exact path="/" component={Home} />
-                <Route exact path="/about" component={About} />
-                <Route exact path="/communities" component={Communities} />
-                <Route exact path="/login" component={Login} />
-
-                <Route component={() => 404} />
-            </Switch>
-        </div>
-        <Footer />
-    </Router>,
+    <Provider store={store}>
+        <App/>
+    </Provider>,
     document.getElementById("root")
 );
 

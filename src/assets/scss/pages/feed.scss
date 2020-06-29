@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: normal;
-    flex-direction: column-reverse;
+    flex-direction: column;
     list-style: none;
     margin-top: 16px;
 }
@@ -55,6 +55,12 @@
         height: 32px;
         flex-direction: row;
         justify-content: space-between;
+
+        .extra-info-container {
+            span {
+                margin-right: 8px;
+            }
+        }
 
         .vote-container {
             display: flex;

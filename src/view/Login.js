@@ -3,15 +3,23 @@ import "../assets/scss/pages/home.scss";
 import "../assets/scss/pages/login.scss";
 import { login, signedIn } from "../api/user/User";
 import { Redirect } from "react-router-dom";
-import { Form, Input, Button, Checkbox, Layout, message } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import history from "../api/History"
+
+import { useSelector, useDispatch } from "react-redux";
+import { alertError, alertInfo } from "../redux/action";
 
 export default function Login() {
+    const dispatch = useDispatch();
+
     const loginForm = async (values) => {
-        let response = login(values["username"], values["password"]);
+        let response = await login(values["username"], values["password"]);
 
         if (response == null) {
-            message.error("Invalid username or password!");
+            dispatch(alertError("Invalid username or password!"))
         } else {
+            history.push("/")
+            dispatch(alertInfo("You are now signed in!"))
         }
     };
     
@@ -70,7 +78,6 @@ export default function Login() {
                     </Form>
                 </div>
             </div>
-            );
         </>
     );
 }

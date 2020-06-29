@@ -2,7 +2,7 @@ import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/viewuser.scss";
 
-import { getUserByName } from "../api/user/User"
+import { getUserByName, signedIn } from "../api/user/User"
 import Feed from "../components/feed/Feed"
 
 import { Empty, Spin } from "antd";
@@ -70,7 +70,7 @@ export default function User() {
                     <br />
 
                     <div className="user-feed">
-                        <Feed id={`uf_${user.id}`} />
+                        <Feed id={`uf_${user.id}`} postBox={signedIn()} />
 
                         <div className="user-about">
                             <h2>{user.name}</h2>

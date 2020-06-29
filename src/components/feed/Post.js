@@ -74,15 +74,18 @@ export default function Post(props) {
                     </p>
                     <p>{vote}</p>
                 </div>
-                <Popconfirm
-                    title="Are you sure you want to report this?"
-                    onConfirm={reportPost}
-                    onCancel={() => {}}
-                    okText="Yes"
-                    cancelText="No"
-                >
-                    <FlagOutlined />
-                </Popconfirm>
+                <div className="extra-info-container">
+                    <span>Posted on {new Date(props.created).toLocaleString()}</span>
+                    <Popconfirm
+                        title="Are you sure you want to report this?"
+                        onConfirm={reportPost}
+                        onCancel={() => {}}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <FlagOutlined />
+                    </Popconfirm>
+                </div>
             </div>
         </div>
     );

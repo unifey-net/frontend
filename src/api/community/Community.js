@@ -1,4 +1,5 @@
 import { BASE_URL } from "../ApiHandler";
+import { signedIn, getToken } from "../user/User";
 
 /**
  * Get a community by it's name.
@@ -6,9 +7,17 @@ import { BASE_URL } from "../ApiHandler";
  * @param callback
  */
 export const getCommunityByName = async (name) => {
-    return await fetch(`${BASE_URL}/community/name/${name}`).then((resp) =>
-        resp.json()
-    );
+    if (!signedIn()) {
+        return await fetch(`${BASE_URL}/community/name/${name}`).then((resp) =>
+            resp.json()
+        );
+    } else {
+        return await fetch(`${BASE_URL}/community/name/${name}`, {
+            headers: {
+                Authorization: "bearer " + getToken(),
+            },
+        }).then((resp) => resp.json());
+    }
 };
 
 /**
@@ -24,9 +33,17 @@ export const getAllCommunities = async () => {
  * @param callback
  */
 export const getCommunityById = async (id) => {
-    return await fetch(`${BASE_URL}/community/${id}`).then((resp) =>
-        resp.json()
-    );
+    if (!signedIn()) {
+        return await fetch(`${BASE_URL}/community/${id}`).then((resp) =>
+            resp.json()
+        );
+    } else {
+        return await fetch(`${BASE_URL}/community/${id}`, {
+            headers: {
+                Authorization: "bearer " + getToken(),
+            },
+        }).then((resp) => resp.json());
+    }
 };
 
 /**

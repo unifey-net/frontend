@@ -1,9 +1,12 @@
 import React from "react";
+import { VERSION } from "../api/ApiHandler";
 
 export default function Footer() {
     return (
         <div className="footer">
-            <p>Unifey ©{new Date().getFullYear()} — <a href="/tos">TOS</a></p>
+            <p>
+                Unifey ©{new Date().getFullYear()} — <a href="/tos">TOS</a> — v{VERSION}
+            </p>
         </div>
     );
 }
