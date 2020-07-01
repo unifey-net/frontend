@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <div className="footer">
             <p>
-                Unifey ©{new Date().getFullYear()} — <a href="/tos">TOS</a> — v{VERSION}
+                Unifey ©{new Date().getFullYear()} — <a href="/tos">TOS</a> — {VERSION}
             </p>
         </div>
     );

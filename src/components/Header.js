@@ -31,26 +31,26 @@ export default function Header() {
 
     return (
         <div className="site-header">
-            <span className="title">
+            <div className="title">
                 <Link to="/" className="unifey">
-                    <img src="/favicon.jpg" height={38} width={38} alt="Logo" />
+                    <img src="/favicon.png" width={48} height={48} alt="Unifey Logo" />
                 </Link>
-            </span>
+            </div>
             <div>
                 <ul className="site-header-links">
                     {pages.map((obj, index) => (
                         <li key={index}>
                             {page === obj.location && (
-                                    <Link
-                                        style={{ color: "lightgreen" }}
-                                        to={obj.location}
-                                    >
-                                        {obj.name}
-                                    </Link>
+                                <Link
+                                    style={{ color: "lightgreen" }}
+                                    to={obj.location}
+                                >
+                                    {obj.name}
+                                </Link>
                             )}
 
                             {page !== obj.location && (
-                                    <Link to={obj.location}>{obj.name}</Link>
+                                <Link to={obj.location}>{obj.name}</Link>
                             )}
                         </li>
                     ))}
