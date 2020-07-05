@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { getToken } from "../../api/user/User";
-import { message, Input, Button, Modal } from "antd";
+import { message, Input, Button, Modal, Tooltip } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/lib/icons/PlusCircleOutlined";
 import { BASE_URL } from "../../api/ApiHandler";
 
@@ -53,9 +53,11 @@ export default function PostBox(props) {
 
     return (
         <div className="post-box-container">
-            <Button type="primary" onClick={showModal}>
-                <PlusCircleOutlined />
-            </Button>
+            <Tooltip title="Create a post">
+                <Button type="link" onClick={showModal}>
+                    Create Post <PlusCircleOutlined />
+                </Button>
+            </Tooltip>
 
             <Modal
                 title="Create new Post"

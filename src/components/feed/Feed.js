@@ -2,68 +2,176 @@ import React, { useState, useEffect } from "react";
 import Post from "./Post.js";
 import "../../assets/scss/pages/feed.scss";
 import { getToken } from "../../api/user/User";
-
-import { Empty, Skeleton, Alert } from "antd";
-
-import PostBox from "./PostBox";
+import { Spin, Dropdown, Menu, Button, Alert, Skeleton } from "antd";
+import {
+    LoadingOutlined,
+    DownOutlined,
+    DoubleRightOutlined,
+    DoubleLeftOutlined,
+} from "@ant-design/icons";
 import { BASE_URL } from "../../api/ApiHandler";
+import InfiniteScroll from "react-infinite-scroller";
+import PostBox from "./PostBox";
 
 export default function Feed(props) {
-    let [posts, setPosts] = useState({
-        loaded: false,
-        posts: [],
-        permission: true,
+    let [posts, setPosts] = useState([]);
+
+    let [status, setStatus] = useState(-1);
+
+    let [sort, setSort] = useState("new");
+
+    let [page, setPage] = useState({
+        page: 1,
+        maxPage: 1,
     });
 
-    const loadPosts = async () => {
-        let resp = await fetch(`${BASE_URL}/feeds/${props.id}`, {
-            method: "GET",
-            headers: {
-                Authorization: "bearer " + getToken(),
-            },
+    useEffect(() => {
+        const loadFeed = async () => {
+            let resp = await fetch(`${BASE_URL}/feeds/${props.id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: "bearer " + getToken(),
+                },
+            });
+
+            if (resp.ok) {
+                let data = await resp.json()
+
+                setPage({
+                    page: 1,
+                    maxPage: data.pageCount,
+                });
+
+                setStatus(0);
+            } else {
+                setStatus(1);
+            }
+        };
+
+        loadFeed();
+    }, [props.id]);
+
+    useEffect(() => {
+        console.log(page)
+    }, [page])
+
+    useEffect(() => {
+        setPosts([]);
+
+        setPage((state) => {
+            return {
+                ...state,
+                page: 1,
+            };
         });
+    }, [sort]);
 
-        if (resp.ok) {
-            let data = await resp.json();
+    const loadMore = async () => {
+        let resp = await fetch(
+            `${BASE_URL}/feeds/${props.id}/posts?page=${page.page}&sort=${sort}`, {
+                method: "GET",
+                headers: {
+                    Authorization: "bearer " + getToken(),
+                },
+            }
+        );
 
-            let posts = data.posts;
+        switch (resp.status) {
+            case 200: {
+                setPage((prevState) => {
+                    return {
+                        ...prevState,
+                        page: prevState.page + 1,
+                    };
+                });
 
-            posts.sort((a, b) => {
-                return b.post.createdAt - a.post.createdAt;
-            });
 
-            setPosts((prevState) => {
-                return {
-                    ...prevState,
-                    posts: posts,
-                    loaded: true,
-                    permission: true,
-                };
-            });
-        } else {
-            setPosts((prevState) => {
-                return {
-                    ...prevState,
-                    loaded: true,
-                    permission: false,
-                };
-            });
+                let data = await resp.json();
+
+                let posts = data.posts;
+
+                setPosts((prevState) => {
+                    return [...prevState, ...posts];
+                });
+
+                break;
+            }
+
+            case 401: {
+                setStatus(1);
+                break;
+            }
+
+            default: {
+                break;
+            }
         }
     };
 
-    useEffect(() => {
-        loadPosts();
-    }, []);
+    const menu = (
+        <Menu>
+            <Menu.Item>
+                <Button type="link" onClick={() => setSort("new")}>
+                    {sort === "new" && (
+                        <>
+                            <DoubleRightOutlined /> New
+                        </>
+                    )}
+
+                    {sort !== "new" && <>New</>}
+                </Button>
+            </Menu.Item>
+            <Menu.Item>
+                <Button type="link" onClick={() => setSort("old")}>
+                    {sort === "old" && (
+                        <>
+                            <DoubleRightOutlined /> Old
+                        </>
+                    )}
+
+                    {sort !== "old" && <>Old</>}
+                </Button>
+            </Menu.Item>
+            <Menu.Item>
+                <Button type="link" onClick={() => setSort("top")}>
+                    {sort === "top" && (
+                        <>
+                            <DoubleRightOutlined /> Top
+                        </>
+                    )}
+
+                    {sort !== "top" && <>Top</>}
+                </Button>
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <div>
-            {props.postBox && <PostBox feed={props.id} action={loadPosts} />}
-            <ul className="feed-container">
-                {posts.loaded && posts.permission && posts.posts.length === 0 && <Empty />}
+            <div className="feed-controls-container">
+                {props.postBox && <PostBox feed={props.id} action={() => {}} />}
 
-                {posts.loaded && posts.permission && posts.length !== 0 && (
-                    <>
-                        {posts.posts.map((post, index) => (
+                <Dropdown overlay={menu}>
+                    <Button type="link" onClick={(e) => e.preventDefault()}>
+                        {sort[0].toUpperCase() + sort.substring(1)}{" "}
+                        <DownOutlined />
+                    </Button>
+                </Dropdown>
+            </div>
+
+            {status === 1 && (
+                <Alert message="You cannot view this feed." type="error" />
+            )}
+
+            {status === 0 && (
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={loadMore}
+                    hasMore={page.maxPage >= page.page}
+                    loader={<Spin key={0} indicator={<LoadingOutlined />} />}
+                >
+                    <ul className="feed-container">
+                        {posts.map((post, index) => (
                             <li key={index}>
                                 <Post
                                     id={post.post.id}
@@ -73,38 +181,21 @@ export default function Feed(props) {
                                     vote={
                                         post.post.upvotes - post.post.downvotes
                                     }
-                                    author={post.owner.username}
+                                    author={post.owner}
+                                    feed={props.id}
+                                    userVote={post.vote}
                                 />
                             </li>
                         ))}
-                    </>
-                )}
+                    </ul>
+                </InfiniteScroll>
+            )}
 
-                {!posts.permission && (
-                    <Alert message="You cannot view this feed." type="error" />
-                )}
-
-                {!posts.loaded && (
-                    <>
-                        <Skeleton
-                            title={{ width: "12rem" }}
-                            paragraph={{ width: "26rem", rows: 4 }}
-                        />
-                        <Skeleton
-                            title={{ width: "12rem" }}
-                            paragraph={{ width: "26rem", rows: 4 }}
-                        />
-                        <Skeleton
-                            title={{ width: "12rem" }}
-                            paragraph={{ width: "26rem", rows: 4 }}
-                        />
-                        <Skeleton
-                            title={{ width: "12rem" }}
-                            paragraph={{ width: "26rem", rows: 4 }}
-                        />
-                    </>
-                )}
-            </ul>
+            {!status === -1 && (
+                <>
+                    <Spin indicator={<LoadingOutlined />} />
+                </>
+            )}
         </div>
     );
 }

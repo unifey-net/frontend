@@ -5,9 +5,11 @@ import { login, signedIn } from "../api/user/User";
 import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import history from "../api/History"
+import { Link } from "react-router-dom"
 
 import { useSelector, useDispatch } from "react-redux";
 import { alertError, alertInfo } from "../redux/action";
+import FormItem from "antd/lib/form/FormItem";
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -66,9 +68,17 @@ export default function Login() {
                             <Input.Password id="password" />
                         </Form.Item>
 
-                        <Form.Item name="remember" valuePropName="checked">
-                            <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                        <div className="remember-forgot-container">
+                            <Form.Item name="remember" valuePropName="checked">
+                                <Checkbox>Remember me</Checkbox>
+                            </Form.Item>
+
+                            <FormItem>
+                                <Link to="/settings/forgot">
+                                    Forgot Password
+                                </Link>
+                            </FormItem>
+                        </div>
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit">

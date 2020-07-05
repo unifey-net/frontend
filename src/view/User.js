@@ -1,20 +1,25 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import "../assets/scss/pages/viewuser.scss";
+import "../assets/scss/pages/viewer.scss";
 
-import { getUserByName, signedIn } from "../api/user/User"
+import { getUserByName, signedIn, getSelf } from "../api/user/User"
 import Feed from "../components/feed/Feed"
 
-import { Empty, Spin } from "antd";
+import { Empty, Spin, Typography, Divider } from "antd";
 import Avatar from "antd/es/avatar";
 import { BASE_URL } from "../api/ApiHandler";
 
 import { LoadingOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
+
+const { Text } = Typography
 
 export default function User() {
     const {
         params: { name },
     } = useRouteMatch();
+
+    let self = useSelector((state) => state.auth);
 
     let [user, setUser] = useState({
         id: -1,
@@ -56,40 +61,93 @@ export default function User() {
     }, [name]);
 
     return (
-        <div className="user-container">
+        <div className="viewer-container">
             {user.id !== -1 && user.id !== -2 && (
                 <>
-                    <h1 className="user-header">
+                    <h1 className="viewer-header">
                         {user.name}{" "}
                         <Avatar
-                            size={32}
+                            size={64}
                             src={`${BASE_URL}/user/name/${user.name}/picture`}
                         />
                     </h1>
 
                     <br />
 
-                    <div className="user-feed">
+                    <div className="viewer-feed">
                         <Feed id={`uf_${user.id}`} postBox={signedIn()} />
 
-                        <div className="user-about">
-                            <h2>{user.name}</h2>
-                            <p>{user.profile.description}</p>
+                        <div className="viewer-about">
+                            <div className="viewer-about-section">
+                                <h3>{user.name}</h3>
 
-                            <h3>Created On</h3>
-                            <p>{new Date(user.createdAt).toLocaleString()}</p>
+                                {self.isLoggedIn &&
+                                    user.name === self.user.username && (
+                                        <Text editable>
+                                            {user.profile.description}
+                                        </Text>
+                                    )}
+
+                                {(!self.isLoggedIn ||
+                                    user.name !== self.user.username) && (
+                                    <Text>{user.profile.description}</Text>
+                                )}
+                            </div>
+
+                            <Divider />
+
+                            <div className="viewer-about-section">
+                                <h3>Joined On</h3>
+                                <Text>
+                                    {new Date(user.createdAt).toLocaleString()}
+                                </Text>
+                            </div>
 
                             {user.profile.location !== "" && (
                                 <>
-                                    <h3>Location</h3>
-                                    <p>{user.profile.location}</p>
+                                    <Divider />
+                                    <div className="viewer-about-section">
+                                        <h3>Location</h3>
+
+                                        {self.isLoggedIn &&
+                                            user.name ===
+                                                self.user.username && (
+                                                <Text editable>
+                                                    {user.profile.location}
+                                                </Text>
+                                            )}
+
+                                        {(!self.isLoggedIn ||
+                                            user.name !==
+                                                self.user.username) && (
+                                            <Text>{user.profile.location}</Text>
+                                        )}
+                                    </div>
+                                    {user.profile.discord !== "" && <Divider />}
                                 </>
                             )}
 
                             {user.profile.discord !== "" && (
                                 <>
-                                    <h3>Discord</h3>
-                                    <p>{user.profile.discord}</p>
+                                    <div className="viewer-about-section">
+                                        <h3>Discord</h3>
+
+                                        {self.isLoggedIn &&
+                                            user.name ===
+                                                self.user.username && (
+                                                <Text editable>
+                                                    {user.profile.discord}
+                                                </Text>
+                                            )}
+
+                                        {(!self.isLoggedIn ||
+                                            user.name !==
+                                                self.user.username) && (
+                                            <Text copyable>
+                                                {user.profile.discord}
+                                            </Text>
+                                        )}
+                                    </div>
                                 </>
                             )}
                         </div>

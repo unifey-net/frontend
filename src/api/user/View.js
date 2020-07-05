@@ -4,6 +4,7 @@ import { UserOutlined } from "@ant-design/icons"
 import { getImageUrl } from "./User"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { CheckOutlined } from "@ant-design/icons"
 
 /**
  * The top right avatar in a post.
@@ -14,7 +15,8 @@ export function UserView(props) {
         <div className="user-view-container">
             <a href={`/u/${props.username}`}>
                 {props.username}
-                <Avatar size={38} src={getImageUrl(props.username)}/>
+                {props.verified && <CheckOutlined />}
+                <Avatar size={38} src={getImageUrl(props.username)} />
             </a>
         </div>
     );
@@ -25,7 +27,6 @@ export function UserView(props) {
  */
 export function SelfView() {
     let self = useSelector(store => store.auth)
-    console.log(self)
     let name = self.user.username
 
     const menu = (
@@ -52,6 +53,7 @@ export function SelfView() {
                         type="link"
                     >
                         {name}
+                        {self.user.verified && <CheckOutlined />}
                         <Avatar
                             size={38}
                             className="avatar"

@@ -1,12 +1,13 @@
 import React from "react";
-import "../assets/scss/pages/about.scss"
+import { Link } from "react-router-dom"
+import "../assets/scss/pages/info.scss"
 
 export default function About() {
     return (
-        <div className="about-container">
+        <div className="info-container">
             <div>
                 <h1>About Unifey</h1>
-                <p className="about-message">
+                <p>
                     If you'd like to learn more about us, or what we're doing,
                     join our{" "}
                     <a
@@ -45,6 +46,9 @@ export default function About() {
                     </a>
                     .
                 </p>
+
+                <h1>I need help with something Unifey related</h1>
+                <p>For more information on how to contact us, visit our <Link to="/support">support</Link> page.</p>
             </div>
         </div>
     );

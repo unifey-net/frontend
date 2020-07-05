@@ -1,11 +1,17 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import "../assets/scss/pages/community.scss";
+import "../assets/scss/pages/viewer.scss";
 import Feed from "../components/feed/Feed";
-import { Empty, Spin } from "antd";
+import { Empty, Spin, Typography } from "antd";
 import { getCommunityByName } from "../api/community/Community";
 import {LoadingOutlined} from "@ant-design/icons"
 
+const { Text } = Typography
+
+/**
+ * A community viewer.
+ * @param {*} props 
+ */
 export default function Community(props) {
     const {
         params: { community },
@@ -46,31 +52,38 @@ export default function Community(props) {
     }, [community]);
 
     return (
-        <div className="community-container">
+        <div className="viewer-container">
             {com.id !== -1 && com.id !== -2 && (
                 <>
-                    <h1 className="community-header">{com.name}</h1>
+                    <h1 className="viewer-header">{com.name}</h1>
 
                     <br />
 
-                    <div className="community-feed">
-                        <Feed id={`cf_${com.id}`} postBox={com.selfRole >= com.postRole} />
+                    <div className="viewer-feed">
+                        <Feed
+                            id={`cf_${com.id}`}
+                            postBox={com.selfRole >= com.postRole}
+                        />
 
-                        <div className="community-about">
-                            <h2>{com.name}</h2>
-                            <p>{com.desc}</p>
+                        <div className="viewer-about">
+                            <div className="viewer-about-section">
+                                <h3>{com.name}</h3>
 
-                            <h3>Created On</h3>
-                            <p>{new Date(com.createdAt).toLocaleString()}</p>
+                                <Text>{com.desc}</Text>
+                            </div>
+
+                        
                         </div>
                     </div>
                 </>
             )}
+
             {com.id === -1 && (
                 <div className="empty-container spin-container">
                     <Spin indicator={<LoadingOutlined />}></Spin>
                 </div>
             )}
+
             {com.id === -2 && (
                 <div className="empty-container">
                     <Empty />

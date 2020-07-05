@@ -1,9 +1,8 @@
 import React from "react";
-import '../assets/scss/pages/tos.scss';
 
 export default function Tos() {
     return (
-        <div className="tos-container">
+        <div className="info-container">
             <h1>Terms and conditions</h1>
             <p>These terms and conditions (&quot;Terms&quot;, &quot;Agreement&quot;) are an agreement between Website Operator (&quot;Website Operator&quot;, &quot;us&quot;, &quot;we&quot; or &quot;our&quot;) and you (&quot;User&quot;, &quot;you&quot; or &quot;your&quot;). This Agreement sets forth the general terms and conditions of your use of the <a target="_blank" rel="noopener noreferrer" href="http://unifey.net">unifey.net</a> website and any of its products or services (collectively, &quot;Website&quot; or &quot;Services&quot;).</p>
             <h2>Accounts and membership</h2>

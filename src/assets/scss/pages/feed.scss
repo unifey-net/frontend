@@ -9,6 +9,12 @@
     margin-top: 16px;
 }
 
+.feed-controls-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 .post-box-container {
     margin-bottom: 16px;
     text-align: center;

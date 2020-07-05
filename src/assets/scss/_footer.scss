@@ -1,8 +1,11 @@
 @import 'variables';
 
 .footer {
-    font-size: 16px;
-    font-family: $default-font;
-    height: 50px;
-    text-align: center;
+  font-size: 16px;
+  font-family: $default-font;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5rem; 
+  text-align: center;
 }
