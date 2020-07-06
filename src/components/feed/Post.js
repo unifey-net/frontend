@@ -61,19 +61,20 @@ export default function Post(props) {
         if (!signedIn()) {
             return;
         }
-
-        sendVote(1);
-
+        
         if (hasUpVoted) {
             setVote((prevVote) => prevVote - 1);
             setUpVoted(false);
+            sendVote(-1);
         } else if (hasDownVoted) {
             setVote((prevVote) => prevVote + 2);
             setUpVoted(true);
             setDownVoted(false);
+            sendVote(1);
         } else {
             setVote((prevVote) => prevVote + 1);
             setUpVoted(true);
+            sendVote(1);
         }
     };
 
@@ -82,18 +83,25 @@ export default function Post(props) {
             return;
         }
 
-        sendVote(0);
-
         if (hasUpVoted) {
             setVote((prevVote) => prevVote - 2);
+
             setDownVoted(true);
             setUpVoted(false);
+
+            sendVote(0);
         } else if (hasDownVoted) {
             setVote((prevVote) => prevVote + 1);
+
             setDownVoted(false);
+
+            sendVote(-1);
         } else {
             setVote((prevVote) => prevVote - 1);
+            
             setDownVoted(true);
+
+            sendVote(0);
         }
     };
 

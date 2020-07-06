@@ -9,7 +9,7 @@ import { Empty, Spin, Typography, Divider } from "antd";
 import Avatar from "antd/es/avatar";
 import { BASE_URL } from "../api/ApiHandler";
 
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 const { Text } = Typography
@@ -40,6 +40,7 @@ export default function User() {
                         name: data.username,
                         createdAt: data.createdAt,
                         role: data.role,
+                        verified: data.verified,
                         profile: {
                             location: data.profile.location,
                             discord: data.profile.discord,
@@ -79,7 +80,10 @@ export default function User() {
 
                         <div className="viewer-about">
                             <div className="viewer-about-section">
-                                <h3>{user.name}</h3>
+                                <h3>
+                                    {user.name}{" "}
+                                    {user.verified && <CheckCircleOutlined />}
+                                </h3>
 
                                 {self.isLoggedIn &&
                                     user.name === self.user.username && (

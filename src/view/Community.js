@@ -12,7 +12,7 @@ const { Text } = Typography
  * A community viewer.
  * @param {*} props 
  */
-export default function Community(props) {
+export default function Community() {
     const {
         params: { community },
     } = useRouteMatch();
@@ -71,8 +71,6 @@ export default function Community(props) {
 
                                 <Text>{com.desc}</Text>
                             </div>
-
-                        
                         </div>
                     </div>
                 </>

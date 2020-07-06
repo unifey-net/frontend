@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Post from "./Post.js";
 import "../../assets/scss/pages/feed.scss";
 import { getToken } from "../../api/user/User";
-import { Spin, Dropdown, Menu, Button, Alert, Skeleton } from "antd";
+import { Spin, Dropdown, Menu, Button, Alert, Skeleton, Empty } from "antd";
 import {
     LoadingOutlined,
     DownOutlined,
@@ -22,7 +22,7 @@ export default function Feed(props) {
 
     let [page, setPage] = useState({
         page: 1,
-        maxPage: 1,
+        maxPage: -1,
     });
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function Feed(props) {
             });
 
             if (resp.ok) {
-                let data = await resp.json()
+                let data = await resp.json();
 
                 setPage({
                     page: 1,
@@ -50,11 +50,7 @@ export default function Feed(props) {
 
         loadFeed();
     }, [props.id]);
-
-    useEffect(() => {
-        console.log(page)
-    }, [page])
-
+    
     useEffect(() => {
         setPosts([]);
 
@@ -68,7 +64,8 @@ export default function Feed(props) {
 
     const loadMore = async () => {
         let resp = await fetch(
-            `${BASE_URL}/feeds/${props.id}/posts?page=${page.page}&sort=${sort}`, {
+            `${BASE_URL}/feeds/${props.id}/posts?page=${page.page}&sort=${sort}`,
+            {
                 method: "GET",
                 headers: {
                     Authorization: "bearer " + getToken(),
@@ -84,7 +81,6 @@ export default function Feed(props) {
                         page: prevState.page + 1,
                     };
                 });
-
 
                 let data = await resp.json();
 
@@ -153,7 +149,7 @@ export default function Feed(props) {
 
                 <Dropdown overlay={menu}>
                     <Button type="link" onClick={(e) => e.preventDefault()}>
-                        {sort[0].toUpperCase() + sort.substring(1)}{" "}
+                        Sort by {sort[0].toUpperCase() + sort.substring(1)}{" "}
                         <DownOutlined />
                     </Button>
                 </Dropdown>
@@ -163,7 +159,19 @@ export default function Feed(props) {
                 <Alert message="You cannot view this feed." type="error" />
             )}
 
-            {status === 0 && (
+            {page.maxPage === 0 && (
+                <Empty
+                    style={{ minWidth: "600px" }}
+                    description={
+                        <p>
+                            Remove Pog{" "}
+                            <img width={32} height={32} src="https://static-cdn.jtvnw.net/emoticons/v1/81273/3.0" alt="KomodoHype" />
+                        </p>
+                    }
+                />
+            )}
+
+            {status === 0 && page.maxPage !== 0 && (
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={loadMore}
