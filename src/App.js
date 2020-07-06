@@ -22,9 +22,11 @@ import Unsubscribed from "./view/Unsubscribed";
 import Support from "./view/Support";
 import ForgotPassword from "./view/settings/Forgot";
 import Trending from "./view/Trending";
+import { isAutoDark } from "./api/Util";
 
 export default function App() {
     const alert = useSelector((state) => state.alert);
+    const theme = useSelector((state) => state.theme);
     let dispatch = useDispatch();
 
     if (alert.message) {
@@ -54,9 +56,42 @@ export default function App() {
         }
     }
 
+    let clazz = ""
+    let use = ""
+
+    switch (theme.theme) {
+        case "light": {
+            clazz = "page-container-light"
+            use = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.4.1/antd.css";
+            break;
+        }
+
+        case "dark": {
+            clazz = "page-container-dark"
+            use = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.4.1/antd.dark.css";
+            break;
+        }
+
+        case "auto": {
+            if (isAutoDark()) {
+                clazz = "page-container-dark";
+                use = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.4.1/antd.dark.css";
+            } else {
+                clazz = "page-container-light";
+                use = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.4.1/antd.css";
+            }
+
+            break;
+        }
+
+        default: 
+            break;
+    }
+
     return (
         <Router history={history}>
-            <div className="page-container">
+            <link rel="stylesheet" type="text/css" href={use} />
+            <div className={clazz}>
                 <Header />
                 <div className="content-container">
                     <Switch>

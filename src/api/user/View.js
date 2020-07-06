@@ -1,14 +1,18 @@
 import React from "react";
-import { Avatar, Menu, Dropdown, Button } from "antd"
-import { UserOutlined } from "@ant-design/icons"
-import { getImageUrl } from "./User"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { CheckOutlined } from "@ant-design/icons"
+import { Avatar, Menu, Dropdown, Button, Tooltip, Divider } from "antd";
+import { UserOutlined, BulbFilled, BulbOutlined } from "@ant-design/icons";
+import { getImageUrl } from "./User";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { CheckOutlined } from "@ant-design/icons";
+import store from "../../redux/store";
+import { themeLight, themeDark, themeAuto } from "../../redux/action";
+import SubMenu from "antd/lib/menu/SubMenu";
+import { isAutoDark } from "../Util";
 
 /**
  * The top right avatar in a post.
- * @param {*} props 
+ * @param {*} props
  */
 export function UserView(props) {
     return (
@@ -26,8 +30,10 @@ export function UserView(props) {
  * The signed in user's image. If not signed in, redirect to login.
  */
 export function SelfView() {
-    let self = useSelector(store => store.auth)
-    let name = self.user.username
+    let dispatch = useDispatch();
+    let theme = useSelector((store) => store.theme);
+    let self = useSelector((store) => store.auth);
+    let name = self.user.username;
 
     const menu = (
         <Menu>
@@ -37,6 +43,37 @@ export function SelfView() {
             <Menu.Item key="1">
                 <Link to={`/logout`}>Sign Out</Link>
             </Menu.Item>
+            <SubMenu title="Themes" key="2">
+                <Menu.Item key="0">
+                    <Link
+                        className={theme.theme === "light" ? "g-active" : ""}
+                        onClick={() => dispatch(themeLight())}
+                    >
+                        Light Mode <BulbFilled />
+                    </Link>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <Link
+                        className={theme.theme === "dark" ? "g-active" : ""}
+                        onClick={() => dispatch(themeDark())}
+                    >
+                        Dark Mode <BulbOutlined />
+                    </Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="2">
+                    <Link
+                        className={theme.theme === "auto" ? "g-active" : ""}
+                        onClick={() => dispatch(themeAuto())}
+                    >
+                        <Tooltip message="Automatically change the theme to dark or light depending on your time.">
+                            Auto
+                            {isAutoDark() && <BulbOutlined />}
+                            {!isAutoDark() && <BulbFilled />}
+                        </Tooltip>
+                    </Link>
+                </Menu.Item>
+            </SubMenu>
             <Menu.Item key="3" disabled>
                 Settings
             </Menu.Item>

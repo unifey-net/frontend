@@ -3,7 +3,7 @@
  *
  * @type {string}
  */
-export const BASE_URL = "https://api.unifey.net"
+export const BASE_URL = "http://localhost:8077"
 
 export const VERSION = "Alpha v0.3.5 :)"
 

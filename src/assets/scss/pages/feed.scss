@@ -20,8 +20,19 @@
     text-align: center;
 }
 
+.page-container-dark {
+    .post-container {
+        background-color: #171616;
+    }
+}
+
+.page-container-light {
+    .post-container {
+        background-color: whitesmoke;
+    }
+}
+
 .post-container {
-    background-color: #171616;
     padding: 16px;
     min-width: 500px;
     min-height: 300px;

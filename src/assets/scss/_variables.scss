@@ -1,8 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Muli:wght@200&family=Roboto:wght@300&display=swap");
 
-$background: #292929;
-$text-color: white;
 $link-color: #5b5bdc;
+
+$dark-text-color: white;
+$light-text-color: black;
+
+$dark-background: #292929;
+$light-background: white;
+
+$dark-header-background: #262525;
+$light-header-background: #efefed;
+
+$header-active-dark: #c1edab;
+$header-active-light: green;
 
 $default-font: 'Roboto', sans-serif;
 $default-header-font: 'Muli', sans-serif;

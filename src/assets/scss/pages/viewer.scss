@@ -1,3 +1,25 @@
+.page-container-dark {
+  .viewer-container {
+    .viewer-feed {
+      .viewer-about {
+        background-color: #171616;
+        border: 0px solid black;
+      }
+    }
+  }
+}
+
+.page-container-light {
+  .viewer-container {
+    .viewer-feed {
+      .viewer-about {
+        background-color: whitesmoke;
+        border: 0px solid gray;
+      }
+    }
+  }
+}
+
 // A viewer for User and Community
 .viewer-container {
   margin-left: 12rem;
@@ -16,9 +38,7 @@
     min-height: 0;
 
     .viewer-about {
-      border: 0px solid black;
       border-radius: 3px;
-      background-color: #171616;
       padding: 16px;
       height: min-content;
       margin-top: 2.7rem;

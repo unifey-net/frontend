@@ -42,7 +42,7 @@ export default function Header() {
                         <li key={index}>
                             {page === obj.location && (
                                 <Link
-                                    style={{ color: "lightgreen" }}
+                                    className="active"
                                     to={obj.location}
                                 >
                                     {obj.name}

@@ -113,19 +113,19 @@ export default function Post(props) {
 
     const elevatedMenu = (
         <Menu>
-            <Menu.Item>
+            <Menu.Item key="0">
                 <Button type="link">
-                    Edit <EditOutlined />{" "}
+                    Edit <EditOutlined />
                 </Button>
             </Menu.Item>
 
-            <Menu.Item>
+            <Menu.Item key="1">
                 <Button type="link">
                     Delete <DeleteOutlined />
                 </Button>
             </Menu.Item>
 
-            <Menu.Item>
+            <Menu.Item key="2">
                 <Button type="link">
                     Report <FlagOutlined />
                 </Button>
@@ -135,7 +135,7 @@ export default function Post(props) {
 
     const extendedMenu = (
         <Menu>
-            <Menu.Item>
+            <Menu.Item key="0">
                 <Button type="link">
                     Report <FlagOutlined />
                 </Button>

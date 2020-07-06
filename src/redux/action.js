@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, INFO, CLEAR, WARNING, SUCCESS, ERROR } from "./actionType";
+import { LOG_IN, LOG_OUT, INFO, CLEAR, WARNING, SUCCESS, ERROR, THEME_DARK, THEME_LIGHT, THEME_AUTO } from "./actionType";
 
 /**
  * Login
@@ -46,4 +46,25 @@ export const alertError = (message) => ({
 export const clearAlert = () => ({
     type: CLEAR,
     payload: {}
+})
+
+export const themeDark = (stay) => ({
+    type: THEME_DARK,
+    payload: {
+        stay
+    }
+})
+
+export const themeLight = (stay) => ({
+    type: THEME_LIGHT,
+    payload: {
+        stay
+    }
+})
+
+export const themeAuto = (stay) => ({
+    type: THEME_AUTO,
+    payload: {
+        stay
+    }
 })

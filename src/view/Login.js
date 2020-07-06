@@ -17,8 +17,8 @@ export default function Login() {
     const loginForm = async (values) => {
         let response = await login(values["username"], values["password"]);
 
-        if (response == null) {
-            dispatch(alertError("Invalid username or password!"))
+        if (response == null || !response) {
+            message.error("Invalid username or password!")
         } else {
             history.push("/")
             dispatch(alertInfo("You are now signed in!"))

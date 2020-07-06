@@ -1,16 +1,11 @@
-@import '~antd/dist/antd.dark.min.css';
+@import 'container';
 @import 'variables';
 @import 'header';
 @import 'footer';
-@import 'container';
 
-body {
-  background-color: $background;
-}
+@import './themes/dark';
+@import './themes/light';
 
-span, h1, h2, h3, h4, h5, h6, p, a, label {
-  color: $text-color;
-}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $default-header-font;
@@ -20,10 +15,10 @@ p, a, span, label {
   font-family: $default-font;
 }
 
-a {
-  color: #918f91
-}
-
 a:hover {
   color: $link-color;
+}
+
+.g-active {
+  color: #0066ff !important
 }
