@@ -7,8 +7,8 @@ import { Form, Input, Button, Checkbox, message } from "antd";
 import history from "../api/History"
 import { Link } from "react-router-dom"
 
-import { useSelector, useDispatch } from "react-redux";
-import { alertError, alertInfo } from "../redux/action";
+import { useDispatch } from "react-redux";
+import { alertInfo } from "../redux/actions/alert.actions";
 import FormItem from "antd/lib/form/FormItem";
 
 export default function Login() {

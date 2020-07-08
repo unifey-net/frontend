@@ -2,10 +2,6 @@ import React from "react";
 import "../assets/scss/pages/notfound.scss";
 import { Link } from "react-router-dom"
 
-import { Typography } from "antd"
-
-const { Text } = Typography
-
 export default function Unsubscribed() {
     return (
         <div className="not-found-container">

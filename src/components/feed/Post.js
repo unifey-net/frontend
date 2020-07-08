@@ -8,31 +8,61 @@ import {
     DeleteOutlined,
     EditOutlined,
 } from "@ant-design/icons";
-import Popconfirm from "antd/es/popconfirm";
 import { message, Menu, Button, Dropdown, Tooltip } from "antd";
 import { BASE_URL } from "../../api/ApiHandler";
-import { signedIn, getToken, getSelf } from "../../api/user/User";
+import { signedIn, getToken } from "../../api/user/User";
 import { useSelector } from "react-redux";
+import { votePost } from "../../api/Feeds";
+import { parseBody } from "../../api/Util"
+import { getCommunityById } from "../../api/community/Community";
+import { getGlobalEmotes } from "../../api/Emotes";
 
 /**
  * A post
  * @param {*} props
  */
 export default function Post(props) {
-    let [vote, setVote] = useState(props.vote);
+    let [vote, setVote] = useState(props.post.vote);
     let [hasDownVoted, setDownVoted] = useState(false);
     let [hasUpVoted, setUpVoted] = useState(false);
+    let [emotes, setEmotes] = useState([])
+
+    // get emotes
+    useEffect(() => {
+        const loadEmotes = async () => {
+            let request = await getGlobalEmotes()
+
+            if (request.status === 200) {
+                setEmotes(request.data)
+            }
+        }
+
+        const loadCommunityEmotes = async (community) => {
+            let obj = await getCommunityById(community)
+
+            if (obj.status === 200) {
+                setEmotes(obj.data.emotes)
+            }
+        }
+
+        if (props.feed.startsWith("cf_")) {
+            loadCommunityEmotes(props.feed.substring(3))
+        } else {
+            loadEmotes()
+        }
+    }, [props.feed])
 
     let self = useSelector((store) => store.auth.user);
 
     useEffect(() => {
-        if (props.userVote != null) {
-            if (props.userVote.vote === 1) setUpVoted(true);
-            else if (props.userVote.vote === 0) {
+        if (props.vote != null) {
+            if (props.vote.vote === 1) {
+                setUpVoted(true);
+            } else if (props.vote.vote === 0) {
                 setDownVoted(true);
             }
         }
-    }, [props.userVote]);
+    }, [props.vote]);
 
     /**
      * Update the vote on the backend.
@@ -43,25 +73,18 @@ export default function Post(props) {
             return;
         }
 
-        let form = new FormData();
+        let response = await votePost(props.post.id, type)
 
-        form.append("vote", type);
-        form.append("post", props.id);
-
-        let response = await fetch(`${BASE_URL}/feeds/${props.feed}/vote`, {
-            method: "POST",
-            body: form,
-            headers: {
-                Authorization: "bearer " + getToken(),
-            },
-        });
+        if (response.status !== 200) {
+            message.error("There was an issue upvoting that post!")
+        }
     };
 
     const upVote = () => {
         if (!signedIn()) {
             return;
         }
-        
+
         if (hasUpVoted) {
             setVote((prevVote) => prevVote - 1);
             setUpVoted(false);
@@ -98,7 +121,7 @@ export default function Post(props) {
             sendVote(-1);
         } else {
             setVote((prevVote) => prevVote - 1);
-            
+
             setDownVoted(true);
 
             sendVote(0);
@@ -106,7 +129,7 @@ export default function Post(props) {
     };
 
     const reportPost = async () => {
-        let key = "reporting-" + props.id;
+        let key = "reporting-" + props.post.id;
 
         message.loading({ content: "Loading...", key });
 
@@ -122,21 +145,21 @@ export default function Post(props) {
     const elevatedMenu = (
         <Menu>
             <Menu.Item key="0">
-                <Button type="link">
+                <span>
                     Edit <EditOutlined />
-                </Button>
+                </span>
             </Menu.Item>
 
             <Menu.Item key="1">
-                <Button type="link">
+                <span>
                     Delete <DeleteOutlined />
-                </Button>
+                </span>
             </Menu.Item>
 
             <Menu.Item key="2">
-                <Button type="link">
+                <span onClick={reportPost}>
                     Report <FlagOutlined />
-                </Button>
+                </span>
             </Menu.Item>
         </Menu>
     );
@@ -144,9 +167,9 @@ export default function Post(props) {
     const extendedMenu = (
         <Menu>
             <Menu.Item key="0">
-                <Button type="link">
+                <span onClick={reportPost}>
                     Report <FlagOutlined />
-                </Button>
+                </span>
             </Menu.Item>
         </Menu>
     );
@@ -154,11 +177,15 @@ export default function Post(props) {
     return (
         <div className="post-container">
             <div className="post-title">
-                <p className="title">{props.title}</p>
+                <p className="title">{props.post.title}</p>
                 <UserView username={props.author.username} />
             </div>
             <div className="post-content">
-                <p>{props.content}</p>
+                <p
+                    dangerouslySetInnerHTML={{
+                        __html: parseBody(props.post.content, emotes),
+                    }}
+                />
             </div>
             <div className="post-management">
                 <div className="vote-container">
@@ -176,7 +203,7 @@ export default function Post(props) {
                 </div>
                 <div className="extra-info-container">
                     <span>
-                        Posted on {new Date(props.created).toLocaleString()}
+                        Posted on {new Date(props.post.createdAt).toLocaleString()}
                     </span>
                     <Dropdown
                         overlay={
@@ -185,12 +212,13 @@ export default function Post(props) {
                                 : extendedMenu
                         }
                     >
-                        <a
+                        <Button
                             className="ant-dropdown-link"
                             onClick={(e) => e.preventDefault()}
+                            type="link"
                         >
                             <CaretDownFilled />
-                        </a>
+                        </Button>
                     </Dropdown>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Router, Switch } from "react-router-dom";
 
 import "./assets/scss/base.scss";
+
 import Community from "./view/Community";
 import Tos from "./view/Tos";
 import About from "./view/About";
@@ -13,15 +14,14 @@ import Home from "./view/Home";
 import Logout from "./view/Logout";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { clearAlert, alertInfo } from "./redux/action";
-import NotFound from "./view/NotFound";
-import { Alert, Button, message } from "antd";
 import Unsubscribed from "./view/Unsubscribed";
 import Support from "./view/Support";
 import ForgotPassword from "./view/settings/Forgot";
-import Trending from "./view/Trending";
+import NotFound from "./view/NotFound";
+
+import { useDispatch, useSelector } from "react-redux";
+import { clearAlert } from "./redux/actions/alert.actions";
+import { message } from "antd";
 import { isAutoDark } from "./api/Util";
 
 export default function App() {
@@ -97,8 +97,6 @@ export default function App() {
                     <Switch>
                         <Route path="/u/:name" component={User} />
                         <Route path="/c/:community" component={Community} />
-
-                        <Route path="/trending" component={Trending} />
 
                         <Route exact path="/tos" component={Tos} />
                         <Route

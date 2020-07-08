@@ -1,4 +1,4 @@
-import { THEME_DARK, THEME_LIGHT, THEME_AUTO } from "../actionType";
+import { THEME_DARK, THEME_LIGHT, THEME_AUTO } from "../actions/theme.actions";
 
 /**
  * Get the initial state.

@@ -2,17 +2,16 @@ import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../assets/scss/pages/viewer.scss";
 
-import { getUserByName, signedIn, getSelf } from "../api/user/User"
-import Feed from "../components/feed/Feed"
+import { getUserByName, signedIn, getImageUrl } from "../api/user/User";
+import Feed from "../components/feed/Feed";
 
 import { Empty, Spin, Typography, Divider } from "antd";
 import Avatar from "antd/es/avatar";
-import { BASE_URL } from "../api/ApiHandler";
 
 import { LoadingOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-const { Text } = Typography
+const { Text } = Typography;
 
 export default function User() {
     const {
@@ -25,36 +24,41 @@ export default function User() {
         id: -1,
     });
 
+    let [loaded, setLoaded] = useState({
+        error: false,
+        loaded: false,
+    });
+
     useEffect(() => {
         const loadUser = async () => {
             let response = await getUserByName(name);
-            let preData = await response.json()
 
-            if (preData !== undefined && preData.payload !== undefined && response.ok) {
-                let data = preData.payload;
-
-                setUser((prevState) => {
-                    return {
-                        ...prevState,
-                        id: data.id,
-                        name: data.username,
-                        createdAt: data.createdAt,
-                        role: data.role,
-                        verified: data.verified,
-                        profile: {
-                            location: data.profile.location,
-                            discord: data.profile.discord,
-                            description: data.profile.description,
-                        },
-                    };
+            if (response == null || response.status !== 200) {
+                setLoaded({
+                    error: true,
+                    loaded: true,
                 });
             } else {
                 setUser((prevState) => {
                     return {
                         ...prevState,
-                        id: -2,
+                        id: response.data.id,
+                        name: response.data.username,
+                        createdAt: response.data.createdAt,
+                        role: response.data.role,
+                        verified: response.data.verified,
+                        profile: {
+                            location: response.data.profile.location,
+                            discord: response.data.profile.discord,
+                            description: response.data.profile.description,
+                        },
                     };
                 });
+
+                setLoaded({
+                    error: false,
+                    loaded: true
+                })
             }
         };
 
@@ -63,14 +67,11 @@ export default function User() {
 
     return (
         <div className="viewer-container">
-            {user.id !== -1 && user.id !== -2 && (
+            {loaded.loaded && !loaded.error && (
                 <>
                     <h1 className="viewer-header">
                         {user.name}{" "}
-                        <Avatar
-                            size={64}
-                            src={`${BASE_URL}/user/name/${user.name}/picture`}
-                        />
+                        <Avatar size={64} src={getImageUrl(user.name)} />
                     </h1>
 
                     <br />
@@ -159,13 +160,13 @@ export default function User() {
                 </>
             )}
 
-            {user.id === -1 && (
+            {!loaded.loaded && (
                 <div className="empty-container">
                     <Spin indicator={<LoadingOutlined />}></Spin>
                 </div>
             )}
 
-            {user.id === -2 && (
+            {loaded.error && loaded.loaded && (
                 <div className="empty-container">
                     <Empty />
                 </div>

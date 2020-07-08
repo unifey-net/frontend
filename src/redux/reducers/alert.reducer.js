@@ -1,4 +1,4 @@
-const { CLEAR, INFO, WARNING, ERROR, SUCCESS } = require("../actionType");
+const { CLEAR, INFO, WARNING, ERROR, SUCCESS } = require("../actions/alert.actions");
 
 /**
  * An alert.

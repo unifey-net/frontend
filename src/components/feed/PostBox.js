@@ -3,6 +3,7 @@ import { getToken } from "../../api/user/User";
 import { message, Input, Button, Modal, Tooltip } from "antd";
 import PlusCircleOutlined from "@ant-design/icons/lib/icons/PlusCircleOutlined";
 import { BASE_URL } from "../../api/ApiHandler";
+import { postFeed } from "../../api/Feeds";
 
 const { TextArea } = Input;
 
@@ -27,24 +28,18 @@ export default function PostBox(props) {
             return;
         }
 
-        let formData = new FormData();
-
-        formData.append("content", content.value);
-        formData.append("title", title.value);
-
-        await fetch(`${BASE_URL}/feeds/${props.feed}`, {
-            method: "POST",
-            headers: {
-                Authorization: "bearer " + getToken(),
-            },
-            body: formData,
-        });
+        let response = postFeed(props.feed, content.value, title.value)
 
         setLoading(false);
         setVisible(false);
 
+        if (response.status !== 200) {
+            message.error("There was an issue posting that.")
+        } else {
+            message.success("Successfully posted!");
+        }
+
         props.action();
-        message.success("Successfully posted!");
     };
 
     const handleCancel = (e) => {

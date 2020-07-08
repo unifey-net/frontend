@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT } from "../actionType"
+import { LOG_IN, LOG_OUT } from "../actions/auth.actions"
 
 let defaultState = {
     isLoggedIn: false,

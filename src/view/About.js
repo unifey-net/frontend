@@ -8,7 +8,7 @@ export default function About() {
             <div>
                 <h1>About Unifey</h1>
                 <p>
-                    If you'd like to learn more about us, or what we're doing,
+                    If you'd like to learn more about us or what we're doing,
                     join our{" "}
                     <a
                         target="_blank"
@@ -22,7 +22,7 @@ export default function About() {
 
                 <h1>Can I view Unifey's code?</h1>
                 <p>
-                    Yes. Unifey's frontend and backend are open-source, and
+                    Yes. Unifey's frontend and backend are open-source and
                     available to view at our{" "}
                     <a
                         target="_blank"
@@ -48,7 +48,7 @@ export default function About() {
                 </p>
 
                 <h1>I need help with something Unifey related</h1>
-                <p>For more information on how to contact us, visit our <Link to="/support">support</Link> page.</p>
+                <p>For more information on how to contact us visit our <Link to="/support">support</Link> page.</p>
             </div>
         </div>
     );

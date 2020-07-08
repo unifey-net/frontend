@@ -1,8 +1,5 @@
 import React from "react";
 import "../assets/scss/pages/home.scss"
-import { Button } from "antd"
-import { themeDark, themeLight } from "../redux/action";
-import { useDispatch } from "react-redux";
 
 export default function Home() {
     return (

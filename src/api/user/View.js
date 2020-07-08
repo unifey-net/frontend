@@ -5,8 +5,7 @@ import { getImageUrl } from "./User";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { CheckOutlined } from "@ant-design/icons";
-import store from "../../redux/store";
-import { themeLight, themeDark, themeAuto } from "../../redux/action";
+import { themeLight, themeDark, themeAuto } from "../../redux/actions/theme.actions";
 import SubMenu from "antd/lib/menu/SubMenu";
 import { isAutoDark } from "../Util";
 

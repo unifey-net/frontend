@@ -1,10 +1,18 @@
-import { BASE_URL } from "../ApiHandler"
-import Cookies from "universal-cookie"
-import { logIn, logOut } from "../../redux/action";
-import React from "react"
+import { BASE_URL, API } from "../ApiHandler"
+import { logIn, logOut } from "../../redux/actions/auth.actions";
 import store from "../../redux/store"
 
-const cookies = new Cookies();
+
+/**
+ * Get a token.
+ *
+ * @returns {null|*}
+ */
+export const getToken = () => {
+    let token = store.getState().auth.token
+
+    return token !== "" ? token : null
+}
 
 /**
  * Get a user's profile picture URL.
@@ -23,44 +31,24 @@ export const getSelf = async () =>  {
 }
 
 /**
- * Get a role name by it's ID
- * @param role
- * @returns {string}
+ * Get a user's id by their name.
+ * @param {string} name 
  */
-export const getRoleName = (role) => {
-    switch (role) {
-        case 1:
-            return "Moderator"
-        case 2:
-            return "Administrator"
-
-        default:
-            return ""
-    }
-}
-
-/**
- * Get a user's ID by their name.
- *
- * @param name
- * @param callback
- */
-export const getIdByName = async (name) => {
-    return await fetch(`${BASE_URL}/user/name/${name}`, {
-        method: 'GET'
-    }).then((resp) => resp.json())
+export const getUserIdByName = async (name) => {
+    return await API.get(`/user/name/${name}`)
 }
 
 /**
  * Get a user by their name.
- *
- * @param name
- * @param callback
+ * @param {string} name 
  */
 export const getUserByName = async (name) => {
-    let id = await getIdByName(name)
+    let id = await getUserIdByName(name)
 
-    return getUserById(id.payload)
+    if (id.status !== 200)
+        return null
+
+    return await getUserById(id.data.payload)
 }
 
 /**
@@ -70,37 +58,18 @@ export const getUserByName = async (name) => {
  * @param callback
  */
 export const getUserById = async (id) => {
-    return await fetch(`${BASE_URL}/user/id/${id.toString()}`, {
-        method: 'GET'
-    })
-}
-
-/**
- * Get a token.
- *
- * @returns {null|*}
- */
-export const getToken = () => {
-    if (!signedIn)
-        return null
-
-    let token = store.getState().auth.token
-
-    return token !== "" ? token : null
+    return await API.get(`/user/id/${id}`)
 }
 
 /**
  * When the token expires.
  */
-export const getExpire = () => {
-    return store.getState().auth.expire;
-}
+export const getExpire = () => store.getState().auth.expire;
 
 /**
  * If the self token is expired.
  */
-export const isExpired = () => 
-    new Date().getTime() >= getExpire()
+export const isExpired = () => new Date().getTime() >= getExpire()
 
 /**
  * Logout
@@ -116,9 +85,8 @@ export const logout = () => {
  *
  * @returns {boolean}
  */
-export const signedIn = () => {
-    return getToken() != null && !isExpired()
-}
+export const signedIn = () =>
+    getToken() != null && !isExpired();
 
 /**
  *
@@ -126,26 +94,25 @@ export const signedIn = () => {
  * @param pass
  * @param callback
  */
-export const login = async (username, pass) => {
-    let formData = new FormData()
+export const login = async (username, password) => {
+    let data = new FormData()
 
-    formData.append("username", username)
-    formData.append("password", pass)
+    data.set("username", username)
+    data.set("password", password);
 
-    let auth = await fetch(`${BASE_URL}/authenticate`, {
-        method: 'POST',
-        body: formData
-    })
+    let auth = await API.post(`/authenticate`, data)
 
-    if (!auth.ok)
+    if (auth.status !== 200)
         return false
 
-    let data = await auth.json()
+    let user = auth.data.user;
+    let token = auth.data.token;
 
-    let user = data.user;
-    let token = data.token;
-
-    store.dispatch(logIn(token.token, user, new Date().getTime() + (1000 * 60 * 60 * 24)))
+    store.dispatch(logIn(
+        token.token,
+        user, 
+        new Date().getTime() + (1000 * 60 * 60 * 24)
+    ))
 
     return true
 }

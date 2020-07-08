@@ -1,5 +1,43 @@
-import { BASE_URL } from "../ApiHandler";
-import { signedIn, getToken } from "../user/User";
+import { API } from "../ApiHandler";
+import store from "../../redux/store";
+import { postCommunity } from "../../redux/actions/community.actions";
+import axios from "axios"
+
+/**
+ * Get a community by it's name in the store.
+ * @param {string} name 
+ */
+const getStoreCommunityByName = (name) => {
+    let state = store.getState().community
+
+    for (let i = 0; state.length > i; i++) {
+        let community = state[i]
+
+        if (community.data.community.name.toLowerCase() === name.toLowerCase()) {
+            return community;
+        }
+    }
+
+    return null
+}
+
+/**
+ * Get a community by it's ID in the store.
+ * @param {long} id 
+ */
+const getStoreCommunityById = (id) => {
+    let state = store.getState().community
+
+    for (let i = 0; state.length > i; i++) {
+        let community = state[i]
+
+        if (community.data.community.id == id) {
+            return community
+        }
+    }
+
+    return null
+}
 
 /**
  * Get a community by it's name.
@@ -7,24 +45,25 @@ import { signedIn, getToken } from "../user/User";
  * @param callback
  */
 export const getCommunityByName = async (name) => {
-    if (!signedIn()) {
-        return await fetch(`${BASE_URL}/community/name/${name}`).then((resp) =>
-            resp.json()
-        );
-    } else {
-        return await fetch(`${BASE_URL}/community/name/${name}`, {
-            headers: {
-                Authorization: "bearer " + getToken(),
-            },
-        }).then((resp) => resp.json());
-    }
+    let state = getStoreCommunityByName(name)
+    
+    if (state !== null) return state;
+
+    let community = await API.get(`/community/name/${name}`)
+
+    if (community.status !== 200)
+        return community
+
+    store.dispatch(postCommunity(community))
+
+    return community;
 };
 
 /**
  * Get all communities.
  */
 export const getAllCommunities = async () => {
-    return await fetch(`${BASE_URL}/community`).then((resp) => resp.json());
+    return await API.get(`/community`);
 };
 
 /**
@@ -33,17 +72,17 @@ export const getAllCommunities = async () => {
  * @param callback
  */
 export const getCommunityById = async (id) => {
-    if (!signedIn()) {
-        return await fetch(`${BASE_URL}/community/${id}`).then((resp) =>
-            resp.json()
-        );
-    } else {
-        return await fetch(`${BASE_URL}/community/${id}`, {
-            headers: {
-                Authorization: "bearer " + getToken(),
-            },
-        }).then((resp) => resp.json());
-    }
+    let state = getStoreCommunityById(id);
+
+    if (state !== null) return state;
+
+    let community = await API.get(`/community/${id}`);
+
+    if (community.status !== 200) return community;
+
+    store.dispatch(postCommunity(community));
+
+    return community;
 };
 
 /**

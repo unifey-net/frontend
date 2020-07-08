@@ -12,14 +12,12 @@ import {
 import { BASE_URL } from "../../api/ApiHandler";
 import InfiniteScroll from "react-infinite-scroller";
 import PostBox from "./PostBox";
+import { getFeed, getFeedPosts } from "../../api/Feeds.js";
 
 export default function Feed(props) {
     let [posts, setPosts] = useState([]);
-
     let [status, setStatus] = useState(-1);
-
     let [sort, setSort] = useState("new");
-
     let [page, setPage] = useState({
         page: 1,
         maxPage: -1,
@@ -27,19 +25,12 @@ export default function Feed(props) {
 
     useEffect(() => {
         const loadFeed = async () => {
-            let resp = await fetch(`${BASE_URL}/feeds/${props.id}`, {
-                method: "GET",
-                headers: {
-                    Authorization: "bearer " + getToken(),
-                },
-            });
+            let resp = await getFeed(props.id)
 
-            if (resp.ok) {
-                let data = await resp.json();
-
+            if (resp.status === 200) {
                 setPage({
                     page: 1,
-                    maxPage: data.pageCount,
+                    maxPage: resp.data.pageCount,
                 });
 
                 setStatus(0);
@@ -62,16 +53,19 @@ export default function Feed(props) {
         });
     }, [sort]);
 
+    useEffect(() => {
+        let querySort = new URL(window.location).searchParams.get("sort");
+
+        if (querySort === "new" || querySort === "old" || querySort === "top") {
+            setSort(querySort)
+        }
+    }, [])
+
+    /**
+     * Load another post.
+     */
     const loadMore = async () => {
-        let resp = await fetch(
-            `${BASE_URL}/feeds/${props.id}/posts?page=${page.page}&sort=${sort}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: "bearer " + getToken(),
-                },
-            }
-        );
+        let resp = await getFeedPosts(props.id, sort, page.page)
 
         switch (resp.status) {
             case 200: {
@@ -80,11 +74,9 @@ export default function Feed(props) {
                         ...prevState,
                         page: prevState.page + 1,
                     };
-                });
+                })
 
-                let data = await resp.json();
-
-                let posts = data.posts;
+                let posts = resp.data.posts;
 
                 setPosts((prevState) => {
                     return [...prevState, ...posts];
@@ -165,7 +157,12 @@ export default function Feed(props) {
                     description={
                         <p>
                             Remove Pog{" "}
-                            <img width={32} height={32} src="https://static-cdn.jtvnw.net/emoticons/v1/81273/3.0" alt="KomodoHype" />
+                            <img
+                                width={32}
+                                height={32}
+                                src="https://static-cdn.jtvnw.net/emoticons/v1/81273/3.0"
+                                alt="KomodoHype"
+                            />
                         </p>
                     }
                 />
@@ -182,16 +179,10 @@ export default function Feed(props) {
                         {posts.map((post, index) => (
                             <li key={index}>
                                 <Post
-                                    id={post.post.id}
-                                    created={post.post.createdAt}
-                                    title={post.post.title}
-                                    content={post.post.content}
-                                    vote={
-                                        post.post.upvotes - post.post.downvotes
-                                    }
                                     author={post.owner}
+                                    post={post.post}
+                                    vote={post.vote}
                                     feed={props.id}
-                                    userVote={post.vote}
                                 />
                             </li>
                         ))}
