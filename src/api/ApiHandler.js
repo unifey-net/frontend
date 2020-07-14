@@ -21,6 +21,6 @@ export const API = axios.create({
     validateStatus: () => true,
 });
 
-export const VERSION = "Alpha v0.3.6 :D";
+export const VERSION = "Alpha v0.3.7";
 
 export const CLIENT = "Unifey Web Client";

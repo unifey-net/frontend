@@ -1,7 +1,7 @@
 import { BASE_URL, API } from "../ApiHandler"
 import { logIn, logOut } from "../../redux/actions/auth.actions";
 import store from "../../redux/store"
-
+import {joinComm, leaveComm} from "../../redux/actions/auth.actions"
 
 /**
  * Get a token.
@@ -115,4 +115,47 @@ export const login = async (username, password) => {
     ))
 
     return true
+}
+
+/**
+ * Leave a community.
+ * @param {*} id 
+ */
+export const leaveCommunity = async (id) => {
+    let form = new FormData();
+
+    form.append("id", id);
+
+    let request = await API.delete("/community/manage", {
+        headers: { },
+        data: form,
+    });
+
+    if (request.status === 200) {
+        store.dispatch(leaveComm(id));
+
+        return request;
+    } else {
+        return request;
+    }
+}
+
+/**
+ * Join a community.
+ * @param {*} id 
+ */
+export const joinCommunity = async (id) => {
+    let form = new FormData()
+
+    form.append("id", id)
+
+    let request = await API.put("/community/manage", form)
+
+    if (request.status === 200) {
+        store.dispatch(joinComm(id))
+
+        return request
+    } else {
+        return request
+    }
 }

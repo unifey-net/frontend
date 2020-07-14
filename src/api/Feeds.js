@@ -25,9 +25,12 @@ export const getFeed = async (id) => {
  * @param {string} title 
  */
 export const postFeed = async (id, content, title) => {
-    return await API.post(`/feeds/${id}`, {
-        content, title
-    });
+    let form = new FormData();
+
+    form.append("content", content)
+    form.append("title", title)
+
+    return await API.post(`/feeds/${id}`, form);
 };
 
 /**
@@ -37,7 +40,10 @@ export const postFeed = async (id, content, title) => {
  * @param {int} type 
  */
 export const votePost = async (id, type) => {
-    return await API.post(`/feeds/${id}`, {
-        post: id, type
-    })
+    let form = new FormData()
+
+    form.append("post", id)
+    form.append("vote", type)
+
+    return await API.post(`/feeds/${id}/vote`, form)
 }

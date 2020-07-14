@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT } from "../actions/auth.actions"
+import { LOG_IN, LOG_OUT, UPDATE_NAME, VERIFY_ACCOUNT, JOIN_COMMUNITY, LEAVE_COMMUNITY } from "../actions/auth.actions"
 
 let defaultState = {
     isLoggedIn: false,
@@ -72,6 +72,83 @@ const auth = (state = getInitialState(), action) => {
             saveState(defaultState)
 
             return newState
+        }
+
+        case UPDATE_NAME: {
+            const { name } = action.payload
+
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    username: name,
+                },
+            };
+
+            saveState(newState)
+
+            return newState
+        }
+
+        case VERIFY_ACCOUNT: {
+            const { status } = action.payload
+            
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    verified: status,
+                },
+            };
+
+            saveState(newState);
+
+            return newState;
+        }
+
+        case JOIN_COMMUNITY: {
+            const { id } = action.payload
+
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    member: {
+                        ...state.user.member,
+                        members: [...state.user.member.members, id]
+                    }
+                }
+            }
+
+            saveState(newState)
+
+            return newState
+        }
+
+        case LEAVE_COMMUNITY: {
+            const { id } = action.payload;
+
+            let newMember = state.user.member.members;
+
+            const index = newMember.indexOf(id);
+            if (index > -1) {
+                newMember.splice(index, 1);
+            }
+
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    member: {
+                        ...state.user.member,
+                        members: newMember,
+                    },
+                },
+            };
+
+            saveState(newState);
+
+            return newState;
         }
 
         default: {

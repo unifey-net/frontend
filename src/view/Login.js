@@ -1,6 +1,4 @@
 import React from "react";
-import "../assets/scss/pages/home.scss";
-import "../assets/scss/pages/login.scss";
 import { login, signedIn } from "../api/user/User";
 import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message } from "antd";

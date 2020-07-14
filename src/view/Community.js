@@ -1,10 +1,9 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import "../assets/scss/pages/viewer.scss";
 import Feed from "../components/feed/Feed";
-import { Empty, Spin, Typography } from "antd";
+import { Empty, Spin, Typography, Divider } from "antd";
 import { getCommunityByName } from "../api/community/Community";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -37,7 +36,6 @@ export default function Community() {
                     loaded: true,
                 });
             } else {
-                console.log(data.data)
                 setData(data.data);
 
                 setLoaded({
@@ -51,39 +49,61 @@ export default function Community() {
     }, [community]);
 
     return (
-        <div className="viewer-container">
+        <div className="flex flex-col items-center justify-center">
             {loaded.loaded && !loaded.error && (
                 <>
-                    <h1 className="viewer-header">{data.community.name}</h1>
+                    <h1 className="text-4xl">{data.community.name}</h1>
 
                     <br />
 
-                    <div className="viewer-feed">
+                    <div className="flex flex-row justify-between gap-16">
                         <Feed
                             id={`cf_${data.community.id}`}
                             postBox={data.selfRole >= data.community.postRole}
                             community={data.community}
                         />
 
-                        <div className="viewer-about">
-                            <div className="viewer-about-section">
-                                <h3>{data.community.name}</h3>
-
-                                <Text>{data.community.description}</Text>
+                        <div
+                            className="p-4 rounded mt-16"
+                            style={{
+                                backgroundColor: "#171616",
+                                height: "min-content",
+                                maxWidth: "200px"
+                            }}
+                        >
+                            <div className="flex flex-row justify-between">
+                                <h3 className="text-lg">{data.community.name}</h3>
                             </div>
+
+                            <Text>
+                                <p
+                                    dangerouslySetInnerHTML={{
+                                        __html: data.community.description,
+                                    }}
+                                />
+                            </Text>
+
+                            <Divider/>
+
+                            <h3 className="text-lg">Created On</h3>
+                            <Text>
+                                {new Date(
+                                    data.community.createdAt
+                                ).toLocaleString()}
+                            </Text>
                         </div>
                     </div>
                 </>
             )}
 
             {!loaded.loaded && !loaded.error && (
-                <div className="empty-container spin-container">
+                <div className="flex align-center justify-center">
                     <Spin indicator={<LoadingOutlined />}></Spin>
                 </div>
             )}
 
             {loaded.error && (
-                <div className="empty-container">
+                <div className="flex align-center justify-center">
                     <Empty />
                 </div>
             )}

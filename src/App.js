@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Router, Switch } from "react-router-dom";
 
 import "./assets/scss/base.scss";
+import "./assets/main.css"
 
 import Community from "./view/Community";
 import Tos from "./view/Tos";
@@ -23,6 +24,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearAlert } from "./redux/actions/alert.actions";
 import { message } from "antd";
 import { isAutoDark } from "./api/Util";
+import Settings from "./view/settings/Settings";
+import Unverified from "./view/Unverified";
+import Verify from "./view/settings/Verify";
 
 export default function App() {
     const alert = useSelector((state) => state.alert);
@@ -106,12 +110,24 @@ export default function App() {
                         />
                         <Route exact path="/about" component={About} />
                         <Route exact path="/support" component={Support} />
+                        <Route
+                            exact
+                            path="/unverified"
+                            component={Unverified}
+                        />
 
-                        <Route exact path="/settings"></Route>
+                        <Route exact path="/settings" component={Settings} />
+
                         <Route
                             exact
                             path="/settings/forgot"
                             component={ForgotPassword}
+                        />
+
+                        <Route
+                            exact
+                            path="/settings/verify"
+                            component={Verify}
                         />
 
                         <Route exact path="/" component={Home} />

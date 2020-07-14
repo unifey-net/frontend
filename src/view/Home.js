@@ -1,26 +1,25 @@
 import React from "react";
-import "../assets/scss/pages/home.scss"
 
 export default function Home() {
     return (
-        <div className="home-container">
-            <div className="head">
-                <h1 className="title">Unifey</h1>
+        <div className="flex flex-col items-center justify-center">
+            <div>
+                <h1 className="text-6xl">Unifey</h1>
             </div>
 
-            <div className="section-container">
-                <div className="section">
-                    <h2>What is Unifey?</h2>
-                    <p>
+            <div className="flex flex-row gap-8">
+                <div>
+                    <h2 className="text-lg">What is Unifey?</h2>
+                    <p className="break-words max-w-xs">
                         Unifey is a general purpose social-media platform,
                         dedicated to freely exchange ideas.
                     </p>
                 </div>
 
-                <div className="section">
-                    <h2>How can I learn more?</h2>
-                    <p>
-                        You can join our{" "}
+                <div>
+                    <h2 className="text-lg">How can I learn more?</h2>
+                    <p className="break-words max-w-xs">
+                        You can join our
                         <a
                             target="_blank"
                             rel="noopener noreferrer"

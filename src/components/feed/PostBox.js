@@ -28,7 +28,7 @@ export default function PostBox(props) {
             return;
         }
 
-        let response = postFeed(props.feed, content.value, title.value)
+        let response = await postFeed(props.feed, content.value, title.value)
 
         setLoading(false);
         setVisible(false);
@@ -48,11 +48,9 @@ export default function PostBox(props) {
 
     return (
         <div className="post-box-container">
-            <Tooltip title="Create a post">
-                <Button type="link" onClick={showModal}>
-                    Create Post <PlusCircleOutlined />
-                </Button>
-            </Tooltip>
+            <Button type="link" onClick={showModal}>
+                Create Post
+            </Button>
 
             <Modal
                 title="Create new Post"

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"
-import {SelfView} from "../api/user/View";
-import history from "../api/History"
+import { Link } from "react-router-dom";
+import { SelfView } from "../api/user/View";
+import history from "../api/History";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
-    let [page, setPage] = useState(window.location.pathname)
+    let [page, setPage] = useState(window.location.pathname);
 
     useEffect(() => {
         history.listen(path => {
@@ -30,21 +31,26 @@ export default function Header() {
     ];
 
     return (
-        <div className="site-header">
-            <div className="title">
+        <div
+            className="flex justify-evenly bg-transparent pt-2 mb-4"
+            style={{ backgroundColor: "#262525" }}
+        >
+            <div className="mb-2">
                 <Link to="/" className="unifey">
-                    <img src="/favicon.png" width={48} height={48} alt="Unifey Logo" />
+                    <img
+                        src="/favicon.png"
+                        width={48}
+                        height={48}
+                        alt="Unifey Logo"
+                    />
                 </Link>
             </div>
-            <div>
-                <ul className="site-header-links">
+            <div className="mt-2">
+                <ul className="flex flex-row gap-4">
                     {pages.map((obj, index) => (
-                        <li key={index}>
+                        <li key={index} className="text-lg">
                             {page === obj.location && (
-                                <Link
-                                    className="active"
-                                    to={obj.location}
-                                >
+                                <Link className="text-green-200" to={obj.location}>
                                     {obj.name}
                                 </Link>
                             )}
@@ -56,7 +62,7 @@ export default function Header() {
                     ))}
                 </ul>
             </div>
-            <SelfView />
+            <SelfView/>
         </div>
     );
 }

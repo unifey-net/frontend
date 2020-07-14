@@ -1,10 +1,9 @@
 import React from "react"
-import "../assets/scss/pages/notfound.scss"
 
 export default function NotFound() {
     return (
-        <div className="not-found-container">
-            <h1>That page could not be found!</h1>
+        <div className="flex flex-col items-center mx-64">
+            <h1 className="text-4xl">That page could not be found!</h1>
         </div>
     );
 }

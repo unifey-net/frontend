@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Post from "./Post.js";
-import "../../assets/scss/pages/feed.scss";
 import { getToken } from "../../api/user/User";
 import { Spin, Dropdown, Menu, Button, Alert, Skeleton, Empty } from "antd";
 import {
@@ -136,13 +135,12 @@ export default function Feed(props) {
 
     return (
         <div>
-            <div className="feed-controls-container">
+            <div className="flex flex-row justify-evenly">
                 {props.postBox && <PostBox feed={props.id} action={() => {}} />}
 
                 <Dropdown overlay={menu}>
                     <Button type="link" onClick={(e) => e.preventDefault()}>
-                        Sort by {sort[0].toUpperCase() + sort.substring(1)}{" "}
-                        <DownOutlined />
+                        Sort by {sort[0].toUpperCase() + sort.substring(1)}
                     </Button>
                 </Dropdown>
             </div>
@@ -154,17 +152,7 @@ export default function Feed(props) {
             {page.maxPage === 0 && (
                 <Empty
                     style={{ minWidth: "600px" }}
-                    description={
-                        <p>
-                            Remove Pog{" "}
-                            <img
-                                width={32}
-                                height={32}
-                                src="https://static-cdn.jtvnw.net/emoticons/v1/81273/3.0"
-                                alt="KomodoHype"
-                            />
-                        </p>
-                    }
+                    description={<p>There are no posts in this feed.</p>}
                 />
             )}
 

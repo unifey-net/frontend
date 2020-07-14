@@ -1,11 +1,10 @@
 @import 'container';
 @import 'variables';
-@import 'header';
 @import 'footer';
 
-@import './themes/dark';
-@import './themes/light';
-
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $default-header-font;
@@ -17,8 +16,4 @@ p, a, span, label {
 
 a:hover {
   color: $link-color;
-}
-
-.g-active {
-  color: #0066ff !important
 }

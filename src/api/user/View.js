@@ -1,6 +1,6 @@
 import React from "react";
-import { Avatar, Menu, Dropdown, Button, Tooltip, Divider } from "antd";
-import { UserOutlined, BulbFilled, BulbOutlined } from "@ant-design/icons";
+import { Avatar, Menu, Dropdown, Button, Tooltip, Divider, Badge } from "antd";
+import { UserOutlined, BulbFilled, BulbOutlined, EditOutlined, CoffeeOutlined } from "@ant-design/icons";
 import { getImageUrl } from "./User";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,9 +17,9 @@ export function UserView(props) {
     return (
         <div className="user-view-container">
             <a href={`/u/${props.username}`}>
-                {props.username}
-                {props.verified && <CheckOutlined />}
-                <Avatar size={38} src={getImageUrl(props.username)} />
+                <Tooltip title={props.username}>
+                    <Avatar size={38} src={getImageUrl(props.username)} />
+                </Tooltip>
             </a>
         </div>
     );
@@ -30,8 +30,10 @@ export function UserView(props) {
  */
 export function SelfView() {
     let dispatch = useDispatch();
+
     let theme = useSelector((store) => store.theme);
     let self = useSelector((store) => store.auth);
+
     let name = self.user.username;
 
     const menu = (
@@ -46,7 +48,7 @@ export function SelfView() {
                 <Menu.Item key="0">
                     <Link
                         className={theme.theme === "light" ? "g-active" : ""}
-                        onClick={() => dispatch(themeLight())}
+                        onClick={() => dispatch(themeLight(true))}
                     >
                         Light Mode <BulbFilled />
                     </Link>
@@ -54,7 +56,7 @@ export function SelfView() {
                 <Menu.Item key="1">
                     <Link
                         className={theme.theme === "dark" ? "g-active" : ""}
-                        onClick={() => dispatch(themeDark())}
+                        onClick={() => dispatch(themeDark(true))}
                     >
                         Dark Mode <BulbOutlined />
                     </Link>
@@ -63,7 +65,7 @@ export function SelfView() {
                 <Menu.Item key="2">
                     <Link
                         className={theme.theme === "auto" ? "g-active" : ""}
-                        onClick={() => dispatch(themeAuto())}
+                        onClick={() => dispatch(themeAuto(true))}
                     >
                         <Tooltip message="Automatically change the theme to dark or light depending on your time.">
                             Auto
@@ -73,14 +75,14 @@ export function SelfView() {
                     </Link>
                 </Menu.Item>
             </SubMenu>
-            <Menu.Item key="3" disabled>
-                Settings
+            <Menu.Item key="4">
+                <Link to={`/settings`}>Settings<CoffeeOutlined/></Link>
             </Menu.Item>
         </Menu>
     );
 
     return (
-        <div className="user-view-container">
+        <div className="flex flex-row">
             {self.isLoggedIn && (
                 <Dropdown overlay={menu}>
                     <Button
@@ -88,11 +90,9 @@ export function SelfView() {
                         onClick={(e) => e.preventDefault()}
                         type="link"
                     >
-                        {name}
-                        {self.user.verified && <CheckOutlined />}
                         <Avatar
                             size={38}
-                            className="avatar"
+                            className=""
                             src={getImageUrl(name)}
                         />
                     </Button>
