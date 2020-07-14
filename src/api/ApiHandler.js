@@ -10,7 +10,7 @@ import store from "../redux/store";
 export const BASE_URL = "http://localhost:8077";
 
 export const API = axios.create({
-    baseURL: "http://localhost:8077",
+    baseURL: BASE_URL,
     responseType: "json",
     headers:
         store.getState().auth.token !== ""
@@ -21,6 +21,6 @@ export const API = axios.create({
     validateStatus: () => true,
 });
 
-export const VERSION = "Alpha v0.3.7";
+export const VERSION = "Alpha v0.4.0";
 
 export const CLIENT = "Unifey Web Client";
