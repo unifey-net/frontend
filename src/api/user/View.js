@@ -86,13 +86,12 @@ export function SelfView() {
             {self.isLoggedIn && (
                 <Dropdown overlay={menu}>
                     <Button
-                        className="ant-dropdown-link"
+                        className="ant-dropdown-link mt-1"
                         onClick={(e) => e.preventDefault()}
                         type="link"
                     >
                         <Avatar
-                            size={38}
-                            className=""
+                            size={32}
                             src={getImageUrl(name)}
                         />
                     </Button>
@@ -100,11 +99,9 @@ export function SelfView() {
             )}
 
             {!self.isLoggedIn && (
-                <Link to={`/login`}>
-                    Login
+                <Link to={`/login`} className="mt-2">
                     <Avatar
-                        size={38}
-                        className="avatar"
+                        size={32}
                         icon={<UserOutlined />}
                     />
                 </Link>
