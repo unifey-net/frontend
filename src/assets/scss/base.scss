@@ -1,21 +1,10 @@
-@import '~antd/dist/antd.dark.min.css';
+@import 'container';
 @import 'variables';
-@import 'header';
 @import 'footer';
 
-body {
-  background-color: $background;
-  margin: 0;
-  height: 100%
-}
-
-.container {
-  min-height: calc(100vh - 70px);
-}
-
-span, h1, h2, h3, h4, h5, h6, p, a, label {
-  color: $text-color;
-}
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $default-header-font;
@@ -27,4 +16,8 @@ p, a, span, label {
 
 a:hover {
   color: $link-color;
+}
+
+.anticon {
+  vertical-align: 0 !important
 }

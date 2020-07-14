@@ -1,30 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
 
-import "./assets/scss/base.scss";
-import Header from "./global/Header";
-import UserPage from "./handle/UserPage";
-import PageHandler from "./handle/PageHandler";
-import Home from "./pages/home";
-import Footer from "./global/Footer";
-import CommunityPage from "./handle/CommunityPage";
+import { Provider } from "react-redux";
+import App from "./App"
+import store from "./redux/store"
 
 ReactDOM.render(
-        <BrowserRouter>
-            <Header />
-            <div className="container">
-                <Switch>
-                    <Route path='/@:user' component={UserPage}/>
-                    <Route path='/c/:community' component={CommunityPage}/>
-                    <Route path='/:page' component={PageHandler}/>
-                    <Route exact path='/' component={Home}/>
-                    <Route component={() => 404} />
-                </Switch>
-            </div>
-            <Footer />
-        </BrowserRouter>, document.getElementById('root'));
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

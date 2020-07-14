@@ -1,0 +1,21 @@
+@import 'variables';
+
+// The main page container. This houses the footer, header and main content.
+.page-container-light {
+    background-color: $light-background;
+    min-height: 100vh;
+    position: relative;
+}
+
+.page-container-dark {
+    background-color: $dark-background;
+    min-height: 100vh;
+    position: relative;
+}
+
+// The main container
+.content-container {
+    padding-bottom: 8rem;
+    padding-left: 16rem;
+    padding-right: 16rem;
+}
