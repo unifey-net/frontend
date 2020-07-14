@@ -183,7 +183,7 @@ export default function Post(props) {
             style={{
                 backgroundColor: "#171616",
                 maxWidth: "600px",
-                maxHeight: "200px"
+                maxHeight: "200px",
             }}
         >
             <div className="flex flex-row justify-between">
@@ -192,7 +192,7 @@ export default function Post(props) {
             </div>
             <div className="post-content">
                 <p
-                className="truncate"
+                    className="truncate"
                     dangerouslySetInnerHTML={{
                         __html: parseBody(props.post.content, emotes),
                     }}
