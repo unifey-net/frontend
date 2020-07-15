@@ -25,7 +25,7 @@ export default function Home() {
                             rel="noopener noreferrer"
                             href="https://discord.gg/e9wKgAt"
                         >
-                            Discord
+                            {" "}Discord
                         </a>
                         .
                     </p>
