@@ -97,7 +97,7 @@ export default function App() {
             <link rel="stylesheet" type="text/css" href={use} />
             <div className={clazz}>
                 <Header />
-                <div className="content-container">
+                <div className="content-container px-8 lg:px-0">
                     <Switch>
                         <Route path="/u/:name" component={User} />
                         <Route path="/c/:community" component={Community} />

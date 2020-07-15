@@ -179,10 +179,9 @@ export default function Post(props) {
 
     return (
         <div
-            className="p-6 rounded my-4"
+            className="px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
             style={{
                 backgroundColor: "#171616",
-                maxWidth: "600px",
                 maxHeight: "200px",
             }}
         >
@@ -212,10 +211,8 @@ export default function Post(props) {
                     </p>
                     <p>{vote}</p>
                 </div>
-                <div className="extra-info-container">
-                    <span>
-                        Posted on{" "}
-                        {new Date(props.post.createdAt).toLocaleString()}
+                    <span className="invisible lg:visible">
+                        Posted on {new Date(props.post.createdAt).toLocaleString()}
                     </span>
                     <Dropdown
                         overlay={
@@ -224,15 +221,8 @@ export default function Post(props) {
                                 : extendedMenu
                         }
                     >
-                        <Button
-                            className="ant-dropdown-link"
-                            onClick={(e) => e.preventDefault()}
-                            type="link"
-                        >
-                            <CaretDownFilled />
-                        </Button>
+                            <CaretDownFilled className="hover:text-blue-600 cursor-pointer" />
                     </Dropdown>
-                </div>
             </div>
         </div>
     );

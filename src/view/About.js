@@ -5,7 +5,7 @@ export default function About() {
     return (
         <div className="flex items-center justify-center">
             <div>
-                <h1 className="text-6xl">About Unifey</h1>
+                <h1 className="text-4xl md:text-2xl lg:text-6xl">About Unifey</h1>
 
                 <h1 className="text-lg">What is Unifey for?</h1>
                 <p>

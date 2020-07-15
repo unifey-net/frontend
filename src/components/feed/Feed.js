@@ -151,7 +151,7 @@ export default function Feed(props) {
 
             {page.maxPage === 0 && (
                 <Empty
-                    style={{ minWidth: "600px" }}
+                    style={{ minWidth: "200px" }}
                     description={<p>There are no posts in this feed.</p>}
                 />
             )}

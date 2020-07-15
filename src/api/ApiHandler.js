@@ -7,7 +7,7 @@ import store from "../redux/store";
  *
  * @type {string}
  */
-export const BASE_URL = "http://localhost:8077";
+export const BASE_URL = "http://192.168.1.102:8077";
 
 export const API = axios.create({
     baseURL: BASE_URL,

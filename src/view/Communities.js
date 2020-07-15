@@ -56,7 +56,7 @@ export default function Communities() {
     return (
         <div className="flex flex-col items-center justify-center">
             <div>
-                <h1 className="text-6xl">Top Communities</h1>
+                <h1 className="text-2xl md:text-3xl lg:text-6xl">Top Communities</h1>
             </div>
 
             {!loaded && (

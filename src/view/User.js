@@ -76,11 +76,10 @@ export default function User() {
 
     /**
      * Update the description.
-     * @param {*} desc 
+     * @param {*} desc
      */
     const updateDescription = async (desc) => {
-        if (desc === description)
-            return
+        if (desc === description) return;
 
         setDescription(desc);
 
@@ -97,11 +96,10 @@ export default function User() {
 
     /**
      * Update the discord.
-     * @param {*} disc 
+     * @param {*} disc
      */
     const updateDiscord = async (disc) => {
-        if (disc === discord)
-            return
+        if (disc === discord) return;
 
         setDiscord(disc);
 
@@ -118,11 +116,10 @@ export default function User() {
 
     /**
      * Update the description.
-     * @param {*} loc 
+     * @param {*} loc
      */
     const updateLocation = async (loc) => {
-        if (loc === location)
-            return
+        if (loc === location) return;
 
         setLocation(loc);
 
@@ -141,46 +138,99 @@ export default function User() {
         <div className="flex flex-col items-center justify-center">
             {loaded.loaded && !loaded.error && (
                 <>
-                    <h1 className="text-4xl">
-                        {user.username}{" "}
-                        <Avatar size={64} src={getImageUrl(user.username)} />
-                    </h1>
+                    <div className="flex flex-col lg:block">
+                        <h1 className="text-3xl lg:text-4xl">
+                            {user.username}{" "}
+                            <Avatar
+                                size={64}
+                                src={getImageUrl(user.username)}
+                            />
+                            {user.badges.length > 0 && (
+                                <div className="flex flex-row">
+                                    <br />
+                                    {user.badges.map((badge, index) => (
+                                        <Tooltip key={index} title={badge.desc}>
+                                            <img
+                                                key={index}
+                                                alt={badge.id}
+                                                src={badge.image}
+                                                size={32}
+                                                width={32}
+                                            />
+                                        </Tooltip>
+                                    ))}
+                                </div>
+                            )}
+                        </h1>
 
-                    <div className="flex flex-row justify-between gap-16">
+                        <div className="block mb-6 lg:hidden">
+                            <Text
+                                editable={
+                                    editing
+                                        ? {
+                                              onChange: updateDescription,
+                                          }
+                                        : false
+                                }
+                            >
+                                {description}
+                            </Text>
+                            <br />
+                            <br />
+                            Joined On —
+                            <Text>
+                                {new Date(user.createdAt).toLocaleString()}
+                            </Text>
+                            <br />
+                            {user.profile.location !== "" && (
+                                <>
+                                    Location —
+                                    <Text
+                                        editable={
+                                            editing
+                                                ? {
+                                                      onChange: updateLocation,
+                                                  }
+                                                : false
+                                        }
+                                    >
+                                        {location}
+                                    </Text>
+                                </>
+                            )}
+                            {user.profile.discord !== "" && (
+                                <>
+                                    <br />
+                                    Discord —
+                                    <Text
+                                        editable={
+                                            editing
+                                                ? {
+                                                      onChange: updateDiscord,
+                                                  }
+                                                : false
+                                        }
+                                    >
+                                        {discord}
+                                    </Text>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
                         <Feed id={`uf_${user.id}`} postBox={signedIn()} />
 
                         <div
-                            className="p-4 rounded mt-16 flex flex-col items-center"
+                            className="p-4 rounded mt-16 invisible lg:visible"
                             style={{
                                 backgroundColor: "#171616",
-                                height: "min-content",
                                 maxWidth: "200px",
-                                minWidth: "200px",
+                                height: "min-content",
                             }}
                         >
                             <div className="flex flex-row justify-between">
-                                <h3 className="text-lg">
-                                    {user.username}
-                                    {user.badges.length > 0 && (
-                                        <div className="flex flex-row gap-2">
-                                            <br />
-                                            {user.badges.map((badge, index) => (
-                                                <Tooltip
-                                                    key={index}
-                                                    title={badge.desc}
-                                                >
-                                                    <img
-                                                        key={index}
-                                                        alt={badge.id}
-                                                        src={badge.image}
-                                                        size={32}
-                                                        width={32}
-                                                    />
-                                                </Tooltip>
-                                            ))}
-                                        </div>
-                                    )}
-                                </h3>
+                                <h3 className="text-lg">{user.username}</h3>
 
                                 {self.id === user.id && (
                                     <EditOutlined
@@ -221,7 +271,7 @@ export default function User() {
                                         editable={
                                             editing
                                                 ? {
-                                                      onChange: updateLocation
+                                                      onChange: updateLocation,
                                                   }
                                                 : false
                                         }
@@ -241,7 +291,7 @@ export default function User() {
                                         editable={
                                             editing
                                                 ? {
-                                                      onChange: updateDiscord
+                                                      onChange: updateDiscord,
                                                   }
                                                 : false
                                         }

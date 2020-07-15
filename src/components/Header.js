@@ -48,7 +48,7 @@ export default function Header() {
             <div className="mt-2">
                 <ul className="flex flex-row gap-4">
                     {pages.map((obj, index) => (
-                        <li key={index} className="text-lg">
+                        <li key={index} className="text-sm mt-1 md:text-md lg:mt-0 lg:text-lg">
                             {page === obj.location && (
                                 <Link className="text-green-200" to={obj.location}>
                                     {obj.name}

@@ -52,11 +52,26 @@ export default function Community() {
         <div className="flex flex-col items-center justify-center">
             {loaded.loaded && !loaded.error && (
                 <>
-                    <h1 className="text-4xl">{data.community.name}</h1>
+                    <div className="flex flex-col lg:block">
+                        <h1 className="text-3xl lg:text-4xl">{data.community.name}</h1>
+                        <div className="block mb-6 lg:hidden">
+                            <Text>{data.community.description}</Text>
+
+                            <br/>
+                            <br/>
+
+                            Created On —
+                            <Text>
+                                {new Date(
+                                    data.community.createdAt
+                                ).toLocaleString()}
+                            </Text>
+                        </div>
+                    </div>
 
                     <br />
 
-                    <div className="flex flex-row justify-between gap-16">
+                    <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
                         <Feed
                             id={`cf_${data.community.id}`}
                             postBox={data.selfRole >= data.community.postRole}
@@ -64,15 +79,17 @@ export default function Community() {
                         />
 
                         <div
-                            className="p-4 rounded mt-16"
+                            className="p-4 rounded mt-16 invisible lg:visible"
                             style={{
                                 backgroundColor: "#171616",
+                                maxWidth: "200px",
                                 height: "min-content",
-                                maxWidth: "200px"
                             }}
                         >
                             <div className="flex flex-row justify-between">
-                                <h3 className="text-lg">{data.community.name}</h3>
+                                <h3 className="text-lg">
+                                    {data.community.name}
+                                </h3>
                             </div>
 
                             <Text>
@@ -83,7 +100,7 @@ export default function Community() {
                                 />
                             </Text>
 
-                            <Divider/>
+                            <Divider />
 
                             <h3 className="text-lg">Created On</h3>
                             <Text>
