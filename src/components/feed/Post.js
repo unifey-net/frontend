@@ -179,10 +179,9 @@ export default function Post(props) {
 
     return (
         <div
-            className="px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
+            className="accent px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
             style={{
-                backgroundColor: "#171616",
-                maxHeight: "200px",
+                maxHeight: "200px"
             }}
         >
             <div className="flex flex-row justify-between">

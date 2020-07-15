@@ -3,14 +3,38 @@
 // The main page container. This houses the footer, header and main content.
 .page-container-light {
     background-color: $light-background;
+
+    $accent-background: whitesmoke;
+    $header-color: whitesmoke;
+
     min-height: 100vh;
     position: relative;
+
+    .accent {
+        background-color: $accent-background;
+    }
+
+    .header {
+        background-color: $header-color;
+    }
 }
 
 .page-container-dark {
     background-color: $dark-background;
+
+    $accent-background: #171616;
+    $header-color: #262525;
+
     min-height: 100vh;
     position: relative;
+    
+    .accent {
+        background-color: $accent-background;
+    }
+
+    .header {
+        background-color: $header-color;
+    }
 }
 
 // The main container

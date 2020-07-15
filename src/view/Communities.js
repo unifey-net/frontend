@@ -73,8 +73,7 @@ export default function Communities() {
                     {communities.map((community, index) => (
                         <li key={index}>
                             <div
-                                className="max-w-sm rounded overflow-hidden shadow-lg gap-2"
-                                style={{ backgroundColor: "#171616" }}
+                                className="max-w-sm rounded overflow-hidden shadow-lg gap-2 accent"
                             >
                                 <div className="p-6 flex-col flex">
                                     <div className="flex flex-row justify-between">

@@ -222,9 +222,8 @@ export default function User() {
                         <Feed id={`uf_${user.id}`} postBox={signedIn()} />
 
                         <div
-                            className="p-4 rounded mt-16 invisible lg:visible"
+                            className="p-4 accent rounded mt-16 invisible lg:visible"
                             style={{
-                                backgroundColor: "#171616",
                                 maxWidth: "200px",
                                 height: "min-content",
                             }}

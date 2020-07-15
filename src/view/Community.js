@@ -79,9 +79,8 @@ export default function Community() {
                         />
 
                         <div
-                            className="p-4 rounded mt-16 invisible lg:visible"
+                            className="accent p-4 rounded mt-16 invisible lg:visible"
                             style={{
-                                backgroundColor: "#171616",
                                 maxWidth: "200px",
                                 height: "min-content",
                             }}

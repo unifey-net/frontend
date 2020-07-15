@@ -32,8 +32,7 @@ export default function Header() {
 
     return (
         <div
-            className="flex justify-evenly bg-transparent pt-2 mb-4"
-            style={{ backgroundColor: "#262525" }}
+            className="flex justify-evenly bg-transparent pt-2 mb-4 header"
         >
             <div className="mb-2">
                 <Link to="/" className="unifey">
