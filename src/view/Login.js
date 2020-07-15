@@ -2,8 +2,8 @@ import React from "react";
 import { login, signedIn } from "../api/user/User";
 import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message } from "antd";
-import history from "../api/History"
-import { Link } from "react-router-dom"
+import history from "../api/History";
+import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { alertInfo } from "../redux/actions/alert.actions";
@@ -16,20 +16,19 @@ export default function Login() {
         let response = await login(values["username"], values["password"]);
 
         if (response == null || !response) {
-            message.error("Invalid username or password!")
+            message.error("Invalid username or password!");
         } else {
-            history.push("/")
-            dispatch(alertInfo("You are now signed in!"))
+            history.push("/");
+            dispatch(alertInfo("You are now signed in!"));
         }
     };
-    
-    if (signedIn()) 
-        return (<Redirect to="/" />) 
-    
+
+    if (signedIn()) return <Redirect to="/" />;
+
     return (
         <>
-            <div className="login-container">
-                <h1 className="title">Login</h1>
+            <div className="flex flex-col items-center justify-center">
+                <h1 className="text-6xl">Login</h1>
 
                 <div className="form-container">
                     <Form
@@ -66,7 +65,7 @@ export default function Login() {
                             <Input.Password id="password" />
                         </Form.Item>
 
-                        <div className="remember-forgot-container">
+                        <div className="flex flex-row justify-between">
                             <Form.Item name="remember" valuePropName="checked">
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
@@ -79,9 +78,11 @@ export default function Login() {
                         </div>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
+                            <div className="flex flex-row justify-center items-center">
+                                <Button type="primary" htmlType="submit">
+                                    Submit
+                                </Button>
+                            </div>
                         </Form.Item>
                     </Form>
                 </div>
