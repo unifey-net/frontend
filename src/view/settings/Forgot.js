@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom";
-import { Input, Button } from "antd";
+import { Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
 import { alertInfo } from "../../redux/actions/alert.actions";
 import history from "../../api/History"
@@ -10,20 +10,36 @@ export default function ForgotPassword() {
 
     const resetPassword = () => {
         let value = document.getElementById("email").value
+        
+        if (value === "") {
+            message.error("Please insert an email")
+            return
+        }
 
         history.push("/")
 
         dispatch(alertInfo(`An email has been sent.`))
     }
 
-    return (<div className="info-container">
-        <h1>Forgot Password</h1>
-        <p>Please input the email of the account you're trying to retrieve. If you don't remember this email, but remember your username or other details, please <Link to="/support">contact our support</Link>.</p>
+    return (
+        <div className="flex flex-col items-center justify-center">
+            <h1 className="text-6xl">Forgot Password</h1>
+            <p>
+                Please input the email of the account you're trying to retrieve. <br/>
+                If you don't remember this email, but remember your username or
+                other details, please{" "}
+                <Link to="/support">contact our support</Link>.
+            </p>
 
-        <Input placeholder="Email of the account." style={{width: "15%"}} id="email"/>
+            <Input
+                placeholder="Email of the account."
+                style={{ width: "15%" }}
+                id="email"
+            />
 
-        <br style={{marginTop: "1rem"}} />
+            <br style={{ marginTop: "1rem" }} />
 
-        <Button onClick={resetPassword}>Reset password</Button>
-    </div>)
+            <Button onClick={resetPassword}>Reset password</Button>
+        </div>
+    );
 }
