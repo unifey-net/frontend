@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { signedIn } from "../../api/user/User";
-import { votePost } from "../../api/Feeds";
+import { votePost, voteComment } from "../../api/Feeds";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { Tooltip, message } from "antd";
+import { useSelector } from "react-redux";
 
-export default function PostVote(props) {
-    let { voteObj, post, type } = props;
-
+export default function PostVote({ voteObj, post, postType }) {
     let [vote, setVote] = useState(post.upvotes - post.downvotes);
 
     let [hasDownVoted, setDownVoted] = useState(false);
     let [hasUpVoted, setUpVoted] = useState(false);
+
+    let postId = useSelector(store => store.post)
 
     useEffect(() => {
         if (voteObj != null) {
@@ -30,7 +31,16 @@ export default function PostVote(props) {
         if (!signedIn()) {
             return;
         }
-        let response = await votePost(post.feed, post.id, type);
+
+        let response;
+
+        console.log(postType)
+
+        if (postType === "comment") {
+            response = await voteComment(post.feed, postId, type, post.id);
+        } else {
+            response = await votePost(post.feed, postId, type);
+        }
 
         if (response.status !== 200) {
             message.error("There was an issue upvoting that post!");

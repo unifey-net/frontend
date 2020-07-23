@@ -14,7 +14,7 @@ export default function PostComment({ comment, children }) {
         <Comment
             actions={[
                 <PostVote
-                    type="comment"
+                    postType="comment"
                     post={comment.comment}
                     voteObj={comment.vote}
                 />,

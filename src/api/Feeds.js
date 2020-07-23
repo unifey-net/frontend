@@ -48,7 +48,11 @@ export const votePost = async (feed, id, type) => {
 }
 
 export const voteComment = async (feed, id, type, comment) => {
+    let form = new FormData();
 
+    form.append("vote", type);
+
+    return await API.post(`/feeds/${feed}/post/${id}/comments/${comment}/vote`, form);
 }
 
 /**
