@@ -13,7 +13,7 @@ export default function Login() {
     const dispatch = useDispatch();
 
     const loginForm = async (values) => {
-        let response = await login(values["username"], values["password"]);
+        let response = await login(values["username"], values["password"], values["remember"]);
 
         if (response == null || !response) {
             message.error("Invalid username or password!");

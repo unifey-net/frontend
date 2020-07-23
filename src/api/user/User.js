@@ -69,7 +69,7 @@ export const getExpire = () => store.getState().auth.expire;
 /**
  * If the self token is expired.
  */
-export const isExpired = () => new Date().getTime() >= getExpire()
+export const isExpired = () => getExpire() != -1 && new Date().getTime() >= getExpire()
 
 /**
  * Logout
@@ -94,11 +94,12 @@ export const signedIn = () =>
  * @param pass
  * @param callback
  */
-export const login = async (username, password) => {
+export const login = async (username, password, remember) => {
     let data = new FormData()
 
-    data.set("username", username)
-    data.set("password", password);
+    data.append("username", username)
+    data.append("password", password);
+    data.append("remember", remember)
 
     let auth = await API.post(`/authenticate`, data)
 
@@ -110,8 +111,8 @@ export const login = async (username, password) => {
 
     store.dispatch(logIn(
         token.token,
-        user, 
-        new Date().getTime() + (1000 * 60 * 60 * 24)
+        user,
+        token.expires
     ))
 
     return true
