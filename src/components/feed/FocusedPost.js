@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Spin, Comment, Avatar, Button } from "antd";
 import { LoadingOutlined, ArrowLeftOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getPost } from "../../api/Feeds";
-import Post from "./Post"
+import Post from "./Post";
 import PostComment from "./PostComment";
 import History from "../../api/History";
+import { updatePost } from "../../redux/actions/post.actions"
 
-export default function FocusedPost(props) {
-    const { id, feed, base } = props
-
-    let [loaded, setLoaded] = useState(false)
-    let [post, setPost] = useState({})
+export default function FocusedPost({ id, feed }) {
+    const dispatch = useDispatch()
+    let [loaded, setLoaded] = useState(false);
+    let [post, setPost] = useState({});
 
     useEffect(() => {
         const loadPost = async () => {
-            let req = await getPost(feed, id)
+            let req = await getPost(feed, id);
 
             if (req.status === 200) {
+                dispatch(updatePost(id))
                 setPost(req.data);
             }
 
-            setLoaded(true)
-        }
+            setLoaded(true);
+        };
 
-        loadPost()
-    }, [id, feed])
+        loadPost();
+    }, [id, feed]);
 
     return (
         <>

@@ -4,9 +4,11 @@ import { AccountBookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../api/user/User";
 import PostVote from "./PostVote";
+import PostReply from "./PostReply";
+import { useSelector } from "react-redux";
 
-export default function PostComment(props) {
-    let { comment, children } = props;
+export default function PostComment({ comment, children }) {
+    const post = useSelector((state) => state.post);
 
     return (
         <Comment
@@ -16,7 +18,16 @@ export default function PostComment(props) {
                     post={comment.comment}
                     voteObj={comment.vote}
                 />,
-                <span key="comment-nested-reply-to" className="ml-4">Reply to</span>,
+                <PostReply
+                    level={1}
+                    post={post}
+                    feed={comment.comment.feed}
+                    id={
+                        comment.comment.level === 1
+                            ? comment.comment.id
+                            : comment.comment.parent
+                    }
+                />,
             ]}
             author={
                 <Link to={`/u/${comment.author.username}`}>

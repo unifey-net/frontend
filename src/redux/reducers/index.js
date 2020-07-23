@@ -4,5 +4,6 @@ import alert from "./alert.reducer";
 import theme from "./theme.reducer"
 import community from "./community.reducer"
 import emotes from "./emotes.reducer";
+import post from "./post.reducer"
 
-export default combineReducers({ auth, alert, theme, community, emotes });
+export default combineReducers({ auth, alert, theme, community, emotes, post });

@@ -14,18 +14,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { parseBody } from "../../api/Util";
 import { getCommunityById } from "../../api/community/Community";
 import { getGlobalEmotes } from "../../api/Emotes";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import PostComments from "./PostComments";
 import PostVote from "./PostVote";
 import History from "../../api/History";
+import PostReply from "./PostReply";
 
 /**
  * A post
- * @param {*} props
  */
-export default function Post(props) {
-    const { post, vote, author, type } = props
-
+export default function Post({ post, vote, author, type, feed }) {
     let [emotes, setEmotes] = useState([]);
 
     // get emotes
@@ -46,12 +44,12 @@ export default function Post(props) {
             }
         };
 
-        if (props.feed.startsWith("cf_")) {
-            loadCommunityEmotes(props.feed.substring(3));
+        if (feed.startsWith("cf_")) {
+            loadCommunityEmotes(feed.substring(3));
         } else {
             loadEmotes();
         }
-    }, [props.feed]);
+    }, [feed]);
 
     let self = useSelector((store) => store.auth.user);
 
@@ -60,7 +58,7 @@ export default function Post(props) {
      */
     const updateFocus = () => {
         History.push(`${window.location.pathname}/${post.id}`);
-    }
+    };
 
     const reportPost = async () => {
         let key = "reporting-" + post.id;
@@ -118,15 +116,13 @@ export default function Post(props) {
                         </Link>
                     )}
                     {type === "focused" && (
-                        <p className="text-lg">
-                            {post.title}
-                        </p>
+                        <p className="text-lg">{post.title}</p>
                     )}
                     <UserView username={author.username} />
                 </div>
                 <div className="post-content">
                     <p
-                        className={props.type === "focused" ? "" : "truncate"}
+                        className={type === "focused" ? "" : "truncate"}
                         dangerouslySetInnerHTML={{
                             __html: parseBody(post.content, emotes),
                         }}
@@ -147,7 +143,10 @@ export default function Post(props) {
                 </div>
 
                 {type === "focused" && (
-                    <PostComments feed={post.feed} id={post.id} />
+                    <>
+                        <PostReply post={post.id} level={0} feed={post.feed}/>
+                        <PostComments feed={post.feed} id={post.id} />
+                    </>
                 )}
             </div>
         </>

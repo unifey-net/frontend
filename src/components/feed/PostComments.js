@@ -4,9 +4,7 @@ import { API } from "../../api/ApiHandler";
 import { Spin, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-export default function PostComments(props) {
-    const { id, feed, data, commentId } = props;
-
+export default function PostComments({ id, feed, data, commentId }) {
     const [comments, setComments] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
