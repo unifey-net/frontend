@@ -1,12 +1,12 @@
 import React from "react";
-import { login, signedIn } from "../api/user/User";
+import { login, signedIn } from "../../api/user/User";
 import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message } from "antd";
-import history from "../api/History";
+import history from "../../api/History";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { alertInfo } from "../redux/actions/alert.actions";
+import { alertInfo } from "../../redux/actions/alert.actions";
 import FormItem from "antd/lib/form/FormItem";
 
 export default function Login() {

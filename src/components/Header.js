@@ -27,6 +27,10 @@ export default function Header() {
         {
             name: "Communities",
             location: "/communities"
+        },
+        {
+            name: "Beta",
+            location: "/beta"
         }
     ];
 
@@ -35,7 +39,7 @@ export default function Header() {
             className="flex justify-evenly bg-transparent pt-2 mb-4 header"
         >
             <div className="mb-2">
-                <Link to="/" className="unifey">
+                <Link to="/">
                     <img
                         src="/favicon.png"
                         width={48}

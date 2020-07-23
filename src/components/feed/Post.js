@@ -7,24 +7,25 @@ import {
     CaretDownFilled,
     DeleteOutlined,
     EditOutlined,
+    ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { message, Menu, Button, Dropdown, Tooltip } from "antd";
-import { BASE_URL } from "../../api/ApiHandler";
-import { signedIn, getToken } from "../../api/user/User";
-import { useSelector } from "react-redux";
-import { votePost } from "../../api/Feeds";
+import { useSelector, useDispatch } from "react-redux";
 import { parseBody } from "../../api/Util";
 import { getCommunityById } from "../../api/community/Community";
 import { getGlobalEmotes } from "../../api/Emotes";
+import { Link } from "react-router-dom"
+import PostComments from "./PostComments";
+import PostVote from "./PostVote";
+import History from "../../api/History";
 
 /**
  * A post
  * @param {*} props
  */
 export default function Post(props) {
-    let [vote, setVote] = useState(props.post.upvotes - props.post.downvotes);
-    let [hasDownVoted, setDownVoted] = useState(false);
-    let [hasUpVoted, setUpVoted] = useState(false);
+    const { post, vote, author, type } = props
+
     let [emotes, setEmotes] = useState([]);
 
     // get emotes
@@ -54,85 +55,15 @@ export default function Post(props) {
 
     let self = useSelector((store) => store.auth.user);
 
-    useEffect(() => {
-        if (props.vote != null) {
-            if (props.vote.vote === 1) {
-                setUpVoted(true);
-            } else if (props.vote.vote === 0) {
-                setDownVoted(true);
-            }
-        }
-    }, [props.vote]);
-
     /**
-     * Update the vote on the backend.
-     * @param {int} type
+     * Update focus.
      */
-    const sendVote = async (type) => {
-        if (!signedIn()) {
-            return;
-        }
-
-        let response = await votePost(props.post.id, type);
-
-        if (response.status !== 200) {
-            message.error("There was an issue upvoting that post!");
-        }
-    };
-
-    const upVote = () => {
-        if (!signedIn()) {
-            return;
-        }
-
-        if (hasUpVoted) {
-            setVote((prevVote) => prevVote - 1);
-            setUpVoted(false);
-
-            sendVote(-1);
-        } else if (hasDownVoted) {
-            setVote((prevVote) => prevVote + 2);
-            setUpVoted(true);
-            setDownVoted(false);
-
-            sendVote(1);
-        } else {
-            setVote((prevVote) => prevVote + 1);
-            setUpVoted(true);
-
-            sendVote(1);
-        }
-    };
-
-    const downVote = () => {
-        if (!signedIn()) {
-            return;
-        }
-
-        if (hasUpVoted) {
-            setVote((prevVote) => prevVote - 2);
-
-            setDownVoted(true);
-            setUpVoted(false);
-
-            sendVote(0);
-        } else if (hasDownVoted) {
-            setVote((prevVote) => prevVote + 1);
-
-            setDownVoted(false);
-
-            sendVote(-1);
-        } else {
-            setVote((prevVote) => prevVote - 1);
-
-            setDownVoted(true);
-
-            sendVote(0);
-        }
-    };
+    const updateFocus = () => {
+        History.push(`${window.location.pathname}/${post.id}`);
+    }
 
     const reportPost = async () => {
-        let key = "reporting-" + props.post.id;
+        let key = "reporting-" + post.id;
 
         message.loading({ content: "Loading...", key });
 
@@ -178,51 +109,47 @@ export default function Post(props) {
     );
 
     return (
-        <div
-            className="accent px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
-            style={{
-                maxHeight: "200px"
-            }}
-        >
-            <div className="flex flex-row justify-between">
-                <h2 className="text-lg">{props.post.title}</h2>
-                <UserView username={props.author.username} />
-            </div>
-            <div className="post-content">
-                <p
-                    className="truncate"
-                    dangerouslySetInnerHTML={{
-                        __html: parseBody(props.post.content, emotes),
-                    }}
-                />
-            </div>
-            <div className="flex flex-row justify-between">
-                <div className="flex flex-row justify-between gap-2">
-                    <p className={hasUpVoted ? "text-green-400" : ""}>
-                        <Tooltip title="Upvote this post">
-                            <UpOutlined onClick={upVote} />
-                        </Tooltip>
-                    </p>
-                    <p className={hasDownVoted ? "text-red-600" : ""}>
-                        <Tooltip title="Downvote this post">
-                            <DownOutlined onClick={downVote} />
-                        </Tooltip>
-                    </p>
-                    <p>{vote}</p>
+        <>
+            <div className="accent px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md">
+                <div className="flex flex-row justify-between">
+                    {type !== "focused" && (
+                        <Link className="text-lg" onClick={() => updateFocus()}>
+                            {post.title}
+                        </Link>
+                    )}
+                    {type === "focused" && (
+                        <p className="text-lg">
+                            {post.title}
+                        </p>
+                    )}
+                    <UserView username={author.username} />
                 </div>
+                <div className="post-content">
+                    <p
+                        className={props.type === "focused" ? "" : "truncate"}
+                        dangerouslySetInnerHTML={{
+                            __html: parseBody(post.content, emotes),
+                        }}
+                    />
+                </div>
+                <div className="flex flex-row justify-between gap-4">
+                    <PostVote post={post} voteObj={vote} />
                     <span className="invisible lg:visible">
-                        Posted on {new Date(props.post.createdAt).toLocaleString()}
+                        Posted on {new Date(post.createdAt).toLocaleString()}
                     </span>
                     <Dropdown
                         overlay={
-                            self.id === props.author.id
-                                ? elevatedMenu
-                                : extendedMenu
+                            self.id === author.id ? elevatedMenu : extendedMenu
                         }
                     >
-                            <CaretDownFilled className="hover:text-blue-600 cursor-pointer" />
+                        <CaretDownFilled className="hover:text-blue-600 cursor-pointer" />
                     </Dropdown>
+                </div>
+
+                {type === "focused" && (
+                    <PostComments feed={post.feed} id={post.id} />
+                )}
             </div>
-        </div>
+        </>
     );
 }

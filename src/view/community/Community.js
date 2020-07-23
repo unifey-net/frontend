@@ -1,8 +1,8 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import Feed from "../components/feed/Feed";
+import Feed from "../../components/feed/Feed";
 import { Empty, Spin, Typography, Divider } from "antd";
-import { getCommunityByName } from "../api/community/Community";
+import { getCommunityByName } from "../../api/community/Community";
 import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
@@ -13,7 +13,7 @@ const { Text } = Typography;
  */
 export default function Community() {
     const {
-        params: { community },
+        params: { community, post },
     } = useRouteMatch();
 
     let [loaded, setLoaded] = useState({
@@ -76,6 +76,7 @@ export default function Community() {
                             id={`cf_${data.community.id}`}
                             postBox={data.selfRole >= data.community.postRole}
                             community={data.community}
+                            focus={post}
                         />
 
                         <div

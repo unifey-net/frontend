@@ -1,8 +1,8 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-import { getUserByName, signedIn, getImageUrl } from "../api/user/User";
-import Feed from "../components/feed/Feed";
+import { getUserByName, signedIn, getImageUrl } from "../../api/user/User";
+import Feed from "../../components/feed/Feed";
 
 import { Empty, Spin, Typography, Divider, Tooltip, message } from "antd";
 import Avatar from "antd/es/avatar";
@@ -14,8 +14,8 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-import { getBadges } from "../api/user/Cosmetics";
-import { API } from "../api/ApiHandler";
+import { getBadges } from "../../api/user/Cosmetics";
+import { API } from "../../api/ApiHandler";
 
 const { Text } = Typography;
 

@@ -11,7 +11,9 @@ import {
 import { BASE_URL } from "../../api/ApiHandler";
 import InfiniteScroll from "react-infinite-scroller";
 import PostBox from "./PostBox";
-import { getFeed, getFeedPosts } from "../../api/Feeds.js";
+import { getFeed, getFeedPosts, getPost } from "../../api/Feeds.js";
+import { useSelector } from "react-redux";
+import FocusedPost, { isFocused } from "./FocusedPost.js";
 
 export default function Feed(props) {
     let [posts, setPosts] = useState([]);
@@ -22,6 +24,9 @@ export default function Feed(props) {
         maxPage: -1,
     });
 
+    /**
+     * Load the feed.
+     */
     useEffect(() => {
         const loadFeed = async () => {
             let resp = await getFeed(props.id)
@@ -41,6 +46,9 @@ export default function Feed(props) {
         loadFeed();
     }, [props.id]);
     
+    /**
+     * Clear posts when the sort changes.
+     */
     useEffect(() => {
         setPosts([]);
 
@@ -52,6 +60,9 @@ export default function Feed(props) {
         });
     }, [sort]);
 
+    /**
+     * Handle sorting.
+     */
     useEffect(() => {
         let querySort = new URL(window.location).searchParams.get("sort");
 
@@ -95,6 +106,9 @@ export default function Feed(props) {
         }
     };
 
+    /**
+     * The sort menu management.
+     */
     const menu = (
         <Menu>
             <Menu.Item>
@@ -135,16 +149,6 @@ export default function Feed(props) {
 
     return (
         <div>
-            <div className="flex flex-row justify-evenly">
-                {props.postBox && <PostBox feed={props.id} action={() => {}} />}
-
-                <Dropdown overlay={menu}>
-                    <Button type="link" onClick={(e) => e.preventDefault()}>
-                        Sort by {sort[0].toUpperCase() + sort.substring(1)}
-                    </Button>
-                </Dropdown>
-            </div>
-
             {status === 1 && (
                 <Alert message="You cannot view this feed." type="error" />
             )}
@@ -157,25 +161,60 @@ export default function Feed(props) {
             )}
 
             {status === 0 && page.maxPage !== 0 && (
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={loadMore}
-                    hasMore={page.maxPage >= page.page}
-                    loader={<Spin key={0} indicator={<LoadingOutlined />} />}
-                >
-                    <ul className="feed-container">
-                        {posts.map((post, index) => (
-                            <li key={index}>
-                                <Post
-                                    author={post.owner}
-                                    post={post.post}
-                                    vote={post.vote}
-                                    feed={props.id}
-                                />
-                            </li>
-                        ))}
-                    </ul>
-                </InfiniteScroll>
+                <>
+                    {props.focus && (
+                        <FocusedPost feed={props.id} id={props.focus} />
+                    )}
+
+                    {!props.focus && (
+                        <>
+                            <div className="flex flex-row justify-evenly">
+                                {props.postBox && (
+                                    <PostBox
+                                        feed={props.id}
+                                        action={() => {}}
+                                    />
+                                )}
+
+                                <Dropdown overlay={menu}>
+                                    <Button
+                                        type="link"
+                                        onClick={(e) => e.preventDefault()}
+                                    >
+                                        Sort by{" "}
+                                        {sort[0].toUpperCase() +
+                                            sort.substring(1)}
+                                    </Button>
+                                </Dropdown>
+                            </div>
+                            
+                            <InfiniteScroll
+                                pageStart={0}
+                                loadMore={loadMore}
+                                hasMore={page.maxPage >= page.page}
+                                loader={
+                                    <Spin
+                                        key={0}
+                                        indicator={<LoadingOutlined />}
+                                    />
+                                }
+                            >
+                                <ul className="feed-container">
+                                    {posts.map((post, index) => (
+                                        <li key={index}>
+                                            <Post
+                                                author={post.author}
+                                                post={post.post}
+                                                vote={post.vote}
+                                                feed={props.id}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </InfiniteScroll>
+                        </>
+                    )}
+                </>
             )}
 
             {!status === -1 && (

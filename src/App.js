@@ -4,15 +4,15 @@ import { Route, Router, Switch } from "react-router-dom";
 import "./assets/scss/base.scss";
 import "./assets/main.css"
 
-import Community from "./view/Community";
+import Community from "./view/community/Community";
 import Tos from "./view/Tos";
 import About from "./view/About";
-import Communities from "./view/Communities";
+import Communities from "./view/community/Communities";
 import history from "./api/History";
-import User from "./view/User";
-import Login from "./view/Login";
+import User from "./view/account/User";
+import Login from "./view/account/Login";
 import Home from "./view/Home";
-import Logout from "./view/Logout";
+import Logout from "./view/account/Logout";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Unsubscribed from "./view/Unsubscribed";
@@ -27,6 +27,8 @@ import { isAutoDark } from "./api/Util";
 import Settings from "./view/settings/Settings";
 import Unverified from "./view/Unverified";
 import Verify from "./view/settings/Verify";
+import Beta from "./view/beta/Beta";
+import BetaVerify from "./view/beta/BetaVerify"
 
 export default function App() {
     const alert = useSelector((state) => state.alert);
@@ -99,8 +101,14 @@ export default function App() {
                 <Header />
                 <div className="content-container px-8 lg:px-0">
                     <Switch>
-                        <Route path="/u/:name" component={User} />
-                        <Route path="/c/:community" component={Community} />
+                        <Route path="/u/:name/:post" exact component={User} />
+                        <Route
+                            path="/c/:community/:post"
+                            component={Community}
+                            exact
+                        />
+                        <Route path="/u/:name" exact component={User} />
+                        <Route path="/c/:community" exact component={Community} />
 
                         <Route exact path="/tos" component={Tos} />
                         <Route
@@ -138,6 +146,13 @@ export default function App() {
                         />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/logout" component={Logout} />
+
+                        <Route exact path="/beta" component={Beta} />
+                        <Route
+                            exact
+                            path="/beta/verify"
+                            component={BetaVerify}
+                        />
 
                         <Route component={NotFound} />
                     </Switch>

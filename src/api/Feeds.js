@@ -39,11 +39,22 @@ export const postFeed = async (id, content, title) => {
  * @param {string} id 
  * @param {int} type 
  */
-export const votePost = async (id, type) => {
+export const votePost = async (feed, id, type) => {
     let form = new FormData()
 
-    form.append("post", id)
     form.append("vote", type)
 
-    return await API.post(`/feeds/${id}/vote`, form)
+    return await API.post(`/feeds/${feed}/post/${id}/vote`, form)
+}
+
+export const voteComment = async (feed, id, type, comment) => {
+
+}
+
+/**
+ * Get a post.
+ * @param {*} id 
+ */
+export const getPost = async (feed, id) => {
+    return await API.get(`/feeds/${feed}/post/${id}`)
 }

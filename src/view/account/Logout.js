@@ -1,8 +1,8 @@
 import React from "react"
-import { signedIn, logout } from "../api/user/User"
+import { signedIn, logout } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { alertInfo } from "../redux/actions/alert.actions"
+import { alertInfo } from "../../redux/actions/alert.actions"
 
 export default function Logout() {
     let dispatch = useDispatch();

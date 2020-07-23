@@ -15,7 +15,7 @@ import { isAutoDark } from "../Util";
  */
 export function UserView(props) {
     return (
-        <div className="user-view-container">
+        <div>
             <a href={`/u/${props.username}`}>
                 <Tooltip title={props.username}>
                     <Avatar size={38} src={getImageUrl(props.username)} />
@@ -76,7 +76,7 @@ export function SelfView() {
                 </Menu.Item>
             </SubMenu>
             <Menu.Item key="4">
-                <Link to={`/settings`}>Settings<CoffeeOutlined/></Link>
+                <Link to={`/settings`}>Settings <CoffeeOutlined/></Link>
             </Menu.Item>
         </Menu>
     );

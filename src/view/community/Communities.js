@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getAllCommunities } from "../api/community/Community";
+import { getAllCommunities } from "../../api/community/Community";
 
 import { Spin, Empty, Divider, Button, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
-import { getSelf } from "../api/user/User";
-import { leaveCommunity, joinCommunity } from "../api/user/User";
+import { getSelf } from "../../api/user/User";
+import { leaveCommunity, joinCommunity } from "../../api/user/User";
 
 export default function Communities() {
     let [communities, setCommunities] = useState([]);
