@@ -1,45 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { signedIn } from "../../api/user/User";
-import { votePost, voteComment } from "../../api/Feeds";
+import { signedIn } from "../../../api/user/User";
+import { votePost, voteComment } from "../../../api/Feeds";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { Tooltip, message } from "antd";
 import { useSelector } from "react-redux";
+import Vote from "../../../api/user/Vote"
+import { Post } from "../../../api/Feeds"
 
-export default function PostVote({ voteObj, post, postType }) {
-    let [vote, setVote] = useState(post.upvotes - post.downvotes);
+type Props = {
+    vote: Vote,
+    post: Post,
+    postType?: string
+}
+
+export default ({ vote, post, postType }: Props): JSX.Element => {
+    let [number, setNumber] = useState(post.upvotes - post.downvotes);
 
     let [hasDownVoted, setDownVoted] = useState(false);
     let [hasUpVoted, setUpVoted] = useState(false);
 
-    let postId = useSelector(store => store.post)
+    let postId = useSelector((store: any) => store.post)
 
     useEffect(() => {
-        if (voteObj != null) {
-            if (voteObj.vote === 1) {
-                setUpVoted(true);
-            } else if (voteObj.vote === 0) {
-                setDownVoted(true);
+        if (vote != undefined) {
+            switch (vote.vote) {
+                case 1: {
+                    setUpVoted(() => true);
+                    break;
+                }
+
+                case 0: {
+                    setDownVoted(() => true);
+                    break;
+                }
+
+                default: {
+                    break;
+                }
             }
         }
-    }, [voteObj]);
+    }, []);
 
     /**
      * Update the vote on the backend.
      * @param {int} type
      */
-    const sendVote = async (type) => {
+    const sendVote = async (type: number) => {
         if (!signedIn()) {
             return;
         }
 
         let response;
 
-        console.log(postType)
-
         if (postType === "comment") {
             response = await voteComment(post.feed, postId, type, post.id);
         } else {
-            response = await votePost(post.feed, postId, type);
+            response = await votePost(post.feed, post.id, type);
         }
 
         if (response.status !== 200) {
@@ -53,18 +69,18 @@ export default function PostVote({ voteObj, post, postType }) {
         }
 
         if (hasUpVoted) {
-            setVote((prevVote) => prevVote - 1);
+            setNumber((prevVote) => prevVote - 1);
             setUpVoted(false);
 
             sendVote(-1);
         } else if (hasDownVoted) {
-            setVote((prevVote) => prevVote + 2);
+            setNumber((prevVote) => prevVote + 2);
             setUpVoted(true);
             setDownVoted(false);
 
             sendVote(1);
         } else {
-            setVote((prevVote) => prevVote + 1);
+            setNumber((prevVote) => prevVote + 1);
             setUpVoted(true);
 
             sendVote(1);
@@ -77,20 +93,20 @@ export default function PostVote({ voteObj, post, postType }) {
         }
 
         if (hasUpVoted) {
-            setVote((prevVote) => prevVote - 2);
+            setNumber((prevVote) => prevVote - 2);
 
             setDownVoted(true);
             setUpVoted(false);
 
             sendVote(0);
         } else if (hasDownVoted) {
-            setVote((prevVote) => prevVote + 1);
+            setNumber((prevVote) => prevVote + 1);
 
             setDownVoted(false);
 
             sendVote(-1);
         } else {
-            setVote((prevVote) => prevVote - 1);
+            setNumber((prevVote) => prevVote - 1);
 
             setDownVoted(true);
 
@@ -100,7 +116,7 @@ export default function PostVote({ voteObj, post, postType }) {
 
     return (
         <div className="flex flex-row justify-between gap-2">
-            <p className={hasUpVoted ? "text-green-400" : ""}>
+            <p className={hasUpVoted ? "text-green-600" : ""}>
                 <Tooltip title="Upvote this post">
                     <UpOutlined onClick={upVote} />
                 </Tooltip>
@@ -112,7 +128,7 @@ export default function PostVote({ voteObj, post, postType }) {
                 </Tooltip>
             </p>
 
-            <p>{vote}</p>
+            <p>{number}</p>
         </div>
     );
 }

@@ -6,6 +6,15 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+html::-webkit-scrollbar {
+    width: 0px; /* For Chrome, Safari, and Opera */
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: $default-header-font;
 }

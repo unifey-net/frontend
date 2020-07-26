@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Post from "./Post.js";
+import PostJsx from "./post/Post";
 import { getToken } from "../../api/user/User";
 import { Spin, Dropdown, Menu, Button, Alert, Skeleton, Empty } from "antd";
 import {
@@ -11,12 +11,17 @@ import {
 import { BASE_URL } from "../../api/ApiHandler";
 import InfiniteScroll from "react-infinite-scroller";
 import PostBox from "./PostBox";
-import { getFeed, getFeedPosts, getPost } from "../../api/Feeds.js";
-import { useSelector } from "react-redux";
-import FocusedPost, { isFocused } from "./FocusedPost.js";
+import { getFeed, getFeedPosts, getPost, Post } from "../../api/Feeds";
+import FocusedPost from "./post/FocusedPost";
 
-export default function Feed(props) {
-    let [posts, setPosts] = useState([]);
+type Props = {
+    id: string,
+    postBox?: any,
+    focus?: number
+}
+
+export default ({ id, focus, postBox }: Props): JSX.Element => {
+    let [posts, setPosts] = useState([] as any[]);
     let [status, setStatus] = useState(-1);
     let [sort, setSort] = useState("new");
     let [page, setPage] = useState({
@@ -29,7 +34,7 @@ export default function Feed(props) {
      */
     useEffect(() => {
         const loadFeed = async () => {
-            let resp = await getFeed(props.id)
+            let resp = await getFeed(id)
 
             if (resp.status === 200) {
                 setPage({
@@ -44,7 +49,7 @@ export default function Feed(props) {
         };
 
         loadFeed();
-    }, [props.id]);
+    }, [id]);
     
     /**
      * Clear posts when the sort changes.
@@ -64,7 +69,7 @@ export default function Feed(props) {
      * Handle sorting.
      */
     useEffect(() => {
-        let querySort = new URL(window.location).searchParams.get("sort");
+        let querySort = new URL(window.location.toString()).searchParams.get("sort");
 
         if (querySort === "new" || querySort === "old" || querySort === "top") {
             setSort(querySort)
@@ -75,7 +80,7 @@ export default function Feed(props) {
      * Load another post.
      */
     const loadMore = async () => {
-        let resp = await getFeedPosts(props.id, sort, page.page)
+        let resp = await getFeedPosts(id, sort, page.page)
 
         switch (resp.status) {
             case 200: {
@@ -153,6 +158,26 @@ export default function Feed(props) {
                 <Alert message="You cannot view this feed." type="error" />
             )}
 
+            {!focus && (
+                <div className="flex flex-row justify-evenly">
+                    {postBox && (
+                        <PostBox feed={id} action={() => {
+                            setPosts([])
+                            setPage({
+                                maxPage: -1,
+                                page: 1
+                            })
+                        }} />
+                    )}
+
+                    <Dropdown overlay={menu}>
+                        <Button type="link" onClick={(e) => e.preventDefault()}>
+                            Sort by {sort[0].toUpperCase() + sort.substring(1)}
+                        </Button>
+                    </Dropdown>
+                </div>
+            )}
+
             {page.maxPage === 0 && (
                 <Empty
                     style={{ minWidth: "200px" }}
@@ -162,32 +187,12 @@ export default function Feed(props) {
 
             {status === 0 && page.maxPage !== 0 && (
                 <>
-                    {props.focus && (
-                        <FocusedPost feed={props.id} id={props.focus} />
+                    {focus && (
+                        <FocusedPost feed={id} id={focus} />
                     )}
 
-                    {!props.focus && (
+                    {!focus && (
                         <>
-                            <div className="flex flex-row justify-evenly">
-                                {props.postBox && (
-                                    <PostBox
-                                        feed={props.id}
-                                        action={() => {}}
-                                    />
-                                )}
-
-                                <Dropdown overlay={menu}>
-                                    <Button
-                                        type="link"
-                                        onClick={(e) => e.preventDefault()}
-                                    >
-                                        Sort by{" "}
-                                        {sort[0].toUpperCase() +
-                                            sort.substring(1)}
-                                    </Button>
-                                </Dropdown>
-                            </div>
-                            
                             <InfiniteScroll
                                 pageStart={0}
                                 loadMore={loadMore}
@@ -202,11 +207,11 @@ export default function Feed(props) {
                                 <ul className="feed-container">
                                     {posts.map((post, index) => (
                                         <li key={index}>
-                                            <Post
+                                            <PostJsx
                                                 author={post.author}
                                                 post={post.post}
                                                 vote={post.vote}
-                                                feed={props.id}
+                                                feed={id}
                                             />
                                         </li>
                                     ))}
@@ -214,12 +219,6 @@ export default function Feed(props) {
                             </InfiniteScroll>
                         </>
                     )}
-                </>
-            )}
-
-            {!status === -1 && (
-                <>
-                    <Spin indicator={<LoadingOutlined />} />
                 </>
             )}
         </div>

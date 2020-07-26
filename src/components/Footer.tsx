@@ -2,7 +2,7 @@ import React from "react";
 import { VERSION, CLIENT } from "../api/ApiHandler";
 import { Link } from "react-router-dom";
 
-export default function Footer() {
+export default (): JSX.Element => {
     return (
         <footer className="footer">
             <p>

@@ -7,7 +7,12 @@ import { postFeed } from "../../api/Feeds";
 
 const { TextArea } = Input;
 
-export default function PostBox(props) {
+type Props = {
+    feed: string,
+    action: any
+}
+
+export default ({ feed, action}: Props): JSX.Element => {
     let [visible, setVisible] = useState(false);
     let [loading, setLoading] = useState(false);
 
@@ -15,20 +20,19 @@ export default function PostBox(props) {
         setVisible(true);
     };
 
-    const handleOk = async (e) => {
+    const handleOk = async () => {
         setLoading(true);
 
-        let title = document.querySelector("#title");
-        let content = document.querySelector("#content");
+        let title = document.querySelector("#title") as HTMLInputElement;
+        let content = document.querySelector("#content") as HTMLInputElement;
 
         if (title.value === "" || content.value === "") {
-            document.querySelector("#status").textContent =
-                "You are missing a title or body!";
+            (document.querySelector("#status") as HTMLParagraphElement).textContent = "You are missing a title or body!";
             setLoading(false);
             return;
         }
 
-        let response = await postFeed(props.feed, content.value, title.value)
+        let response = await postFeed(feed, content.value, title.value)
 
         setLoading(false);
         setVisible(false);
@@ -39,10 +43,10 @@ export default function PostBox(props) {
             message.success("Successfully posted!");
         }
 
-        props.action();
+        action();
     };
 
-    const handleCancel = (e) => {
+    const handleCancel = () => {
         setVisible(false);
     };
 

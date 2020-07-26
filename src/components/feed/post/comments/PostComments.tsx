@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import PostComment from "./PostComment";
-import { API } from "../../api/ApiHandler";
+import { API } from "../../../../api/ApiHandler";
 import { Spin, Button } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
-export default function PostComments({ id, feed, data, commentId }) {
-    const [comments, setComments] = useState([]);
+type Props = {
+    id: number,
+    feed: string,
+    data?: any,
+    comment?: number
+}
+
+export default function PostComments({ id, feed, data, comment }: Props): JSX.Element {
+    const [comments, setComments] = useState([] as any[]);
     const [loaded, setLoaded] = useState(false);
 
     const [page, setPage] = useState(1);
@@ -15,16 +22,12 @@ export default function PostComments({ id, feed, data, commentId }) {
     const loadMore = async () => {
         if (maxPage != 0 && page > maxPage) return;
 
-        let req;
-        if (commentId != null) {
-            req = await API.get(
-                `/feeds/${feed}/post/${id}/comments/${commentId}?page=${page}`
-            );
-        } else {
-            req = await API.get(
-                `/feeds/${feed}/post/${id}/comments?page=${page}`
-            );
-        }
+        let url =
+            typeof comment == undefined
+                ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${page}`
+                : `/feeds/${feed}/post/${id}/comments?page=${page}`;
+        
+        let req = await API.get(url)
 
         if (req.status === 200) {
             const { pages, amount, comments } = req.data;
@@ -66,7 +69,7 @@ export default function PostComments({ id, feed, data, commentId }) {
                                 <PostComments
                                     feed={feed}
                                     id={id}
-                                    commentId={comment.comment.id}
+                                    comment={comment.comment.id}
                                     data={comment.comments}
                                 />
                             )}

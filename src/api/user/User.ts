@@ -3,6 +3,14 @@ import { logIn, logOut } from "../../redux/actions/auth.actions";
 import store from "../../redux/store"
 import {joinComm, leaveComm} from "../../redux/actions/auth.actions"
 
+export type User = {
+    id: number,
+    username: string,
+    role: number,
+    verified: boolean,
+    createdAt: number
+}
+
 /**
  * Get a token.
  *
@@ -18,7 +26,7 @@ export const getToken = () => {
  * Get a user's profile picture URL.
  * @param {*} user 
  */
-export const getImageUrl = (user) => {
+export const getImageUrl = (user: string) => {
     return `${BASE_URL}/user/name/${user}/picture`;
 }
 
@@ -34,7 +42,7 @@ export const getSelf = async () =>  {
  * Get a user's id by their name.
  * @param {string} name 
  */
-export const getUserIdByName = async (name) => {
+export const getUserIdByName = async (name: string) => {
     return await API.get(`/user/name/${name}`)
 }
 
@@ -42,7 +50,7 @@ export const getUserIdByName = async (name) => {
  * Get a user by their name.
  * @param {string} name 
  */
-export const getUserByName = async (name) => {
+export const getUserByName = async (name: string) => {
     let id = await getUserIdByName(name)
 
     if (id.status !== 200)
@@ -57,7 +65,7 @@ export const getUserByName = async (name) => {
  * @param id
  * @param callback
  */
-export const getUserById = async (id) => {
+export const getUserById = async (id: number) => {
     return await API.get(`/user/id/${id}`)
 }
 
@@ -94,12 +102,12 @@ export const signedIn = () =>
  * @param pass
  * @param callback
  */
-export const login = async (username, password, remember) => {
+export const login = async (username: string, password: string, remember: boolean) => {
     let data = new FormData()
 
     data.append("username", username)
     data.append("password", password);
-    data.append("remember", remember)
+    data.append("remember", `${remember}`);
 
     let auth = await API.post(`/authenticate`, data)
 
@@ -122,10 +130,10 @@ export const login = async (username, password, remember) => {
  * Leave a community.
  * @param {*} id 
  */
-export const leaveCommunity = async (id) => {
+export const leaveCommunity = async (id: number) => {
     let form = new FormData();
 
-    form.append("id", id);
+    form.append("id", `${id}`);
 
     let request = await API.delete("/community/manage", {
         headers: { },
@@ -145,10 +153,10 @@ export const leaveCommunity = async (id) => {
  * Join a community.
  * @param {*} id 
  */
-export const joinCommunity = async (id) => {
+export const joinCommunity = async (id: number) => {
     let form = new FormData()
 
-    form.append("id", id)
+    form.append("id", `${id}`)
 
     let request = await API.put("/community/manage", form)
 

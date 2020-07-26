@@ -1,30 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { UserView } from "../../api/user/View";
 import {
-    UpOutlined,
-    DownOutlined,
     FlagOutlined,
     CaretDownFilled,
     DeleteOutlined,
     EditOutlined,
-    ArrowLeftOutlined,
+    ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { message, Menu, Button, Dropdown, Tooltip } from "antd";
+import { message, Menu, Button, Dropdown, Tooltip, Modal } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { parseBody } from "../../api/Util";
-import { getCommunityById } from "../../api/community/Community";
-import { getGlobalEmotes } from "../../api/Emotes";
+import { getCommunityById } from "../../../api/community/Community";
+import { getGlobalEmotes } from "../../../api/Emotes";
 import { Link } from "react-router-dom";
-import PostComments from "./PostComments";
+import PostComments from "./comments/PostComments";
 import PostVote from "./PostVote";
-import History from "../../api/History";
+import History from "../../../api/History";
 import PostReply from "./PostReply";
+import { deletePost, Post } from "../../../api/Feeds";
+import PostReport from "./PostReport";
+import Vote from "../../../api/user/Vote";
+import { User } from "../../../api/user/User";
+import { parseBody, Emote } from "../../../api/Emotes";
+import PostAbout from "./PostAbout";
+import UserView from "../../view/UserView";
+
+const { confirm } = Modal
+
+type Props = {
+    post: Post,
+    vote: Vote,
+    author: User,
+    type?: string,
+    feed: string
+}
 
 /**
  * A post
  */
-export default function Post({ post, vote, author, type, feed }) {
-    let [emotes, setEmotes] = useState([]);
+export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
+    let [emotes, setEmotes] = useState([] as Emote[]);
+
+    const confirmDelete = () => {
+        confirm({
+            title: "Are you sure you want to delete this post?",
+            icon: <ExclamationCircleOutlined />,
+            content: "You will not be able to get this post back if you delete it.",
+            onOk() {
+                deletePost(post.feed, post.id)
+            },
+            onCancel() {
+                console.log("Cancel");
+            },
+        });
+    }
 
     // get emotes
     useEffect(() => {
@@ -36,7 +63,7 @@ export default function Post({ post, vote, author, type, feed }) {
             }
         };
 
-        const loadCommunityEmotes = async (community) => {
+        const loadCommunityEmotes = async (community: number) => {
             let obj = await getCommunityById(community);
 
             if (obj.status === 200) {
@@ -45,13 +72,13 @@ export default function Post({ post, vote, author, type, feed }) {
         };
 
         if (feed.startsWith("cf_")) {
-            loadCommunityEmotes(feed.substring(3));
+            loadCommunityEmotes(+feed.substring(3));
         } else {
             loadEmotes();
         }
     }, [feed]);
 
-    let self = useSelector((store) => store.auth.user);
+    let self = useSelector((store: any) => store.auth.user);
 
     /**
      * Update focus.
@@ -60,48 +87,30 @@ export default function Post({ post, vote, author, type, feed }) {
         History.push(`${window.location.pathname}/${post.id}`);
     };
 
-    const reportPost = async () => {
-        let key = "reporting-" + post.id;
-
-        message.loading({ content: "Loading...", key });
-
-        setTimeout(() => {
-            message.success({
-                content: "Successfully reported!",
-                key,
-                duration: 2,
-            });
-        }, 1000);
-    };
-
     const elevatedMenu = (
         <Menu>
-            <Menu.Item key="0">
+            <Menu.Item key={1}>
                 <span>
                     Edit <EditOutlined />
                 </span>
             </Menu.Item>
 
-            <Menu.Item key="1">
-                <span>
+            <Menu.Item key={2}>
+                <span onClick={confirmDelete}>
                     Delete <DeleteOutlined />
                 </span>
             </Menu.Item>
 
-            <Menu.Item key="2">
-                <span onClick={reportPost}>
-                    Report <FlagOutlined />
-                </span>
+            <Menu.Item key={3}>
+                <PostReport post={post} />
             </Menu.Item>
         </Menu>
     );
 
     const extendedMenu = (
         <Menu>
-            <Menu.Item key="0">
-                <span onClick={reportPost}>
-                    Report <FlagOutlined />
-                </span>
+            <Menu.Item key={1}>
+                <PostReport post={post} />
             </Menu.Item>
         </Menu>
     );
@@ -111,13 +120,20 @@ export default function Post({ post, vote, author, type, feed }) {
             <div className="accent px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md">
                 <div className="flex flex-row justify-between">
                     {type !== "focused" && (
-                        <Link className="text-lg" onClick={() => updateFocus()}>
+                        <a
+                            href="#"
+                            rel="noopener noreferrer nofollow"
+                            className="text-lg"
+                            onClick={() => updateFocus()}
+                        >
                             {post.title}
-                        </Link>
+                        </a>
                     )}
+
                     {type === "focused" && (
                         <p className="text-lg">{post.title}</p>
                     )}
+
                     <UserView username={author.username} />
                 </div>
                 <div className="post-content">
@@ -129,10 +145,10 @@ export default function Post({ post, vote, author, type, feed }) {
                     />
                 </div>
                 <div className="flex flex-row justify-between gap-4">
-                    <PostVote post={post} voteObj={vote} />
-                    <span className="invisible lg:visible">
-                        Posted on {new Date(post.createdAt).toLocaleString()}
-                    </span>
+                    <PostVote post={post} vote={vote} />
+
+                    <PostAbout date={post.createdAt} />
+
                     <Dropdown
                         overlay={
                             self.id === author.id ? elevatedMenu : extendedMenu
@@ -144,8 +160,12 @@ export default function Post({ post, vote, author, type, feed }) {
 
                 {type === "focused" && (
                     <>
-                        <PostReply post={post.id} level={0} feed={post.feed}/>
-                        <PostComments feed={post.feed} id={post.id} />
+                        <PostReply post={post} level={0} feed={post.feed} />
+                        <PostComments
+                            feed={post.feed}
+                            id={post.id}
+                            data={null}
+                        />
                     </>
                 )}
             </div>

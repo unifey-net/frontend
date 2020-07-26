@@ -29,6 +29,7 @@ import Unverified from "./view/Unverified";
 import Verify from "./view/settings/Verify";
 import Beta from "./view/beta/Beta";
 import BetaVerify from "./view/beta/BetaVerify"
+import Durrburger from "./view/Durrburger";
 
 export default function App() {
     const alert = useSelector((state) => state.alert);
@@ -101,6 +102,7 @@ export default function App() {
                 <Header />
                 <div className="content-container px-8 lg:px-0">
                     <Switch>
+                        <Route path="/durrburger" exact component={Durrburger}/>
                         <Route path="/u/:name/:post" exact component={User} />
                         <Route
                             path="/c/:community/:post"

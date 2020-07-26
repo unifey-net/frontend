@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export default function About() {
     return (
         <div className="flex items-center justify-center">
             <div>
-                <h1 className="text-4xl md:text-2xl lg:text-6xl">About Unifey</h1>
+                <h1 className="text-4xl md:text-2xl lg:text-6xl">
+                    About Unifey
+                </h1>
 
                 <h1 className="text-lg">What is Unifey for?</h1>
                 <p>
@@ -36,18 +38,11 @@ export default function About() {
                 </p>
 
                 <h1 className="text-lg">
-                    Want to reserve a name for the future in Unifey?
+                    Can I reserve a name for the future in Unifey?
                 </h1>
                 <p>
-                    You can reserve a name{" "}
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://forms.gle/sD1Jq2XqRuBaSncp9"
-                    >
-                        here
-                    </a>
-                    .
+                    You can reserve a name through our Beta signup process{" "}
+                    <Link to="/beta">here</Link>.
                 </p>
 
                 <h1 className="text-lg">

@@ -1,7 +1,10 @@
-export const isAutoDark = () => {
-    let time = new Date().getHours()
+import store from "../redux/store"
+import { API } from "./ApiHandler";
+import { postEmotes } from "../redux/actions/emotes.actions";
 
-    return time >= 18 || 8 >= time
+export type Emote = {
+    name: string,
+    url: string
 }
 
 /**
@@ -9,11 +12,11 @@ export const isAutoDark = () => {
  * @param {*} body 
  * @param {*} emotes 
  */
-export const parseBody = (body, emotes) => {
+export const parseBody = (body: string, emotes: Emote[]) => {
     let newBody = body
     let parsed = [...body.matchAll(/^:[A-Za-z0-9-_]+:$/g)];
 
-    const getEmote = (emote) => {
+    const getEmote = (emote: string) => {
         for (let i = 0; emotes.length > i; i++) {
             if (emotes[i].name === emote)
                 return emotes[i]
@@ -37,3 +40,22 @@ export const parseBody = (body, emotes) => {
 
     return newBody
 }
+
+
+/**
+ * Get global emotes
+ */
+export const getGlobalEmotes = async () => {
+    let state = store.getState().emotes
+ 
+    if (state.length === 0) {
+        let request = await API.get(`/emote`);
+
+        if (request.status !== 200)
+            return request
+
+        store.dispatch(postEmotes(request))
+    }
+
+    return state
+};

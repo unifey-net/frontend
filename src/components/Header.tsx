@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { SelfView } from "../api/user/View";
 import history from "../api/History";
-import { useDispatch } from "react-redux";
+import SelfView from "./view/SelfView";
 
-export default function Header() {
+export default (): JSX.Element => {
     let [page, setPage] = useState(window.location.pathname);
 
     useEffect(() => {

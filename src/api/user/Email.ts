@@ -13,7 +13,7 @@ export const getEmailVerificationStatus = async () => {
 /**
  * Resend the email.
  */
-export const resend = async (type, id) => {
+export const resend = async (type: string, id: string) => {
     if (!signedIn()) return null
 
     let form = new FormData()
