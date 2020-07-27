@@ -133,13 +133,12 @@ export default ({ feed, level, post, id, noStyle }: Props): JSX.Element => {
         <>
             {signedIn() && (
                 <>
-                    <Button
-                        type="link"
-                        className={noStyle ? "" : "m-2 -mt-2 -ml-4"}
+                    <span
+                        className={"m-2 cursor-pointer"}
                         onClick={() => setVisible(true)}
                     >
                         Reply to
-                    </Button>
+                    </span>
 
                     <ReplyModal
                         visible={visible}

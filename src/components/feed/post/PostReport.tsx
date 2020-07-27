@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react"
 import { Input, Alert, message } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import { FlagOutlined } from "@ant-design/icons"
-import { reportPost, Post } from "../../../api/Feeds"
-import { useDispatch } from "react-redux"
+import { reportPost, Post, Comment } from "../../../api/Feeds"
 
 const { TextArea } = Input
 
 type Props = {
-    post: Post
+    post: Post | Comment
 }
 
 export default ({ post }: Props): JSX.Element => {

@@ -116,7 +116,7 @@ export default ({ vote, post, postType }: Props): JSX.Element => {
 
     return (
         <div className="flex flex-row justify-between gap-2">
-            <p className={hasUpVoted ? "text-green-600" : ""}>
+            <p className={hasUpVoted ? "text-red-600" : ""}>
                 <Tooltip title="Upvote this post">
                     <UpOutlined onClick={upVote} />
                 </Tooltip>
