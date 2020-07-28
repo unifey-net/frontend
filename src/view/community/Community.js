@@ -4,6 +4,7 @@ import Feed from "../../components/feed/Feed";
 import { Empty, Spin, Typography, Divider } from "antd";
 import { getCommunityByName } from "../../api/community/Community";
 import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
+import CommunityManage from "../../components/feed/CommunityManage";
 
 const { Text } = Typography;
 
@@ -53,13 +54,17 @@ export default function Community() {
             {loaded.loaded && !loaded.error && (
                 <>
                     <div className="flex flex-col lg:block">
-                        <h1 className="text-3xl lg:text-4xl">{data.community.name}</h1>
+                        <h1 className="text-3xl lg:text-4xl">
+                            {data.community.name}
+                        </h1>
                         <div className="block mb-6 lg:hidden">
+                            <CommunityManage className="mb-4" community={data.community.id} />
+                            
+                            <br/>
+
                             <Text>{data.community.description}</Text>
-
-                            <br/>
-                            <br/>
-
+                            <br />
+                            <br />
                             Created On —
                             <Text>
                                 {new Date(
@@ -90,6 +95,10 @@ export default function Community() {
                                 <h3 className="text-lg">
                                     {data.community.name}
                                 </h3>
+
+                                <CommunityManage
+                                    community={data.community.id}
+                                />
                             </div>
 
                             <Text>

@@ -7,17 +7,13 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { getSelf } from "../../api/user/User";
 import { leaveCommunity, joinCommunity } from "../../api/user/User";
+import CommunityManage from "../../components/feed/CommunityManage";
 
 export default function Communities() {
     let [communities, setCommunities] = useState([]);
     let [loaded, setLoaded] = useState(false);
 
-    let [self, setSelf] = useState({})
-
     useEffect(() => {
-        const loadSelf = async () => {
-            setSelf(await getSelf())
-        }
         const loadCommunities = async () => {
             let data = await getAllCommunities();
 
@@ -30,28 +26,7 @@ export default function Communities() {
         };
 
         loadCommunities();
-        loadSelf()
     }, []);
-
-    const joinLeave = async (id) => {
-        if (self.member.members.includes(id)) {
-            let request = await leaveCommunity(id)
-
-            if (request.status === 200) {
-                message.success("Successfully left community!");
-            } else {
-                message.error("Failed to leave community!");
-            }
-        } else {
-            let request = await joinCommunity(id)
-
-            if (request.status === 200) {
-                message.success("Successfully joined community!")
-            } else {
-                message.error("Failed to join community!")
-            }
-        }
-    }
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -83,9 +58,7 @@ export default function Communities() {
                                             </Link>
                                         </h1>
 
-                                        <Button danger type="link" onClick={() => joinLeave(community.id)}>
-                                            {self.member.members.includes(community.id) ? "Leave" : "Join"}
-                                        </Button>
+                                        <CommunityManage community={community.id} />
                                     </div>
 
                                     <p

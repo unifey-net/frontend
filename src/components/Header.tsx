@@ -20,7 +20,7 @@ export default (): JSX.Element => {
             location: "/"
         },
         {
-            name: "About Us",
+            name: "About",
             location: "/about"
         },
         {
