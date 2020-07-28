@@ -30,6 +30,7 @@ import Verify from "./view/settings/Verify";
 import Beta from "./view/beta/Beta";
 import BetaVerify from "./view/beta/BetaVerify"
 import Durrburger from "./view/Durrburger";
+import Privacy from "./view/Privacy";
 
 export default function App() {
     const alert = useSelector((state) => state.alert);
@@ -155,6 +156,8 @@ export default function App() {
                             path="/beta/verify"
                             component={BetaVerify}
                         />
+
+                        <Route exact path="/privacy" component={Privacy} />
 
                         <Route component={NotFound} />
                     </Switch>
