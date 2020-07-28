@@ -20,7 +20,13 @@ export default function Communities() {
             if (data.status !== 200) {
                 setLoaded(true);
             } else {
-                setCommunities(data.data);
+                let comms = data.data
+
+                comms.sort((a, b) => {
+                    return b.size - a.size;
+                })
+
+                setCommunities(comms);
                 setLoaded(true);
             }
         };
@@ -72,7 +78,7 @@ export default function Communities() {
                                             #{index + 1}
                                         </span>
                                         <span className="text-gray-600 text-sm">
-                                            ? Members {/* TODO */}
+                                            {community.size} Members
                                         </span>
                                     </div>
                                 </div>
