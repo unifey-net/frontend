@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 export default function Unverified() {
     return (
-        <div className="flex flex-col items-center mx-64">
+        <div className="flex flex-col items-center">
             <h1 className="text-2xl">
                 What it means when your account is "unverified".
             </h1>
-            <p>
+            <p className="max-w-md">
                 An unverified account is an account that has not verified their
                 email. This means they cannon post in feeds or add friends.
                 <br />
