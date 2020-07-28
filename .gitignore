@@ -25,3 +25,5 @@ yarn-error.log*
 /.idea
 
 *.code-workspace
+
+/src/assets/main.css
