@@ -163,10 +163,8 @@ export default ({ id, focus, postBox }: Props): JSX.Element => {
                     {postBox && (
                         <PostBox feed={id} action={() => {
                             setPosts([])
-                            setPage({
-                                maxPage: -1,
-                                page: 1
-                            })
+                            setPage((prev) => ({ ...prev, page: 1 }))
+                            loadMore()
                         }} />
                     )}
 

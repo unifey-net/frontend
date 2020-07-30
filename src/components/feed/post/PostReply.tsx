@@ -134,7 +134,9 @@ export default ({ feed, level, post, id, noStyle }: Props): JSX.Element => {
             {signedIn() && (
                 <>
                     <span
-                        className={"m-2 cursor-pointer"}
+                        className={
+                            "cursor-pointer hover:text-blue-600 transition-colors ease-linear"
+                        }
                         onClick={() => setVisible(true)}
                     >
                         Reply to

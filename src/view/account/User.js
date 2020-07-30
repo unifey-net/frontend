@@ -21,7 +21,7 @@ const { Text } = Typography;
 
 export default function User() {
     const {
-        params: { name },
+        params: { name, post },
     } = useRouteMatch();
 
     let self = useSelector((state) => state.auth.user);
@@ -219,7 +219,7 @@ export default function User() {
                     </div>
 
                     <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
-                        <Feed id={`uf_${user.id}`} postBox={signedIn()} />
+                        <Feed id={`uf_${user.id}`} postBox={signedIn()} focus={post} />
 
                         <div
                             className="p-4 accent rounded mt-16 invisible lg:visible"

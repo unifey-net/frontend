@@ -144,7 +144,7 @@ export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
 
     return (
         <>
-            <div className="accent px-4 pt-4 rounded my-4 max-w-xs md:max-w-sm lg:max-w-md">
+            <div className={(type === "focused" ? "p-4" : "px-4 pt-4") + " accent rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"}>
                 <div className="flex flex-row justify-between">
                     {type !== "focused" && (
                         <a
