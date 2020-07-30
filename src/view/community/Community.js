@@ -41,8 +41,8 @@ export default function Community() {
 
                 setLoaded({
                     error: false,
-                    loaded: true
-                })
+                    loaded: true,
+                });
             }
         };
 
@@ -58,19 +58,23 @@ export default function Community() {
                             {data.community.name}
                         </h1>
                         <div className="block mb-6 lg:hidden">
-                            <CommunityManage className="mb-4" community={data.community.id} />
-                            
-                            <br/>
-
+                            <CommunityManage
+                                className="mb-4"
+                                community={data.community.id}
+                            />
+                            <br />
                             <Text>{data.community.description}</Text>
                             <br />
                             <br />
-                            Created On —
+                            Created On —{" "}
                             <Text>
                                 {new Date(
                                     data.community.createdAt
                                 ).toLocaleString()}
                             </Text>
+                            <br />
+                            Member Count —{" "}
+                            <Text>{data.community.size} members.</Text>
                         </div>
                     </div>
 
@@ -108,6 +112,11 @@ export default function Community() {
                                     }}
                                 />
                             </Text>
+
+                            <Divider />
+
+                            <h3 className="text-lg">Member Count</h3>
+                            <Text>{data.community.size} members.</Text>
 
                             <Divider />
 
