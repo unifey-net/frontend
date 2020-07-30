@@ -18,33 +18,40 @@ type Props = {
 };
 
 export default ({ comment, children }: Props): JSX.Element => {
-    const [content, setContent] = useState(comment.comment.content)
+    const [content, setContent] = useState(comment.comment.content);
     const post = useSelector((state: any) => state.post);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const editing = useEditingStatus(comment.comment.id);
 
     const updateContent = async () => {
-        dispatch(stopEditing())
+        dispatch(stopEditing());
 
-        let element = document.getElementById(`${comment.comment.id}_content`) as HTMLTextAreaElement;
-        let value = element.value
+        let element = document.getElementById(
+            `${comment.comment.id}_content`
+        ) as HTMLTextAreaElement;
+        let value = element.value;
 
         if (content === value || value === "") {
             return;
         }
 
-        let request = await updateCommentContent(comment.comment.feed, post, comment.comment.id, value)
+        let request = await updateCommentContent(
+            comment.comment.feed,
+            post,
+            comment.comment.id,
+            value
+        );
 
         if (request.status !== 200) {
-            message.error(request.data.payload)
-            return
+            message.error(request.data.payload);
+            return;
         }
 
-        message.success("Comment has been successfully updated!")
+        message.success("Comment has been successfully updated!");
 
-        setContent(value)
-    }
+        setContent(value);
+    };
 
     return (
         <Comment
@@ -54,17 +61,18 @@ export default ({ comment, children }: Props): JSX.Element => {
                     post={comment.comment}
                     vote={comment.vote}
                 />,
-                <PostReply
-                    level={1}
-                    post={post}
-                    feed={comment.comment.feed}
-                    noStyle={true}
-                    id={
-                        comment.comment.level === 1
-                            ? comment.comment.id
-                            : comment.comment.parent
-                    }
-                />,
+                <div className="mx-2">
+                    <PostReply
+                        level={1}
+                        post={post}
+                        feed={comment.comment.feed}
+                        id={
+                            comment.comment.level === 1
+                                ? comment.comment.id
+                                : comment.comment.parent
+                        }
+                    />
+                </div>,
                 <PostManagement type="comment" object={comment.comment} />,
             ]}
             author={
@@ -86,7 +94,7 @@ export default ({ comment, children }: Props): JSX.Element => {
                     {!editing && (
                         <p
                             dangerouslySetInnerHTML={{
-                                __html: content
+                                __html: content,
                             }}
                         />
                     )}
@@ -97,10 +105,12 @@ export default ({ comment, children }: Props): JSX.Element => {
                                 id={`${comment.comment.id}_content`}
                                 defaultValue={comment.comment.content}
                                 style={{
-                                    marginBottom: ".5rem"
+                                    marginBottom: ".5rem",
                                 }}
                             />
-                            <Button onClick={() => updateContent()}>Done</Button>
+                            <Button onClick={() => updateContent()}>
+                                Done
+                            </Button>
                         </>
                     )}
                 </>

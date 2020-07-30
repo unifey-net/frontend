@@ -78,11 +78,10 @@ type Props = {
     feed: string,
     level: number,
     post: Post,
-    id?: number,
-    noStyle?: boolean
+    id?: number
 }
 
-export default ({ feed, level, post, id, noStyle }: Props): JSX.Element => {
+export default ({ feed, level, post, id }: Props): JSX.Element => {
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
