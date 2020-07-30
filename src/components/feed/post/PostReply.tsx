@@ -77,7 +77,7 @@ const ReplyModal = ({ visible, onCreate, onCancel, loading, error }: ReplyModalP
 type Props = {
     feed: string,
     level: number,
-    post: Post,
+    post: number,
     id?: number
 }
 
@@ -96,7 +96,7 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
         switch (level) {
             case 0: {
                 let req = await API.put(
-                    `/feeds/${feed}/post/${post.id}/comments`,
+                    `/feeds/${feed}/post/${post}/comments`,
                     form
                 );
 
@@ -111,7 +111,7 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
 
             case 1: {
                 let req = await API.put(
-                    `/feeds/${feed}/post/${post.id}/comments/${id}`,
+                    `/feeds/${feed}/post/${post}/comments/${id}`,
                     form
                 );
 
@@ -126,6 +126,7 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
         }
 
         setLoading(false);
+        window.location.reload()
     };
 
     return (

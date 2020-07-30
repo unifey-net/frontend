@@ -217,7 +217,7 @@ export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
 
                 {type === "focused" && (
                     <>
-                        <PostReply post={post} level={0} feed={post.feed} />
+                        <PostReply post={post.id} id={post.id} level={0} feed={post.feed} />
 
                         <PostComments
                             feed={post.feed}
