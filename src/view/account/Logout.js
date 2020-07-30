@@ -12,7 +12,7 @@ export default function Logout() {
 
     logout();
 
-    dispatch(alertInfo("You have been logged out!"));
+    dispatch(alertInfo("You have been signed out!"));
     
     return (<Redirect to="/"/>)
 }
