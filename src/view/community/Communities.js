@@ -50,7 +50,7 @@ export default function Communities() {
             {communities.length === 0 && loaded && <Empty />}
 
             {communities.length !== 0 && loaded && (
-                <ul className="flex flex-row flex-wrap gap-8">
+                <ul className="flex flex-col max-w-sm gap-8">
                     {communities.map((community, index) => (
                         <li key={index}>
                             <div
