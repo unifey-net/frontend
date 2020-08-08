@@ -26,10 +26,6 @@ export default (): JSX.Element => {
         {
             name: "Communities",
             location: "/communities"
-        },
-        {
-            name: "Beta",
-            location: "/beta"
         }
     ];
 

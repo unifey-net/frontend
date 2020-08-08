@@ -27,8 +27,6 @@ import { isAutoDark } from "./api/Util";
 import Settings from "./view/settings/Settings";
 import Unverified from "./view/Unverified";
 import Verify from "./view/settings/Verify";
-import Beta from "./view/beta/Beta";
-import BetaVerify from "./view/beta/BetaVerify"
 import Durrburger from "./view/Durrburger";
 import Privacy from "./view/Privacy";
 
@@ -149,13 +147,6 @@ export default function App() {
                         />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/logout" component={Logout} />
-
-                        <Route exact path="/beta" component={Beta} />
-                        <Route
-                            exact
-                            path="/beta/verify"
-                            component={BetaVerify}
-                        />
 
                         <Route exact path="/privacy" component={Privacy} />
 
