@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 
 import { getBadges } from "../../api/user/Cosmetics";
 import { API } from "../../api/ApiHandler";
+import UserProfile from "./UserProfile";
+import UserBadges from "./UserBadges";
 
 const { Text } = Typography;
 
@@ -37,10 +39,6 @@ export default function User() {
         loaded: false,
     });
 
-    let [location, setLocation] = useState("");
-    let [discord, setDiscord] = useState("");
-    let [description, setDescription] = useState("");
-
     useEffect(() => {
         const loadUser = async () => {
             let response = await getUserByName(name);
@@ -60,10 +58,6 @@ export default function User() {
                     };
                 });
 
-                setDescription(response.data.profile.description);
-                setLocation(response.data.profile.location);
-                setDiscord(response.data.profile.discord);
-
                 setLoaded({
                     error: false,
                     loaded: true,
@@ -73,66 +67,6 @@ export default function User() {
 
         loadUser();
     }, [name]);
-
-    /**
-     * Update the description.
-     * @param {*} desc
-     */
-    const updateDescription = async (desc) => {
-        if (desc === description) return;
-
-        setDescription(desc);
-
-        let form = new FormData();
-
-        form.append("description", desc);
-
-        let request = await API.put("/user/profile/description", form);
-
-        if (request.status !== 200)
-            message.error("There was an issue updating your description!");
-        else message.success("Successfully changed your description!");
-    };
-
-    /**
-     * Update the discord.
-     * @param {*} disc
-     */
-    const updateDiscord = async (disc) => {
-        if (disc === discord) return;
-
-        setDiscord(disc);
-
-        let form = new FormData();
-
-        form.append("discord", disc);
-
-        let request = await API.put("/user/profile/discord", form);
-
-        if (request.status !== 200)
-            message.error("There was an issue updating your Discord!");
-        else message.success("Successfully changed your Discord!");
-    };
-
-    /**
-     * Update the description.
-     * @param {*} loc
-     */
-    const updateLocation = async (loc) => {
-        if (loc === location) return;
-
-        setLocation(loc);
-
-        let form = new FormData();
-
-        form.append("location", loc);
-
-        let request = await API.put("/user/profile/location", form);
-
-        if (request.status !== 200)
-            message.error("There was an issue updating your location!");
-        else message.success("Successfully changed your location!");
-    };
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -145,81 +79,20 @@ export default function User() {
                                 size={64}
                                 src={getImageUrl(user.username)}
                             />
-                            {user.badges.length > 0 && (
-                                <div className="flex flex-row">
-                                    <br />
-                                    {user.badges.map((badge, index) => (
-                                        <Tooltip key={index} title={badge.desc}>
-                                            <img
-                                                key={index}
-                                                alt={badge.id}
-                                                src={badge.image}
-                                                size={32}
-                                                width={32}
-                                            />
-                                        </Tooltip>
-                                    ))}
-                                </div>
-                            )}
+                            <UserBadges badges={user.badges} />
                         </h1>
 
                         <div className="block mb-6 lg:hidden">
-                            <Text
-                                editable={
-                                    editing
-                                        ? {
-                                              onChange: updateDescription,
-                                          }
-                                        : false
-                                }
-                            >
-                                {description}
-                            </Text>
-                            <br />
-                            <br />
-                            Joined On —
-                            <Text>
-                                {new Date(user.createdAt).toLocaleString()}
-                            </Text>
-                            <br />
-                            {user.profile.location !== "" && (
-                                <>
-                                    Location —
-                                    <Text
-                                        editable={
-                                            editing
-                                                ? {
-                                                      onChange: updateLocation,
-                                                  }
-                                                : false
-                                        }
-                                    >
-                                        {location}
-                                    </Text>
-                                </>
-                            )}
-                            {user.profile.discord !== "" && (
-                                <>
-                                    <br />
-                                    Discord —
-                                    <Text
-                                        editable={
-                                            editing
-                                                ? {
-                                                      onChange: updateDiscord,
-                                                  }
-                                                : false
-                                        }
-                                    >
-                                        {discord}
-                                    </Text>
-                                </>
-                            )}
+                            <UserProfile user={user} type="mobile" />
                         </div>
                     </div>
 
                     <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
-                        <Feed id={`uf_${user.id}`} postBox={signedIn()} focus={post} />
+                        <Feed
+                            id={`uf_${user.id}`}
+                            postBox={signedIn()}
+                            focus={post}
+                        />
 
                         <div
                             className="p-4 accent rounded mt-16 invisible lg:visible"
@@ -228,77 +101,7 @@ export default function User() {
                                 height: "min-content",
                             }}
                         >
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-lg">{user.username}</h3>
-
-                                {self.id === user.id && (
-                                    <EditOutlined
-                                        className="mt-2"
-                                        onClick={() =>
-                                            setEditing((prev) => !prev)
-                                        }
-                                    />
-                                )}
-                            </div>
-
-                            <Text
-                                editable={
-                                    editing
-                                        ? {
-                                              onChange: updateDescription,
-                                          }
-                                        : false
-                                }
-                            >
-                                {description}
-                            </Text>
-
-                            <Divider />
-
-                            <h3 className="text-lg">Joined On</h3>
-                            <Text>
-                                {new Date(user.createdAt).toLocaleString()}
-                            </Text>
-
-                            {user.profile.location !== "" && (
-                                <>
-                                    <Divider />
-
-                                    <h3 className="text-lg">Location</h3>
-
-                                    <Text
-                                        editable={
-                                            editing
-                                                ? {
-                                                      onChange: updateLocation,
-                                                  }
-                                                : false
-                                        }
-                                    >
-                                        {location}
-                                    </Text>
-
-                                    {user.profile.discord !== "" && <Divider />}
-                                </>
-                            )}
-
-                            {user.profile.discord !== "" && (
-                                <>
-                                    <h3 className="text-lg">Discord</h3>
-
-                                    <Text
-                                        editable={
-                                            editing
-                                                ? {
-                                                      onChange: updateDiscord,
-                                                  }
-                                                : false
-                                        }
-                                    >
-                                        {discord}
-                                    </Text>
-                                </>
-                            )}
+                            <UserProfile user={user} />
                         </div>
                     </div>
                 </>

@@ -8,7 +8,9 @@ export type User = {
     username: string,
     role: number,
     verified: boolean,
-    createdAt: number
+    createdAt: number,
+    profile: any,
+    member: any
 }
 
 /**

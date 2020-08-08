@@ -148,7 +148,6 @@ export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
                 <div className="flex flex-row justify-between">
                     {type !== "focused" && (
                         <a
-                            href="#"
                             rel="noopener noreferrer nofollow"
                             className="text-lg"
                             onClick={() => updateFocus()}

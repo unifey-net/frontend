@@ -22,7 +22,7 @@ type Props = {
 
 export default ({ id, focus, postBox }: Props): JSX.Element => {
     let [posts, setPosts] = useState([] as any[]);
-    let [status, setStatus] = useState(-1);
+    let [status, setStatus] = useState({ status: -1, message: "" });
     let [sort, setSort] = useState("new");
     let [page, setPage] = useState({
         page: 1,
@@ -42,9 +42,20 @@ export default ({ id, focus, postBox }: Props): JSX.Element => {
                     maxPage: resp.data.pageCount,
                 });
 
-                setStatus(0);
+                setStatus((prev) => { 
+                    return {
+                        ...prev,
+                        status: 0
+                    }
+                })
             } else {
-                setStatus(1);
+                setStatus((prev) => {
+                    return {
+                        ...prev,
+                        message: resp.data.payload,
+                        status: 1
+                    };
+                });
             }
         };
 
@@ -101,7 +112,14 @@ export default ({ id, focus, postBox }: Props): JSX.Element => {
             }
 
             case 401: {
-                setStatus(1);
+                setStatus((prev) => {
+                    return {
+                        ...prev,
+                        status: 0,
+                        message: resp.data.payload
+                    };
+                });
+
                 break;
             }
 
@@ -154,26 +172,13 @@ export default ({ id, focus, postBox }: Props): JSX.Element => {
 
     return (
         <div>
-            {status === 1 && (
-                <Alert message="You cannot view this feed." type="error" />
-            )}
-
-            {!focus && (
-                <div className="flex flex-row justify-evenly">
-                    {postBox && (
-                        <PostBox feed={id} action={() => {
-                            setPosts([])
-                            setPage((prev) => ({ ...prev, page: 1 }))
-                            loadMore()
-                        }} />
-                    )}
-
-                    <Dropdown overlay={menu}>
-                        <Button type="link" onClick={(e) => e.preventDefault()}>
-                            Sort by {sort[0].toUpperCase() + sort.substring(1)}
-                        </Button>
-                    </Dropdown>
-                </div>
+            {status.status === 1 && (
+                <Alert
+                    message="You cannot view this feed."
+                    description={status.message}
+                    type="error"
+                    showIcon
+                />
             )}
 
             {page.maxPage === 0 && (
@@ -183,11 +188,37 @@ export default ({ id, focus, postBox }: Props): JSX.Element => {
                 />
             )}
 
-            {status === 0 && page.maxPage !== 0 && (
+            {status.status === 0 && page.maxPage !== 0 && (
                 <>
-                    {focus && (
-                        <FocusedPost feed={id} id={focus} />
+                    {!focus && (
+                        <div className="flex flex-row justify-evenly">
+                            {postBox && (
+                                <PostBox
+                                    feed={id}
+                                    action={() => {
+                                        setPosts([]);
+                                        setPage((prev) => ({
+                                            ...prev,
+                                            page: 1,
+                                        }));
+                                        loadMore();
+                                    }}
+                                />
+                            )}
+
+                            <Dropdown overlay={menu}>
+                                <Button
+                                    type="link"
+                                    onClick={(e) => e.preventDefault()}
+                                >
+                                    Sort by{" "}
+                                    {sort[0].toUpperCase() + sort.substring(1)}
+                                </Button>
+                            </Dropdown>
+                        </div>
                     )}
+
+                    {focus && <FocusedPost feed={id} id={focus} />}
 
                     {!focus && (
                         <>

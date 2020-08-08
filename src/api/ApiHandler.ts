@@ -7,7 +7,7 @@ import store from "../redux/store";
  *
  * @type {string}
  */
-const BASE_URL: string = "http://192.168.1.102:8077"; // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol 
+const BASE_URL: string = "http://localhost:8077"; // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol 
 
 const API = axios.create({
     baseURL: BASE_URL,

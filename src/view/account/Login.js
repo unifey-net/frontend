@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { login, signedIn } from "../../api/user/User";
 import { Redirect } from "react-router-dom";
 import { Form, Input, Button, Checkbox, message } from "antd";
@@ -12,8 +12,12 @@ import FormItem from "antd/lib/form/FormItem";
 export default function Login() {
     const dispatch = useDispatch();
 
+    let [loading, setLoading] = useState(false)
+
     const loginForm = async (values) => {
+        setLoading(true)
         let response = await login(values["username"], values["password"], values["remember"]);
+        setLoading(false)
 
         if (response == null || !response) {
             message.error("Invalid username or password!");
@@ -79,7 +83,7 @@ export default function Login() {
 
                         <Form.Item>
                             <div className="flex flex-row justify-center items-center">
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" loading={loading}>
                                     Submit
                                 </Button>
                             </div>

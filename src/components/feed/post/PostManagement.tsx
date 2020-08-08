@@ -51,6 +51,8 @@ export default ({ object, type }: Props): JSX.Element => {
                 } else {
                     deletePost(object.feed, object.id);
                 }
+
+                window.location.reload()
             },
             onCancel() { },
         });
