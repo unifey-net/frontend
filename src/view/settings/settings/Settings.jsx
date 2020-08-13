@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { signedIn, getSelf } from "../../../api/user/User";
 import { useDispatch, useSelector } from "react-redux";
-import { alertError, alertInfo } from "../../../redux/actions/alert.actions";
 import history from "../../../api/History";
-import { Input, Alert, Button, Divider, Tooltip, message, Spin } from "antd";
+import { Input,  Divider, Tooltip, message, Spin } from "antd";
 import {
     CheckCircleOutlined,
     LoadingOutlined,
@@ -164,7 +163,7 @@ export default function Settings() {
 
     if (!signedIn()) {
         history.push("/");
-        dispatch(alertError("You aren't signed in!"));
+        message.error("You aren't signed in!")
         return;
     }
 

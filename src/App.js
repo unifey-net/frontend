@@ -21,8 +21,6 @@ import ForgotPassword from "./view/settings/forgot/Forgot";
 import NotFound from "./view/NotFound";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearAlert } from "./redux/actions/alert.actions";
-import { message } from "antd";
 import { isAutoDark } from "./api/Util";
 import Settings from "./view/settings/settings/Settings";
 import Unverified from "./view/Unverified";
@@ -34,33 +32,6 @@ export default function App() {
     const alert = useSelector((state) => state.alert);
     const theme = useSelector((state) => state.theme);
     let dispatch = useDispatch();
-
-    if (alert.message) {
-        switch (alert.type) {
-            case "info":
-                message.info(alert.message, 2);
-                dispatch(clearAlert());
-                break;
-
-            case "success":
-                message.success(alert.message, 2);
-                dispatch(clearAlert());
-                break;
-
-            case "warning":
-                message.warning(alert.message, 2);
-                dispatch(clearAlert());
-                break;
-
-            case "error":
-                message.error(alert.message, 2);
-                dispatch(clearAlert());
-                break;
-
-            default:
-                break;
-        }
-    }
 
     let clazz = ""
     let use = ""

@@ -2,7 +2,6 @@ import React from "react"
 import { Link } from "react-router-dom";
 import { Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
-import { alertInfo } from "../../../redux/actions/alert.actions";
 import history from "../../../api/History"
 
 export default function ForgotPassword() {
@@ -18,7 +17,7 @@ export default function ForgotPassword() {
 
         history.push("/")
 
-        dispatch(alertInfo(`An email has been sent.`))
+        message.info(`An email has been sent.`)
     }
 
     return (

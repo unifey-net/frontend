@@ -1,11 +1,10 @@
 import { Redirect } from "react-router-dom";
 import React, { useEffect } from "react";
-import { Spin } from "antd";
+import { Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { API } from "../../../api/ApiHandler";
 import { signedIn, getSelf } from "../../../api/user/User";
 import History from "../../../api/History";
-import { alertError, alertSuccess } from "../../../redux/actions/alert.actions";
 import { useDispatch } from "react-redux";
 import { verifyAccount } from "../../../redux/actions/auth.actions";
 
@@ -27,9 +26,9 @@ export default function Verify() {
 
             History.push("/")
             if (request.status !== 200) {
-                dispatch(alertError("Failed to verify account."))
+                message.error("Failed to verify account.")
             } else {
-                dispatch(alertSuccess("Successfully verified account!"))
+                message.success("Successfully verified account!")
                 dispatch(verifyAccount(true))
             }
         }
@@ -41,7 +40,7 @@ export default function Verify() {
     
     if (!signedIn()) {
         History.push("/")
-        dispatch(alertError("You must be signed into verify your account!"))
+        message.error("You must be signed into verify your account!")
 
         return (<></>)
     }

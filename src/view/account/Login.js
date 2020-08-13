@@ -6,7 +6,6 @@ import history from "../../api/History";
 import { Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { alertInfo } from "../../redux/actions/alert.actions";
 import FormItem from "antd/lib/form/FormItem";
 
 export default function Login() {
@@ -23,7 +22,7 @@ export default function Login() {
             message.error("Invalid username or password!");
         } else {
             history.push("/");
-            dispatch(alertInfo("You are now signed in!"));
+            message.info("You are now signed in!");
         }
     };
 
