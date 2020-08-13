@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { EditOutlined } from "@ant-design/icons";
-import { User } from "../../api/user/User";
+import { User } from "../../../api/user/User";
 import { useSelector } from "react-redux";
 import Text from "antd/lib/typography/Text";
 import { message, Divider } from "antd";
-import { API } from "../../api/ApiHandler";
+import { API } from "../../../api/ApiHandler";
 import UserProfileInput from "./UserProfileInput";
 
 type Props = {
@@ -80,7 +80,13 @@ export default ({ user }: Props): JSX.Element => {
     };
 
     return (
-        <>
+        <div
+            className="p-4 accent rounded mt-16 invisible lg:visible"
+            style={{
+                maxWidth: "200px",
+                height: "min-content",
+            }}
+        >
             <div className="flex flex-row justify-between">
                 <h3 className="text-lg">{user.username}</h3>
 
@@ -105,7 +111,7 @@ export default ({ user }: Props): JSX.Element => {
             <h3 className="text-lg">Joined On</h3>
             <Text>{new Date(user.createdAt).toLocaleString()}</Text>
 
-            <Divider/>
+            <Divider />
 
             <UserProfileInput
                 type="Location"
@@ -113,8 +119,8 @@ export default ({ user }: Props): JSX.Element => {
                 editing={editing}
                 update={updateLocation}
             />
-        
-            <Divider/>
+
+            <Divider />
 
             <UserProfileInput
                 type="Discord"
@@ -122,6 +128,6 @@ export default ({ user }: Props): JSX.Element => {
                 editing={editing}
                 update={updateDiscord}
             />
-        </>
+        </div>
     );
 };

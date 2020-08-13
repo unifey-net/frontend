@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 type Props = {
     community: number,
-    className: string,
+    className?: string,
 }
 
 /**

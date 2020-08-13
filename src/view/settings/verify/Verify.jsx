@@ -2,12 +2,12 @@ import { Redirect } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { API } from "../../api/ApiHandler";
-import { signedIn, getSelf } from "../../api/user/User";
-import History from "../../api/History";
-import { alertError, alertSuccess } from "../../redux/actions/alert.actions";
+import { API } from "../../../api/ApiHandler";
+import { signedIn, getSelf } from "../../../api/user/User";
+import History from "../../../api/History";
+import { alertError, alertSuccess } from "../../../redux/actions/alert.actions";
 import { useDispatch } from "react-redux";
-import { verifyAccount } from "../../redux/actions/auth.actions";
+import { verifyAccount } from "../../../redux/actions/auth.actions";
 
 /**
  * Verify an account's email.

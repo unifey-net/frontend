@@ -11,7 +11,7 @@ const BASE_URL: string = "http://localhost:8077"; // incase you're curious, this
 
 const API = axios.create({
     baseURL: BASE_URL,
-    responseType: "json",
+    timeout: 5000,
     headers:
         store.getState().auth.token !== ""
             ? {

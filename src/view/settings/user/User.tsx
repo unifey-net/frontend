@@ -1,8 +1,8 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
-import { getUserByName, signedIn, getImageUrl } from "../../api/user/User";
-import Feed from "../../components/feed/Feed";
+import { getUserByName, signedIn, getImageUrl } from "../../../api/user/User";
+import Feed from "../../../components/feed/Feed";
 
 import { Empty, Spin, Typography, Divider, Tooltip, message } from "antd";
 import Avatar from "antd/es/avatar";
@@ -14,8 +14,8 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-import { getBadges } from "../../api/user/Cosmetics";
-import { API } from "../../api/ApiHandler";
+import { getBadges } from "../../../api/user/Cosmetics";
+import { API } from "../../../api/ApiHandler";
 import UserProfile from "./UserProfile";
 import UserBadges from "./UserBadges";
 
@@ -26,13 +26,11 @@ export default function User() {
         params: { name, post },
     } = useRouteMatch();
 
-    let self = useSelector((state) => state.auth.user);
+    let self = useSelector((state: any) => state.auth.user);
 
     let [editing, setEditing] = useState(false);
 
-    let [user, setUser] = useState({
-        id: -1,
-    });
+    let [user, setUser] = useState({} as any);
 
     let [loaded, setLoaded] = useState({
         error: false,
@@ -51,7 +49,7 @@ export default function User() {
             } else {
                 setUser(response.data);
 
-                setUser((prevState) => {
+                setUser((prevState: any) => {
                     return {
                         ...prevState,
                         badges: getBadges(prevState.profile.cosmetics),
@@ -83,7 +81,7 @@ export default function User() {
                         </h1>
 
                         <div className="block mb-6 lg:hidden">
-                            <UserProfile user={user} type="mobile" />
+                            <UserProfile user={user} />
                         </div>
                     </div>
 
@@ -94,15 +92,7 @@ export default function User() {
                             focus={post}
                         />
 
-                        <div
-                            className="p-4 accent rounded mt-16 invisible lg:visible"
-                            style={{
-                                maxWidth: "200px",
-                                height: "min-content",
-                            }}
-                        >
-                            <UserProfile user={user} />
-                        </div>
+                        <UserProfile user={user} />
                     </div>
                 </>
             )}

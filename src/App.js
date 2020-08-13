@@ -4,12 +4,12 @@ import { Route, Router, Switch } from "react-router-dom";
 import "./assets/scss/base.scss";
 import "./assets/main.css"
 
-import Community from "./view/community/Community";
+import Community from "./view/community/community/Community";
 import Tos from "./view/Tos";
 import About from "./view/About";
-import Communities from "./view/community/Communities";
+import Communities from "./view/community/communities/Communities";
 import history from "./api/History";
-import User from "./view/account/User";
+import User from "./view/settings/user/User";
 import Login from "./view/account/Login";
 import Home from "./view/Home";
 import Logout from "./view/account/Logout";
@@ -17,16 +17,16 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Unsubscribed from "./view/Unsubscribed";
 import Support from "./view/Support";
-import ForgotPassword from "./view/settings/Forgot";
+import ForgotPassword from "./view/settings/forgot/Forgot";
 import NotFound from "./view/NotFound";
 
 import { useDispatch, useSelector } from "react-redux";
 import { clearAlert } from "./redux/actions/alert.actions";
 import { message } from "antd";
 import { isAutoDark } from "./api/Util";
-import Settings from "./view/settings/Settings";
+import Settings from "./view/settings/settings/Settings";
 import Unverified from "./view/Unverified";
-import Verify from "./view/settings/Verify";
+import Verify from "./view/settings/verify/Verify";
 import Durrburger from "./view/Durrburger";
 import Privacy from "./view/Privacy";
 
