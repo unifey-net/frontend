@@ -1,15 +1,45 @@
-import React from "react"
-import { Divider } from "antd"
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { API } from "../../../api/ApiHandler";
+import { Spin, Alert } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 type Props = {
-    staff: string[]
-}
+    id: number;
+};
 
 /**
  * A communities staff members. This appears as a section of the far right sidebar.
  */
-export default ({ staff }: Props) => {
+export default ({ id }: Props) => {
+    let [staff, setStaff] = useState([] as any[]);
+    let [status, setStatus] = useState({
+        status: 0,
+        message: "",
+    });
+
+    useEffect(() => {
+        const loadStaff = async () => {
+            let request = await API.get(`/community/${id}/staff`);
+
+            if (request.status === 200) {
+                setStatus((prev) => ({
+                    ...prev,
+                    status: 1
+                }))
+
+                setStaff(request.data)
+            } else {
+                setStatus((prev) => ({
+                    ...prev,
+                    status: -1,
+                }));
+            }
+        };
+
+        loadStaff();
+    }, [id]);
+
     return (
         <div
             className="accent p-4"
@@ -19,23 +49,40 @@ export default ({ staff }: Props) => {
         >
             <h2 className="text-lg">Community Staff</h2>
 
-            <ul>
-                {staff.length > 0 &&
-                    staff.slice(0, 5).map((member, index) => {
-                        return (
-                            <li key={index}>
-                                - {<Link to={`/u/${member}`}>{member}</Link>}
-                            </li>
-                        );
-                    })}
+            {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
 
-                {staff.length === 0 && (
-                    <p>
-                        There are no staff in this community. Honestly, I don't
-                        know how this happened.
-                    </p>
-                )}
-            </ul>
+            {status.status === 1 && (
+                <ul className="flex flex-col">
+                    {staff.length > 0 &&
+                        staff.map(({ role, user }, index) => {
+                            let color = role === 2 ? "text-green-400" : "text-red-700"
+
+                            return (
+                                <li key={index}>
+                                    <Link
+                                        to={`/u/${user.username}`}
+                                        className={color}
+                                    >
+                                        {user.username}
+                                    </Link>
+                                </li>
+                            );
+                        })}
+
+                    {staff.length === 0 && (
+                        <p>There are no staff in this community.</p>
+                    )}
+                </ul>
+            )}
+
+            {status.status === -1 && (
+                <Alert
+                    message={"There was an issue getting the staff members."}
+                    description={status.message}
+                    type="warning"
+                    showIcon
+                />
+            )}
         </div>
     );
-}
+};

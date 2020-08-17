@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllCommunities } from "../../../api/community/Community";
 
-import { Spin, Empty, Divider, Button, message } from "antd";
+import { Spin, Empty } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import Community from "./Community";

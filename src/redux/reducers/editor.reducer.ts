@@ -1,9 +1,9 @@
 import { EDITOR__START, EDITOR__STOP } from "../actions/editor.actions";
-import { Post, Comment } from "../../api/Feeds";
 
 type EditorState = {
-    isEditing: boolean,
-    object?: Post | Comment
+    isEditing: boolean
+    id?: number
+    type?: string
 }
 
 /**
@@ -14,11 +14,12 @@ type EditorState = {
 const editor = (state: EditorState = { isEditing: false }, action: any) => {
     switch (action.type) {
         case EDITOR__START: {
-            let { object } = action.payload
+            const { id, type } = action.payload
 
             state = {
                 isEditing: true,
-                object
+                id,
+                type
             }
 
             return state

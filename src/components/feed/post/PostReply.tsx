@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Alert, message, Button } from "antd";
+import { Modal, Form, Input, Alert, message } from "antd";
 import { signedIn } from "../../../api/user/User";
 import { API } from "../../../api/ApiHandler";
-import { Post } from "../../../api/Feeds";
 import { Store } from "antd/lib/form/interface";
 
 const { TextArea } = Input;

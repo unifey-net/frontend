@@ -20,18 +20,15 @@ import Support from "./view/Support";
 import ForgotPassword from "./view/settings/forgot/Forgot";
 import NotFound from "./view/NotFound";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { isAutoDark } from "./api/Util";
 import Settings from "./view/settings/settings/Settings";
 import Unverified from "./view/Unverified";
 import Verify from "./view/settings/verify/Verify";
-import Durrburger from "./view/Durrburger";
 import Privacy from "./view/Privacy";
 
 export default function App() {
-    const alert = useSelector((state) => state.alert);
     const theme = useSelector((state) => state.theme);
-    let dispatch = useDispatch();
 
     let clazz = ""
     let use = ""
@@ -72,7 +69,6 @@ export default function App() {
                 <Header />
                 <div className="content-container px-8 lg:px-0">
                     <Switch>
-                        <Route path="/durrburger" exact component={Durrburger}/>
                         <Route path="/u/:name/:post" exact component={User} />
                         <Route
                             path="/c/:community/:post"

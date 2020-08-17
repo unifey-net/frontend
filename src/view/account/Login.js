@@ -5,12 +5,9 @@ import { Form, Input, Button, Checkbox, message } from "antd";
 import history from "../../api/History";
 import { Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
 import FormItem from "antd/lib/form/FormItem";
 
 export default function Login() {
-    const dispatch = useDispatch();
-
     let [loading, setLoading] = useState(false)
 
     const loginForm = async (values) => {

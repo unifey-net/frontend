@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Input, Alert, message } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import { FlagOutlined } from "@ant-design/icons"

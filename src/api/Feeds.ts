@@ -1,6 +1,10 @@
 import { API } from "./ApiHandler";
-import store from "../redux/store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { FeedState } from "../redux/reducers/feeds.reducer"
+import { postFeed } from "../redux/actions/feeds.actions";
+import { User } from "./user/User";
+import Vote from "./user/Vote";
 
 export type Post = {
     id: number,
@@ -11,6 +15,12 @@ export type Post = {
     content: string,
     upvotes: number,
     downvotes: number;
+}
+
+export type PostResponse = {
+    post: Post;
+    author: User;
+    vote: Vote | null
 }
 
 export type Feed = {
@@ -34,10 +44,45 @@ export type Comment  = {
     downvotes: number;
 };
 
+export const useFeed = (id: string): [FeedState | null, any] => {
+    let dispatch = useDispatch()
+
+    let [status, setStatus] = useState({ status: 0, message: "This feed hasn't been loaded yet." })
+
+    let storedFeed = useSelector((state: any) => state.feeds[id])
+
+    useEffect(() => {
+        const grabFeed = async () => {
+            let resp = await getFeed(id);
+
+            if (resp.status === 200) {
+                dispatch(postFeed({ feed: resp.data as Feed }));
+
+                setStatus((prev) => ({
+                    ...prev,
+                    status: 1
+                }))
+            } else {
+                setStatus((prev) => ({
+                    ...prev,
+                    status: -1,
+                    message: resp.data.payload
+                }))
+            }
+        }
+
+        if (storedFeed === undefined) {
+            grabFeed()
+        }
+    }, [id, dispatch, storedFeed])
+
+    return [storedFeed === undefined ? null : storedFeed, status]
+}
+
 export const useEditingStatus = (post: number): boolean => {
     let editor = useSelector((store: any) => store.editor)
 
-    return editor.isEditing && editor.object.id === post;
+    return editor.isEditing && editor.id === post;
 }
 
 /**
@@ -64,7 +109,7 @@ export const getFeed = async (id: string) => {
  * @param {string} content 
  * @param {string} title 
  */
-export const postFeed = async (id: string, content: string, title: string) => {
+export const createPost = async (id: string, content: string, title: string) => {
     let form = new FormData();
 
     form.append("content", content)

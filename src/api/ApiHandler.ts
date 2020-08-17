@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getToken } from "./user/User";
 import store from "../redux/store";
 
 /**

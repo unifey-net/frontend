@@ -1,12 +1,9 @@
 import React from "react"
 import { Link } from "react-router-dom";
 import { Input, Button, message } from "antd";
-import { useDispatch } from "react-redux";
 import history from "../../../api/History"
 
 export default function ForgotPassword() {
-    let dispatch = useDispatch()
-
     const resetPassword = () => {
         let value = document.getElementById("email").value
         

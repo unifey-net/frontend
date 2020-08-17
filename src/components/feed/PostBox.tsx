@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { getToken } from "../../api/user/User";
-import { message, Input, Button, Modal, Tooltip } from "antd";
-import PlusCircleOutlined from "@ant-design/icons/lib/icons/PlusCircleOutlined";
-import { BASE_URL } from "../../api/ApiHandler";
-import { postFeed } from "../../api/Feeds";
+import { message, Input, Button, Modal } from "antd";
+import { createPost } from "../../api/Feeds";
 
 const { TextArea } = Input;
 
@@ -32,7 +29,7 @@ export default ({ feed, action}: Props): JSX.Element => {
             return;
         }
 
-        let response = await postFeed(feed, content.value, title.value)
+        let response = await createPost(feed, content.value, title.value);
 
         setLoading(false);
         setVisible(false);

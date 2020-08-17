@@ -1,5 +1,4 @@
 import React from "react"
-import { Post } from "../../../api/Feeds"
 
 type Props = {
     date: number

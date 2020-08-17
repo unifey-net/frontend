@@ -4,7 +4,7 @@ import { Menu, Modal, Dropdown } from "antd"
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined, CaretDownFilled } from "@ant-design/icons"
 import PostReport from "./PostReport"
 import { Post, Comment as CommentObject, deletePost, useEditingStatus, deleteComment } from "../../../api/Feeds"
-import { useDispatch, useStore, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { startEditing, stopEditing } from "../../../redux/actions/editor.actions"
 
 const { confirm } = Modal
@@ -33,7 +33,9 @@ export default ({ object, type }: Props): JSX.Element => {
         if (editing) {
             dispatch(stopEditing())
         } else {
-            dispatch(startEditing(object))
+            dispatch(
+                startEditing(object.id, type === "comment" ? "comment" : "post")
+            );
         }
     }
 

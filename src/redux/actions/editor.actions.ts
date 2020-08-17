@@ -1,11 +1,9 @@
-import { Post, Comment } from "../../api/Feeds";
-
 export const EDITOR__START = "EDITOR__START";
 export const EDITOR__STOP = "EDITOR__STOP"
 
-const startEditing = (object: Comment | Post): any => ({
+const startEditing = (id: number, type: "community" | "comment" | "post"): any => ({
     type: EDITOR__START,
-    payload: { object }
+    payload: { id, type }
 })
 
 const stopEditing = () => ({

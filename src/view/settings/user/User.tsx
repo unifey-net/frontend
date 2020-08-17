@@ -4,34 +4,23 @@ import React, { useEffect, useState } from "react";
 import { getUserByName, signedIn, getImageUrl } from "../../../api/user/User";
 import Feed from "../../../components/feed/Feed";
 
-import { Empty, Spin, Typography, Divider, Tooltip, message } from "antd";
+import { Empty, Spin } from "antd";
 import Avatar from "antd/es/avatar";
 
 import {
     LoadingOutlined,
-    CheckCircleOutlined,
-    EditOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
 
 import { getBadges } from "../../../api/user/Cosmetics";
-import { API } from "../../../api/ApiHandler";
 import UserProfile from "./UserProfile";
 import UserBadges from "./UserBadges";
-
-const { Text } = Typography;
 
 export default function User() {
     const {
         params: { name, post },
     } = useRouteMatch();
 
-    let self = useSelector((state: any) => state.auth.user);
-
-    let [editing, setEditing] = useState(false);
-
     let [user, setUser] = useState({} as any);
-
     let [loaded, setLoaded] = useState({
         error: false,
         loaded: false,

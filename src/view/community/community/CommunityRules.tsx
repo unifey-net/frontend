@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     CaretRightOutlined,
     CaretDownOutlined,
-    LoadingOutlined,
-    CaretUpFilled,
-    CaretDownFilled,
     DeleteOutlined,
     EditOutlined,
     SaveOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { API } from "../../../api/ApiHandler";
-import { message, Spin, Dropdown, Menu, Button, Input, Modal } from "antd";
+import { message, Button, Input } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-
-const { confirm } = Modal
+import useEditCommunity from "./useEditCommunity";
 
 type Rule = {
     title: string;
@@ -24,14 +20,15 @@ type Rule = {
 
 type RuleProps = {
     rule: Rule;
-    editing: boolean;
     community: number;
     index: number;
 };
 
-const CommunityRule = ({ rule, editing, community, index }: RuleProps) => {
+const CommunityRule = ({ rule, community, index }: RuleProps) => {
     let bodyRef = React.createRef<TextArea>()
     let titleRef = React.createRef<Input>()
+
+    const editing = useEditCommunity(community)
 
     const { id } = rule;
 
@@ -183,6 +180,12 @@ type Props = {
  * The communities rules. This appears on the far right sidebar.
  */
 export default ({ rules, community, type }: Props) => {
+    let [showing, setShowing] = useState(5)
+
+    const showMore = () => {
+        setShowing((prev) => prev + 5)
+    }
+
     return (
         <div
             className="accent p-4 rounded invisible lg:visible"
@@ -194,16 +197,17 @@ export default ({ rules, community, type }: Props) => {
 
             <ol>
                 {rules.length !== 0 &&
-                    rules.map(({ body, title, id }, index: number) => {
-                        return (
-                            <CommunityRule
-                                rule={{ title, body, id }}
-                                community={community}
-                                editing={true}
-                                index={index}
-                            />
-                        );
-                    })}
+                    rules
+                        .slice(0, showing)
+                        .map(({ body, title, id }, index: number) => {
+                            return (
+                                <CommunityRule
+                                    rule={{ title, body, id }}
+                                    community={community}
+                                    index={index}
+                                />
+                            );
+                        })}
 
                 {rules.length === 0 && (
                     <p>
@@ -213,6 +217,15 @@ export default ({ rules, community, type }: Props) => {
                     </p>
                 )}
             </ol>
+
+            {rules.length > showing && (
+                <span
+                    className="text-gray-600 cursor-pointer"
+                    onClick={showMore}
+                >
+                    Show more
+                </span>
+            )}
         </div>
     );
 };

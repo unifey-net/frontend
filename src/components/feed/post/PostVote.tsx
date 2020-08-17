@@ -8,7 +8,7 @@ import Vote from "../../../api/user/Vote"
 import { Post } from "../../../api/Feeds"
 
 type Props = {
-    vote: Vote,
+    vote: Vote | null,
     post: Post,
     postType?: string
 }
@@ -22,7 +22,7 @@ export default ({ vote, post, postType }: Props): JSX.Element => {
     let postId = useSelector((store: any) => store.post)
 
     useEffect(() => {
-        if (vote != undefined) {
+        if (vote !== null) {
             switch (vote.vote) {
                 case 1: {
                     setUpVoted(() => true);
@@ -39,7 +39,7 @@ export default ({ vote, post, postType }: Props): JSX.Element => {
                 }
             }
         }
-    }, []);
+    }, [vote]);
 
     /**
      * Update the vote on the backend.

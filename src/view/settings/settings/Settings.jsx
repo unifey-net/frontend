@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { signedIn, getSelf } from "../../../api/user/User";
+import { signedIn } from "../../../api/user/User";
 import { useDispatch, useSelector } from "react-redux";
 import history from "../../../api/History";
 import { Input,  Divider, Tooltip, message, Spin } from "antd";
@@ -8,10 +8,8 @@ import {
     LoadingOutlined,
     WarningOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
 import {
     getEmailVerificationStatus,
-    resend,
     getEmail,
 } from "../../../api/user/Email";
 import { API } from "../../../api/ApiHandler";
@@ -25,24 +23,11 @@ export default function Settings() {
 
     let [attempts, setAttempts] = useState(1);
     let [email, setEmail] = useState("");
-    let [loading, setLoading] = useState({
-        email: false,
-        username: false,
-        password: false,
-        resend: false,
-    });
 
     /**
      * Update the username.
      */
     const updateUsername = async () => {
-        setLoading((prev) => {
-            return {
-                ...prev,
-                username: true,
-            };
-        });
-
         let username = document.getElementById("username").value;
 
         let form = new FormData();
@@ -58,26 +43,12 @@ export default function Settings() {
         } else {
             message.error("There was an issue with that username.");
         }
-
-        setLoading((prev) => {
-            return {
-                ...prev,
-                username: false,
-            };
-        });
     };
 
     /**
      * Update the password.
      */
     const updatePassword = async () => {
-        setLoading((prev) => {
-            return {
-                ...prev,
-                password: true,
-            };
-        });
-
         let password = document.getElementById("password").value;
 
         let form = new FormData();
@@ -91,26 +62,12 @@ export default function Settings() {
         } else {
             message.error("There was an issue with that password.");
         }
-
-        setLoading((prev) => {
-            return {
-                ...prev,
-                password: false,
-            };
-        });
     };
 
     /**
      * Update the email.
      */
     const updateEmail = async () => {
-        setLoading((prev) => {
-            return {
-                ...prev,
-                email: true,
-            };
-        });
-
         let email = document.getElementById("email").value;
 
         let form = new FormData();
@@ -128,13 +85,6 @@ export default function Settings() {
         } else {
             message.error("There was an issue with that email.");
         }
-
-        setLoading((prev) => {
-            return {
-                ...prev,
-                email: false,
-            };
-        });
     };
 
     useEffect(() => {
@@ -159,7 +109,7 @@ export default function Settings() {
         if (!self.verified) {
             loadAttempts();
         }
-    }, []);
+    }, [self.verified]);
 
     if (!signedIn()) {
         history.push("/");

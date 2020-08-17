@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Avatar, Comment, Button, message } from "antd";
-import { AccountBookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { getImageUrl } from "../../../../api/user/User";
 import PostVote from "../PostVote";
@@ -9,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PostAbout from "../PostAbout";
 import PostManagement from "../PostManagement";
 import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds";
-import TextArea, { HTMLTextareaProps } from "antd/lib/input/TextArea";
+import TextArea from "antd/lib/input/TextArea";
 import { stopEditing } from "../../../../redux/actions/editor.actions";
 
 type Props = {

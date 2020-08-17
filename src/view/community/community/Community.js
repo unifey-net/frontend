@@ -1,13 +1,13 @@
 import { useRouteMatch } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Feed from "../../../components/feed/Feed";
-import { Empty, Spin, Typography, Divider } from "antd";
+import { Empty, Spin, Typography } from "antd";
 import { getCommunityByName } from "../../../api/community/Community";
-import { LoadingOutlined, EditOutlined } from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons";
 import CommunityManage from "../../../components/feed/CommunityManage";
-import CommunityRule from "./CommunityRules";
 import CommunityStaff from "./CommunityStaff";
 import CommunityRules from "./CommunityRules";
+import CommunityProfile from "./CommunityProfile";
 
 const { Text } = Typography;
 
@@ -92,47 +92,8 @@ export default function Community() {
                         />
 
                         <div className="flex flex-col gap-8">
-                            <div
-                                className="accent p-4 rounded mt-16 invisible lg:visible"
-                                style={{
-                                    maxWidth: "200px",
-                                    height: "min-content",
-                                }}
-                            >
-                                <div className="flex flex-row justify-between">
-                                    <h3 className="text-lg">
-                                        {data.community.name}
-                                    </h3>
-
-                                    <CommunityManage
-                                        community={data.community.id}
-                                    />
-                                </div>
-
-                                <Text>
-                                    <p
-                                        dangerouslySetInnerHTML={{
-                                            __html: data.community.description,
-                                        }}
-                                    />
-                                </Text>
-
-                                <Divider />
-
-                                <h3 className="text-lg">Member Count</h3>
-                                <Text>{data.community.size} members.</Text>
-
-                                <Divider />
-
-                                <h3 className="text-lg">Created On</h3>
-                                <Text>
-                                    {new Date(
-                                        data.community.createdAt
-                                    ).toLocaleString()}
-                                </Text>
-                            </div>
-
-                            <CommunityStaff staff={[]} />
+                            <CommunityProfile community={data.community} role={data.selfRole} />
+                            <CommunityStaff id={data.community.id}  />
                             <CommunityRules community={data.community.id} rules={data.community.rules} />
                         </div>
                     </div>

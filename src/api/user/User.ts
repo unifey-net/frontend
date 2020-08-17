@@ -80,7 +80,7 @@ export const getExpire = () => store.getState().auth.expire;
  * If the self token is expired.
  */
 export const isExpired = () => {
-    let expired = getExpire() != -1 && new Date().getTime() >= getExpire()
+    let expired = getExpire() !== -1 && new Date().getTime() >= getExpire()
 
     if (expired) logout()
     

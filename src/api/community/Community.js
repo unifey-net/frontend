@@ -1,7 +1,6 @@
 import { API } from "../ApiHandler";
 import store from "../../redux/store";
 import { postCommunity } from "../../redux/actions/community.actions";
-import axios from "axios"
 
 /**
  * Get a community by it's name in the store.
@@ -31,7 +30,7 @@ const getStoreCommunityById = (id) => {
     for (let i = 0; state.length > i; i++) {
         let community = state[i]
 
-        if (community.data.community.id == id) {
+        if (community.data.community.id === id) {
             return community
         }
     }

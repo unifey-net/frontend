@@ -5,7 +5,7 @@ const { COMMUNITY__POST } = require("../actions/community.actions");
  * @param {*} state
  * @param {*} action
  */
-const community = (state = [], action) => {
+const community = (state = [] as any[], action: any) => {
     switch (action.type) {
         case COMMUNITY__POST: {
             const { community } = action.payload;

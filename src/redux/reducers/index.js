@@ -5,5 +5,6 @@ import community from "./community.reducer"
 import emotes from "./emotes.reducer";
 import post from "./post.reducer"
 import editor from "./editor.reducer"
+import feeds from "./feeds.reducer"
 
-export default combineReducers({ auth, theme, community, emotes, post, editor });
+export default combineReducers({ auth, theme, community, emotes, post, editor, feeds });

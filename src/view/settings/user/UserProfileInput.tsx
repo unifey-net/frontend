@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent, useRef } from "react";
-import { Input, Button, Divider } from "antd";
+import React, { useState, ChangeEvent } from "react";
+import { Input, Button } from "antd";
 import Text from "antd/lib/typography/Text";
 
 type Props = {

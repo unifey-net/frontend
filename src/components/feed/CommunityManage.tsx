@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Button, message } from "antd";
-import { getSelf, leaveCommunity, joinCommunity, signedIn } from "../../api/user/User";
+import { leaveCommunity, joinCommunity, signedIn } from "../../api/user/User";
 import { useSelector } from "react-redux";
 
 type Props = {

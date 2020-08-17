@@ -1,4 +1,3 @@
-import { Redirect } from "react-router-dom";
 import React, { useEffect } from "react";
 import { Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -36,7 +35,7 @@ export default function Verify() {
         let verify = new URL(window.location).searchParams.get("verify");
 
         attemptVerify(verify)
-    }, [])
+    }, [dispatch])
     
     if (!signedIn()) {
         History.push("/")

@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-    FlagOutlined,
-    CaretDownFilled,
-    DeleteOutlined,
-    EditOutlined,
-    ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { message, Menu, Button, Dropdown, Tooltip, Modal, Typography, Input } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { message, Button, Input } from "antd";
+import { useDispatch } from "react-redux";
 import { getCommunityById } from "../../../api/community/Community";
 import { getGlobalEmotes } from "../../../api/Emotes";
-import { Link } from "react-router-dom";
 import PostComments from "./comments/PostComments";
 import PostVote from "./PostVote";
 import History from "../../../api/History";
 import PostReply from "./PostReply";
-import { deletePost, Post, useEditingStatus, updatePostContent, updatePostTitle } from "../../../api/Feeds";
-import PostReport from "./PostReport";
+import { Post, useEditingStatus, updatePostContent, updatePostTitle } from "../../../api/Feeds";
 import Vote from "../../../api/user/Vote";
 import { User } from "../../../api/user/User";
 import { parseBody, Emote } from "../../../api/Emotes";
@@ -26,13 +17,9 @@ import PostManagement from "./PostManagement";
 import { stopEditing } from "../../../redux/actions/editor.actions";
 import TextArea from "antd/lib/input/TextArea";
 
-const { Paragraph } = Typography;
-
-const { confirm } = Modal
-
 type Props = {
     post: Post,
-    vote: Vote,
+    vote: Vote | null,
     author: User,
     type?: string,
     feed: string
@@ -41,7 +28,7 @@ type Props = {
 /**
  * A post
  */
-export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
+export default ({ post, vote, author, type, feed }: Props) => {
     let [emotes, setEmotes] = useState([] as Emote[]);
 
     const [title, setTitle] = useState(post.title)
@@ -144,16 +131,20 @@ export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
 
     return (
         <>
-            <div className={(type === "focused" ? "p-4" : "px-4 pt-4") + " accent rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"}>
+            <div
+                className={
+                    (type === "focused" ? "p-4" : "px-4 pt-4") +
+                    " accent rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
+                }
+            >
                 <div className="flex flex-row justify-between">
                     {type !== "focused" && (
-                        <a
-                            rel="noopener noreferrer nofollow"
-                            className="text-lg"
+                        <span
+                            className="text-lg text-blue-400 hover:text-blue-600 cursor-pointer"
                             onClick={() => updateFocus()}
                         >
                             {post.title}
-                        </a>
+                        </span>
                     )}
 
                     {type === "focused" && (
@@ -216,7 +207,12 @@ export default ({ post, vote, author, type, feed }: Props): JSX.Element => {
 
                 {type === "focused" && (
                     <>
-                        <PostReply post={post.id} id={post.id} level={0} feed={post.feed} />
+                        <PostReply
+                            post={post.id}
+                            id={post.id}
+                            level={0}
+                            feed={post.feed}
+                        />
 
                         <PostComments
                             feed={post.feed}
