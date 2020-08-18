@@ -1,3 +1,5 @@
+import debug from "../../api/Debug";
+
 const { COMMUNITY__POST } = require("../actions/community.actions");
 
 /**
@@ -5,12 +7,14 @@ const { COMMUNITY__POST } = require("../actions/community.actions");
  * @param {*} state
  * @param {*} action
  */
-const community = (state = [] as any[], action: any) => {
+const community = (state = {} as any, action: any) => {
     switch (action.type) {
         case COMMUNITY__POST: {
-            const { community } = action.payload;
+            const community = action.payload;
 
-            state.push(community)
+            debug("%o", [community])
+
+            state[community.community.name] = community
 
             return state;
         }

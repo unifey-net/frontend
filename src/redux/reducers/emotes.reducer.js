@@ -11,7 +11,7 @@ const emotes = (state = [], action) => {
         case EMOTES__POST: {
             const { emotes } = action.payload;
 
-            state.push(emotes);
+            state = [...state, ...emotes];
 
             return state;
         }

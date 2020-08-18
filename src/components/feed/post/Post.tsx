@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { message, Button, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { getCommunityById } from "../../../api/community/Community";
-import { getGlobalEmotes } from "../../../api/Emotes";
 import PostComments from "./comments/PostComments";
 import PostVote from "./PostVote";
 import History from "../../../api/History";
@@ -16,6 +15,8 @@ import UserView from "../../view/UserView";
 import PostManagement from "./PostManagement";
 import { stopEditing } from "../../../redux/actions/editor.actions";
 import TextArea from "antd/lib/input/TextArea";
+import useEmotes from "../../../api/community/useEmotes";
+import debug from "../../../api/Debug";
 
 type Props = {
     post: Post,
@@ -29,38 +30,12 @@ type Props = {
  * A post
  */
 export default ({ post, vote, author, type, feed }: Props) => {
-    let [emotes, setEmotes] = useState([] as Emote[]);
-
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
 
+    let emotes = useEmotes()
     const editing = useEditingStatus(post.id)
     const dispatch = useDispatch()
-
-    // get emotes
-    useEffect(() => {
-        const loadEmotes = async () => {
-            let request = await getGlobalEmotes();
-
-            if (request.status === 200) {
-                setEmotes(request.data);
-            }
-        };
-
-        const loadCommunityEmotes = async (community: number) => {
-            let obj = await getCommunityById(community);
-
-            if (obj.status === 200) {
-                setEmotes(obj.data.emotes);
-            }
-        };
-
-        if (feed.startsWith("cf_")) {
-            loadCommunityEmotes(+feed.substring(3));
-        } else {
-            loadEmotes();
-        }
-    }, [feed]);
 
     /**
      * Complete editing.

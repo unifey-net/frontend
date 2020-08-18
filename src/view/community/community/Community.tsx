@@ -1,13 +1,15 @@
 import { useRouteMatch } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Feed from "../../../components/feed/Feed";
 import { Empty, Spin, Typography } from "antd";
-import { getCommunityByName } from "../../../api/community/Community";
 import { LoadingOutlined } from "@ant-design/icons";
 import CommunityManage from "../../../components/feed/CommunityManage";
 import CommunityStaff from "./CommunityStaff";
 import CommunityRules from "./CommunityRules";
 import CommunityProfile from "./CommunityProfile";
+import { useCommunity } from "../../../api/community/CommunityUtil";
+import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler";
+import { useCommunityEmotes } from "../../../api/community/useEmotes";
 
 const { Text } = Typography;
 
@@ -17,67 +19,39 @@ const { Text } = Typography;
  */
 export default function Community() {
     const {
-        params: { community, post },
+        params: { name, post },
     } = useRouteMatch();
 
-    let [loaded, setLoaded] = useState({
-        error: false,
-        loaded: false,
-    });
+    let [community, status] = useCommunity(name)
 
-    let [data, setData] = useState({
-        id: -1,
-        name: community,
-    });
-
-    useEffect(() => {
-        const loadData = async () => {
-            let data = await getCommunityByName(community);
-
-            if (data.status !== 200) {
-                setLoaded({
-                    error: true,
-                    loaded: true,
-                });
-            } else {
-                setData(data.data);
-
-                setLoaded({
-                    error: false,
-                    loaded: true,
-                });
-            }
-        };
-
-        loadData();
-    }, [community]);
+    useCommunityEmotes(community?.emotes === null ? [] : community?.emotes!!)
 
     return (
         <div className="flex flex-col items-center justify-center">
-            {loaded.loaded && !loaded.error && (
+            {status.status === COMPLETE && community !== null && (
                 <>
                     <div className="flex flex-col lg:block">
                         <h1 className="text-3xl lg:text-4xl">
-                            {data.community.name}
+                            {community.community.name}
                         </h1>
                         <div className="block mb-6 lg:hidden">
                             <CommunityManage
                                 className="mb-4"
-                                community={data.community.id}
+                                community={community.community.id}
                             />
                             <br />
-                            <Text>{data.community.description}</Text>
+                            <Text>{community.community.description}</Text>
                             <br />
                             <br />
                             Created On —{" "}
                             <Text>
                                 {new Date(
-                                    data.community.createdAt
+                                    community.community.createdAt
                                 ).toLocaleString()}
                             </Text>
                             <br />
                             Member Count —{" "}
-                            <Text>{data.community.size} members.</Text>
+                            <Text>{community.community.size} members.</Text>
                         </div>
                     </div>
 
@@ -85,30 +59,38 @@ export default function Community() {
 
                     <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
                         <Feed
-                            id={`cf_${data.community.id}`}
-                            postBox={data.selfRole >= data.community.postRole}
-                            community={data.community}
+                            id={`cf_${community.community.id}`}
+                            postBox={
+                                community.selfRole >=
+                                community.community.postRole
+                            }
                             focus={post}
                         />
 
                         <div className="flex flex-col gap-8">
-                            <CommunityProfile community={data.community} role={data.selfRole} />
-                            <CommunityStaff id={data.community.id}  />
-                            <CommunityRules community={data.community.id} rules={data.community.rules} />
+                            <CommunityProfile
+                                community={community.community}
+                                role={community.selfRole}
+                            />
+                            <CommunityStaff id={community.community.id} />
+                            <CommunityRules
+                                community={community.community.id}
+                                rules={community.community.rules}
+                            />
                         </div>
                     </div>
                 </>
             )}
 
-            {!loaded.loaded && !loaded.error && (
+            {status.status === LOADING && (
                 <div className="flex align-center justify-center">
                     <Spin indicator={<LoadingOutlined />}></Spin>
                 </div>
             )}
 
-            {loaded.error && (
+            {status.status === ERROR && (
                 <div className="flex align-center justify-center">
-                    <Empty />
+                    <Empty description="That community could not be found." />
                 </div>
             )}
         </div>

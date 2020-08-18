@@ -23,4 +23,13 @@ const API = axios.create({
 const VERSION = "Alpha v0.4.0";
 const CLIENT = "Unifey Web Client";
 
+export type RequestStatus = {
+    message: string,
+    status: number
+}
+
+export const COMPLETE = 1
+export const LOADING = 0
+export const ERROR = -1
+
 export { VERSION, CLIENT, API, BASE_URL }

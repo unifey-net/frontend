@@ -14,7 +14,7 @@ export type Emote = {
  */
 export const parseBody = (body: string, emotes: Emote[]) => {
     let newBody = body
-    let parsed = [...body.matchAll(/^:[A-Za-z0-9-_]+:$/g)];
+    let parsed = [...body.matchAll(/:[\w+]+:/g)];
 
     const getEmote = (emote: string) => {
         for (let i = 0; emotes.length > i; i++) {
@@ -40,22 +40,3 @@ export const parseBody = (body: string, emotes: Emote[]) => {
 
     return newBody
 }
-
-
-/**
- * Get global emotes
- */
-export const getGlobalEmotes = async () => {
-    let state = store.getState().emotes
- 
-    if (state.length === 0) {
-        let request = await API.get(`/emote`);
-
-        if (request.status !== 200)
-            return request
-
-        store.dispatch(postEmotes(request))
-    }
-
-    return state
-};

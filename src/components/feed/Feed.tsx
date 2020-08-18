@@ -14,11 +14,12 @@ import {
     changeSort,
 } from "../../redux/actions/feeds.actions";
 import debug from "../../api/Debug";
+import { Emote } from "../../api/Emotes";
 
 type Props = {
     id: string;
     postBox?: any;
-    focus?: number;
+    focus?: number
 };
 
 export default ({ id, focus, postBox }: Props) => {

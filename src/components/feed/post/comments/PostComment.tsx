@@ -10,6 +10,9 @@ import PostManagement from "../PostManagement";
 import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds";
 import TextArea from "antd/lib/input/TextArea";
 import { stopEditing } from "../../../../redux/actions/editor.actions";
+import { parseBody, Emote } from "../../../../api/Emotes";
+import useEmotes from "../../../../api/community/useEmotes";
+import debug from "../../../../api/Debug";
 
 type Props = {
     comment: any;
@@ -20,6 +23,8 @@ export default ({ comment, children }: Props): JSX.Element => {
     const [content, setContent] = useState(comment.comment.content);
     const post = useSelector((state: any) => state.post);
     const dispatch = useDispatch();
+
+    let emotes = useEmotes()
 
     const editing = useEditingStatus(comment.comment.id);
 
@@ -93,7 +98,7 @@ export default ({ comment, children }: Props): JSX.Element => {
                     {!editing && (
                         <p
                             dangerouslySetInnerHTML={{
-                                __html: content,
+                                __html: parseBody(content, emotes),
                             }}
                         />
                     )}

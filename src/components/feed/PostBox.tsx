@@ -9,7 +9,7 @@ type Props = {
     action: any
 }
 
-export default ({ feed, action}: Props): JSX.Element => {
+export default ({ feed, action }: Props): JSX.Element => {
     let [visible, setVisible] = useState(false);
     let [loading, setLoading] = useState(false);
 

@@ -14,11 +14,14 @@ import {
 import { getBadges } from "../../../api/user/Cosmetics";
 import UserProfile from "./UserProfile";
 import UserBadges from "./UserBadges";
+import { useDefaultEmotes } from "../../../api/community/useEmotes";
 
 export default function User() {
     const {
         params: { name, post },
     } = useRouteMatch();
+
+    useDefaultEmotes()
 
     let [user, setUser] = useState({} as any);
     let [loaded, setLoaded] = useState({

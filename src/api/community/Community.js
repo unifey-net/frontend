@@ -3,59 +3,12 @@ import store from "../../redux/store";
 import { postCommunity } from "../../redux/actions/community.actions";
 
 /**
- * Get a community by it's name in the store.
- * @param {string} name 
- */
-const getStoreCommunityByName = (name) => {
-    let state = store.getState().community
-
-    for (let i = 0; state.length > i; i++) {
-        let community = state[i]
-
-        if (community.data.community.name.toLowerCase() === name.toLowerCase()) {
-            return community;
-        }
-    }
-
-    return null
-}
-
-/**
- * Get a community by it's ID in the store.
- * @param {long} id 
- */
-const getStoreCommunityById = (id) => {
-    let state = store.getState().community
-
-    for (let i = 0; state.length > i; i++) {
-        let community = state[i]
-
-        if (community.data.community.id === id) {
-            return community
-        }
-    }
-
-    return null
-}
-
-/**
  * Get a community by it's name.
  * @param name
  * @param callback
  */
 export const getCommunityByName = async (name) => {
-    let state = getStoreCommunityByName(name)
-    
-    if (state !== null) return state;
-
-    let community = await API.get(`/community/name/${name}`)
-
-    if (community.status !== 200)
-        return community
-
-    store.dispatch(postCommunity(community))
-
-    return community;
+    return await API.get(`/community/name/${name}`);
 };
 
 /**
@@ -71,17 +24,7 @@ export const getAllCommunities = async () => {
  * @param callback
  */
 export const getCommunityById = async (id) => {
-    let state = getStoreCommunityById(id);
-
-    if (state !== null) return state;
-
-    let community = await API.get(`/community/${id}`);
-
-    if (community.status !== 200) return community;
-
-    store.dispatch(postCommunity(community));
-
-    return community;
+    return await API.get(`/community/${id}`);;
 };
 
 /**

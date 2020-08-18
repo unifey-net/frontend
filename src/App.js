@@ -71,12 +71,12 @@ export default function App() {
                     <Switch>
                         <Route path="/u/:name/:post" exact component={User} />
                         <Route
-                            path="/c/:community/:post"
+                            path="/c/:name/:post"
                             component={Community}
                             exact
                         />
                         <Route path="/u/:name" exact component={User} />
-                        <Route path="/c/:community" exact component={Community} />
+                        <Route path="/c/:name" exact component={Community} />
 
                         <Route exact path="/tos" component={Tos} />
                         <Route
