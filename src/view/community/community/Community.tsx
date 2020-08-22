@@ -5,7 +5,7 @@ import { Empty, Spin, Typography } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import CommunityManage from "../../../components/feed/CommunityManage";
 import CommunityStaff from "./CommunityStaff";
-import CommunityRules from "./CommunityRules";
+import CommunityRules from "./rules/CommunityRules";
 import CommunityProfile from "./CommunityProfile";
 import { useCommunity } from "../../../api/community/CommunityUtil";
 import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler";
@@ -22,9 +22,11 @@ export default function Community() {
         params: { name, post },
     } = useRouteMatch();
 
-    let [community, status] = useCommunity(name)
+    let [community, status] = useCommunity(name);
 
-    useCommunityEmotes(community?.emotes === null ? [] : community?.emotes!!)
+    useCommunityEmotes(
+        community?.emotes === undefined ? [] : community?.emotes!!
+    );
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -68,15 +70,11 @@ export default function Community() {
                         />
 
                         <div className="flex flex-col gap-8">
-                            <CommunityProfile
-                                community={community.community}
-                                role={community.selfRole}
-                            />
+                            <CommunityProfile community={community} />
+
                             <CommunityStaff id={community.community.id} />
-                            <CommunityRules
-                                community={community.community.id}
-                                rules={community.community.rules}
-                            />
+
+                            <CommunityRules community={community} />
                         </div>
                     </div>
                 </>

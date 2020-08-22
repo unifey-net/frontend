@@ -9,21 +9,21 @@ import {
     stopEditing,
     startEditing,
 } from "../../../redux/actions/editor.actions";
+import { CommunityRequest } from "../../../api/community/CommunityUtil";
 
 type Props = {
-    community: any;
-    role: number;
+    community: CommunityRequest;
 };
 
-export default ({ community, role }: Props) => {
+export default ({ community }: Props) => {
     const dispatch = useDispatch();
-    const editing = useEditCommunity(community.id);
+    const editing = useEditCommunity(community.community.id);
 
     const toggleEdit = () => {
         if (editing) {
             dispatch(stopEditing());
         } else {
-            dispatch(startEditing(community.id, "community"));
+            dispatch(startEditing(community.community.id, "community"));
         }
     };
 
@@ -37,24 +37,24 @@ export default ({ community, role }: Props) => {
         >
             <div className="flex flex-row justify-between">
                 <h3 className="text-lg">
-                    {community.name}{" "}
-                    { role === 4 &&
+                    {community.community.name}{" "}
+                    {community.selfRole === 4 && (
                         <span
-                        className="text-gray-600 cursor-pointer -mt-4"
-                        onClick={toggleEdit}
-                    >
-                        {editing ? <EditFilled /> : <EditOutlined />}
-                    </span>
-                    }
+                            className="text-gray-600 cursor-pointer -mt-4"
+                            onClick={toggleEdit}
+                        >
+                            {editing ? <EditFilled /> : <EditOutlined />}
+                        </span>
+                    )}
                 </h3>
 
-                <CommunityManage community={community.id} />
+                <CommunityManage community={community.community.id} />
             </div>
 
             <Text>
                 <p
                     dangerouslySetInnerHTML={{
-                        __html: community.description,
+                        __html: community.community.description,
                     }}
                 />
             </Text>
@@ -62,12 +62,14 @@ export default ({ community, role }: Props) => {
             <Divider />
 
             <h3 className="text-lg">Member Count</h3>
-            <Text>{community.size} members.</Text>
+            <Text>{community.community.size} members.</Text>
 
             <Divider />
 
             <h3 className="text-lg">Created On</h3>
-            <Text>{new Date(community.createdAt).toLocaleString()}</Text>
+            <Text>
+                {new Date(community.community.createdAt).toLocaleString()}
+            </Text>
         </div>
     );
 };

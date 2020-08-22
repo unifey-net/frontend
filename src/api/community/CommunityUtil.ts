@@ -5,7 +5,7 @@ import { postCommunity } from "../../redux/actions/community.actions"
 import { RequestStatus } from "../ApiHandler"
 import { Emote } from "../Emotes"
 import { Feed } from "../Feeds"
-import { AxiosResponse } from "axios"
+import { getNameById } from "../../redux/reducers/community.reducer"
 
 export type CommunityRule = {
     id: number,
@@ -66,4 +66,16 @@ export const useCommunity = (name: string): [CommunityRequest | null, RequestSta
     }, [name, dispatch, storedCommunity])
 
     return [storedCommunity === undefined ? null : storedCommunity, status]
+}
+
+/**
+ * Get an existing community (should already be in the community reducer) by an ID.
+ * 
+ * @param id The ID of the community.
+ */
+export const useExistingCommunityId = (id: number): CommunityRequest => {
+    let state = useSelector((state: any) => state)
+    let key = getNameById(state, id)
+
+    return state[key]
 }

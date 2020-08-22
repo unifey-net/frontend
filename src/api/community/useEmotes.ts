@@ -16,6 +16,8 @@ export default (): Emote[] => {
 export const useCommunityEmotes = (emotes: Emote[]) => {
     const dispatch = useDispatch()
 
+    debug("Loaded community emotes: %o", [emotes])
+
     useEffect(() => {
         dispatch(postEmotes(emotes))
     }, [])
