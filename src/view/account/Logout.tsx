@@ -3,13 +3,13 @@ import { signedIn, logout } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
 import { message } from "antd";
 
-export default function Logout() {
+export default () => {
     if (!signedIn())
         return <Redirect to="/login"/>
 
     logout();
 
-    message.info("You have been signed out!");
+    window.location.reload()
 
     return (<Redirect to="/"/>)
 }
