@@ -105,36 +105,6 @@ export const signedIn = () =>
     getToken() != null && !isExpired();
 
 /**
- *
- * @param username
- * @param pass
- * @param callback
- */
-export const login = async (username: string, password: string, remember: boolean) => {
-    let data = new FormData()
-
-    data.append("username", username)
-    data.append("password", password);
-    data.append("remember", `${remember}`);
-
-    let auth = await API.post(`/authenticate`, data)
-
-    if (auth.status !== 200)
-        return false
-
-    let user = auth.data.user;
-    let token = auth.data.token;
-
-    store.dispatch(logIn(
-        token.token,
-        user,
-        token.expires
-    ))
-
-    return true
-}
-
-/**
  * Leave a community.
  * @param {*} id 
  */

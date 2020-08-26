@@ -1,26 +1,58 @@
 import React, { useState } from "react";
-import { login, signedIn } from "../../api/user/User";
+import ReCAPTCHA from "react-google-recaptcha";
+import { signedIn } from "../../api/user/User";
 import { Redirect } from "react-router-dom";
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, Checkbox, message, Alert } from "antd";
 import history from "../../api/History";
 import { Link } from "react-router-dom";
 
 import FormItem from "antd/lib/form/FormItem";
+import { Store } from "antd/lib/form/interface";
+import { API } from "../../api/ApiHandler";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../redux/actions/auth.actions";
 
-export default function Login() {
-    let [loading, setLoading] = useState(false)
+/**
+ * The /login page.
+ */
+export default () => {
+    const dispatch = useDispatch();
 
-    const loginForm = async (values) => {
-        setLoading(true)
-        let response = await login(values["username"], values["password"], values["remember"]);
-        setLoading(false)
+    let [captcha, setCaptcha] = useState("")
+    let [loading, setLoading] = useState(false);
+    let [error, setError] = useState("");
 
-        if (response == null || !response) {
-            message.error("Invalid username or password!");
-        } else {
-            history.push("/");
-            message.info("You are now signed in!");
+    const loginForm = async (values: Store) => {
+        setLoading(true);
+
+        if (captcha === "") {
+            setError("Please fill out the reCAPTCHA")
+            
+            setLoading(false)
+            return
         }
+
+        let data = new FormData();
+
+        data.append("username", values.username);
+        data.append("password", values.password);
+        data.append("remember", `${values.remember}`);
+        data.append("captcha", captcha);
+
+        let request = await API.post(`/authenticate`, data);
+
+        if (request.status === 200) {
+            const { user, token } = request.data
+
+            dispatch(logIn(token.token, user, token.expires));
+
+            history.push("/");
+            window.location.reload()
+        } else {
+            setError(request.data.payload)
+        }
+
+        setLoading(false)
     };
 
     if (signedIn()) return <Redirect to="/" />;
@@ -29,6 +61,19 @@ export default function Login() {
         <>
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-6xl">Login</h1>
+
+                {error !== "" && (
+                    <>
+                        <div className="-mt-8"></div>
+                        <Alert
+                            type="error"
+                            showIcon
+                            message={error}
+                        />
+
+                        <div className="my-2"></div>
+                    </>
+                )}
 
                 <div className="form-container">
                     <Form
@@ -78,8 +123,20 @@ export default function Login() {
                         </div>
 
                         <Form.Item>
+                            <ReCAPTCHA
+                                sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
+                                theme="dark"
+                                onChange={(token) => setCaptcha(token === null ? "" : token) }
+                            />
+                        </Form.Item>
+
+                        <Form.Item>
                             <div className="flex flex-row justify-center items-center">
-                                <Button type="primary" htmlType="submit" loading={loading}>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    loading={loading}
+                                >
                                     Submit
                                 </Button>
                             </div>
