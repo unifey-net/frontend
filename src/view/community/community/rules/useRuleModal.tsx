@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { Input, Alert, Modal, Form } from "antd";
 import { API } from "../../../../api/ApiHandler";
 import { addRule } from "../../../../redux/actions/community.actions";
-import { useForm } from "antd/lib/form/util";
 import { Store } from "antd/lib/form/interface";
 
 const { TextArea } = Input;
@@ -14,7 +13,7 @@ const { TextArea } = Input;
 export default (community: number): [() => void, JSX.Element] => {
     let dispatch = useDispatch();
 
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     let [visible, setVisible] = useState(false);
     let [loading, setLoading] = useState(false);

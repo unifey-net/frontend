@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import SnakeModal from "./snake/SnakeModal";
 
 export default function Home() {
+    const [keyCodes, setKeyCodes] = useState([]);
+    const [snake, setSnake] = useState(false);
+
+    useEffect(() => {
+        const tick = (event) => {
+            setKeyCodes((prev) => [...prev, event.keyCode]);
+        };
+
+        window.addEventListener("keydown", tick, false);
+
+        return () => window.removeEventListener("keydown", tick, false);
+    }, []);
+
+    useEffect(() => {
+        if (keyCodes.length > 4) {
+            setKeyCodes([]);
+
+            if (
+                JSON.stringify(keyCodes) ===
+                JSON.stringify([83, 78, 65, 75, 69])
+            ) {
+                setSnake(true);
+            }
+        }
+    }, [keyCodes])
+
     return (
         <div className="flex flex-col items-center justify-center">
             <div>
@@ -25,12 +52,15 @@ export default function Home() {
                             rel="noopener noreferrer"
                             href="https://discord.gg/e9wKgAt"
                         >
-                            {" "}Discord
+                            {" "}
+                            Discord
                         </a>
                         .
                     </p>
                 </div>
             </div>
+
+            {snake && <SnakeModal />}
         </div>
     );
 }

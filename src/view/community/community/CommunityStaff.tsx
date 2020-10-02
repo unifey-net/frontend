@@ -22,18 +22,35 @@ export default ({ id }: Props) => {
         const loadStaff = async () => {
             let request = await API.get(`/community/${id}/staff`);
 
-            if (request.status === 200) {
-                setStatus((prev) => ({
-                    ...prev,
-                    status: 1
-                }))
+            switch (request.status) {
+                case 200: {
+                    setStatus((prev) => ({
+                        ...prev,
+                        status: 1,
+                    }));
 
-                setStaff(request.data)
-            } else {
-                setStatus((prev) => ({
-                    ...prev,
-                    status: -1,
-                }));
+                    setStaff(request.data);
+
+                    break;
+                }
+
+                case 401: {
+                    setStatus((prev) => ({
+                        ...prev,
+                        status: -2,
+                    }));
+
+                    break;
+                }
+
+                default: {
+                    setStatus((prev) => ({
+                        ...prev,
+                        status: -1,
+                    }));
+
+                    break;
+                }
             }
         };
 
@@ -55,7 +72,8 @@ export default ({ id }: Props) => {
                 <ul className="flex flex-col">
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
-                            let color = role === 2 ? "text-green-400" : "text-red-700"
+                            let color =
+                                role === 2 ? "text-green-400" : "text-red-700";
 
                             return (
                                 <li key={index}>
@@ -80,6 +98,15 @@ export default ({ id }: Props) => {
                     message={"There was an issue getting the staff members."}
                     description={status.message}
                     type="warning"
+                    showIcon
+                />
+            )}
+
+            {status.status === -2 && (
+                <Alert
+                    message={"You don't have permission to view this community!"}
+                    description={status.message}
+                    type="error"
                     showIcon
                 />
             )}

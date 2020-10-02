@@ -28,6 +28,9 @@ export default function Community() {
         community?.emotes === undefined ? [] : community?.emotes!!
     );
 
+    if (community && community.community.viewRole > community.selfRole)
+        return <Empty description="You don't have permission to view this community." />
+
     return (
         <div className="flex flex-col items-center justify-center">
             {status.status === COMPLETE && community !== null && (
@@ -43,15 +46,19 @@ export default function Community() {
                             />
                             <br />
                             <Text>{community.community.description}</Text>
+                            
                             <br />
                             <br />
+
                             Created On —{" "}
                             <Text>
                                 {new Date(
                                     community.community.createdAt
                                 ).toLocaleString()}
                             </Text>
+
                             <br />
+
                             Member Count —{" "}
                             <Text>{community.community.size} members.</Text>
                         </div>

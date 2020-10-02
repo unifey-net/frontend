@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { Modal, Form, Alert, Input, message } from "antd";
-import { useForm } from "antd/lib/form/util";
 import { Store } from "antd/lib/form/interface";
 import { API } from "../../../api/ApiHandler";
 
@@ -9,7 +8,7 @@ import { API } from "../../../api/ApiHandler";
  * When a ?verify string is included with the request, this will appear on the /settings/forgot page.
  */
 export default (): [JSX.Element, (verify: string) => void] => {
-    const [form] = useForm();
+    const [form] = Form.useForm();
 
     const [loading, setLoading] = useState(false);
     const [visible, setVisible] = useState(false);
