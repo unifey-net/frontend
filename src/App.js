@@ -6,7 +6,7 @@ import "./assets/main.css"
 
 import Community from "./view/community/community/Community"
 import Tos from "./view/Tos"
-import About from "./view/About"
+import About from "./view/about/About"
 import Communities from "./view/community/communities/Communities"
 import history from "./api/History"
 import User from "./view/settings/user/User"
