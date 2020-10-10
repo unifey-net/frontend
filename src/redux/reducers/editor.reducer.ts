@@ -1,4 +1,4 @@
-import { EDITOR__START, EDITOR__STOP } from "../actions/editor.actions";
+import { EDITOR__START, EDITOR__STOP } from "../actions/editor.actions"
 
 type EditorState = {
     isEditing: boolean
@@ -19,7 +19,7 @@ const editor = (state: EditorState = { isEditing: false }, action: any) => {
             state = {
                 isEditing: true,
                 id,
-                type
+                type,
             }
 
             return state
@@ -32,9 +32,9 @@ const editor = (state: EditorState = { isEditing: false }, action: any) => {
         }
 
         default: {
-            return state;
+            return state
         }
     }
-};
+}
 
-export default editor;
+export default editor

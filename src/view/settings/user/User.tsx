@@ -1,62 +1,60 @@
-import { useRouteMatch } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import { useRouteMatch } from "react-router-dom"
+import React, { useEffect, useState } from "react"
 
-import { getUserByName, signedIn, getImageUrl } from "../../../api/user/User";
-import Feed from "../../../components/feed/Feed";
+import { getUserByName, signedIn, getImageUrl } from "../../../api/user/User"
+import Feed from "../../../components/feed/Feed"
 
-import { Empty, Spin } from "antd";
-import Avatar from "antd/es/avatar";
+import { Empty, Spin } from "antd"
+import Avatar from "antd/es/avatar"
 
-import {
-    LoadingOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined } from "@ant-design/icons"
 
-import { getBadges } from "../../../api/user/Cosmetics";
-import UserProfile from "./UserProfile";
-import UserBadges from "./UserBadges";
-import { useDefaultEmotes } from "../../../api/community/useEmotes";
+import { getBadges } from "../../../api/user/Cosmetics"
+import UserProfile from "./UserProfile"
+import UserBadges from "./UserBadges"
+import { useDefaultEmotes } from "../../../api/community/useEmotes"
 
 export default function User() {
     const {
         params: { name, post },
-    } = useRouteMatch();
+    } = useRouteMatch()
 
     useDefaultEmotes()
 
-    let [user, setUser] = useState({} as any);
+    let [user, setUser] = useState({} as any)
     let [loaded, setLoaded] = useState({
         error: false,
         loaded: false,
-    });
+    })
 
     useEffect(() => {
         const loadUser = async () => {
-            let response = await getUserByName(name);
+            let response = await getUserByName(name)
 
             if (response == null || response.status !== 200) {
                 setLoaded({
                     error: true,
                     loaded: true,
-                });
+                })
             } else {
-                setUser(response.data);
+                setUser(response.data)
 
                 setUser((prevState: any) => {
                     return {
                         ...prevState,
                         badges: getBadges(prevState.profile.cosmetics),
-                    };
-                });
+                    }
+                })
 
                 setLoaded({
                     error: false,
                     loaded: true,
-                });
+                })
             }
-        };
+        }
 
-        loadUser();
-    }, [name]);
+        loadUser()
+    }, [name])
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -101,5 +99,5 @@ export default function User() {
                 </div>
             )}
         </div>
-    );
+    )
 }

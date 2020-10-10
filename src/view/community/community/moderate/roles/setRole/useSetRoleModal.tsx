@@ -1,24 +1,26 @@
-import React, { useState } from "react";
-import { CommunityRequest } from "../../../../../../api/community/CommunityUtil";
-import { Form, Alert, Select, message, AutoComplete, Input } from "antd";
-import Modal from "antd/lib/modal/Modal";
-import { Option } from "antd/lib/mentions";
-import { API } from "../../../../../../api/ApiHandler";
+import React, { useState } from "react"
+import { CommunityRequest } from "../../../../../../api/community/CommunityUtil"
+import { Form, Alert, Select, message, AutoComplete, Input } from "antd"
+import Modal from "antd/lib/modal/Modal"
+import { Option } from "antd/lib/mentions"
+import { API } from "../../../../../../api/ApiHandler"
 
 /**
- * Set a user's role modal. 
- * 
+ * Set a user's role modal.
+ *
  * target? is undefined-able because you don't need to set on
  */
 export default (community: CommunityRequest): [JSX.Element, () => void] => {
-    let [form] = Form.useForm();
+    let [form] = Form.useForm()
 
-    const [visible, setVisible] = useState(false); // modal visibility
+    const [visible, setVisible] = useState(false) // modal visibility
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
 
     const verifyName = async (name: string): Promise<number> => {
-        const request = await API.get(`/community/${community.community.id}/verifyname?name=${name}`)
+        const request = await API.get(
+            `/community/${community.community.id}/verifyname?name=${name}`
+        )
 
         if (request.status === 200 && request.data.payload !== null) {
             return request.data.payload
@@ -28,27 +30,29 @@ export default (community: CommunityRequest): [JSX.Element, () => void] => {
     const onOk = async () => {
         setLoading(true)
 
-        const store = await form.validateFields();
+        const store = await form.validateFields()
 
         const { role, name } = store
 
         const id = await verifyName(name)
 
         if (id === -1) {
-            setError("That name could not be found! Remember, they must be a member of the community.")
+            setError(
+                "That name could not be found! Remember, they must be a member of the community."
+            )
             setLoading(false)
             return
         }
 
         let formData = new FormData()
 
-        formData.append("target", `${id}`);
-        formData.append("role", role);
+        formData.append("target", `${id}`)
+        formData.append("role", role)
 
         const request = await API.post(
             `/community/${community.community.id}/roles`,
             formData
-        );
+        )
 
         if (request.status === 200) {
             setVisible(false)
@@ -70,10 +74,10 @@ export default (community: CommunityRequest): [JSX.Element, () => void] => {
             confirmLoading={loading}
             onOk={onOk}
             onCancel={() => {
-                setVisible(false);
-                setLoading(false);
+                setVisible(false)
+                setLoading(false)
                 setError("")
-                form.resetFields();
+                form.resetFields()
             }}
         >
             {error !== "" && <Alert message={error} showIcon type="error" />}
@@ -103,7 +107,7 @@ export default (community: CommunityRequest): [JSX.Element, () => void] => {
             </Form>
         </Modal>,
         () => {
-            setVisible((prev) => !prev);
+            setVisible(prev => !prev)
         },
-    ];
-};
+    ]
+}

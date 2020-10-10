@@ -6,10 +6,10 @@ import useSnake from "./useSnake"
 export default () => {
     const [visible, setVisible] = useState(false)
     const [snake, status, score, restart] = useSnake()
-    
+
     return (
         <>
-            <Button onClick={() => setVisible((prev) => !prev)}>Snake</Button>
+            <Button onClick={() => setVisible(prev => !prev)}>Snake</Button>
 
             <Modal
                 visible={visible}
@@ -35,5 +35,5 @@ export default () => {
                 </div>
             </Modal>
         </>
-    );
+    )
 }

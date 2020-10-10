@@ -1,38 +1,38 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Input, Alert, Modal, Form } from "antd";
-import { API } from "../../../../api/ApiHandler";
-import { addRule } from "../../../../redux/actions/community.actions";
-import { Store } from "antd/lib/form/interface";
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import { Input, Alert, Modal, Form } from "antd"
+import { API } from "../../../../api/ApiHandler"
+import { addRule } from "../../../../redux/actions/community.actions"
+import { Store } from "antd/lib/form/interface"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 /**
  * A modal used to create new rules for a community.
  */
 export default (community: number): [() => void, JSX.Element] => {
-    let dispatch = useDispatch();
+    let dispatch = useDispatch()
 
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
 
-    let [visible, setVisible] = useState(false);
-    let [loading, setLoading] = useState(false);
-    let [error, setError] = useState((<></>) as JSX.Element);
+    let [visible, setVisible] = useState(false)
+    let [loading, setLoading] = useState(false)
+    let [error, setError] = useState((<></>) as JSX.Element)
 
     /**
      * When the form is submitted.
-     * 
+     *
      * @param values The form's values.
      */
     const onOk = async (values: Store) => {
-        setLoading(true);
+        setLoading(true)
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("title", values.title);
-        form.append("body", values.body);
+        form.append("title", values.title)
+        form.append("body", values.body)
 
-        let request = await API.put(`/community/${community}/rules`, form);
+        let request = await API.put(`/community/${community}/rules`, form)
 
         if (request.status !== 200) {
             setError(
@@ -41,7 +41,7 @@ export default (community: number): [() => void, JSX.Element] => {
                     message="There was an issue creating that rule."
                     description={request.data.payload}
                 />
-            );
+            )
         } else {
             dispatch(
                 addRule(
@@ -50,12 +50,12 @@ export default (community: number): [() => void, JSX.Element] => {
                     values.title,
                     request.data.payload
                 )
-            );
-            setVisible(false);
+            )
+            setVisible(false)
         }
 
-        setLoading(false);
-    };
+        setLoading(false)
+    }
 
     /**
      * The actual modal.
@@ -64,15 +64,14 @@ export default (community: number): [() => void, JSX.Element] => {
         <Modal
             confirmLoading={loading}
             onCancel={() => {
-                setVisible(false);
-                form.resetFields();
+                setVisible(false)
+                form.resetFields()
             }}
             onOk={() => {
-                form.validateFields()
-                    .then((values) => {
-                        onOk(values);
-                        form.resetFields();
-                    })
+                form.validateFields().then(values => {
+                    onOk(values)
+                    form.resetFields()
+                })
             }}
             visible={visible}
             title="Create a new rule"
@@ -115,7 +114,7 @@ export default (community: number): [() => void, JSX.Element] => {
                 </Form.Item>
             </Form>
         </Modal>
-    );
+    )
 
-    return [() => setVisible((prev) => !prev), modal];
-};
+    return [() => setVisible(prev => !prev), modal]
+}

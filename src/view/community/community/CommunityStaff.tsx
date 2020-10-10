@@ -1,61 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { API } from "../../../api/ApiHandler";
-import { Spin, Alert } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { API } from "../../../api/ApiHandler"
+import { Spin, Alert } from "antd"
+import { LoadingOutlined } from "@ant-design/icons"
 
 type Props = {
-    id: number;
-};
+    id: number
+}
 
 /**
  * A communities staff members. This appears as a section of the far right sidebar.
  */
 export default ({ id }: Props) => {
-    let [staff, setStaff] = useState([] as any[]);
+    let [staff, setStaff] = useState([] as any[])
     let [status, setStatus] = useState({
         status: 0,
         message: "",
-    });
+    })
 
     useEffect(() => {
         const loadStaff = async () => {
-            let request = await API.get(`/community/${id}/staff`);
+            let request = await API.get(`/community/${id}/staff`)
 
             switch (request.status) {
                 case 200: {
-                    setStatus((prev) => ({
+                    setStatus(prev => ({
                         ...prev,
                         status: 1,
-                    }));
+                    }))
 
-                    setStaff(request.data);
+                    setStaff(request.data)
 
-                    break;
+                    break
                 }
 
                 case 401: {
-                    setStatus((prev) => ({
+                    setStatus(prev => ({
                         ...prev,
                         status: -2,
-                    }));
+                    }))
 
-                    break;
+                    break
                 }
 
                 default: {
-                    setStatus((prev) => ({
+                    setStatus(prev => ({
                         ...prev,
                         status: -1,
-                    }));
+                    }))
 
-                    break;
+                    break
                 }
             }
-        };
+        }
 
-        loadStaff();
-    }, [id]);
+        loadStaff()
+    }, [id])
 
     return (
         <div
@@ -73,7 +73,7 @@ export default ({ id }: Props) => {
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
                             let color =
-                                role === 2 ? "text-green-400" : "text-red-700";
+                                role === 2 ? "text-green-400" : "text-red-700"
 
                             return (
                                 <li key={index}>
@@ -84,7 +84,7 @@ export default ({ id }: Props) => {
                                         {user.username}
                                     </Link>
                                 </li>
-                            );
+                            )
                         })}
 
                     {staff.length === 0 && (
@@ -104,12 +104,14 @@ export default ({ id }: Props) => {
 
             {status.status === -2 && (
                 <Alert
-                    message={"You don't have permission to view this community!"}
+                    message={
+                        "You don't have permission to view this community!"
+                    }
                     description={status.message}
                     type="error"
                     showIcon
                 />
             )}
         </div>
-    );
-};
+    )
+}

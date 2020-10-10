@@ -1,15 +1,15 @@
 import { BASE_URL, API } from "../ApiHandler"
-import { logIn, logOut } from "../../redux/actions/auth.actions";
+import { logIn, logOut } from "../../redux/actions/auth.actions"
 import store from "../../redux/store"
-import {joinComm, leaveComm} from "../../redux/actions/auth.actions"
+import { joinComm, leaveComm } from "../../redux/actions/auth.actions"
 
 export type User = {
-    id: number,
-    username: string,
-    role: number,
-    verified: boolean,
-    createdAt: number,
-    profile: any,
+    id: number
+    username: string
+    role: number
+    verified: boolean
+    createdAt: number
+    profile: any
     member: any
 }
 
@@ -26,23 +26,23 @@ export const getToken = () => {
 
 /**
  * Get a user's profile picture URL.
- * @param {*} user 
+ * @param {*} user
  */
 export const getImageUrl = (user: string) => {
-    return `${BASE_URL}/user/name/${user}/picture`;
+    return `${BASE_URL}/user/name/${user}/picture`
 }
 
 /**
  * Get self.
  * @param callback
  */
-export const getSelf = async () =>  {
-    return store.getState().auth.user;
+export const getSelf = async () => {
+    return store.getState().auth.user
 }
 
 /**
  * Get a user's id by their name.
- * @param {string} name 
+ * @param {string} name
  */
 export const getUserIdByName = async (name: string) => {
     return await API.get(`/user/name/${name}`)
@@ -50,13 +50,12 @@ export const getUserIdByName = async (name: string) => {
 
 /**
  * Get a user by their name.
- * @param {string} name 
+ * @param {string} name
  */
 export const getUserByName = async (name: string) => {
     let id = await getUserIdByName(name)
 
-    if (id.status !== 200)
-        return null
+    if (id.status !== 200) return null
 
     return await getUserById(id.data.payload)
 }
@@ -74,7 +73,7 @@ export const getUserById = async (id: number) => {
 /**
  * When the token expires.
  */
-export const getExpire = () => store.getState().auth.expire;
+export const getExpire = () => store.getState().auth.expire
 
 /**
  * If the self token is expired.
@@ -83,7 +82,7 @@ export const isExpired = () => {
     let expired = getExpire() !== -1 && new Date().getTime() >= getExpire()
 
     if (expired) logout()
-    
+
     return expired
 }
 
@@ -101,35 +100,34 @@ export const logout = () => {
  *
  * @returns {boolean}
  */
-export const signedIn = () =>
-    getToken() != null && !isExpired();
+export const signedIn = () => getToken() != null && !isExpired()
 
 /**
  * Leave a community.
- * @param {*} id 
+ * @param {*} id
  */
 export const leaveCommunity = async (id: number) => {
-    let form = new FormData();
+    let form = new FormData()
 
-    form.append("id", `${id}`);
+    form.append("id", `${id}`)
 
     let request = await API.delete("/community/manage", {
-        headers: { },
+        headers: {},
         data: form,
-    });
+    })
 
     if (request.status === 200) {
-        store.dispatch(leaveComm(id));
+        store.dispatch(leaveComm(id))
 
-        return request;
+        return request
     } else {
-        return request;
+        return request
     }
 }
 
 /**
  * Join a community.
- * @param {*} id 
+ * @param {*} id
  */
 export const joinCommunity = async (id: number) => {
     let form = new FormData()

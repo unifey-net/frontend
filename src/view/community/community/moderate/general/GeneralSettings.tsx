@@ -1,16 +1,16 @@
-import React from "react";
-import { CommunityRequest } from "../../../../../api/community/CommunityUtil";
-import { Radio, Tooltip, message } from "antd";
-import CommunityPermission from "./CommunityPermission";
-import ChangeCommunityName from "./inputs/ChangeCommunityName";
-import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc";
-import { API } from "../../../../../api/ApiHandler";
-import { Redirect } from "react-router-dom";
-import NotFound from "../../../../NotFound";
+import React from "react"
+import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
+import { Radio, Tooltip, message } from "antd"
+import CommunityPermission from "./CommunityPermission"
+import ChangeCommunityName from "./inputs/ChangeCommunityName"
+import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc"
+import { API } from "../../../../../api/ApiHandler"
+import { Redirect } from "react-router-dom"
+import NotFound from "../../../../NotFound"
 
 type Props = {
-    community: CommunityRequest;
-};
+    community: CommunityRequest
+}
 
 export default ({ community }: Props) => {
     return (
@@ -27,18 +27,18 @@ export default ({ community }: Props) => {
                         desc="This is what level a user must be to be able to create a
                         post."
                         action="create posts."
-                        save={async (value) => {
-                            let form = new FormData();
+                        save={async value => {
+                            let form = new FormData()
 
-                            form.append("role", `${value}`);
+                            form.append("role", `${value}`)
 
                             let request = await API.put(
                                 `/community/${community.community.id}/roles/post`,
                                 form
-                            );
+                            )
 
                             if (request.status !== 200) {
-                                message.error(request.data.payload);
+                                message.error(request.data.payload)
                             }
                         }}
                     />
@@ -50,18 +50,18 @@ export default ({ community }: Props) => {
                         desc="This is what level a user must be to be able to view
                         posts."
                         action="view posts."
-                        save={async (value) => {
-                            let form = new FormData();
+                        save={async value => {
+                            let form = new FormData()
 
-                            form.append("role", `${value}`);
+                            form.append("role", `${value}`)
 
                             let request = await API.put(
                                 `/community/${community.community.id}/roles/view`,
                                 form
-                            );
+                            )
 
                             if (request.status !== 200) {
-                                message.error(request.data.payload);
+                                message.error(request.data.payload)
                             }
                         }}
                     />
@@ -73,18 +73,18 @@ export default ({ community }: Props) => {
                         desc="This is what level a user must be to be able to comment
                         on posts."
                         action="comment on posts."
-                        save={async (value) => {
-                            let form = new FormData();
+                        save={async value => {
+                            let form = new FormData()
 
-                            form.append("role", `${value}`);
+                            form.append("role", `${value}`)
 
                             let request = await API.put(
                                 `/community/${community.community.id}/roles/comment`,
                                 form
-                            );
+                            )
 
                             if (request.status !== 200) {
-                                message.error(request.data.payload);
+                                message.error(request.data.payload)
                             }
                         }}
                     />
@@ -99,5 +99,5 @@ export default ({ community }: Props) => {
                 </div>
             </div>
         </>
-    );
-};
+    )
+}

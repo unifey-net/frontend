@@ -3,8 +3,8 @@ import { useSelector } from "react-redux"
 import { Button } from "antd"
 
 type Props = {
-    name: string,
-    input: JSX.Element,
+    name: string
+    input: JSX.Element
     update: () => Promise<void>
 }
 
@@ -25,13 +25,12 @@ export default ({ name, input, update }: Props) => {
                 onClick={() => {
                     setLoading(true)
 
-                    update()
-                        .then(() => setLoading(false))
+                    update().then(() => setLoading(false))
                 }}
                 disabled={!self.verified}
             >
                 Update {name}
             </Button>
         </div>
-    );
+    )
 }

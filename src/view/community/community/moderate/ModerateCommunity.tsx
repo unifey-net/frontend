@@ -1,31 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Tabs, Spin, Alert } from "antd";
-import CommunityReports from "./reports/CommunityReports";
-import CommunityRole from "./roles/CommunityRole";
-import CommunityRoles from "./roles/CommunityRoles";
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
-import { useCommunity } from "../../../../api/community/CommunityUtil";
-import { COMPLETE, LOADING, ERROR } from "../../../../api/ApiHandler";
-import { LoadingOutlined } from "@ant-design/icons";
-import GeneralSettings from "./general/GeneralSettings";
-import useQueryParameterTabs from "../../../../components/useQueryParameterTabs";
-import NotFound from "../../../NotFound";
+import React, { useEffect, useState } from "react"
+import { Tabs, Spin, Alert } from "antd"
+import CommunityReports from "./reports/CommunityReports"
+import CommunityRole from "./roles/CommunityRole"
+import CommunityRoles from "./roles/CommunityRoles"
+import { useHistory, useParams, useRouteMatch } from "react-router-dom"
+import { useCommunity } from "../../../../api/community/CommunityUtil"
+import { COMPLETE, LOADING, ERROR } from "../../../../api/ApiHandler"
+import { LoadingOutlined } from "@ant-design/icons"
+import GeneralSettings from "./general/GeneralSettings"
+import useQueryParameterTabs from "../../../../components/useQueryParameterTabs"
+import NotFound from "../../../NotFound"
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 
 type UrlProps = {
-    name: string;
-};
+    name: string
+}
 
 export default () => {
-    const { name } = useParams() as UrlProps;
+    const { name } = useParams() as UrlProps
     const history = useHistory()
 
-    let [community, status] = useCommunity(name);
+    let [community, status] = useCommunity(name)
     let [activeTab, setActiveTab] = useQueryParameterTabs()
 
-    if (community && 3 > community.selfRole)
-        return NotFound()
+    if (community && 3 > community.selfRole) return NotFound()
 
     return (
         <>
@@ -41,7 +40,7 @@ export default () => {
                     >
                         <Tabs
                             activeKey={activeTab}
-                            onChange={(tab) => setActiveTab(tab) }
+                            onChange={tab => setActiveTab(tab)}
                             tabPosition="left"
                         >
                             <TabPane tab="General Settings" key="1">
@@ -70,5 +69,5 @@ export default () => {
                 />
             )}
         </>
-    );
-};
+    )
+}

@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, Alert, message } from "antd";
-import { signedIn } from "../../../api/user/User";
-import { API } from "../../../api/ApiHandler";
-import { Store } from "antd/lib/form/interface";
+import React, { useState } from "react"
+import { Modal, Form, Input, Alert, message } from "antd"
+import { signedIn } from "../../../api/user/User"
+import { API } from "../../../api/ApiHandler"
+import { Store } from "antd/lib/form/interface"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 type ReplyModalProps = {
-    visible: boolean,
-    loading: boolean,
-    error: string,
-    onCreate: (values: Store) => Promise<void>,
+    visible: boolean
+    loading: boolean
+    error: string
+    onCreate: (values: Store) => Promise<void>
     onCancel: () => void
 }
 
-const ReplyModal = ({ visible, onCreate, onCancel, loading, error }: ReplyModalProps): JSX.Element => {
-    const [form] = Form.useForm();
+const ReplyModal = ({
+    visible,
+    onCreate,
+    onCancel,
+    loading,
+    error,
+}: ReplyModalProps): JSX.Element => {
+    const [form] = Form.useForm()
 
     return (
         <Modal
@@ -27,13 +33,13 @@ const ReplyModal = ({ visible, onCreate, onCancel, loading, error }: ReplyModalP
             confirmLoading={loading}
             onOk={() => {
                 form.validateFields()
-                    .then((values) => {
-                        form.resetFields();
-                        onCreate(values);
+                    .then(values => {
+                        form.resetFields()
+                        onCreate(values)
                     })
-                    .catch((info) => {
-                        console.log("Validate Failed:", info);
-                    });
+                    .catch(info => {
+                        console.log("Validate Failed:", info)
+                    })
             }}
         >
             {error !== "" && (
@@ -70,63 +76,63 @@ const ReplyModal = ({ visible, onCreate, onCancel, loading, error }: ReplyModalP
                 </Form.Item>
             </Form>
         </Modal>
-    );
-};
+    )
+}
 
 type Props = {
-    feed: string,
-    level: number,
-    post: number,
+    feed: string
+    level: number
+    post: number
     id?: number
 }
 
 export default ({ feed, level, post, id }: Props): JSX.Element => {
-    const [visible, setVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
+    const [visible, setVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
     const submit = async (values: Store) => {
-        setLoading(true);
+        setLoading(true)
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("content", values["comment"]);
+        form.append("content", values["comment"])
 
         switch (level) {
             case 0: {
                 let req = await API.put(
                     `/feeds/${feed}/post/${post}/comments`,
                     form
-                );
+                )
 
                 if (req.status !== 200) {
-                    setError(req.data.payload);
+                    setError(req.data.payload)
                 } else {
-                    setVisible(false);
-                    message.success("Posted reply!");
+                    setVisible(false)
+                    message.success("Posted reply!")
                 }
-                break;
+                break
             }
 
             case 1: {
                 let req = await API.put(
                     `/feeds/${feed}/post/${post}/comments/${id}`,
                     form
-                );
+                )
 
                 if (req.status !== 200) {
-                    setError(req.data.payload);
+                    setError(req.data.payload)
                 } else {
-                    setVisible(false);
-                    message.success("Posted reply!");
+                    setVisible(false)
+                    message.success("Posted reply!")
                 }
-                break;
+                break
             }
         }
 
-        setLoading(false);
+        setLoading(false)
         window.location.reload()
-    };
+    }
 
     return (
         <>
@@ -145,9 +151,9 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
                         visible={visible}
                         onCreate={submit}
                         onCancel={() => {
-                            setVisible(false);
-                            setLoading(false);
-                            setError("");
+                            setVisible(false)
+                            setLoading(false)
+                            setError("")
                         }}
                         loading={loading}
                         error={error}
@@ -155,5 +161,5 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
                 </>
             )}
         </>
-    );
+    )
 }

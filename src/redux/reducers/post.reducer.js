@@ -1,4 +1,4 @@
-import { POST__SET } from "../actions/post.actions";
+import { POST__SET } from "../actions/post.actions"
 
 /**
  * Manages the current post.
@@ -9,17 +9,17 @@ import { POST__SET } from "../actions/post.actions";
 const post = (state = -1, action) => {
     switch (action.type) {
         case POST__SET: {
-            const { post } = action.payload;
+            const { post } = action.payload
 
             state = post
 
-            return state;
+            return state
         }
 
         default: {
-            return state;
+            return state
         }
     }
-};
+}
 
-export default post;
+export default post

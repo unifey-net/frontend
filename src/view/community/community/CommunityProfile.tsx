@@ -1,31 +1,31 @@
-import React from "react";
-import CommunityManage from "../../../components/feed/CommunityManage";
-import Text from "antd/lib/typography/Text";
-import { Divider } from "antd";
-import { EditOutlined, EditFilled } from "@ant-design/icons";
-import useEditCommunity from "./useEditCommunity";
-import { useDispatch } from "react-redux";
+import React from "react"
+import CommunityManage from "../../../components/feed/CommunityManage"
+import Text from "antd/lib/typography/Text"
+import { Divider } from "antd"
+import { EditOutlined, EditFilled } from "@ant-design/icons"
+import useEditCommunity from "./useEditCommunity"
+import { useDispatch } from "react-redux"
 import {
     stopEditing,
     startEditing,
-} from "../../../redux/actions/editor.actions";
-import { CommunityRequest } from "../../../api/community/CommunityUtil";
+} from "../../../redux/actions/editor.actions"
+import { CommunityRequest } from "../../../api/community/CommunityUtil"
 
 type Props = {
-    community: CommunityRequest;
-};
+    community: CommunityRequest
+}
 
 export default ({ community }: Props) => {
-    const dispatch = useDispatch();
-    const editing = useEditCommunity(community.community.id);
+    const dispatch = useDispatch()
+    const editing = useEditCommunity(community.community.id)
 
     const toggleEdit = () => {
         if (editing) {
-            dispatch(stopEditing());
+            dispatch(stopEditing())
         } else {
-            dispatch(startEditing(community.community.id, "community"));
+            dispatch(startEditing(community.community.id, "community"))
         }
-    };
+    }
 
     return (
         <div
@@ -71,5 +71,5 @@ export default ({ community }: Props) => {
                 {new Date(community.community.createdAt).toLocaleString()}
             </Text>
         </div>
-    );
-};
+    )
+}

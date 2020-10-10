@@ -1,25 +1,25 @@
-import { EMOTES__POST } from "../actions/emotes.actions";
+import { EMOTES__POST } from "../actions/emotes.actions"
 
 /**
  * Manages emotes.
- * 
+ *
  * @param {*} state
  * @param {*} action
  */
 const emotes = (state = [], action) => {
     switch (action.type) {
         case EMOTES__POST: {
-            const { emotes } = action.payload;
+            const { emotes } = action.payload
 
-            state = [...state, ...emotes];
+            state = [...state, ...emotes]
 
-            return state;
+            return state
         }
 
         default: {
-            return state;
+            return state
         }
     }
-};
+}
 
-export default emotes;
+export default emotes

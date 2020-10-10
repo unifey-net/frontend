@@ -1,57 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Input, Button, message, Alert } from "antd";
-import { API } from "../../../api/ApiHandler";
-import useForgotModal from "./useForgotModal";
+import React, { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import { Input, Button, message, Alert } from "antd"
+import { API } from "../../../api/ApiHandler"
+import useForgotModal from "./useForgotModal"
 
 /**
  * The /settings/forgot page. This will provide an input that allows you to input either an email or a username. When successfull, an email will be sent to the user.
  * When the email is received, a link will be provided to redirect back with this page with a token.
  */
 export default () => {
-    let [modal, toggle] = useForgotModal();
+    let [modal, toggle] = useForgotModal()
 
-    const [error, setError] = useState("");
-    const [sent, setSent] = useState(false);
+    const [error, setError] = useState("")
+    const [sent, setSent] = useState(false)
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false)
 
-    const input = React.createRef<Input>();
+    const input = React.createRef<Input>()
 
     useEffect(() => {
         let verify = new URL(window.location.toString()).searchParams.get(
             "verify"
-        );
+        )
 
         if (verify && verify !== "") {
-            toggle(verify);
+            toggle(verify)
         }
-    }, []);
+    }, [])
 
     const resetPassword = async () => {
-        let value = input.current!!.state.value;
+        let value = input.current!!.state.value
 
         if (value === "") {
-            setError("Please insert an email or username?");
-            return;
+            setError("Please insert an email or username?")
+            return
         }
 
-        const form = new FormData();
+        const form = new FormData()
 
-        form.append("input", value);
+        form.append("input", value)
 
-        setLoading(true);
+        setLoading(true)
 
-        let request = await API.put("/email/forgot", form);
+        let request = await API.put("/email/forgot", form)
 
         if (request.status !== 200) {
-            setError(request.data.payload);
+            setError(request.data.payload)
         } else {
-            setSent(true);
+            setSent(true)
         }
 
-        setLoading(false);
-    };
+        setLoading(false)
+    }
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -109,5 +109,5 @@ export default () => {
                 Reset password
             </Button>
         </div>
-    );
-};
+    )
+}

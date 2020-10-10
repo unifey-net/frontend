@@ -1,12 +1,12 @@
-import axios from "axios";
-import store from "../redux/store";
+import axios from "axios"
+import store from "../redux/store"
 
 /**
  * The base URL to the API.
  *
  * @type {string}
  */
-const BASE_URL: string = "http://localhost:8077"; // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol 
+const BASE_URL: string = "http://localhost:8077" // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol
 
 const API = axios.create({
     baseURL: BASE_URL,
@@ -18,13 +18,13 @@ const API = axios.create({
               }
             : {},
     validateStatus: () => true,
-});
+})
 
-const VERSION = "Alpha v0.4.0";
-const CLIENT = "Unifey Web Client";
+const VERSION = "Alpha v0.4.0"
+const CLIENT = "Unifey Web Client"
 
 export type RequestStatus = {
-    message: string,
+    message: string
     status: number
 }
 

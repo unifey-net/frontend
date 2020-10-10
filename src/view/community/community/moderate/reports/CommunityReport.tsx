@@ -1,31 +1,31 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
     Report,
     fixReportType,
     ReportRequest,
-} from "../../../../../api/community/Reports";
-import { CaretDownFilled, CaretRightFilled } from "@ant-design/icons";
-import { Button, message } from "antd";
-import History from "../../../../../api/History";
-import { CommunityRequest } from "../../../../../api/community/CommunityUtil";
-import { Link } from "react-router-dom";
-import { API } from "../../../../../api/ApiHandler";
+} from "../../../../../api/Reports"
+import { CaretDownFilled, CaretRightFilled } from "@ant-design/icons"
+import { Button, message } from "antd"
+import History from "../../../../../api/History"
+import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
+import { Link } from "react-router-dom"
+import { API } from "../../../../../api/ApiHandler"
 
 type Props = {
-    index: number;
-    reportRequest: ReportRequest;
-    community: CommunityRequest;
-};
+    index: number
+    reportRequest: ReportRequest
+    community: CommunityRequest
+}
 
 export default ({ index, reportRequest, community }: Props) => {
-    const { report, data } = reportRequest;
+    const { report, data } = reportRequest
 
-    const [extended, setExtended] = useState(false);
+    const [extended, setExtended] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
 
     const [deleted, setDeleted] = useState(false)
 
-    const extend = () => setExtended((prev) => !prev);
+    const extend = () => setExtended(prev => !prev)
 
     /**
      * Delete a report.
@@ -33,10 +33,12 @@ export default ({ index, reportRequest, community }: Props) => {
     const deleteReport = async () => {
         setDeleteLoading(true)
 
-        let request = await API.delete(`/report/${community.feed}/${reportRequest.report.id}`)
+        let request = await API.delete(
+            `/report/${community.feed}/${reportRequest.report.id}`
+        )
 
         if (request.status === 200) {
-            setDeleted(true);
+            setDeleted(true)
 
             message.success("Successfully deleted report.")
         } else {
@@ -50,10 +52,16 @@ export default ({ index, reportRequest, community }: Props) => {
         <CaretRightFilled onClick={extend} />
     ) : (
         <CaretDownFilled onClick={extend} />
-    );
+    )
 
     return (
-        <div className={"p-4 border-black mb-2 rounded accent " + deleted ? "hidden" : ""}>
+        <div
+            className={
+                "p-4 border-black mb-2 rounded accent " + deleted
+                    ? "hidden"
+                    : ""
+            }
+        >
             <div className="flex flex-row justify-between">
                 <span>
                     <strong>#{index}</strong> —{" "}
@@ -77,10 +85,12 @@ export default ({ index, reportRequest, community }: Props) => {
                             </Link>
                         </Button>
 
-                        <Button danger onClick={deleteReport}>Delete Report</Button>
+                        <Button danger onClick={deleteReport}>
+                            Delete Report
+                        </Button>
                     </div>
                 </div>
             )}
         </div>
-    );
-};
+    )
+}

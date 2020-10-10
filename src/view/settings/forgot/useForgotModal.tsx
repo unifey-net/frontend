@@ -1,18 +1,18 @@
-import React from "react";
-import { useState } from "react";
-import { Modal, Form, Alert, Input, message } from "antd";
-import { Store } from "antd/lib/form/interface";
-import { API } from "../../../api/ApiHandler";
+import React from "react"
+import { useState } from "react"
+import { Modal, Form, Alert, Input, message } from "antd"
+import { Store } from "antd/lib/form/interface"
+import { API } from "../../../api/ApiHandler"
 
 /**
  * When a ?verify string is included with the request, this will appear on the /settings/forgot page.
  */
 export default (): [JSX.Element, (verify: string) => void] => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
 
-    const [loading, setLoading] = useState(false);
-    const [visible, setVisible] = useState(false);
-    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false)
+    const [visible, setVisible] = useState(false)
+    const [error, setError] = useState("")
 
     const [verify, setVerify] = useState("")
 
@@ -22,7 +22,7 @@ export default (): [JSX.Element, (verify: string) => void] => {
     const onOk = async (values: Store) => {
         setLoading(true)
 
-        let password = values.password;
+        let password = values.password
 
         let form = new FormData()
 
@@ -48,14 +48,14 @@ export default (): [JSX.Element, (verify: string) => void] => {
         <Modal
             confirmLoading={loading}
             onCancel={() => {
-                setVisible(false);
-                form.resetFields();
+                setVisible(false)
+                form.resetFields()
             }}
             onOk={() => {
-                form.validateFields().then((values) => {
-                    onOk(values);
-                    form.resetFields();
-                });
+                form.validateFields().then(values => {
+                    onOk(values)
+                    form.resetFields()
+                })
             }}
             visible={visible}
             title="Create a new rule"
@@ -109,11 +109,11 @@ export default (): [JSX.Element, (verify: string) => void] => {
                                     !value ||
                                     getFieldValue("password") === value
                                 ) {
-                                    return Promise.resolve();
+                                    return Promise.resolve()
                                 }
                                 return Promise.reject(
                                     "The two passwords that you entered do not match!"
-                                );
+                                )
                             },
                         }),
                     ]}
@@ -122,12 +122,14 @@ export default (): [JSX.Element, (verify: string) => void] => {
                 </Form.Item>
             </Form>
         </Modal>
-    );
+    )
 
-    return [modal, (verify?: string) => {
-        setVisible((prev) => !prev)
+    return [
+        modal,
+        (verify?: string) => {
+            setVisible(prev => !prev)
 
-        if (verify !== undefined)
-            setVerify(verify) 
-    }];
-};
+            if (verify !== undefined) setVerify(verify)
+        },
+    ]
+}

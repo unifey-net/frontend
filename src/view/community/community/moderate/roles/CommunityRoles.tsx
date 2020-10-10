@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
-import CommunityRole from "./CommunityRole";
+import React, { useEffect, useState } from "react"
+import CommunityRole from "./CommunityRole"
 import {
     LOADING,
     RequestStatus,
     API,
     ERROR,
     COMPLETE,
-} from "../../../../../api/ApiHandler";
-import { UserRole } from "../../../../../api/community/Roles";
-import { CommunityRequest } from "../../../../../api/community/CommunityUtil";
-import { Button } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
-import useSetRoleModal from "./setRole/useSetRoleModal";
+} from "../../../../../api/ApiHandler"
+import { UserRole } from "../../../../../api/community/Roles"
+import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
+import { Button } from "antd"
+import { PlusCircleOutlined } from "@ant-design/icons"
+import useSetRoleModal from "./setRole/useSetRoleModal"
 
 type Props = {
-    community: CommunityRequest;
-};
+    community: CommunityRequest
+}
 
 export default ({ community }: Props) => {
-    const [roles, setRoles] = useState([] as UserRole[]);
+    const [roles, setRoles] = useState([] as UserRole[])
     const [status, setStatus] = useState({
         message: "",
         status: LOADING,
-    } as RequestStatus);
+    } as RequestStatus)
 
     const [modal, toggle] = useSetRoleModal(community)
 
@@ -30,26 +30,26 @@ export default ({ community }: Props) => {
         const loadReports = async () => {
             let request = await API.get(
                 `/community/${community.community.id}/roles`
-            );
+            )
 
             if (request.status !== 200) {
-                setStatus({ message: request.data.payload, status: ERROR });
+                setStatus({ message: request.data.payload, status: ERROR })
             } else {
-                setStatus({ message: "", status: COMPLETE });
+                setStatus({ message: "", status: COMPLETE })
 
-                const keys = Object.keys(request.data);
+                const keys = Object.keys(request.data)
 
                 setRoles(
                     keys.map(
                         (id: string, index: number) =>
                             ({ role: +request.data[id], user: +id } as UserRole)
                     )
-                );
+                )
             }
-        };
+        }
 
-        loadReports();
-    }, []);
+        loadReports()
+    }, [])
 
     return (
         <>
@@ -66,11 +66,13 @@ export default ({ community }: Props) => {
                 ))}
             </ul>
 
-            { modal }
+            {modal}
 
             <div className="flex justify-evenly">
-                <Button onClick={toggle}><PlusCircleOutlined/></Button>
+                <Button onClick={toggle}>
+                    <PlusCircleOutlined />
+                </Button>
             </div>
         </>
-    );
-};
+    )
+}

@@ -9,5 +9,5 @@ export default ({ date }: Props): JSX.Element => {
         <span className="invisible lg:visible">
             Posted on {new Date(date).toLocaleString()}
         </span>
-    );
+    )
 }

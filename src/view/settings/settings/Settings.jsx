@@ -1,127 +1,124 @@
-import React, { useState, useEffect } from "react";
-import { signedIn } from "../../../api/user/User";
-import { useDispatch, useSelector } from "react-redux";
-import history from "../../../api/History";
-import { Input,  Divider, Tooltip, message, Spin } from "antd";
+import React, { useState, useEffect } from "react"
+import { signedIn } from "../../../api/user/User"
+import { useDispatch, useSelector } from "react-redux"
+import history from "../../../api/History"
+import { Input, Divider, Tooltip, message, Spin } from "antd"
 import {
     CheckCircleOutlined,
     LoadingOutlined,
     WarningOutlined,
-} from "@ant-design/icons";
-import {
-    getEmailVerificationStatus,
-    getEmail,
-} from "../../../api/user/Email";
-import { API } from "../../../api/ApiHandler";
-import { updateName, verifyAccount } from "../../../redux/actions/auth.actions";
-import SettingsProperty from "./SettingsProperty";
-import UnverifiedWarning from "./UnverifiedWarning";
+} from "@ant-design/icons"
+import { getEmailVerificationStatus, getEmail } from "../../../api/user/Email"
+import { API } from "../../../api/ApiHandler"
+import { updateName, verifyAccount } from "../../../redux/actions/auth.actions"
+import SettingsProperty from "./SettingsProperty"
+import UnverifiedWarning from "./UnverifiedWarning"
 
 export default function Settings() {
-    let dispatch = useDispatch();
-    let self = useSelector((state) => state.auth.user);
+    let dispatch = useDispatch()
+    let self = useSelector(state => state.auth.user)
 
-    let [attempts, setAttempts] = useState(1);
-    let [email, setEmail] = useState("");
+    let [attempts, setAttempts] = useState(1)
+    let [email, setEmail] = useState("")
 
     /**
      * Update the username.
      */
     const updateUsername = async () => {
-        let username = document.getElementById("username").value;
+        let username = document.getElementById("username").value
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("username", username);
+        form.append("username", username)
 
-        let request = await API.put("/user/name", form);
+        let request = await API.put("/user/name", form)
 
         if (request.status === 200) {
-            message.success("Your username has been updated.");
+            message.success("Your username has been updated.")
 
-            dispatch(updateName(username));
+            dispatch(updateName(username))
         } else {
-            message.error("There was an issue with that username.");
+            message.error("There was an issue with that username.")
         }
-    };
+    }
 
     /**
      * Update the password.
      */
     const updatePassword = async () => {
-        let password = document.getElementById("password").value;
+        let password = document.getElementById("password").value
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("password", password);
+        form.append("password", password)
 
-        let request = await API.put("/user/password", form);
+        let request = await API.put("/user/password", form)
 
         if (request.status === 200) {
-            message.success("Your password has been updated.");
+            message.success("Your password has been updated.")
         } else {
-            message.error("There was an issue with that password.");
+            message.error("There was an issue with that password.")
         }
-    };
+    }
 
     /**
      * Update the email.
      */
     const updateEmail = async () => {
-        let email = document.getElementById("email").value;
+        let email = document.getElementById("email").value
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("email", email);
+        form.append("email", email)
 
-        let request = await API.put("/user/email", form);
+        let request = await API.put("/user/email", form)
 
         if (request.status === 200) {
             message.success(
                 "Your email has been updated. A verification request has been sent."
-            );
-            dispatch(verifyAccount(false));
-            setEmail(email);
+            )
+            dispatch(verifyAccount(false))
+            setEmail(email)
         } else {
-            message.error("There was an issue with that email.");
+            message.error("There was an issue with that email.")
         }
-    };
+    }
 
     useEffect(() => {
         const loadAttempts = async () => {
-            let request = await getEmailVerificationStatus();
+            let request = await getEmailVerificationStatus()
 
             if (request.status === 200) {
-                setAttempts(request.data.payload);
+                setAttempts(request.data.payload)
             }
-        };
+        }
 
         const loadEmail = async () => {
-            let request = await getEmail();
+            let request = await getEmail()
 
             if (request.status === 200) {
-                setEmail(request.data.payload);
+                setEmail(request.data.payload)
             }
-        };
+        }
 
-        loadEmail();
+        loadEmail()
 
         if (!self.verified) {
-            loadAttempts();
+            loadAttempts()
         }
-    }, [self.verified]);
+    }, [self.verified])
 
     if (!signedIn()) {
-        history.push("/");
+        history.push("/")
         message.error("You aren't signed in!")
-        return;
+        return
     }
 
     return (
         <div className="flex flex-col items-center justify-center">
             {!self.verified && (
                 <UnverifiedWarning
-                    addAttempt={() => setAttempts((prev) => prev + 1)}
+                    addAttempt={() => setAttempts(prev => prev + 1)}
                     attempts={attempts}
                 />
             )}
@@ -198,5 +195,5 @@ export default function Settings() {
                 />
             </div>
         </div>
-    );
+    )
 }

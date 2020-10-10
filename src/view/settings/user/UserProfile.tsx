@@ -1,83 +1,83 @@
-import React, { useState } from "react";
-import { EditOutlined } from "@ant-design/icons";
-import { User } from "../../../api/user/User";
-import { useSelector } from "react-redux";
-import Text from "antd/lib/typography/Text";
-import { message, Divider } from "antd";
-import { API } from "../../../api/ApiHandler";
-import UserProfileInput from "./UserProfileInput";
+import React, { useState } from "react"
+import { EditOutlined } from "@ant-design/icons"
+import { User } from "../../../api/user/User"
+import { useSelector } from "react-redux"
+import Text from "antd/lib/typography/Text"
+import { message, Divider } from "antd"
+import { API } from "../../../api/ApiHandler"
+import UserProfileInput from "./UserProfileInput"
 
 type Props = {
-    user: User;
-};
+    user: User
+}
 
 export default ({ user }: Props): JSX.Element => {
-    let [editing, setEditing] = useState(false);
-    let self = useSelector((state: any) => state.auth.user);
+    let [editing, setEditing] = useState(false)
+    let self = useSelector((state: any) => state.auth.user)
 
-    let [description, setDescription] = useState(user.profile.description);
-    let [location, setLocation] = useState(user.profile.location);
-    let [discord, setDiscord] = useState(user.profile.discord);
+    let [description, setDescription] = useState(user.profile.description)
+    let [location, setLocation] = useState(user.profile.location)
+    let [discord, setDiscord] = useState(user.profile.discord)
 
     /**
      * Update the description.
      * @param {*} desc
      */
     const updateDescription = async (desc: string) => {
-        if (desc === description) return;
+        if (desc === description) return
 
-        setDescription(desc);
+        setDescription(desc)
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("description", desc);
+        form.append("description", desc)
 
-        let request = await API.put("/user/profile/description", form);
+        let request = await API.put("/user/profile/description", form)
 
         if (request.status !== 200)
-            message.error("There was an issue updating your description!");
-        else message.success("Successfully changed your description!");
-    };
+            message.error("There was an issue updating your description!")
+        else message.success("Successfully changed your description!")
+    }
 
     /**
      * Update the discord.
      * @param {*} disc
      */
     const updateDiscord = async (disc: string) => {
-        if (disc === discord) return;
+        if (disc === discord) return
 
-        setDiscord(disc);
+        setDiscord(disc)
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("discord", disc);
+        form.append("discord", disc)
 
-        let request = await API.put("/user/profile/discord", form);
+        let request = await API.put("/user/profile/discord", form)
 
         if (request.status !== 200)
-            message.error("There was an issue updating your Discord!");
-        else message.success("Successfully changed your Discord!");
-    };
+            message.error("There was an issue updating your Discord!")
+        else message.success("Successfully changed your Discord!")
+    }
 
     /**
      * Update the description.
      * @param {*} loc
      */
     const updateLocation = async (loc: string) => {
-        if (loc === location) return;
+        if (loc === location) return
 
-        setLocation(loc);
+        setLocation(loc)
 
-        let form = new FormData();
+        let form = new FormData()
 
-        form.append("location", loc);
+        form.append("location", loc)
 
-        let request = await API.put("/user/profile/location", form);
+        let request = await API.put("/user/profile/location", form)
 
         if (request.status !== 200)
-            message.error("There was an issue updating your location!");
-        else message.success("Successfully changed your location!");
-    };
+            message.error("There was an issue updating your location!")
+        else message.success("Successfully changed your location!")
+    }
 
     return (
         <div
@@ -93,7 +93,7 @@ export default ({ user }: Props): JSX.Element => {
                 {self.id === user.id && (
                     <EditOutlined
                         className="mt-2"
-                        onClick={() => setEditing((prev) => !prev)}
+                        onClick={() => setEditing(prev => !prev)}
                     />
                 )}
             </div>
@@ -129,5 +129,5 @@ export default ({ user }: Props): JSX.Element => {
                 update={updateDiscord}
             />
         </div>
-    );
-};
+    )
+}

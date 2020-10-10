@@ -1,14 +1,14 @@
-import React from "react";
-import UserView from "../../../../../components/view/UserView";
-import { Dropdown, Menu, Divider, Button } from "antd";
-import { getRoleName } from "../../../../../api/community/Roles";
+import React from "react"
+import UserView from "../../../../../components/view/UserView"
+import { Dropdown, Menu, Divider, Button } from "antd"
+import { getRoleName } from "../../../../../api/community/Roles"
 
 type Props = {
-    index: number;
-    role: number;
+    index: number
+    role: number
     user: number
     selfRole: number
-};
+}
 
 export default ({ index, user, role, selfRole }: Props) => {
     let modify = (
@@ -17,7 +17,7 @@ export default ({ index, user, role, selfRole }: Props) => {
                 {role === 4 && <strong>Owner</strong>}
                 {role !== 4 && <>Owner</>}
             </Menu.Item>
-            
+
             <Menu.Item disabled={role === 4}>
                 {role === 3 && <strong>Administrator</strong>}
                 {role !== 3 && <>Administrator</>}
@@ -32,7 +32,7 @@ export default ({ index, user, role, selfRole }: Props) => {
 
             <Menu.Item disabled={role === 4}>Remove</Menu.Item>
         </Menu>
-    );
+    )
 
     return (
         <div className="accent rounded flex flex-row justify-between p-4 border-black">
@@ -41,5 +41,5 @@ export default ({ index, user, role, selfRole }: Props) => {
                 <p className="cursor-pointer pt-2">{getRoleName(role)}</p>
             </Dropdown>
         </div>
-    );
-};
+    )
+}

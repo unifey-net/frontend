@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { CommunityRequest } from "../../../../../api/community/CommunityUtil";
-import { Radio, Tooltip, Button } from "antd";
-import { RadioChangeEvent } from "antd/lib/radio";
+import React, { useState } from "react"
+import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
+import { Radio, Tooltip, Button } from "antd"
+import { RadioChangeEvent } from "antd/lib/radio"
 
 type Props = {
-    action: string;
-    community: CommunityRequest;
-    title: string;
-    desc: string;
-    initialValue: number;
-    save: (value: number) => Promise<void>;
-};
+    action: string
+    community: CommunityRequest
+    title: string
+    desc: string
+    initialValue: number
+    save: (value: number) => Promise<void>
+}
 
 export default ({
     action,
@@ -20,9 +20,9 @@ export default ({
     initialValue,
     save,
 }: Props) => {
-    const [pre, setPre] = useState(initialValue);
-    const [value, setValue] = useState(initialValue);
-    const [loading, setLoading] = useState(false);
+    const [pre, setPre] = useState(initialValue)
+    const [value, setValue] = useState(initialValue)
+    const [loading, setLoading] = useState(false)
 
     return (
         <div>
@@ -55,15 +55,15 @@ export default ({
                     loading={loading}
                     onClick={async () => {
                         setLoading(true)
-                        await save(value);
+                        await save(value)
                         setLoading(false)
-                        
-                        setPre(value);
+
+                        setPre(value)
                     }}
                 >
                     Save
                 </Button>
             )}
         </div>
-    );
-};
+    )
+}

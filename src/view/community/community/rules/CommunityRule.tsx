@@ -1,116 +1,116 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import useEditCommunity from "../useEditCommunity";
-import { Input, message, Button } from "antd";
-import TextArea from "antd/lib/input/TextArea";
-import { Rule } from "./CommunityRules";
-import { removeRule } from "../../../../redux/actions/community.actions";
-import { API } from "../../../../api/ApiHandler";
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
+import useEditCommunity from "../useEditCommunity"
+import { Input, message, Button } from "antd"
+import TextArea from "antd/lib/input/TextArea"
+import { Rule } from "./CommunityRules"
+import { removeRule } from "../../../../redux/actions/community.actions"
+import { API } from "../../../../api/ApiHandler"
 import {
     CaretDownOutlined,
     CaretRightOutlined,
     SaveOutlined,
     EditOutlined,
     DeleteOutlined,
-} from "@ant-design/icons";
+} from "@ant-design/icons"
 
 type Props = {
-    rule: Rule;
-    community: number;
-    index: number;
-    update: () => void;
-};
+    rule: Rule
+    community: number
+    index: number
+    update: () => void
+}
 
 /**
  * An individual rule for a community.
  */
 export default ({ rule, community, index, update }: Props) => {
-    let dispatch = useDispatch();
+    let dispatch = useDispatch()
 
-    let bodyRef = React.createRef<TextArea>();
-    let titleRef = React.createRef<Input>();
+    let bodyRef = React.createRef<TextArea>()
+    let titleRef = React.createRef<Input>()
 
-    const editing = useEditCommunity(community);
+    const editing = useEditCommunity(community)
 
-    const { id } = rule;
+    const { id } = rule
 
-    const [title, setTitle] = useState(rule.title);
-    const [body, setBody] = useState(rule.body);
+    const [title, setTitle] = useState(rule.title)
+    const [body, setBody] = useState(rule.body)
 
-    const [extended, setExtended] = useState(false);
-    const [manage, setManage] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [extended, setExtended] = useState(false)
+    const [manage, setManage] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     /**
      * Extend the rule.
      */
-    const extend = () => setExtended((prev) => !prev);
+    const extend = () => setExtended(prev => !prev)
 
     /**
      * Save the changes to the rule.
      */
     const save = async () => {
-        setLoading(true);
+        setLoading(true)
 
-        let bodyValue = bodyRef.current!!.state.value;
-        let titleValue = titleRef.current!!.state.value;
+        let bodyValue = bodyRef.current!!.state.value
+        let titleValue = titleRef.current!!.state.value
 
         if (body !== bodyValue) {
-            let form = new FormData();
+            let form = new FormData()
 
-            form.append("id", `${id}`);
-            form.append("body", `${bodyValue}`);
+            form.append("id", `${id}`)
+            form.append("body", `${bodyValue}`)
 
             let request = await API.patch(
                 `/community/${community}/rules/body`,
                 form
-            );
+            )
 
             if (request.status !== 200) {
-                message.error(request.data.payload);
+                message.error(request.data.payload)
             } else {
-                setBody(bodyValue);
+                setBody(bodyValue)
             }
         }
 
         if (title !== titleValue) {
-            let form = new FormData();
+            let form = new FormData()
 
-            form.append("id", `${id}`);
-            form.append("title", `${titleValue}`);
+            form.append("id", `${id}`)
+            form.append("title", `${titleValue}`)
 
             let request = await API.patch(
                 `/community/${community}/rules/title`,
                 form
-            );
+            )
 
             if (request.status !== 200) {
-                message.error(request.data.payload);
+                message.error(request.data.payload)
             } else {
-                setTitle(titleValue);
+                setTitle(titleValue)
             }
         }
 
-        setLoading(false);
-        setManage(false);
-    };
+        setLoading(false)
+        setManage(false)
+    }
 
     /**
      * Delete a rule.
      */
     const deleteRule = async () => {
-        let request = await API.delete(`/community/${community}/rules/${id}`);
+        let request = await API.delete(`/community/${community}/rules/${id}`)
 
         if (request.status !== 200) {
-            message.error(request.data.payload);
+            message.error(request.data.payload)
         } else {
-            dispatch(removeRule(community, id));
-            message.success("Rule has been successfully deleted.");
+            dispatch(removeRule(community, id))
+            message.success("Rule has been successfully deleted.")
         }
 
-        update();
-        setExtended(false);
-    };
+        update()
+        setExtended(false)
+    }
 
     /**
      * The thing that extends the rule when clicking on it.
@@ -119,15 +119,13 @@ export default ({ rule, community, index, update }: Props) => {
         <CaretDownOutlined className="mt-2" onClick={extend} />
     ) : (
         <CaretRightOutlined className="mt-1" onClick={extend} />
-    );
+    )
 
     return (
         <li>
             <div className="divider"></div>
 
-            <h3
-                className={`text-base text-gray-300 my-2 transition`}
-            >
+            <h3 className={`text-base text-gray-300 my-2 transition`}>
                 <div className="flex flex-row gap-2 text-sm -mb-4">
                     <p className="">#{index + 1}.</p>
 
@@ -166,7 +164,7 @@ export default ({ rule, community, index, update }: Props) => {
                                 <Button
                                     danger
                                     ghost
-                                    onClick={() => setManage((prev) => !prev)}
+                                    onClick={() => setManage(prev => !prev)}
                                 >
                                     <EditOutlined />
                                 </Button>
@@ -187,5 +185,5 @@ export default ({ rule, community, index, update }: Props) => {
                 )}
             </h3>
         </li>
-    );
-};
+    )
+}

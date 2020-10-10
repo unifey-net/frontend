@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import { CommunityRequest } from "../../../../../../api/community/CommunityUtil";
-import useInputModal from "../useInputModal";
-import { Store } from "antd/lib/form/interface";
+import React, { useState } from "react"
+import { CommunityRequest } from "../../../../../../api/community/CommunityUtil"
+import useInputModal from "../useInputModal"
+import { Store } from "antd/lib/form/interface"
 import { Form, Input, Button } from "antd"
-import { API } from "../../../../../../api/ApiHandler";
+import { API } from "../../../../../../api/ApiHandler"
 
 type Props = {
-    community: CommunityRequest;
-};
+    community: CommunityRequest
+}
 
 export default ({ community }: Props) => {
     let [modal, toggle] = useInputModal(
         async (store: Store) => {
-            let { desc } = store;
+            let { desc } = store
 
-            let form = new FormData();
+            let form = new FormData()
 
-            form.append("description", desc === undefined ? "" : desc);
+            form.append("description", desc === undefined ? "" : desc)
 
             let request = await API.put(
                 `/community/${community.community.id}/description`,
                 form
-            );
+            )
 
-            return request.status === 200 ? "" : request.data.payload;
+            return request.status === 200 ? "" : request.data.payload
         },
         [
             <Form.Item
@@ -33,20 +33,18 @@ export default ({ community }: Props) => {
                     {
                         max: 256,
                         message: "The name cannot be over 16 characters!",
-                    }
+                    },
                 ]}
             >
                 <Input />
-            </Form.Item>
+            </Form.Item>,
         ]
-    );
+    )
 
     return (
         <div>
             <h3>Description</h3>
-            <p>
-                Currently: {community.community.description}
-            </p>
+            <p>Currently: {community.community.description}</p>
 
             <Button type="primary" onClick={toggle}>
                 Change
@@ -54,5 +52,5 @@ export default ({ community }: Props) => {
 
             {modal}
         </div>
-    );
-};
+    )
+}

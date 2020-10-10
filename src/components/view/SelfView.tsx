@@ -1,20 +1,24 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Menu, Tooltip, Dropdown, Button, Avatar } from "antd";
+import { Menu, Tooltip, Dropdown, Button, Avatar } from "antd"
 import { Link } from "react-router-dom"
-import { themeLight, themeDark, themeAuto } from "../../redux/actions/theme.actions";
-import { BulbFilled, BulbOutlined, UserOutlined } from "@ant-design/icons";
-import { isAutoDark } from "../../api/Util";
-import SubMenu from "antd/lib/menu/SubMenu";
-import { getImageUrl } from "../../api/user/User";
+import {
+    themeLight,
+    themeDark,
+    themeAuto,
+} from "../../redux/actions/theme.actions"
+import { BulbFilled, BulbOutlined, UserOutlined } from "@ant-design/icons"
+import { isAutoDark } from "../../api/Util"
+import SubMenu from "antd/lib/menu/SubMenu"
+import { getImageUrl } from "../../api/user/User"
 
 export default () => {
-    let dispatch = useDispatch();
+    let dispatch = useDispatch()
 
-    let theme = useSelector((store: any) => store.theme);
-    let self = useSelector((store: any) => store.auth);
+    let theme = useSelector((store: any) => store.theme)
+    let self = useSelector((store: any) => store.auth)
 
-    let name = self.user.username;
+    let name = self.user.username
 
     const menu = (
         <Menu>
@@ -61,7 +65,7 @@ export default () => {
                 <Link to={`/settings`}>Settings</Link>
             </Menu.Item>
         </Menu>
-    );
+    )
 
     return (
         <div className="flex flex-row">
@@ -69,7 +73,7 @@ export default () => {
                 <Dropdown overlay={menu}>
                     <Button
                         className="ant-dropdown-link mt-1"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={e => e.preventDefault()}
                         type="link"
                     >
                         <Avatar size={32} src={getImageUrl(name)} />
@@ -83,5 +87,5 @@ export default () => {
                 </Link>
             )}
         </div>
-    );
+    )
 }

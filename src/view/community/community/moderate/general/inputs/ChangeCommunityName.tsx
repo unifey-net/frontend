@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { CommunityRequest } from "../../../../../../api/community/CommunityUtil";
-import useInputModal from "../useInputModal";
-import { Store } from "antd/lib/form/interface";
-import { Button, Form, Input, Tooltip } from "antd";
-import { API } from "../../../../../../api/ApiHandler";
+import React, { useState } from "react"
+import { CommunityRequest } from "../../../../../../api/community/CommunityUtil"
+import useInputModal from "../useInputModal"
+import { Store } from "antd/lib/form/interface"
+import { Button, Form, Input, Tooltip } from "antd"
+import { API } from "../../../../../../api/ApiHandler"
 
 type Props = {
-    community: CommunityRequest;
-};
+    community: CommunityRequest
+}
 
 export default ({ community }: Props) => {
     // the name change cooldown. if this is not -1, then it is the timestamp when the name change will be available.
@@ -22,9 +22,12 @@ export default ({ community }: Props) => {
             form.append("password", password)
             form.append("name", name)
 
-            let request = await API.put(`/community/${community.community.id}/name`, form)
-            
-            return request.status === 200 ? "" : request.data.payload;
+            let request = await API.put(
+                `/community/${community.community.id}/name`,
+                form
+            )
+
+            return request.status === 200 ? "" : request.data.payload
         },
         [
             <Form.Item
@@ -65,7 +68,7 @@ export default ({ community }: Props) => {
                 <Input.Password />
             </Form.Item>,
         ]
-    );
+    )
 
     return (
         <div>
@@ -81,7 +84,11 @@ export default ({ community }: Props) => {
             )}
 
             {cooldown !== -1 && (
-                <Tooltip title={`Name change will be available on ${new Date(cooldown).toLocaleString()}.`}>
+                <Tooltip
+                    title={`Name change will be available on ${new Date(
+                        cooldown
+                    ).toLocaleString()}.`}
+                >
                     <Button type="primary" onClick={toggle} disabled>
                         Change
                     </Button>
@@ -90,5 +97,5 @@ export default ({ community }: Props) => {
 
             {modal}
         </div>
-    );
-};
+    )
+}

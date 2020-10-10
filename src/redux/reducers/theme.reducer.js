@@ -1,4 +1,4 @@
-import { THEME_DARK, THEME_LIGHT, THEME_AUTO } from "../actions/theme.actions";
+import { THEME_DARK, THEME_LIGHT, THEME_AUTO } from "../actions/theme.actions"
 
 /**
  * Get the initial state.
@@ -7,16 +7,16 @@ const getInitialState = () => {
     let stored = localStorage.getItem("theme")
 
     if (stored != null && stored !== "" && typeof stored != undefined)
-        return JSON.parse(stored);
+        return JSON.parse(stored)
 
-    return { theme: "dark" };
+    return { theme: "dark" }
 }
 
 /**
  * Save the state.
- * @param {*} state 
+ * @param {*} state
  */
-const saveState = (state) => {
+const saveState = state => {
     localStorage.setItem("theme", JSON.stringify(state))
 }
 
@@ -29,37 +29,37 @@ const theme = (state = getInitialState(), action) => {
     switch (action.type) {
         case THEME_DARK: {
             state = {
-                theme: "dark"
+                theme: "dark",
             }
 
-            if (action.payload.stay === true) saveState(state);
+            if (action.payload.stay === true) saveState(state)
 
-            return state;
+            return state
         }
 
         case THEME_LIGHT: {
             state = {
-                theme: "light"
+                theme: "light",
             }
 
-            if (action.payload.stay === true) saveState(state);
+            if (action.payload.stay === true) saveState(state)
 
-            return state;
+            return state
         }
 
         case THEME_AUTO: {
             state = {
-                theme: "auto"
+                theme: "auto",
             }
 
             if (action.payload.stay === true) saveState(state)
-            
-            return state;
+
+            return state
         }
 
-        default: 
+        default:
             return state
     }
-};
+}
 
-export default theme;
+export default theme

@@ -7,8 +7,8 @@ export const FEED__CHANGE_SORT = "FEED__CHANGE_SORT"
 export const FEED__BUMP_PAGE = "FEED__BUMP_PAGE"
 
 export type PostLoad = {
-    posts: PostResponse[],
-    sort: string,
+    posts: PostResponse[]
+    sort: string
     id: string
 }
 
@@ -17,31 +17,31 @@ export type InitialFeed = {
 }
 
 export type SortChange = {
-    sort: string,
+    sort: string
     id: string
 }
 
 export const loadPost = (post: PostLoad) => ({
     type: FEED__LOAD,
-    payload: post
+    payload: post,
 })
 
 export const postFeed = (initial: InitialFeed) => ({
     type: FEED__POST,
-    payload: initial
+    payload: initial,
 })
 
 export const feedClear = (id: string) => ({
     type: FEED__CLEAR,
-    payload: id
+    payload: id,
 })
 
 export const changeSort = (sortChange: SortChange) => ({
     type: FEED__CHANGE_SORT,
-    payload: sortChange
+    payload: sortChange,
 })
 
 export const bumpPage = (id: string) => ({
     type: FEED__BUMP_PAGE,
-    payload: id
+    payload: id,
 })

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 /**
  * The terms and conditions.
@@ -238,5 +238,5 @@ export default function Tos() {
             </p>
             <p>This document was last updated on July 27, 2020</p>
         </div>
-    );
+    )
 }

@@ -1,14 +1,14 @@
 import { signedIn } from "./User"
-import { API } from "../ApiHandler";
+import { API } from "../ApiHandler"
 
 /**
  * Get the logged in user's verification status.
  */
 export const getEmailVerificationStatus = async () => {
-    if (!signedIn()) return null;
+    if (!signedIn()) return null
 
     return await API.get("/email/status?type=0")
-};
+}
 
 /**
  * Resend the email.

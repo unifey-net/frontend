@@ -1,51 +1,54 @@
-import React, { useState } from "react";
-import { message, Input, Button, Modal } from "antd";
-import { createPost } from "../../api/Feeds";
+import React, { useState } from "react"
+import { message, Input, Button, Modal } from "antd"
+import { createPost } from "../../api/Feeds"
 
-const { TextArea } = Input;
+const { TextArea } = Input
 
 type Props = {
-    feed: string,
+    feed: string
     action: any
 }
 
 export default ({ feed, action }: Props): JSX.Element => {
-    let [visible, setVisible] = useState(false);
-    let [loading, setLoading] = useState(false);
+    let [visible, setVisible] = useState(false)
+    let [loading, setLoading] = useState(false)
 
     const showModal = () => {
-        setVisible(true);
-    };
+        setVisible(true)
+    }
 
     const handleOk = async () => {
-        setLoading(true);
+        setLoading(true)
 
-        let title = document.querySelector("#title") as HTMLInputElement;
-        let content = document.querySelector("#content") as HTMLInputElement;
+        let title = document.querySelector("#title") as HTMLInputElement
+        let content = document.querySelector("#content") as HTMLInputElement
 
         if (title.value === "" || content.value === "") {
-            (document.querySelector("#status") as HTMLParagraphElement).textContent = "You are missing a title or body!";
-            setLoading(false);
-            return;
+            ;(document.querySelector(
+                "#status"
+            ) as HTMLParagraphElement).textContent =
+                "You are missing a title or body!"
+            setLoading(false)
+            return
         }
 
-        let response = await createPost(feed, content.value, title.value);
+        let response = await createPost(feed, content.value, title.value)
 
-        setLoading(false);
-        setVisible(false);
+        setLoading(false)
+        setVisible(false)
 
         if (response.status !== 200) {
             message.error("There was an issue posting that.")
         } else {
-            message.success("Successfully posted!");
+            message.success("Successfully posted!")
         }
 
-        action();
-    };
+        action()
+    }
 
     const handleCancel = () => {
-        setVisible(false);
-    };
+        setVisible(false)
+    }
 
     return (
         <div className="post-box-container">
@@ -89,5 +92,5 @@ export default ({ feed, action }: Props): JSX.Element => {
                 <p id="status" />
             </Modal>
         </div>
-    );
+    )
 }

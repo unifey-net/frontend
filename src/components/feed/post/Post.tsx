@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { message, Button, Input } from "antd";
-import { useDispatch } from "react-redux";
-import { getCommunityById } from "../../../api/community/Community";
-import PostComments from "./comments/PostComments";
-import PostVote from "./PostVote";
-import History from "../../../api/History";
-import PostReply from "./PostReply";
-import { Post, useEditingStatus, updatePostContent, updatePostTitle } from "../../../api/Feeds";
-import Vote from "../../../api/user/Vote";
-import { User } from "../../../api/user/User";
-import { parseBody, Emote } from "../../../api/Emotes";
-import PostAbout from "./PostAbout";
-import UserView from "../../view/UserView";
-import PostManagement from "./PostManagement";
-import { stopEditing } from "../../../redux/actions/editor.actions";
-import TextArea from "antd/lib/input/TextArea";
-import useEmotes from "../../../api/community/useEmotes";
-import debug from "../../../api/Debug";
+import React, { useState, useEffect } from "react"
+import { message, Button, Input } from "antd"
+import { useDispatch } from "react-redux"
+import { getCommunityById } from "../../../api/community/Community"
+import PostComments from "./comments/PostComments"
+import PostVote from "./PostVote"
+import History from "../../../api/History"
+import PostReply from "./PostReply"
+import {
+    Post,
+    useEditingStatus,
+    updatePostContent,
+    updatePostTitle,
+} from "../../../api/Feeds"
+import Vote from "../../../api/user/Vote"
+import { User } from "../../../api/user/User"
+import { parseBody, Emote } from "../../../api/Emotes"
+import PostAbout from "./PostAbout"
+import UserView from "../../view/UserView"
+import PostManagement from "./PostManagement"
+import { stopEditing } from "../../../redux/actions/editor.actions"
+import TextArea from "antd/lib/input/TextArea"
+import useEmotes from "../../../api/community/useEmotes"
+import debug from "../../../api/Debug"
 
 type Props = {
-    post: Post,
-    vote: Vote | null,
-    author: User,
-    type?: string,
+    post: Post
+    vote: Vote | null
+    author: User
+    type?: string
     feed: string
 }
 
@@ -49,18 +54,18 @@ export default ({ post, vote, author, type, feed }: Props) => {
      */
     const onContentChange = async (data: string) => {
         if (data === title || data === "") {
-            return;
+            return
         }
-        
-        let request = await updatePostContent(feed, post.id, data);
+
+        let request = await updatePostContent(feed, post.id, data)
 
         if (request.status !== 200) {
-            message.error(request.data.payload);
+            message.error(request.data.payload)
         } else {
-            message.success("Content has been successfully changed!");
+            message.success("Content has been successfully changed!")
         }
 
-        setContent(data);
+        setContent(data)
     }
 
     /**
@@ -85,7 +90,7 @@ export default ({ post, vote, author, type, feed }: Props) => {
     const editUpdate = async () => {
         let content = document.getElementById(
             `${post.id}_${author.id}_content`
-        ) as HTMLInputElement;
+        ) as HTMLInputElement
 
         let title = document.getElementById(
             `${post.id}_${author.id}_title`
@@ -101,8 +106,8 @@ export default ({ post, vote, author, type, feed }: Props) => {
      * Update focus.
      */
     const updateFocus = () => {
-        History.push(`${window.location.pathname}/${post.id}`);
-    };
+        History.push(`${window.location.pathname}/${post.id}`)
+    }
 
     return (
         <>
@@ -198,5 +203,5 @@ export default ({ post, vote, author, type, feed }: Props) => {
                 )}
             </div>
         </>
-    );
+    )
 }

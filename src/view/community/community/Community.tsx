@@ -1,17 +1,17 @@
-import { useRouteMatch } from "react-router-dom";
-import React from "react";
-import Feed from "../../../components/feed/Feed";
-import { Empty, Spin, Typography } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import CommunityManage from "../../../components/feed/CommunityManage";
-import CommunityStaff from "./CommunityStaff";
-import CommunityRules from "./rules/CommunityRules";
-import CommunityProfile from "./CommunityProfile";
-import { useCommunity } from "../../../api/community/CommunityUtil";
-import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler";
-import { useCommunityEmotes } from "../../../api/community/useEmotes";
+import { useRouteMatch } from "react-router-dom"
+import React from "react"
+import Feed from "../../../components/feed/Feed"
+import { Empty, Spin, Typography } from "antd"
+import { LoadingOutlined } from "@ant-design/icons"
+import CommunityManage from "../../../components/feed/CommunityManage"
+import CommunityStaff from "./CommunityStaff"
+import CommunityRules from "./rules/CommunityRules"
+import CommunityProfile from "./CommunityProfile"
+import { useCommunity } from "../../../api/community/CommunityUtil"
+import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler"
+import { useCommunityEmotes } from "../../../api/community/useEmotes"
 
-const { Text } = Typography;
+const { Text } = Typography
 
 /**
  * A community viewer.
@@ -20,16 +20,18 @@ const { Text } = Typography;
 export default function Community() {
     const {
         params: { name, post },
-    } = useRouteMatch();
+    } = useRouteMatch()
 
-    let [community, status] = useCommunity(name);
+    let [community, status] = useCommunity(name)
 
     useCommunityEmotes(
         community?.emotes === undefined ? [] : community?.emotes!!
-    );
+    )
 
     if (community && community.community.viewRole > community.selfRole)
-        return <Empty description="You don't have permission to view this community." />
+        return (
+            <Empty description="You don't have permission to view this community." />
+        )
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -46,19 +48,15 @@ export default function Community() {
                             />
                             <br />
                             <Text>{community.community.description}</Text>
-                            
                             <br />
                             <br />
-
                             Created On —{" "}
                             <Text>
                                 {new Date(
                                     community.community.createdAt
                                 ).toLocaleString()}
                             </Text>
-
                             <br />
-
                             Member Count —{" "}
                             <Text>{community.community.size} members.</Text>
                         </div>
@@ -99,5 +97,5 @@ export default function Community() {
                 </div>
             )}
         </div>
-    );
+    )
 }

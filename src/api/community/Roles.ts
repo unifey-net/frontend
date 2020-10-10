@@ -1,6 +1,6 @@
 /**
  * Get a role's name by it's number.
- * 
+ *
  * @param role The role's number.
  */
 export const getRoleName = (role: number) => {

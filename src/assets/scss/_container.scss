@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 // The main page container. This houses the footer, header and main content.
 .page-container-light {
@@ -28,7 +28,7 @@
 
     min-height: 100vh;
     position: relative;
-    
+
     .accent {
         background-color: $accent-background;
     }

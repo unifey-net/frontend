@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from "react";
-import PostJsx from "./post/Post";
-import { Spin, Dropdown, Menu, Button, Alert, Empty } from "antd";
-import { LoadingOutlined, DoubleRightOutlined, ReloadOutlined } from "@ant-design/icons";
-import InfiniteScroll from "react-infinite-scroller";
-import PostBox from "./PostBox";
-import { getFeedPosts, useFeed } from "../../api/Feeds";
-import FocusedPost from "./post/FocusedPost";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react"
+import PostJsx from "./post/Post"
+import { Spin, Dropdown, Menu, Button, Alert, Empty } from "antd"
+import {
+    LoadingOutlined,
+    DoubleRightOutlined,
+    ReloadOutlined,
+} from "@ant-design/icons"
+import InfiniteScroll from "react-infinite-scroller"
+import PostBox from "./PostBox"
+import { getFeedPosts, useFeed } from "../../api/Feeds"
+import FocusedPost from "./post/FocusedPost"
+import { useDispatch } from "react-redux"
 import {
     feedClear,
     loadPost,
     bumpPage,
     changeSort,
-} from "../../redux/actions/feeds.actions";
-import debug from "../../api/Debug";
-import { Emote } from "../../api/Emotes";
+} from "../../redux/actions/feeds.actions"
+import debug from "../../api/Debug"
+import { Emote } from "../../api/Emotes"
 
 type Props = {
-    id: string;
-    postBox?: any;
+    id: string
+    postBox?: any
     focus?: number
-};
+}
 
 export default ({ id, focus, postBox }: Props) => {
-    let dispatch = useDispatch();
+    let dispatch = useDispatch()
 
-    let [feed, status] = useFeed(id);
+    let [feed, status] = useFeed(id)
 
     debug("%o", [status])
 
-    let [sort, setSort] = useState("new");
+    let [sort, setSort] = useState("new")
 
     /**
      * Handle sorting.
@@ -37,17 +41,17 @@ export default ({ id, focus, postBox }: Props) => {
     useEffect(() => {
         let querySort = new URL(window.location.toString()).searchParams.get(
             "sort"
-        );
+        )
 
         if (querySort === "new" || querySort === "old" || querySort === "top") {
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
-                    id
+                    id,
                 })
-            );
+            )
         }
-    }, [dispatch, id]);
+    }, [dispatch, id])
 
     /**
      * Load another post.
@@ -55,13 +59,13 @@ export default ({ id, focus, postBox }: Props) => {
     const loadMore = async () => {
         debug(`Loading more posts from ${id} (page: ${feed!!.page})`)
 
-        let resp = await getFeedPosts(id, sort, feed!!.page);
+        let resp = await getFeedPosts(id, sort, feed!!.page)
 
         switch (resp.status) {
             case 200: {
-                dispatch(bumpPage(id));
+                dispatch(bumpPage(id))
 
-                let posts = resp.data.posts;
+                let posts = resp.data.posts
 
                 dispatch(
                     loadPost({
@@ -69,22 +73,22 @@ export default ({ id, focus, postBox }: Props) => {
                         sort,
                         id,
                     })
-                );
+                )
 
-                break;
+                break
             }
 
             case 401: {
                 // TODO
 
-                break;
+                break
             }
 
             default: {
-                break;
+                break
             }
         }
-    };
+    }
 
     /**
      * The sort menu management.
@@ -125,7 +129,7 @@ export default ({ id, focus, postBox }: Props) => {
                 </Button>
             </Menu.Item>
         </Menu>
-    );
+    )
 
     return (
         <div>
@@ -159,8 +163,8 @@ export default ({ id, focus, postBox }: Props) => {
                                         <PostBox
                                             feed={id}
                                             action={() => {
-                                                dispatch(feedClear(id));
-                                                loadMore();
+                                                dispatch(feedClear(id))
+                                                loadMore()
                                             }}
                                         />
                                     )}
@@ -168,7 +172,7 @@ export default ({ id, focus, postBox }: Props) => {
                                     <Dropdown overlay={menu}>
                                         <Button
                                             type="link"
-                                            onClick={(e) => e.preventDefault()}
+                                            onClick={e => e.preventDefault()}
                                         >
                                             Sort by{" "}
                                             {sort[0].toUpperCase() +
@@ -176,8 +180,11 @@ export default ({ id, focus, postBox }: Props) => {
                                         </Button>
                                     </Dropdown>
 
-                                    <Button type="link" onClick={() => dispatch(feedClear(id))}>
-                                        <ReloadOutlined/>
+                                    <Button
+                                        type="link"
+                                        onClick={() => dispatch(feedClear(id))}
+                                    >
+                                        <ReloadOutlined />
                                     </Button>
                                 </div>
                             )}
@@ -185,36 +192,34 @@ export default ({ id, focus, postBox }: Props) => {
                             {focus && <FocusedPost feed={id} id={focus} />}
 
                             {!focus && (
-                                    <InfiniteScroll
-                                        loadMore={loadMore}
-                                        hasMore={
-                                            feed.feed.pageCount >= feed.page
-                                        }
-                                        loader={
-                                            <Spin
-                                                key={0}
-                                                indicator={<LoadingOutlined />}
-                                            />
-                                        }
-                                    >
-                                        <ul className="feed-container">
-                                            {feed.posts.map((post, index) => (
-                                                <li key={index}>
-                                                    <PostJsx
-                                                        author={post.author}
-                                                        post={post.post}
-                                                        vote={post.vote}
-                                                        feed={id}
-                                                    />
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </InfiniteScroll>
+                                <InfiniteScroll
+                                    loadMore={loadMore}
+                                    hasMore={feed.feed.pageCount >= feed.page}
+                                    loader={
+                                        <Spin
+                                            key={0}
+                                            indicator={<LoadingOutlined />}
+                                        />
+                                    }
+                                >
+                                    <ul className="feed-container">
+                                        {feed.posts.map((post, index) => (
+                                            <li key={index}>
+                                                <PostJsx
+                                                    author={post.author}
+                                                    post={post.post}
+                                                    vote={post.vote}
+                                                    feed={id}
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </InfiniteScroll>
                             )}
                         </>
                     )}
                 </>
             )}
         </div>
-    );
-};
+    )
+}

@@ -1,12 +1,12 @@
-import React from "react";
-import { Tooltip } from "antd";
+import React from "react"
+import { Tooltip } from "antd"
 
 type Props = {
-    badges: any;
-};
+    badges: any
+}
 
 export default ({ badges }: Props) => {
-    if (badges.length === 0) return <></>;
+    if (badges.length === 0) return <></>
 
     return (
         <div className="flex flex-row">
@@ -23,5 +23,5 @@ export default ({ badges }: Props) => {
                 </Tooltip>
             ))}
         </div>
-    );
-};
+    )
+}

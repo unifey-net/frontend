@@ -1,19 +1,25 @@
 import React, { useState } from "react"
-import { Input, Alert, message } from "antd"
+import { Input, Alert, message, Radio } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import { FlagOutlined } from "@ant-design/icons"
-import { reportPost, Post, Comment } from "../../../api/Feeds"
+import CommentObject from "../../../api/Comment"
+import { Post } from "../../../api/Feeds"
+import { sendReport } from "../../../api/Reports"
+import { RadioChangeEvent } from "antd/lib/radio"
 
 const { TextArea } = Input
 
 type Props = {
-    post: Post | Comment
+    post: Post | CommentObject
 }
 
-export default ({ post }: Props): JSX.Element => {
+export default ({ post }: Props) => {
     const [visible, setVisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [error, setError] = useState("")
+    const [reason, setReason] = useState(
+        "SPAM" as "SPAM" | "DOES_NOT_FIT_TOPIC"
+    )
 
     /**
      * Submit a report.
@@ -29,7 +35,9 @@ export default ({ post }: Props): JSX.Element => {
             return
         }
 
-        let req = await reportPost(post.feed, post.id, report.value);
+        const type = (post as CommentObject).parent ? "COMMENT" : "POST"
+
+        let req = await sendReport({ id: post.id, type }, reason, report.value)
 
         if (req.status !== 200) {
             setError(req.data.payload)
@@ -61,14 +69,27 @@ export default ({ post }: Props): JSX.Element => {
                         message="There was an issue reporting that post."
                         description={error}
                         style={{
-                            marginBottom: "2rem"
+                            marginBottom: "2rem",
                         }}
                     />
                 )}
 
                 <h2 className="text-lg">Reason for report.</h2>
+
+                <Radio.Group
+                    onChange={(value: RadioChangeEvent) =>
+                        setReason(value.target.value)
+                    }
+                    value={reason}
+                >
+                    <Radio value={"SPAM"}>Spam</Radio>
+                    <Radio value={"DOES_NOT_FIT_TOPIC"}>
+                        Does not fit topic
+                    </Radio>
+                </Radio.Group>
+
                 <TextArea id="report-post" rows={4} />
             </Modal>
         </>
-    );
+    )
 }

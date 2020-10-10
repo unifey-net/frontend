@@ -1,6 +1,6 @@
-import React from "react";
-import { VERSION } from "../api/ApiHandler";
-import { Link } from "react-router-dom";
+import React from "react"
+import { VERSION } from "../api/ApiHandler"
+import { Link } from "react-router-dom"
 
 export default (): JSX.Element => {
     return (
@@ -10,5 +10,5 @@ export default (): JSX.Element => {
                 — <Link to="/privacy">Privacy</Link> — {VERSION}
             </p>
         </footer>
-    );
-};
+    )
+}

@@ -1,61 +1,61 @@
-import React, { useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { signedIn } from "../../api/user/User";
-import { Redirect } from "react-router-dom";
-import { Form, Input, Button, Checkbox, message, Alert } from "antd";
-import history from "../../api/History";
-import { Link } from "react-router-dom";
+import React, { useState } from "react"
+import ReCAPTCHA from "react-google-recaptcha"
+import { signedIn } from "../../api/user/User"
+import { Redirect } from "react-router-dom"
+import { Form, Input, Button, Checkbox, message, Alert } from "antd"
+import history from "../../api/History"
+import { Link } from "react-router-dom"
 
-import FormItem from "antd/lib/form/FormItem";
-import { Store } from "antd/lib/form/interface";
-import { API } from "../../api/ApiHandler";
-import { useDispatch } from "react-redux";
-import { logIn } from "../../redux/actions/auth.actions";
+import FormItem from "antd/lib/form/FormItem"
+import { Store } from "antd/lib/form/interface"
+import { API } from "../../api/ApiHandler"
+import { useDispatch } from "react-redux"
+import { logIn } from "../../redux/actions/auth.actions"
 
 /**
  * The /login page.
  */
 export default () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     let [captcha, setCaptcha] = useState("")
-    let [loading, setLoading] = useState(false);
-    let [error, setError] = useState("");
+    let [loading, setLoading] = useState(false)
+    let [error, setError] = useState("")
 
     const loginForm = async (values: Store) => {
-        setLoading(true);
+        setLoading(true)
 
         if (captcha === "") {
             setError("Please fill out the reCAPTCHA")
-            
+
             setLoading(false)
             return
         }
 
-        let data = new FormData();
+        let data = new FormData()
 
-        data.append("username", values.username);
-        data.append("password", values.password);
-        data.append("remember", `${values.remember}`);
-        data.append("captcha", captcha);
+        data.append("username", values.username)
+        data.append("password", values.password)
+        data.append("remember", `${values.remember}`)
+        data.append("captcha", captcha)
 
-        let request = await API.post(`/authenticate`, data);
+        let request = await API.post(`/authenticate`, data)
 
         if (request.status === 200) {
             const { user, token } = request.data
 
-            dispatch(logIn(token.token, user, token.expires));
+            dispatch(logIn(token.token, user, token.expires))
 
-            history.push("/");
+            history.push("/")
             window.location.reload()
         } else {
             setError(request.data.payload)
         }
 
         setLoading(false)
-    };
+    }
 
-    if (signedIn()) return <Redirect to="/" />;
+    if (signedIn()) return <Redirect to="/" />
 
     return (
         <>
@@ -65,11 +65,7 @@ export default () => {
                 {error !== "" && (
                     <>
                         <div className="-mt-8"></div>
-                        <Alert
-                            type="error"
-                            showIcon
-                            message={error}
-                        />
+                        <Alert type="error" showIcon message={error} />
 
                         <div className="my-2"></div>
                     </>
@@ -126,7 +122,9 @@ export default () => {
                             <ReCAPTCHA
                                 sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
                                 theme="dark"
-                                onChange={(token) => setCaptcha(token === null ? "" : token) }
+                                onChange={token =>
+                                    setCaptcha(token === null ? "" : token)
+                                }
                             />
                         </Form.Item>
 
@@ -145,5 +143,5 @@ export default () => {
                 </div>
             </div>
         </>
-    );
+    )
 }

@@ -1,10 +1,19 @@
-import { FEED__LOAD, FEED__POST, InitialFeed, PostLoad, FEED__CLEAR, FEED__CHANGE_SORT, SortChange, FEED__BUMP_PAGE } from "../actions/feeds.actions";
-import { Feed, PostResponse } from "../../api/Feeds";
+import {
+    FEED__LOAD,
+    FEED__POST,
+    InitialFeed,
+    PostLoad,
+    FEED__CLEAR,
+    FEED__CHANGE_SORT,
+    SortChange,
+    FEED__BUMP_PAGE,
+} from "../actions/feeds.actions"
+import { Feed, PostResponse } from "../../api/Feeds"
 
 export type FeedState = {
-    feed: Feed,
-    posts: PostResponse[],
-    sort: string,
+    feed: Feed
+    posts: PostResponse[]
+    sort: string
     page: number
 }
 
@@ -19,14 +28,14 @@ const feeds = (state = {} as any, action: any) => {
             let { id, posts } = action.payload as PostLoad
 
             let currentObj = state[id]
-            
+
             state[id] = {
                 ...currentObj,
                 sort: "new",
-                posts: [...posts]
+                posts: [...posts],
             }
 
-            return state;
+            return state
         }
 
         case FEED__POST: {
@@ -35,7 +44,7 @@ const feeds = (state = {} as any, action: any) => {
             state[feed.id] = {
                 feed: feed,
                 posts: [],
-                page: 1
+                page: 1,
             }
 
             return state
@@ -47,7 +56,7 @@ const feeds = (state = {} as any, action: any) => {
             state[id] = {
                 ...state[id],
                 posts: [],
-                page: 1
+                page: 1,
             }
 
             return state
@@ -58,7 +67,7 @@ const feeds = (state = {} as any, action: any) => {
 
             state[id] = {
                 ...state[id],
-                sort
+                sort,
             }
 
             return state
@@ -69,16 +78,16 @@ const feeds = (state = {} as any, action: any) => {
 
             state[id] = {
                 ...state[id],
-                page: state[id].page + 1
+                page: state[id].page + 1,
             }
 
             return state
         }
 
         default: {
-            return state;
+            return state
         }
     }
-};
+}
 
-export default feeds;
+export default feeds

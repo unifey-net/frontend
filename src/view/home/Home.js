@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import SnakeModal from "./snake/SnakeModal";
+import React, { useState, useEffect } from "react"
+import SnakeModal from "./snake/SnakeModal"
 
 export default function Home() {
-    const [keyCodes, setKeyCodes] = useState([]);
-    const [snake, setSnake] = useState(false);
+    const [keyCodes, setKeyCodes] = useState([])
+    const [snake, setSnake] = useState(false)
 
     useEffect(() => {
-        const tick = (event) => {
-            setKeyCodes((prev) => [...prev, event.keyCode]);
-        };
+        const tick = event => {
+            setKeyCodes(prev => [...prev, event.keyCode])
+        }
 
-        window.addEventListener("keydown", tick, false);
+        window.addEventListener("keydown", tick, false)
 
-        return () => window.removeEventListener("keydown", tick, false);
-    }, []);
+        return () => window.removeEventListener("keydown", tick, false)
+    }, [])
 
     useEffect(() => {
         if (keyCodes.length > 4) {
-            setKeyCodes([]);
+            setKeyCodes([])
 
             if (
                 JSON.stringify(keyCodes) ===
                 JSON.stringify([83, 78, 65, 75, 69])
             ) {
-                setSnake(true);
+                setSnake(true)
             }
         }
     }, [keyCodes])
@@ -31,14 +31,14 @@ export default function Home() {
     return (
         <div className="flex flex-col items-center justify-center">
             <div>
-                <h1 className="text-6xl">Unifey</h1>
+                <img src="/homepage.png"></img>
             </div>
 
             <div className="flex flex-row gap-8">
                 <div>
                     <h2 className="text-lg">What is Unifey?</h2>
                     <p className="break-words max-w-xs">
-                        Unifey is a general purpose social-media platform,
+                        Unifey is an open source social-media platform,
                         dedicated to freely exchange ideas.
                     </p>
                 </div>
@@ -62,5 +62,5 @@ export default function Home() {
 
             {snake && <SnakeModal />}
         </div>
-    );
+    )
 }

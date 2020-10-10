@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Alert, message, Tooltip, Button } from "antd";
-import { Link } from "react-router-dom";
+import React, { useState } from "react"
+import { Alert, message, Tooltip, Button } from "antd"
+import { Link } from "react-router-dom"
 
 type Props = {
-    attempts: number;
+    attempts: number
     addAttempt: () => void
-};
+}
 
 export default ({ attempts, addAttempt }: Props) => {
     const [loading, setLoading] = useState(false)
@@ -16,17 +16,17 @@ export default ({ attempts, addAttempt }: Props) => {
         if (attempts >= 10) {
             message.error(
                 "You have reached the limit for resends. Please contact our support."
-            );
-            return;
+            )
+            return
         }
 
-        setLoading(true);
+        setLoading(true)
 
-        message.success("Email has been sent! Check your inbox.", 2.5);
+        message.success("Email has been sent! Check your inbox.", 2.5)
 
-        addAttempt();
-        setLoading(false);
-    };
+        addAttempt()
+        setLoading(false)
+    }
 
     return (
         <Alert
@@ -60,5 +60,5 @@ export default ({ attempts, addAttempt }: Props) => {
             }
             showIcon
         />
-    );
-};
+    )
+}

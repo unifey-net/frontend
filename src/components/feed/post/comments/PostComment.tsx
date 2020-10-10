@@ -1,43 +1,43 @@
-import React, { useState } from "react";
-import { Avatar, Comment, Button, message } from "antd";
-import { Link } from "react-router-dom";
-import { getImageUrl } from "../../../../api/user/User";
-import PostVote from "../PostVote";
-import PostReply from "../PostReply";
-import { useSelector, useDispatch } from "react-redux";
-import PostAbout from "../PostAbout";
-import PostManagement from "../PostManagement";
-import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds";
-import TextArea from "antd/lib/input/TextArea";
-import { stopEditing } from "../../../../redux/actions/editor.actions";
-import { parseBody, Emote } from "../../../../api/Emotes";
-import useEmotes from "../../../../api/community/useEmotes";
-import debug from "../../../../api/Debug";
+import React, { useState } from "react"
+import { Avatar, Comment, Button, message } from "antd"
+import { Link } from "react-router-dom"
+import { getImageUrl } from "../../../../api/user/User"
+import PostVote from "../PostVote"
+import PostReply from "../PostReply"
+import { useSelector, useDispatch } from "react-redux"
+import PostAbout from "../PostAbout"
+import PostManagement from "../PostManagement"
+import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds"
+import TextArea from "antd/lib/input/TextArea"
+import { stopEditing } from "../../../../redux/actions/editor.actions"
+import { parseBody, Emote } from "../../../../api/Emotes"
+import useEmotes from "../../../../api/community/useEmotes"
+import debug from "../../../../api/Debug"
 
 type Props = {
-    comment: any;
-    children: any;
-};
+    comment: any
+    children: any
+}
 
 export default ({ comment, children }: Props): JSX.Element => {
-    const [content, setContent] = useState(comment.comment.content);
-    const post = useSelector((state: any) => state.post);
-    const dispatch = useDispatch();
+    const [content, setContent] = useState(comment.comment.content)
+    const post = useSelector((state: any) => state.post)
+    const dispatch = useDispatch()
 
     let emotes = useEmotes()
 
-    const editing = useEditingStatus(comment.comment.id);
+    const editing = useEditingStatus(comment.comment.id)
 
     const updateContent = async () => {
-        dispatch(stopEditing());
+        dispatch(stopEditing())
 
         let element = document.getElementById(
             `${comment.comment.id}_content`
-        ) as HTMLTextAreaElement;
-        let value = element.value;
+        ) as HTMLTextAreaElement
+        let value = element.value
 
         if (content === value || value === "") {
-            return;
+            return
         }
 
         let request = await updateCommentContent(
@@ -45,17 +45,17 @@ export default ({ comment, children }: Props): JSX.Element => {
             post,
             comment.comment.id,
             value
-        );
+        )
 
         if (request.status !== 200) {
-            message.error(request.data.payload);
-            return;
+            message.error(request.data.payload)
+            return
         }
 
-        message.success("Comment has been successfully updated!");
+        message.success("Comment has been successfully updated!")
 
-        setContent(value);
-    };
+        setContent(value)
+    }
 
     return (
         <Comment
@@ -122,5 +122,5 @@ export default ({ comment, children }: Props): JSX.Element => {
         >
             {children}
         </Comment>
-    );
-};
+    )
+}

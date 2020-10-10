@@ -1,6 +1,6 @@
-@import 'container';
-@import 'variables';
-@import 'footer';
+@import "container";
+@import "variables";
+@import "footer";
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -15,20 +15,28 @@ html::-webkit-scrollbar {
     width: 0px; /* For Chrome, Safari, and Opera */
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: $default-header-font;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $default-header-font;
 }
 
-p, a, span, label {
-  font-family: $default-font;
+p,
+a,
+span,
+label {
+    font-family: $default-font;
 }
 
 a:hover {
-  color: $link-color;
+    color: $link-color;
 }
 
 .anticon {
-  vertical-align: 0 !important
+    vertical-align: 0 !important;
 }
 
 .divider {

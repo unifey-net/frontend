@@ -1,5 +1,5 @@
-import React from "react";
-import { Divider } from "antd";
+import React from "react"
+import { Divider } from "antd"
 
 export default () => {
     return (
@@ -394,5 +394,5 @@ export default () => {
                 <li>By Discord: https://unifey.net/discord</li>
             </ul>
         </div>
-    );
-};
+    )
+}

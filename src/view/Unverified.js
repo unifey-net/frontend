@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react"
+import { Link } from "react-router-dom"
 
 export default function Unverified() {
     return (
@@ -18,5 +18,5 @@ export default function Unverified() {
                 your account, please <Link to="/support">contact us</Link>.
             </p>
         </div>
-    );
+    )
 }
