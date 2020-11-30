@@ -1,18 +1,18 @@
 import { useRouteMatch } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 
-import { getUserByName, signedIn, getImageUrl } from "../../../api/user/User"
-import Feed from "../../../components/feed/Feed"
+import { getUserByName, signedIn, getImageUrl } from "../../api/user/User"
+import Feed from "../../components/feed/Feed"
 
 import { Empty, Spin } from "antd"
 import Avatar from "antd/es/avatar"
 
 import { LoadingOutlined } from "@ant-design/icons"
 
-import { getBadges } from "../../../api/user/Cosmetics"
+import { getBadges } from "../../api/user/Cosmetics"
 import UserProfile from "./UserProfile"
 import UserBadges from "./UserBadges"
-import { useDefaultEmotes } from "../../../api/community/useEmotes"
+import { useDefaultEmotes } from "../../api/community/useEmotes"
 
 export default function User() {
     const {

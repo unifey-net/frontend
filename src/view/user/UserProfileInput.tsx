@@ -19,6 +19,9 @@ export default ({
 }: Props): JSX.Element => {
     let input = React.createRef<Input>()
 
+    // if the value is changed, that becomes the new initial value.
+    let [initValue, setInitValue] = useState(initialValue)
+
     let [value, setValue] = useState(initialValue)
     let [creating, setCreating] = useState(false)
     let [loading, setLoading] = useState(false)
@@ -27,9 +30,14 @@ export default ({
     let updateValue = async () => {
         setLoading(true)
 
-        await update(input.current!!.state.value as string)
+        const newString = input.current!!.state.value as string
+
+        setInitValue(newString)
+
+        await update(newString)
 
         setLoading(false)
+        setDisabled(true) // manually update it since onChange doesn't update after save
     }
 
     return (
@@ -41,11 +49,11 @@ export default ({
                     <Input
                         ref={input}
                         value={value}
-                        onChange={(value: ChangeEvent<HTMLInputElement>) => {
-                            setValue(value.target.value)
+                        onChange={(inputValue: ChangeEvent<HTMLInputElement>) => {
+                            setValue(inputValue.target.value)
                             setDisabled(
-                                value.target.value.length === 0 ||
-                                    value.target.value === initialValue
+                                inputValue.target.value.length === 0 ||
+                                    inputValue.target.value === initValue
                             )
                         }}
                     />

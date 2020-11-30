@@ -5,8 +5,9 @@ import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 
 import Community from "./Community"
+import PageHeader from "../../../components/PageHeader"
 
-export default function Communities() {
+export default () => {
     let [communities, setCommunities] = useState([])
     let [loaded, setLoaded] = useState(false)
 
@@ -19,7 +20,7 @@ export default function Communities() {
             } else {
                 let comms = data.data
 
-                comms.sort((a, b) => {
+                comms.sort((a: any, b: any) => {
                     return b.size - a.size
                 })
 
@@ -33,11 +34,7 @@ export default function Communities() {
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <div>
-                <h1 className="text-2xl md:text-3xl lg:text-6xl">
-                    Top Communities
-                </h1>
-            </div>
+            <PageHeader>Top Communities</PageHeader>
 
             {!loaded && (
                 <Spin

@@ -1,9 +1,8 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import ExternalLink from "../../components/ExternalLink"
 import Question from "./Question"
 
-export default function About() {
+export default () => {
     return (
         <div className="flex items-center justify-center">
             <div>

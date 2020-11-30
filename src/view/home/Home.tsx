@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react"
 import SnakeModal from "./snake/SnakeModal"
 
 export default function Home() {
-    const [keyCodes, setKeyCodes] = useState([])
+    const [keyCodes, setKeyCodes] = useState([] as any)
     const [snake, setSnake] = useState(false)
 
     useEffect(() => {
-        const tick = event => {
-            setKeyCodes(prev => [...prev, event.keyCode])
+        const tick = (event: KeyboardEvent) => {
+            setKeyCodes((prev: any) => [...prev, event.keyCode])
         }
 
         window.addEventListener("keydown", tick, false)

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 
+/**
+ * Instead of storing ant.design tab's state within a react state, this stores it within query parameters.
+ */
 export default (defaultTab: string = "1"): [string, (tab: string) => void] => {
     const history = useHistory()
     const [activeTab, setActiveTab] = useState(defaultTab)

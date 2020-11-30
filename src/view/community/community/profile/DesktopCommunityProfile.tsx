@@ -1,15 +1,15 @@
 import React from "react"
-import CommunityManage from "../../../components/feed/CommunityManage"
+import CommunityManage from "../../../../components/feed/CommunityManage"
 import Text from "antd/lib/typography/Text"
 import { Divider } from "antd"
 import { EditOutlined, EditFilled } from "@ant-design/icons"
-import useEditCommunity from "./useEditCommunity"
+import useEditCommunity from "../useEditCommunity"
 import { useDispatch } from "react-redux"
 import {
     stopEditing,
     startEditing,
-} from "../../../redux/actions/editor.actions"
-import { CommunityRequest } from "../../../api/community/CommunityUtil"
+} from "../../../../redux/actions/editor.actions"
+import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 
 type Props = {
     community: CommunityRequest

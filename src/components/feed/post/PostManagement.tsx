@@ -6,8 +6,8 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined,
     CaretDownFilled,
+    FlagOutlined
 } from "@ant-design/icons"
-import PostReport from "./PostReport"
 import {
     Post,
     deletePost,
@@ -20,6 +20,7 @@ import {
     startEditing,
     stopEditing,
 } from "../../../redux/actions/editor.actions"
+import usePostReport from "./usePostReport"
 
 const { confirm } = Modal
 
@@ -77,30 +78,28 @@ export default ({ object, type }: Props): JSX.Element => {
         })
     }
 
+    const [toggle, modal] = usePostReport(object)
+
     const elevatedMenu = (
         <Menu>
             <Menu.Item key={1} onClick={toggleEditing}>
-                <span>
-                    Edit <EditOutlined />
-                </span>
+                Edit <EditOutlined />
             </Menu.Item>
 
-            <Menu.Item key={2}>
-                <span onClick={confirmDelete}>
-                    Delete <DeleteOutlined />
-                </span>
+            <Menu.Item key={2} onClick={confirmDelete}>
+                Delete <DeleteOutlined />
             </Menu.Item>
 
-            <Menu.Item key={3}>
-                <PostReport post={object} />
+            <Menu.Item key={3} onClick={toggle}>
+                Report <FlagOutlined/> {modal}
             </Menu.Item>
         </Menu>
-    )
+    );
 
     const regularMenu = (
         <Menu>
-            <Menu.Item key={1}>
-                <PostReport post={object} />
+            <Menu.Item key={1} onClick={toggle}>
+                Report <FlagOutlined/> {modal}
             </Menu.Item>
         </Menu>
     )

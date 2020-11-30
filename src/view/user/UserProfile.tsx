@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { EditOutlined } from "@ant-design/icons"
-import { User } from "../../../api/user/User"
+import { User } from "../../api/user/User"
 import { useSelector } from "react-redux"
 import Text from "antd/lib/typography/Text"
 import { message, Divider } from "antd"
-import { API } from "../../../api/ApiHandler"
+import { API } from "../../api/ApiHandler"
 import UserProfileInput from "./UserProfileInput"
 
 type Props = {

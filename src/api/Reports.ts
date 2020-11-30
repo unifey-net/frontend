@@ -12,7 +12,7 @@ export type Report = {
     feed: string | null
     reportee: number
     target: ReportTarget
-    reportType: "DOES_NOT_FIT_TOPIC" | "SPAM" | "BREAKS_TOS"
+    reportType: "UNIFEY" | "COMMUNITY"
     reason: string
     date: number
 }
@@ -45,7 +45,7 @@ export const fixReportType = (type: string): string => {
 
 export const sendReport = async (
     target: ReportTarget,
-    reason: "HACKED" | "DOES_NOT_FIT_TOPIC" | "SPAM",
+    reason: "COMMUNITY" | "UNIFEY",
     reasonText: string
 ) => {
     const form = new FormData()

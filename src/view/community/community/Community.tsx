@@ -6,10 +6,12 @@ import { LoadingOutlined } from "@ant-design/icons"
 import CommunityManage from "../../../components/feed/CommunityManage"
 import CommunityStaff from "./CommunityStaff"
 import CommunityRules from "./rules/CommunityRules"
-import CommunityProfile from "./CommunityProfile"
+import CommunityProfile from "./profile/DesktopCommunityProfile"
 import { useCommunity } from "../../../api/community/CommunityUtil"
 import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler"
 import { useCommunityEmotes } from "../../../api/community/useEmotes"
+import DesktopCommunityProfile from "./profile/DesktopCommunityProfile"
+import MobileCommunityProfile from "./profile/MobileCommunityProfile"
 
 const { Text } = Typography
 
@@ -42,23 +44,7 @@ export default function Community() {
                             {community.community.name}
                         </h1>
                         <div className="block mb-6 lg:hidden">
-                            <CommunityManage
-                                className="mb-4"
-                                community={community.community.id}
-                            />
-                            <br />
-                            <Text>{community.community.description}</Text>
-                            <br />
-                            <br />
-                            Created On —{" "}
-                            <Text>
-                                {new Date(
-                                    community.community.createdAt
-                                ).toLocaleString()}
-                            </Text>
-                            <br />
-                            Member Count —{" "}
-                            <Text>{community.community.size} members.</Text>
+                            <MobileCommunityProfile community={community} />
                         </div>
                     </div>
 
@@ -75,7 +61,7 @@ export default function Community() {
                         />
 
                         <div className="flex flex-col gap-8">
-                            <CommunityProfile community={community} />
+                            <DesktopCommunityProfile community={community} />
 
                             <CommunityStaff id={community.community.id} />
 

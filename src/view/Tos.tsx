@@ -3,7 +3,7 @@ import React from "react"
 /**
  * The terms and conditions.
  */
-export default function Tos() {
+export default () => {
     return (
         <div className="mx-20">
             <h1 className="text-2xl">Terms and conditions</h1>
@@ -24,7 +24,7 @@ export default function Tos() {
                 website and any of its products or services (collectively,
                 &quot;Website&quot; or &quot;Services&quot;).
             </p>
-            <h2 class="text-lg">Accounts and membership</h2>
+            <h2 className="text-lg">Accounts and membership</h2>
             <p>
                 You must be at least 13 years of age to use this Website. By
                 using this Website and by agreeing to this Agreement you warrant
@@ -48,7 +48,7 @@ export default function Tos() {
                 for our Services. We may block your email address and Internet
                 protocol address to prevent further registration.
             </p>
-            <h2 class="text-lg">User content</h2>
+            <h2 className="text-lg">User content</h2>
             <p>
                 We do not own any data, information or material
                 (&quot;Content&quot;) that you submit on the Website in the
@@ -71,7 +71,7 @@ export default function Tos() {
                 violates any of our policies or is in any way harmful or
                 objectionable.
             </p>
-            <h2 class="text-lg">Adult content</h2>
+            <h2 className="text-lg">Adult content</h2>
             <p>
                 Please be aware that there may be certain adult or mature
                 content available on the Website. A warning will be shown to the
@@ -86,7 +86,7 @@ export default function Tos() {
                 areas of the Website may not be available to children under 18
                 under any circumstances.
             </p>
-            <h2 class="text-lg">Backups</h2>
+            <h2 className="text-lg">Backups</h2>
             <p>
                 We perform regular backups of the Website and Content, however,
                 these backups are for our own administrative purposes only and
@@ -97,7 +97,7 @@ export default function Tos() {
                 complete and accurate backups, but assume no responsibility for
                 this duty.
             </p>
-            <h2 class="text-lg">Links to other websites</h2>
+            <h2 className="text-lg">Links to other websites</h2>
             <p>
                 Although this Website may link to other websites, we are not,
                 directly or indirectly, implying any approval, association,
@@ -115,7 +115,7 @@ export default function Tos() {
                 through a link from this Website. Your linking to any other
                 off-site websites is at your own risk.
             </p>
-            <h2 class="text-lg">Prohibited uses</h2>
+            <h2 className="text-lg">Prohibited uses</h2>
             <p>
                 In addition to other terms as set forth in the Agreement, you
                 are prohibited from using the Website or its Content: (a) for
@@ -140,7 +140,7 @@ export default function Tos() {
                 your use of the Service or any related website for violating any
                 of the prohibited uses.
             </p>
-            <h2 class="text-lg">Intellectual property rights</h2>
+            <h2 className="text-lg">Intellectual property rights</h2>
             <p>
                 This Agreement does not transfer to you any intellectual
                 property owned by Website Operator or third-parties, and all
@@ -155,7 +155,7 @@ export default function Tos() {
                 Services grants you no right or license to reproduce or
                 otherwise use any Website Operator or third-party trademarks.
             </p>
-            <h2 class="text-lg">Limitation of liability</h2>
+            <h2 className="text-lg">Limitation of liability</h2>
             <p>
                 To the fullest extent permitted by applicable law, in no event
                 will Website Operator, its affiliates, officers, directors,
@@ -180,7 +180,7 @@ export default function Tos() {
                 fully compensate you for any losses or fails of its essential
                 purpose.
             </p>
-            <h2 class="text-lg">Indemnification</h2>
+            <h2 className="text-lg">Indemnification</h2>
             <p>
                 You agree to indemnify and hold Website Operator and its
                 affiliates, directors, officers, employees, and agents harmless
@@ -191,7 +191,7 @@ export default function Tos() {
                 result of or relating to your Content, your use of the Website
                 or Services or any willful misconduct on your part.
             </p>
-            <h2 class="text-lg">Severability</h2>
+            <h2 className="text-lg">Severability</h2>
             <p>
                 All rights and restrictions contained in this Agreement may be
                 exercised and shall be applicable and binding only to the extent
@@ -206,7 +206,7 @@ export default function Tos() {
                 all such remaining provisions or portions thereof shall remain
                 in full force and effect.
             </p>
-            <h2 class="text-lg">Dispute resolution</h2>
+            <h2 className="text-lg">Dispute resolution</h2>
             <p>
                 The formation, interpretation, and performance of this Agreement
                 and any disputes arising out of it shall be governed by the
@@ -221,8 +221,8 @@ export default function Tos() {
                 Convention on Contracts for the International Sale of Goods does
                 not apply to this Agreement.
             </p>
-            <h2 class="text-lg">Changes and amendments</h2>
-            <h2 class="text-lg">Acceptance of these terms</h2>
+            <h2 className="text-lg">Changes and amendments</h2>
+            <h2 className="text-lg">Acceptance of these terms</h2>
             <p>
                 You acknowledge that you have read this Agreement and agree to
                 all its terms and conditions. By using the Website or its
@@ -230,7 +230,7 @@ export default function Tos() {
                 agree to abide by the terms of this Agreement, you are not
                 authorized to use or access the Website and its Services.
             </p>
-            <h2 class="text-lg">Contacting us</h2>
+            <h2 className="text-lg">Contacting us</h2>
             <p>
                 If you would like to contact us to understand more about this
                 Agreement or wish to contact us concerning any matter relating
