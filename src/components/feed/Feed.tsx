@@ -146,6 +146,37 @@ export default ({ id, focus, postBox }: Props) => {
 
             {feed !== null && feed.feed !== undefined && (
                 <>
+                    {!focus && (
+                        <div className="flex flex-row justify-evenly">
+                            {postBox && (
+                                <PostBox
+                                    feed={id}
+                                    action={() => {
+                                        dispatch(feedClear(id))
+                                        loadMore()
+                                    }}
+                                />
+                            )}
+
+                            <Dropdown overlay={menu}>
+                                <Button
+                                    type="link"
+                                    onClick={e => e.preventDefault()}
+                                >
+                                    Sort by{" "}
+                                    {sort[0].toUpperCase() + sort.substring(1)}
+                                </Button>
+                            </Dropdown>
+
+                            <Button
+                                type="link"
+                                onClick={() => dispatch(feedClear(id))}
+                            >
+                                <ReloadOutlined />
+                            </Button>
+                        </div>
+                    )}
+                    
                     {feed.feed.postCount === 0 && (
                         <Empty
                             style={{ minWidth: "200px" }}
@@ -157,38 +188,6 @@ export default ({ id, focus, postBox }: Props) => {
 
                     {status.status === 1 && feed.feed.postCount !== 0 && (
                         <>
-                            {!focus && (
-                                <div className="flex flex-row justify-evenly">
-                                    {postBox && (
-                                        <PostBox
-                                            feed={id}
-                                            action={() => {
-                                                dispatch(feedClear(id))
-                                                loadMore()
-                                            }}
-                                        />
-                                    )}
-
-                                    <Dropdown overlay={menu}>
-                                        <Button
-                                            type="link"
-                                            onClick={e => e.preventDefault()}
-                                        >
-                                            Sort by{" "}
-                                            {sort[0].toUpperCase() +
-                                                sort.substring(1)}
-                                        </Button>
-                                    </Dropdown>
-
-                                    <Button
-                                        type="link"
-                                        onClick={() => dispatch(feedClear(id))}
-                                    >
-                                        <ReloadOutlined />
-                                    </Button>
-                                </div>
-                            )}
-
                             {focus && <FocusedPost feed={id} id={focus} />}
 
                             {!focus && (

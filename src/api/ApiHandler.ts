@@ -6,7 +6,7 @@ import store from "../redux/store"
  *
  * @type {string}
  */
-const BASE_URL: string = "https://beta-api.unifey.net" // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol
+const BASE_URL: string = "http://localhost:8077" // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol
 // it's now localhost but you can imagine at one point it was a local ip
 // it might also be beta-api.unifey.net
 // :)

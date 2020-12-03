@@ -1,5 +1,5 @@
 import React from "react"
-import { VERSION } from "../api/ApiHandler"
+import { BASE_URL, VERSION } from "../api/ApiHandler"
 import { Link } from "react-router-dom"
 
 export default (): JSX.Element => {
@@ -7,7 +7,7 @@ export default (): JSX.Element => {
         <footer className="footer">
             <p>
                 Unifey ©{new Date().getFullYear()} — <Link to="/tos">TOS</Link>{" "}
-                — <Link to="/privacy">Privacy</Link> — {VERSION}
+                — <Link to="/privacy">Privacy</Link> — {VERSION} — {BASE_URL}
             </p>
         </footer>
     )
