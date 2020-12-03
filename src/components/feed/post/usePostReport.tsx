@@ -48,9 +48,8 @@ export default (post: Post | CommentObject): [() => void, JSX.Element] => {
     return [
         () => {
             if (!signedIn())
-                message.error("You must be signed in to report a post!")
-            else 
-                setVisible(true);
+                message.error("You must be signed in to report a post!");
+            else setVisible(true);
         },
         <Modal
             title="Report this Post."
@@ -80,7 +79,7 @@ export default (post: Post | CommentObject): [() => void, JSX.Element] => {
             >
                 <div className="flex flex-col gap-2 mb-4">
                     <div>
-                        <Radio value={"UNIFEY"}>
+                        <Radio value={"COMMUNITY"}>
                             Report to Community Moderators
                         </Radio>
 
@@ -94,7 +93,7 @@ export default (post: Post | CommentObject): [() => void, JSX.Element] => {
                     </div>
 
                     <div>
-                        <Radio value={"COMMUNITY"}>
+                        <Radio value={"UNIFEY"}>
                             Report to Unifey staff members
                         </Radio>
 

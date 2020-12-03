@@ -40,7 +40,7 @@ export default () => {
                     >
                         <Tabs
                             activeKey={activeTab}
-                            onChange={tab => setActiveTab(tab)}
+                            onChange={(tab) => setActiveTab(tab)}
                             tabPosition="left"
                         >
                             <TabPane tab="General Settings" key="1">
@@ -58,8 +58,14 @@ export default () => {
             )}
 
             {status.status === LOADING && (
-                <Spin indicator={<LoadingOutlined />} />
+                <div className="flex justify-center">
+                    <div className="flex flex-col">
+                        <Spin indicator={<LoadingOutlined />} />
+                        <p>If this page doesn't load, try reloading. (F5)</p>
+                    </div>
+                </div>
             )}
+
             {status.status === ERROR && (
                 <Alert
                     message="Uh oh."
@@ -69,5 +75,5 @@ export default () => {
                 />
             )}
         </>
-    )
+    );
 }

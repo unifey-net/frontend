@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import useEditCommunity from "../useEditCommunity"
 import { Input, message, Button } from "antd"
-import TextArea from "antd/lib/input/TextArea"
 import { Rule } from "./CommunityRules"
 import { removeRule } from "../../../../redux/actions/community.actions"
 import { API } from "../../../../api/ApiHandler"
@@ -13,6 +12,7 @@ import {
     EditOutlined,
     DeleteOutlined,
 } from "@ant-design/icons"
+import { TextAreaRef } from "antd/lib/input/TextArea"
 
 type Props = {
     rule: Rule
@@ -27,7 +27,7 @@ type Props = {
 export default ({ rule, community, index, update }: Props) => {
     let dispatch = useDispatch()
 
-    let bodyRef = React.createRef<TextArea>()
+    let bodyRef = React.createRef<TextAreaRef>()
     let titleRef = React.createRef<Input>()
 
     const editing = useEditCommunity(community)
@@ -52,7 +52,7 @@ export default ({ rule, community, index, update }: Props) => {
     const save = async () => {
         setLoading(true)
 
-        let bodyValue = bodyRef.current!!.state.value
+        let bodyValue = bodyRef.current!!.value
         let titleValue = titleRef.current!!.state.value
 
         if (body !== bodyValue) {

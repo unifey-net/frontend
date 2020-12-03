@@ -10,6 +10,7 @@ import {
     startEditing,
 } from "../../../../redux/actions/editor.actions"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
+import { Link } from "react-router-dom"
 
 type Props = {
     community: CommunityRequest
@@ -51,6 +52,8 @@ export default ({ community }: Props) => {
                 <CommunityManage community={community.community.id} />
             </div>
 
+            {community.selfRole === 4 && <Link to={`/c/${community.community.name}/moderate`} className="text-gray-700 cursor-pointer">Moderate</Link> }
+
             <Text>
                 <p
                     dangerouslySetInnerHTML={{
@@ -71,5 +74,5 @@ export default ({ community }: Props) => {
                 {new Date(community.community.createdAt).toLocaleString()}
             </Text>
         </div>
-    )
+    );
 }

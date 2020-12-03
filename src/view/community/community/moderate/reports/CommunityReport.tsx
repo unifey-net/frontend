@@ -56,11 +56,9 @@ export default ({ index, reportRequest, community }: Props) => {
 
     return (
         <div
-            className={
-                "p-4 border-black mb-2 rounded accent " + deleted
-                    ? "hidden"
-                    : ""
-            }
+            className={`p-4 border-black mb-2 rounded accent ${
+                deleted ? "hidden" : ""
+            }`}
         >
             <div className="flex flex-row justify-between">
                 <span>
@@ -73,7 +71,7 @@ export default ({ index, reportRequest, community }: Props) => {
 
             {extended && (
                 <div className="flex flex-row justify-between mt-4">
-                    <span className="text-gray-600">
+                    <span className="mt-1">
                         {new Date(report.date).toLocaleString()} | Reported by{" "}
                         {data.target}
                     </span>
@@ -92,5 +90,5 @@ export default ({ index, reportRequest, community }: Props) => {
                 </div>
             )}
         </div>
-    )
+    );
 }
