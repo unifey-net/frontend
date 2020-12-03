@@ -6,12 +6,13 @@ import { useSelector } from "react-redux"
 type Props = {
     community: number
     className?: string
+    style: "BUTTON" | "TEXT"
 }
 
 /**
  * Either leaving or joining a community. Will give a button that gives the option to join or leave depending on member status.
  */
-export default ({ community, className }: Props): JSX.Element => {
+export default ({ community, className, style }: Props): JSX.Element => {
     let self = useSelector((store: any) => store.auth.user)
 
     const joinLeave = async () => {
@@ -34,15 +35,32 @@ export default ({ community, className }: Props): JSX.Element => {
         }
     }
 
-    return (
-        <Button
-            className={className}
-            disabled={!signedIn()}
-            danger
-            ghost
-            onClick={() => joinLeave()}
-        >
-            {self.member.members.includes(community) ? "Leave" : "Join"}
-        </Button>
-    )
+    if (style === "BUTTON") {
+        return (
+            <Button
+                className={className}
+                disabled={!signedIn()}
+                danger
+                ghost
+                onClick={() => joinLeave()}
+            >
+                {self.member.members.includes(community) ? "Leave" : "Join"}
+            </Button>
+        )
+    } else {
+        const hover = signedIn() ? "cursor-pointer" : "cursor-not-allowed"
+
+        return (
+            <span
+                className={`${className} ${hover} hover:text-gray-400`}
+                onClick={() => {
+                    if (signedIn()) {
+                        joinLeave()
+                    }
+                }}
+            >
+                {self.member.members.includes(community) ? "Leave" : "Join"}
+            </span>
+        )
+    }
 }

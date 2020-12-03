@@ -147,7 +147,7 @@ export default ({ id, focus, postBox }: Props) => {
             {feed !== null && feed.feed !== undefined && (
                 <>
                     {!focus && (
-                        <div className="flex flex-row justify-evenly">
+                        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2">
                             {postBox && (
                                 <PostBox
                                     feed={id}
@@ -172,7 +172,7 @@ export default ({ id, focus, postBox }: Props) => {
                                 type="link"
                                 onClick={() => dispatch(feedClear(id))}
                             >
-                                <ReloadOutlined />
+                                Reload
                             </Button>
                         </div>
                     )}

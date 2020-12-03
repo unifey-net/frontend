@@ -17,42 +17,34 @@ type Props = {
 }
 
 export default ({ community }: Props) => {
-    const dispatch = useDispatch()
-    const editing = useEditCommunity(community.community.id)
-
-    const toggleEdit = () => {
-        if (editing) {
-            dispatch(stopEditing())
-        } else {
-            dispatch(startEditing(community.community.id, "community"))
-        }
-    }
-
     return (
         <div
-            className="accent p-4 rounded mt-16 invisible lg:visible"
+            className="accent p-4 rounded invisible lg:visible"
             style={{
                 maxWidth: "200px",
                 height: "min-content",
             }}
         >
-            <div className="flex flex-row justify-between">
-                <h3 className="text-lg">
-                    {community.community.name}{" "}
-                    {community.selfRole === 4 && (
-                        <span
-                            className="text-gray-600 cursor-pointer -mt-4"
-                            onClick={toggleEdit}
-                        >
-                            {editing ? <EditFilled /> : <EditOutlined />}
-                        </span>
-                    )}
-                </h3>
+            <div className="flex flex-row justify-between items-center -mb-3">
+                {community.selfRole === 4 && (
+                    <Link
+                        to={`/c/${community.community.name}/moderate`}
+                    >
+                        Moderate
+                    </Link>
+                )}
 
-                <CommunityManage community={community.community.id} />
+                <CommunityManage
+                    community={community.community.id}
+                    style="TEXT"
+                />
             </div>
 
-            {community.selfRole === 4 && <Link to={`/c/${community.community.name}/moderate`} className="text-gray-700 cursor-pointer">Moderate</Link> }
+            <Divider />
+
+            <div className="flex flex-row justify-between">
+                <h3 className="text-lg">{community.community.name} </h3>
+            </div>
 
             <Text>
                 <p
@@ -74,5 +66,5 @@ export default ({ community }: Props) => {
                 {new Date(community.community.createdAt).toLocaleString()}
             </Text>
         </div>
-    );
+    )
 }

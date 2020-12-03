@@ -12,13 +12,13 @@ export default ({ community, index }: Props) => {
         <div className="max-w-sm rounded overflow-hidden shadow-lg gap-2 accent">
             <div className="p-6 flex-col flex">
                 <div className="flex flex-row justify-between">
-                    <h1 className="text-xl">
+                    <h1 className="text-xl mr-4">
                         <Link to={`/c/${community.name}`}>
                             {community.name}
                         </Link>
                     </h1>
 
-                    <CommunityManage community={community.id} />
+                    <CommunityManage community={community.id} style="BUTTON" />
                 </div>
 
                 <p

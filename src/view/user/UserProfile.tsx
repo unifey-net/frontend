@@ -81,7 +81,7 @@ export default ({ user }: Props): JSX.Element => {
 
     return (
         <div
-            className="p-4 accent rounded mt-16 invisible lg:visible"
+            className="p-4 accent rounded invisible lg:visible"
             style={{
                 maxWidth: "200px",
                 height: "min-content",
