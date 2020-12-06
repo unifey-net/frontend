@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Input, Alert, Modal, Form } from "antd"
-import { API } from "../../../../api/ApiHandler"
-import { addRule } from "../../../../redux/actions/community.actions"
+import { API } from "../../../../../api/ApiHandler"
+import { addRule } from "../../../../../redux/actions/community.actions"
 import { Store } from "antd/lib/form/interface"
 
 const { TextArea } = Input

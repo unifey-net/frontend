@@ -3,15 +3,13 @@ import React from "react"
 import Feed from "../../../components/feed/Feed"
 import { Empty, Spin, Typography } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import CommunityManage from "../../../components/feed/CommunityManage"
 import CommunityStaff from "./CommunityStaff"
-import CommunityRules from "./rules/CommunityRules"
-import CommunityProfile from "./profile/DesktopCommunityProfile"
 import { useCommunity } from "../../../api/community/CommunityUtil"
 import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler"
 import { useCommunityEmotes } from "../../../api/community/useEmotes"
 import DesktopCommunityProfile from "./profile/DesktopCommunityProfile"
 import MobileCommunityProfile from "./profile/MobileCommunityProfile"
+import CommunityProfileRules from "./rules/CommunityProfileRules"
 
 const { Text } = Typography
 
@@ -65,7 +63,7 @@ export default function Community() {
 
                             <CommunityStaff id={community.community.id} />
 
-                            <CommunityRules community={community} />
+                            <CommunityProfileRules community={community} />
                         </div>
                     </div>
                 </>

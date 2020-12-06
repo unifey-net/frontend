@@ -10,6 +10,7 @@ import { LoadingOutlined } from "@ant-design/icons"
 import GeneralSettings from "./general/GeneralSettings"
 import useQueryParameterTabs from "../../../../components/useQueryParameterTabs"
 import NotFound from "../../../NotFound"
+import CommunityRules from "./rules/CommunityRules"
 
 const { TabPane } = Tabs
 
@@ -40,7 +41,7 @@ export default () => {
                     >
                         <Tabs
                             activeKey={activeTab}
-                            onChange={(tab) => setActiveTab(tab)}
+                            onChange={tab => setActiveTab(tab)}
                             tabPosition="left"
                         >
                             <TabPane tab="General Settings" key="1">
@@ -51,6 +52,9 @@ export default () => {
                             </TabPane>
                             <TabPane tab="Roles" key="3">
                                 <CommunityRoles community={community!!} />
+                            </TabPane>
+                            <TabPane tab="Rules" key="4">
+                                <CommunityRules community={community!!} />
                             </TabPane>
                         </Tabs>
                     </div>
@@ -75,5 +79,5 @@ export default () => {
                 />
             )}
         </>
-    );
+    )
 }

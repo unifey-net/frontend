@@ -1,7 +1,5 @@
 import React, { useState } from "react"
-import useEditCommunity from "../useEditCommunity"
-import useRuleModal from "./useRuleModal"
-import CommunityRule from "./CommunityRule"
+import CommunityRule from "./CommunityProfileRule"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 
 /**
@@ -15,22 +13,15 @@ export type Rule = {
 
 type Props = {
     community: CommunityRequest
-    type?: string
 }
 
 /**
  * The communities rules. This appears on the far right sidebar.
  */
-export default ({ community, type }: Props) => {
+export default ({ community }: Props) => {
     let rules = community.community.rules
 
     let [showing, setShowing] = useState(5)
-    let [toggle, modal] = useRuleModal(community.community.id)
-
-    // todo i don't know man....
-    let [update, setUpdate] = useState(0)
-
-    const editing = useEditCommunity(community.community.id)
 
     /**
      * The "show more" button. This shows 5 (or til it reaches the max) more
@@ -46,21 +37,17 @@ export default ({ community, type }: Props) => {
                 maxWidth: "200px",
             }}
         >
-            {modal}
-
             <h2 className="text-lg text-gray-400">Community Rules</h2>
 
             <ol>
                 {rules.length !== 0 &&
                     rules
                         .slice(0, showing)
-                        .map(({ body, title, id }, index: number) => {
+                        .map(({ body, title, id }: Rule, index: number) => {
                             return (
                                 <CommunityRule
                                     rule={{ title, body, id }}
-                                    community={community.community.id}
                                     index={index}
-                                    update={() => setUpdate(prev => prev + 1)}
                                 />
                             )
                         })}
@@ -81,15 +68,6 @@ export default ({ community, type }: Props) => {
                             ? 5
                             : rules.length - showing}{" "}
                         more
-                    </span>
-                )}
-
-                {editing && 30 > rules.length && (
-                    <span
-                        className="cursor-pointer text-gray-600 hover:text-gray-500"
-                        onClick={toggle}
-                    >
-                        Create new
                     </span>
                 )}
             </div>

@@ -39,7 +39,7 @@ export default function App() {
 
     return (
         <Router history={history}>
-            <link rel="stylesheet" type="text/css" href={`/${file}`} />
+            <link rel="stylesheet" type="text/css" href={file} />
             <div className={clazz}>
                 <Header />
 

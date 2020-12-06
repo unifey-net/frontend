@@ -11,7 +11,7 @@ export default (defaultTab: string = "1"): [string, (tab: string) => void] => {
     const setTab = (tab: string | null, changeHistory: boolean) => {
         const params = new URLSearchParams()
 
-        const validTabs = ["1", "2", "3"]
+        const validTabs = ["1", "2", "3", "4"]
 
         if (tab !== null && validTabs.includes(tab)) {
             params.append("tab", tab)
