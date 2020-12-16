@@ -18,6 +18,8 @@ import { logIn } from "../../redux/actions/auth.actions"
 export default () => {
     const dispatch = useDispatch()
 
+    const [ref, setRef] = useState<ReCAPTCHA>()
+
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState("")
@@ -49,6 +51,7 @@ export default () => {
             history.push("/")
             window.location.reload()
         } else {
+            ref?.reset()
             setError(request.data.payload)
         }
 
@@ -120,6 +123,7 @@ export default () => {
 
                         <Form.Item>
                             <ReCAPTCHA
+                                ref={(ref: ReCAPTCHA) => setRef(ref)}
                                 sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
                                 theme="dark"
                                 onChange={token =>
