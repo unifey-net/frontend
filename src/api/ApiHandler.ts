@@ -23,7 +23,7 @@ const API = axios.create({
     validateStatus: () => true,
 })
 
-const VERSION = "Alpha v0.4.0"
+const VERSION = "Alpha v0.5.0"
 const CLIENT = "Unifey Web Client"
 
 export type RequestStatus = {
