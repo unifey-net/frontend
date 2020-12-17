@@ -1,18 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Muli:wght@200&family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Muli:wght@200&family=Roboto:wght@300&family=Roboto+Mono:wght@300&family=Montserrat&display=swap");
 
 $link-color: #5b5bdc;
 
 $dark-text-color: white;
 $light-text-color: black;
 
-$dark-background: #292929;
+// $dark-background: #292929; old color
+$dark-background: #151516;
 $light-background: white;
 
-$dark-header-background: #262525;
+// $dark-header-background: #262525; old color
+$dark-header-background: #111313;
 $light-header-background: #efefed;
 
 $header-active-dark: #c1edab;
 $header-active-light: green;
 
-$default-font: 'Roboto', sans-serif;
-$default-header-font: 'Muli', sans-serif;
+$default-font: "Roboto", sans-serif;
+$default-header-font: "Montserrat", sans-serif;
+$default-code-font: "Roboto Mono", sans-serif;

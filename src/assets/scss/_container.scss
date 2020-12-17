@@ -1,21 +1,44 @@
-@import 'variables';
+@import "variables";
 
 // The main page container. This houses the footer, header and main content.
 .page-container-light {
     background-color: $light-background;
+
+    $accent-background: whitesmoke;
+    $header-color: whitesmoke;
+
     min-height: 100vh;
     position: relative;
+
+    .accent {
+        background-color: $accent-background;
+    }
+
+    .header {
+        background-color: $header-color;
+    }
 }
 
 .page-container-dark {
     background-color: $dark-background;
+
+    $accent-background: #191919;
+    // $header-color: #262525; old color
+    $header-color: #111313;
+
     min-height: 100vh;
     position: relative;
+
+    .accent {
+        background-color: $accent-background;
+    }
+
+    .header {
+        background-color: $header-color;
+    }
 }
 
 // The main container
 .content-container {
     padding-bottom: 8rem;
-    padding-left: 16rem;
-    padding-right: 16rem;
 }
