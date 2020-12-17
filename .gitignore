@@ -27,3 +27,6 @@ yarn-error.log*
 *.code-workspace
 
 /src/assets/main.css
+
+package-lock.json
+yarn.lock
