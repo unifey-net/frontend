@@ -31,9 +31,17 @@ export default ({ id, focus, postBox }: Props) => {
 
     let [feed, status] = useFeed(id)
 
-    debug("%o", [status])
+    const sort = feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!    
 
-    let [sort, setSort] = useState("new")
+    const updateSort = (sort: string) => {
+        debug("Sort has changed to %s", [sort])
+
+        dispatch(
+            changeSort({ sort, id })
+        )
+
+        dispatch(feedClear(id))
+    }
 
     /**
      * Handle sorting.
@@ -44,6 +52,8 @@ export default ({ id, focus, postBox }: Props) => {
         )
 
         if (querySort === "new" || querySort === "old" || querySort === "top") {
+            debug("Found sort in query %s", [querySort])
+
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
@@ -57,7 +67,7 @@ export default ({ id, focus, postBox }: Props) => {
      * Load another post.
      */
     const loadMore = async () => {
-        debug(`Loading more posts from ${id} (page: ${feed!!.page})`)
+        debug(`Loading more posts from ${id} (page: ${feed!!.page}, sort: ${sort})`)
 
         let resp = await getFeedPosts(id, sort, feed!!.page)
 
@@ -96,36 +106,18 @@ export default ({ id, focus, postBox }: Props) => {
     const menu = (
         <Menu>
             <Menu.Item>
-                <Button type="link" onClick={() => setSort("new")}>
-                    {sort === "new" && (
-                        <>
-                            <DoubleRightOutlined /> New
-                        </>
-                    )}
-
-                    {sort !== "new" && <>New</>}
+                <Button type="link" onClick={() => updateSort("new")}>
+                    {sort === "new" && <DoubleRightOutlined />} New
                 </Button>
             </Menu.Item>
             <Menu.Item>
-                <Button type="link" onClick={() => setSort("old")}>
-                    {sort === "old" && (
-                        <>
-                            <DoubleRightOutlined /> Old
-                        </>
-                    )}
-
-                    {sort !== "old" && <>Old</>}
+                <Button type="link" onClick={() => updateSort("old")}>
+                    {sort === "old" && <DoubleRightOutlined />} Old
                 </Button>
             </Menu.Item>
             <Menu.Item>
-                <Button type="link" onClick={() => setSort("top")}>
-                    {sort === "top" && (
-                        <>
-                            <DoubleRightOutlined /> Top
-                        </>
-                    )}
-
-                    {sort !== "top" && <>Top</>}
+                <Button type="link" onClick={() => updateSort("top")}>
+                    {sort === "top" && <DoubleRightOutlined />} Top
                 </Button>
             </Menu.Item>
         </Menu>
@@ -176,7 +168,7 @@ export default ({ id, focus, postBox }: Props) => {
                             </Button>
                         </div>
                     )}
-                    
+
                     {feed.feed.postCount === 0 && (
                         <Empty
                             style={{ minWidth: "200px" }}

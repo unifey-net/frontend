@@ -25,13 +25,13 @@ export type FeedState = {
 const feeds = (state = {} as any, action: any) => {
     switch (action.type) {
         case FEED__LOAD: {
-            let { id, posts } = action.payload as PostLoad
+            let { id, posts, sort } = action.payload as PostLoad
 
             let currentObj = state[id]
 
             state[id] = {
                 ...currentObj,
-                sort: "new",
+                sort: sort,
                 posts: [...posts],
             }
 
