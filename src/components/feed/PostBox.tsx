@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { message, Input, Button, Modal } from "antd"
 import { createPost } from "../../api/Feeds"
+import ButtonText from "../ButtonText"
 
 const { TextArea } = Input
 
@@ -52,9 +53,7 @@ export default ({ feed, action }: Props): JSX.Element => {
 
     return (
         <div className="post-box-container">
-            <Button type="link" onClick={showModal}>
-                Create Post
-            </Button>
+            <ButtonText onClick={showModal}>Create Post</ButtonText>
 
             <Modal
                 title="Create new Post"

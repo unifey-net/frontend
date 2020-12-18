@@ -3,9 +3,9 @@ import { Spin } from "antd"
 import React from "react"
 
 type Props = {
-    children: React.ReactNode,
-    className?: string,
-    onClick: () => void,
+    children: React.ReactNode
+    className?: string
+    onClick: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void
     loading?: boolean
 }
 

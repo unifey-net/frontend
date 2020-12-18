@@ -19,6 +19,7 @@ import {
 } from "../../redux/actions/feeds.actions"
 import debug from "../../api/Debug"
 import { Emote } from "../../api/Emotes"
+import ButtonText from "../ButtonText"
 
 type Props = {
     id: string
@@ -105,20 +106,14 @@ export default ({ id, focus, postBox }: Props) => {
      */
     const menu = (
         <Menu>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("new")}>
-                    {sort === "new" && <DoubleRightOutlined />} New
-                </Button>
+            <Menu.Item onClick={() => updateSort("old")}>
+                <span>{sort === "new" && <DoubleRightOutlined />} New</span>
             </Menu.Item>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("old")}>
-                    {sort === "old" && <DoubleRightOutlined />} Old
-                </Button>
+            <Menu.Item onClick={() => updateSort("old")}>
+                <span>{sort === "old" && <DoubleRightOutlined />} Old</span>
             </Menu.Item>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("top")}>
-                    {sort === "top" && <DoubleRightOutlined />} Top
-                </Button>
+            <Menu.Item onClick={() => updateSort("top")}>
+                <span>{sort === "top" && <DoubleRightOutlined />} Top</span>
             </Menu.Item>
         </Menu>
     )
@@ -151,21 +146,15 @@ export default ({ id, focus, postBox }: Props) => {
                             )}
 
                             <Dropdown overlay={menu}>
-                                <Button
-                                    type="link"
-                                    onClick={e => e.preventDefault()}
-                                >
+                                <a className="cursor-pointer text-gray-100 hover:text-gray-300">
                                     Sort by{" "}
                                     {sort[0].toUpperCase() + sort.substring(1)}
-                                </Button>
+                                </a>
                             </Dropdown>
 
-                            <Button
-                                type="link"
-                                onClick={() => dispatch(feedClear(id))}
-                            >
+                            <ButtonText onClick={() => dispatch(feedClear(id))}>
                                 Reload
-                            </Button>
+                            </ButtonText>
                         </div>
                     )}
 
