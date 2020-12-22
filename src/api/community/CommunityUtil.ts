@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react"
-import { getCommunityByName, getCommunityById } from "./Community"
+import { getCommunityByName } from "./Community"
 import { postCommunity } from "../../redux/actions/community.actions"
 import { RequestStatus } from "../ApiHandler"
 import { Emote } from "../Emotes"

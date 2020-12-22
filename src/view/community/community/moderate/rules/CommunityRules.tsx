@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import useEditCommunity from "../../useEditCommunity"
 import useRuleModal from "./useRuleModal"
 import CommunityRule from "./CommunityRule"
 import { CommunityRequest } from "../../../../../api/community/CommunityUtil"

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { CommunityRequest } from "../../../../../../api/community/CommunityUtil"
-import { Form, Alert, Select, message, AutoComplete, Input } from "antd"
+import { Form, Alert, Select, message, Input } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import { Option } from "antd/lib/mentions"
 import { API } from "../../../../../../api/ApiHandler"

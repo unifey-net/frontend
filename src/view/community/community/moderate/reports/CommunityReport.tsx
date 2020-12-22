@@ -1,12 +1,10 @@
 import React, { useState } from "react"
 import {
-    Report,
     fixReportType,
     ReportRequest,
 } from "../../../../../api/Reports"
 import { CaretDownFilled, CaretRightFilled } from "@ant-design/icons"
 import { Button, message } from "antd"
-import History from "../../../../../api/History"
 import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
 import { Link } from "react-router-dom"
 import { API } from "../../../../../api/ApiHandler"
@@ -83,7 +81,7 @@ export default ({ index, reportRequest, community }: Props) => {
                             </Link>
                         </Button>
 
-                        <Button danger onClick={deleteReport}>
+                        <Button danger onClick={deleteReport} loading={deleteLoading}>
                             Delete Report
                         </Button>
                     </div>

@@ -18,7 +18,7 @@ export default ({ community, index }: Props) => {
                         </Link>
                     </h1>
 
-                    <CommunityManage community={community.id} style="BUTTON" />
+                    <CommunityManage community={community.id} type="BUTTON" />
                 </div>
 
                 <p

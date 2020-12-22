@@ -31,7 +31,7 @@ export default function Home() {
     return (
         <div className="flex flex-col items-center justify-center">
             <div>
-                <img src="/homepage.png"></img>
+                <img src="/homepage.png" alt="Large Unifey Logo"></img>
             </div>
 
             <div className="flex flex-row gap-8">

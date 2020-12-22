@@ -1,7 +1,7 @@
 import { useRouteMatch } from "react-router-dom"
 import React from "react"
 import Feed from "../../../components/feed/Feed"
-import { Empty, Spin, Typography } from "antd"
+import { Empty, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import CommunityStaff from "./CommunityStaff"
 import { useCommunity } from "../../../api/community/CommunityUtil"
@@ -10,8 +10,6 @@ import { useCommunityEmotes } from "../../../api/community/useEmotes"
 import DesktopCommunityProfile from "./profile/DesktopCommunityProfile"
 import MobileCommunityProfile from "./profile/MobileCommunityProfile"
 import CommunityProfileRules from "./rules/CommunityProfileRules"
-
-const { Text } = Typography
 
 /**
  * A community viewer.

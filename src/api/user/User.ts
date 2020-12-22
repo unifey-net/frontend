@@ -1,5 +1,5 @@
 import { BASE_URL, API } from "../ApiHandler"
-import { logIn, logOut } from "../../redux/actions/auth.actions"
+import { logOut } from "../../redux/actions/auth.actions"
 import store from "../../redux/store"
 import { joinComm, leaveComm } from "../../redux/actions/auth.actions"
 

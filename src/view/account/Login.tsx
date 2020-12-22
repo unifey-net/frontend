@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, message, Alert } from "antd"
+import { Form, Input, Button, Checkbox, Alert } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 

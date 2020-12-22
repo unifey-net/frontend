@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { message, Button, Input } from "antd"
 import { useDispatch } from "react-redux"
-import { getCommunityById } from "../../../api/community/Community"
 import PostComments from "./comments/PostComments"
 import PostVote from "./PostVote"
 import History from "../../../api/History"
@@ -14,14 +13,13 @@ import {
 } from "../../../api/Feeds"
 import Vote from "../../../api/user/Vote"
 import { User } from "../../../api/user/User"
-import { parseBody, Emote } from "../../../api/Emotes"
+import { parseBody } from "../../../api/Emotes"
 import PostAbout from "./PostAbout"
 import UserView from "../../view/UserView"
 import PostManagement from "./PostManagement"
 import { stopEditing } from "../../../redux/actions/editor.actions"
 import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
-import debug from "../../../api/Debug"
 
 type Props = {
     post: Post

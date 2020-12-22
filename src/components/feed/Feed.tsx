@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import PostJsx from "./post/Post"
-import { Spin, Dropdown, Menu, Button, Alert, Empty } from "antd"
+import { Spin, Dropdown, Menu, Alert, Empty } from "antd"
 import {
     LoadingOutlined,
     DoubleRightOutlined,
-    ReloadOutlined,
 } from "@ant-design/icons"
 import InfiniteScroll from "react-infinite-scroller"
 import PostBox from "./PostBox"
@@ -18,7 +17,6 @@ import {
     changeSort,
 } from "../../redux/actions/feeds.actions"
 import debug from "../../api/Debug"
-import { Emote } from "../../api/Emotes"
 import ButtonText from "../ButtonText"
 
 type Props = {

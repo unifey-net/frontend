@@ -1,18 +1,9 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import useEditCommunity from "../../useEditCommunity"
-import { Input, message, Button } from "antd"
+import { Input, message } from "antd"
 import { Rule } from "./CommunityRules"
 import { removeRule } from "../../../../../redux/actions/community.actions"
 import { API } from "../../../../../api/ApiHandler"
-import {
-    CaretDownOutlined,
-    CaretRightOutlined,
-    SaveOutlined,
-    EditOutlined,
-    DeleteOutlined,
-} from "@ant-design/icons"
-import { TextAreaRef } from "antd/lib/input/TextArea"
 import ButtonText from "../../../../../components/ButtonText"
 
 type Props = {

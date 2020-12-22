@@ -37,7 +37,7 @@ export default function PostComments({
         if (req.status === 200) {
             const { pages, amount, comments } = req.data
 
-            if (pages != 0) {
+            if (pages !== 0) {
                 setPage(prev => prev + 1)
                 setMaxPage(pages)
                 setCommentSize(amount)

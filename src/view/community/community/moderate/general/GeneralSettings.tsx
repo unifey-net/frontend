@@ -1,12 +1,10 @@
 import React from "react"
 import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
-import { Radio, Tooltip, message } from "antd"
+import { message } from "antd"
 import CommunityPermission from "./CommunityPermission"
 import ChangeCommunityName from "./inputs/ChangeCommunityName"
 import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc"
 import { API } from "../../../../../api/ApiHandler"
-import { Redirect } from "react-router-dom"
-import NotFound from "../../../../NotFound"
 
 type Props = {
     community: CommunityRequest

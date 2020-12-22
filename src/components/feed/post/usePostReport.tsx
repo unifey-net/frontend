@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Input, Alert, message, Radio } from "antd"
 import Modal from "antd/lib/modal/Modal"
-import { FlagOutlined } from "@ant-design/icons"
 import CommentObject from "../../../api/Comment"
 import { Post } from "../../../api/Feeds"
 import { sendReport } from "../../../api/Reports"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CommunityReport from "./CommunityReport";
-import { Report, ReportRequest } from "../../../../../api/Reports";
+import { ReportRequest } from "../../../../../api/Reports";
 import { CommunityRequest } from "../../../../../api/community/CommunityUtil";
 import {
     API,
@@ -36,7 +36,7 @@ export default ({ community }: Props) => {
         };
 
         loadReports();
-    }, []);
+    }, [community.community.id]);
 
     return (
         <>

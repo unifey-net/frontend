@@ -49,7 +49,7 @@ export default ({ community }: Props) => {
         }
 
         loadReports()
-    }, [])
+    }, [community.community.id])
 
     return (
         <>

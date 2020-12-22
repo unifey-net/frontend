@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import useEditCommunity from "../useEditCommunity"
 import { Rule } from "./CommunityProfileRules"
 import {
     CaretDownOutlined,

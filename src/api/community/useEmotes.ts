@@ -1,6 +1,6 @@
 import { Emote } from "../Emotes"
 import { useSelector, useDispatch } from "react-redux"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { postEmotes } from "../../redux/actions/emotes.actions"
 import { API } from "../ApiHandler"
 import { message } from "antd"
@@ -20,7 +20,7 @@ export const useCommunityEmotes = (emotes: Emote[]) => {
 
     useEffect(() => {
         dispatch(postEmotes(emotes))
-    }, [])
+    }, [dispatch, emotes])
 }
 
 export const useDefaultEmotes = () => {
@@ -39,5 +39,5 @@ export const useDefaultEmotes = () => {
         }
 
         loadEmotes()
-    }, [])
+    }, [dispatch])
 }

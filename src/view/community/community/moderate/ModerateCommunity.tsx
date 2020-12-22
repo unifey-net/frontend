@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Tabs, Spin, Alert } from "antd"
 import CommunityReports from "./reports/CommunityReports"
-import CommunityRole from "./roles/CommunityRole"
 import CommunityRoles from "./roles/CommunityRoles"
-import { useHistory, useParams, useRouteMatch } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useCommunity } from "../../../../api/community/CommunityUtil"
 import { COMPLETE, LOADING, ERROR } from "../../../../api/ApiHandler"
 import { LoadingOutlined } from "@ant-design/icons"
@@ -20,7 +19,6 @@ type UrlProps = {
 
 export default () => {
     const { name } = useParams() as UrlProps
-    const history = useHistory()
 
     let [community, status] = useCommunity(name)
     let [activeTab, setActiveTab] = useQueryParameterTabs()

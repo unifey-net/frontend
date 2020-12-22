@@ -1,6 +1,6 @@
 import React from "react"
 import UserView from "../../../../../components/view/UserView"
-import { Dropdown, Menu, Divider, Button } from "antd"
+import { Dropdown, Menu } from "antd"
 import { getRoleName } from "../../../../../api/community/Roles"
 
 type Props = {

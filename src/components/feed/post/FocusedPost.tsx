@@ -6,8 +6,6 @@ import { getPost } from "../../../api/Feeds"
 import History from "../../../api/History"
 import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
-import { Emote } from "../../../api/Emotes"
-import useEmotes from "../../../api/community/useEmotes"
 
 type Props = {
     id: number

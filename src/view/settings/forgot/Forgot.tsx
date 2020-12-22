@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Input, Button, message, Alert } from "antd"
+import { Input, Button, Alert } from "antd"
 import { API } from "../../../api/ApiHandler"
 import useForgotModal from "./useForgotModal"
 
@@ -26,7 +26,7 @@ export default () => {
         if (verify && verify !== "") {
             toggle(verify)
         }
-    }, [])
+    }, [toggle])
 
     const resetPassword = async () => {
         let value = input.current!!.state.value

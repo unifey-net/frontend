@@ -20,7 +20,7 @@ import Support from "./view/Support"
 import ForgotPassword from "./view/settings/forgot/Forgot"
 import NotFound from "./view/NotFound"
 
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import Settings from "./view/settings/settings/Settings"
 import Unverified from "./view/Unverified"
 import Verify from "./view/settings/verify/Verify"
@@ -29,8 +29,7 @@ import ModerateCommunity from "./view/community/community/moderate/ModerateCommu
 import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
 import useTheme from "./components/useTheme"
-import toast, { Toaster } from "react-hot-toast"
-import ToastTheme from "./api/ToastTheme"
+import { Toaster } from "react-hot-toast"
 
 export default function App() {
     const dispatch = useDispatch()
