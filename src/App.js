@@ -29,6 +29,8 @@ import ModerateCommunity from "./view/community/community/moderate/ModerateCommu
 import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
 import useTheme from "./components/useTheme"
+import toast, { Toaster } from "react-hot-toast"
+import ToastTheme from "./api/ToastTheme"
 
 export default function App() {
     const dispatch = useDispatch()
@@ -43,9 +45,12 @@ export default function App() {
             <div className={clazz}>
                 <Header />
 
+                <Toaster />
+
                 <div className="content-container px-8 lg:px-0">
                     <Switch>
                         <Route
+
                             path="/c/:name/moderate"
                             component={ModerateCommunity}
                             exact
