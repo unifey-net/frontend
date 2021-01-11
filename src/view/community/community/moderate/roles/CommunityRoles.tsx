@@ -37,13 +37,8 @@ export default ({ community }: Props) => {
             } else {
                 setStatus({ message: "", status: COMPLETE })
 
-                const keys = Object.keys(request.data)
-
                 setRoles(
-                    keys.map(
-                        (id: string, index: number) =>
-                            ({ role: +request.data[id], user: +id } as UserRole)
-                    )
+                    request.data as UserRole[]
                 )
             }
         }
@@ -59,10 +54,9 @@ export default ({ community }: Props) => {
                 {roles.map((role: UserRole, index: number) => (
                     <CommunityRole
                         index={index}
-                        role={role.role}
-                        user={role.user}
+                        userRole={role}
                         selfRole={community.selfRole}
-                    ></CommunityRole>
+                    />
                 ))}
             </ul>
 

@@ -132,7 +132,7 @@ export default ({ id, focus, postBox }: Props) => {
             {feed !== null && feed.feed !== undefined && (
                 <>
                     {!focus && (
-                        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2">
+                        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2 gap-8">
                             {postBox && (
                                 <PostBox
                                     feed={id}

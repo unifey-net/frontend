@@ -1,16 +1,17 @@
 import React from "react"
 import UserView from "../../../../../components/view/UserView"
 import { Dropdown, Menu } from "antd"
-import { getRoleName } from "../../../../../api/community/Roles"
+import { getRoleName, UserRole } from "../../../../../api/community/Roles"
 
 type Props = {
     index: number
-    role: number
-    user: number
+    userRole: UserRole
     selfRole: number
 }
 
-export default ({ index, user, role, selfRole }: Props) => {
+export default ({ index, userRole, selfRole }: Props) => {
+    const { role, name, user } = userRole
+
     let modify = (
         <Menu>
             <Menu.Item disabled>
@@ -36,7 +37,8 @@ export default ({ index, user, role, selfRole }: Props) => {
 
     return (
         <div className="accent rounded flex flex-row justify-between p-4 border-black">
-            <UserView username="notdebug" showUsername={true} />
+            <UserView username={name} showUsername={true} />
+            
             <Dropdown overlay={modify} disabled={role > selfRole}>
                 <p className="cursor-pointer pt-2">{getRoleName(role)}</p>
             </Dropdown>
