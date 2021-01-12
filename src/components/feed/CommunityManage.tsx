@@ -2,6 +2,8 @@ import React from "react"
 import { Button, message } from "antd"
 import { leaveCommunity, joinCommunity, signedIn } from "../../api/user/User"
 import { useSelector } from "react-redux"
+import toast from "react-hot-toast"
+import ToastTheme from "../../api/ToastTheme"
 
 type Props = {
     community: number
@@ -20,17 +22,17 @@ export default ({ community, className, type }: Props): JSX.Element => {
             let request = await leaveCommunity(community)
 
             if (request.status === 200) {
-                message.success("Successfully left community!")
+                toast.success("Successfully left community!", ToastTheme)
             } else {
-                message.error("Failed to leave community!")
+                toast.error(request.data.payload, ToastTheme)
             }
         } else {
             let request = await joinCommunity(community)
 
             if (request.status === 200) {
-                message.success("Successfully joined community!")
+                toast.success("Successfully joined community!", ToastTheme)
             } else {
-                message.error("Failed to join community!")
+                toast.error(request.data.payload, ToastTheme)
             }
         }
     }
