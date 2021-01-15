@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { getSelf, User } from "../../../api/user/User"
+import { getSelf, signedIn, User } from "../../../api/user/User"
 import { Menu, Modal, Dropdown } from "antd"
 import {
     EditOutlined,
@@ -21,6 +21,8 @@ import {
     stopEditing,
 } from "../../../redux/actions/editor.actions"
 import usePostReport from "./usePostReport"
+import toast from "react-hot-toast"
+import ToastTheme from "../../../api/ToastTheme"
 
 const { confirm } = Modal
 
@@ -80,6 +82,14 @@ export default ({ object, type }: Props): JSX.Element => {
 
     const [toggle, modal] = usePostReport(object)
 
+    const openMenu = () => {
+        if (signedIn()) {
+            toggle()
+        } else {
+            toast.error("You must be signed in for this!", ToastTheme)
+        }
+    }
+
     const elevatedMenu = (
         <Menu>
             <Menu.Item key={1} onClick={toggleEditing}>
@@ -90,16 +100,16 @@ export default ({ object, type }: Props): JSX.Element => {
                 Delete <DeleteOutlined />
             </Menu.Item>
 
-            <Menu.Item key={3} onClick={toggle}>
-                Report <FlagOutlined/> {modal}
+            <Menu.Item key={3} onClick={openMenu}>
+                Report <FlagOutlined /> {modal}
             </Menu.Item>
         </Menu>
-    );
+    )
 
     const regularMenu = (
         <Menu>
-            <Menu.Item key={1} onClick={toggle}>
-                Report <FlagOutlined/> {modal}
+            <Menu.Item key={1} onClick={openMenu}>
+                Report <FlagOutlined /> {modal}
             </Menu.Item>
         </Menu>
     )
