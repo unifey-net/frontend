@@ -3,7 +3,7 @@ import {
     fixReportType,
     ReportRequest,
 } from "../../../../../api/Reports"
-import { CaretDownFilled, CaretRightFilled } from "@ant-design/icons"
+import { CaretDownFilled, CaretRightFilled, PrinterOutlined } from "@ant-design/icons"
 import { Button, message } from "antd"
 import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
 import { Link } from "react-router-dom"
@@ -32,7 +32,7 @@ export default ({ index, reportRequest, community }: Props) => {
         setDeleteLoading(true)
 
         let request = await API.delete(
-            `/report/${community.feed}/${reportRequest.report.id}`
+            `/report/${community.feed.id}/${reportRequest.report.id}`
         )
 
         if (request.status === 200) {

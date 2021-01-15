@@ -51,12 +51,12 @@ export default ({ community }: Props) => {
                     {reports.length !== 0 && (
                         <>
                             <span>
-                                There are currently {reports.length} reports.
+                                There are currently {reports.length} report(s).
                             </span>
 
                             {reports.map((report, index) => (
                                 <CommunityReport
-                                    index={index}
+                                    index={index + 1}
                                     reportRequest={report}
                                     community={community}
                                 />
