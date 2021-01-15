@@ -50,14 +50,17 @@ export default ({ community }: Props) => {
         <>
             <h1 className="text-2xl">Roles</h1>
 
-            <ul className="flex flex-col gap-8">
-                {roles.map((role: UserRole, index: number) => (
-                    <CommunityRole
-                        index={index}
-                        userRole={role}
-                        selfRole={community.selfRole}
-                    />
-                ))}
+            <ul className="flex flex-col gap-4">
+                {roles
+                    .sort((a: UserRole, b: UserRole) => b.role - a.role)
+                    .map((role: UserRole, index: number) => (
+                        <CommunityRole
+                            index={index}
+                            userRole={role}
+                            selfRole={community.selfRole}
+                            community={community.community.id}
+                        />
+                    ))}
             </ul>
 
             {modal}
