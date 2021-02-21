@@ -7,6 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons"
 type Props = {
     id: number
     feed: string
+    sort?: "TOP" | "OLD" | "NEW"
     data?: any
     comment?: number
 }
@@ -16,7 +17,9 @@ export default function PostComments({
     feed,
     data,
     comment,
+    sort
 }: Props): JSX.Element {
+    const [initialSort, setInitialSort] = useState((sort ? sort : "NEW") as "TOP" | "OLD" | "NEW")
     const [comments, setComments] = useState([] as any[])
     const [loaded, setLoaded] = useState(false)
 
@@ -24,13 +27,15 @@ export default function PostComments({
     const [maxPage, setMaxPage] = useState(0)
     const [commentSize, setCommentSize] = useState(0) // the amount of comments the post has
 
-    const loadMore = useCallback(async () => {
-        if (maxPage !== 0 && page > maxPage) return
+    const loadMore = async (maxPg: number, pg: number) => {
+        if (maxPg !== 0 && pg > maxPage) return
 
         let url =
             typeof comment == undefined
-                ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${page}`
-                : `/feeds/${feed}/post/${id}/comments?page=${page}`
+                ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${pg}`
+                : `/feeds/${feed}/post/${id}/comments?page=${pg}&sort=${
+                      sort ? sort : "NEW"
+                  }`
 
         let req = await API.get(url)
 
@@ -48,11 +53,11 @@ export default function PostComments({
         }
 
         setLoaded(true)
-    }, [comment, feed, id, maxPage, page])
+    }
 
     useEffect(() => {
         if (data == null) {
-            loadMore()
+            loadMore(0, 1)
         } else {
             const { pages, amount, comments } = data
 
@@ -64,7 +69,22 @@ export default function PostComments({
 
             setLoaded(true)
         }
-    }, [id, data, loadMore])
+    }, [])
+
+    useEffect(() => {
+        if (sort !== initialSort && sort) {
+            console.log("updating sort")
+            setInitialSort(sort)
+            
+            setPage(1)
+            setMaxPage(0)
+            setCommentSize(0)
+            setComments([])
+
+            setLoaded(false)
+            loadMore(0, 1)
+        }
+    }, [sort])
 
     return (
         <>
@@ -86,7 +106,7 @@ export default function PostComments({
                     ))}
 
                     {commentSize > comments.length && (
-                        <Button type="link" onClick={loadMore}>
+                        <Button type="link" onClick={() => loadMore(maxPage, page + 1)}>
                             {commentSize - comments.length} more
                         </Button>
                     )}
