@@ -7,7 +7,7 @@ export default (): JSX.Element => {
         <footer className="footer">
             <p>
                 Unifey ©{new Date().getFullYear()} — <Link to="/tos">TOS</Link>{" "}
-                — <Link to="/privacy">Privacy</Link> — {VERSION} — {BASE_URL}
+                — <Link to="/privacy">Privacy</Link> — {VERSION}
             </p>
         </footer>
     )
