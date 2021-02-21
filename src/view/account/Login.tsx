@@ -26,20 +26,23 @@ export default () => {
 
     const loginForm = async (values: Store) => {
         setLoading(true)
-
-        if (captcha === "") {
-            setError("Please fill out the reCAPTCHA")
-
-            setLoading(false)
-            return
-        }
-
         let data = new FormData()
+
+        // captcha is not required in testing env
+        if (process.env.NODE_ENV === "production") {
+            if (captcha === "") {
+                setError("Please fill out the reCAPTCHA")
+
+                setLoading(false)
+                return
+            }
+
+            data.append("captcha", captcha)
+        }
 
         data.append("username", values.username)
         data.append("password", values.password)
         data.append("remember", `${values.remember}`)
-        data.append("captcha", captcha)
 
         let request = await API.post(`/authenticate`, data)
 
@@ -121,16 +124,18 @@ export default () => {
                             </FormItem>
                         </div>
 
-                        <Form.Item>
-                            <ReCAPTCHA
-                                ref={(ref: ReCAPTCHA) => setRef(ref)}
-                                sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
-                                theme="dark"
-                                onChange={token =>
-                                    setCaptcha(token === null ? "" : token)
-                                }
-                            />
-                        </Form.Item>
+                        {process.env.NODE_ENV === "production" && (
+                            <Form.Item>
+                                <ReCAPTCHA
+                                    ref={(ref: ReCAPTCHA) => setRef(ref)}
+                                    sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
+                                    theme="dark"
+                                    onChange={token =>
+                                        setCaptcha(token === null ? "" : token)
+                                    }
+                                />
+                            </Form.Item>
+                        )}
 
                         <Form.Item>
                             <div className="flex flex-row justify-center items-center">
