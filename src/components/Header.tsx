@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import history from "../api/History"
-import Logo from "./Logo"
+import Logo from "./logo"
 import SelfView from "./view/SelfView"
 
 export default (): JSX.Element => {
