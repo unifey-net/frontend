@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-export default () => {
+const Unsubscribed = () => {
     return (
         <div className="flex flex-col items-center mx-64">
             <h1 className="text-2xl">
@@ -15,3 +15,5 @@ export default () => {
         </div>
     )
 }
+
+export default Unsubscribed;

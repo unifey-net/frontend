@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Input, Alert, message, Radio } from "antd"
+import { Input, Alert, Radio } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import CommentObject from "../../../api/Comment"
 import { Post } from "../../../api/Feeds"

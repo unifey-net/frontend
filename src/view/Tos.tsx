@@ -3,7 +3,7 @@ import React from "react"
 /**
  * The terms and conditions.
  */
-export default () => {
+const Tos = () => {
     return (
         <div className="mx-20">
             <h1 className="text-2xl">Terms and conditions</h1>
@@ -240,3 +240,5 @@ export default () => {
         </div>
     )
 }
+
+export default Tos

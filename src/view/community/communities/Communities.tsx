@@ -4,10 +4,15 @@ import { getAllCommunities } from "../../../api/community/Community"
 import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 
-import Community from "./Community"
+import Community from "../../../components/community/communities/Community"
 import PageHeader from "../../../components/PageHeader"
 
-export default () => {
+/**
+ * The /communities page.
+ * 
+ * Lists the top 10 communities. Page is still subject to change.
+ */
+const Communities = () => {
     let [communities, setCommunities] = useState([])
     let [loaded, setLoaded] = useState(false)
 
@@ -32,6 +37,13 @@ export default () => {
         loadCommunities()
     }, [])
 
+    const getStyle = (index: number) =>
+        index + 1 !== communities.length
+            ? {
+                  borderBottom: "1px solid white",
+              }
+            : {}
+
     return (
         <div className="flex flex-col items-center justify-center">
             <PageHeader>Top Communities</PageHeader>
@@ -46,9 +58,9 @@ export default () => {
             {communities.length === 0 && loaded && <Empty />}
 
             {communities.length !== 0 && loaded && (
-                <ul className="flex flex-col max-w-sm gap-8">
+                <ul className="flex flex-col max-w-sm">
                     {communities.map((community, index) => (
-                        <li key={index}>
+                        <li key={index} style={getStyle(index)}>
                             <Community index={index} community={community} />
                         </li>
                     ))}
@@ -57,3 +69,5 @@ export default () => {
         </div>
     )
 }
+
+export default Communities;

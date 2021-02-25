@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { signedIn } from "../../api/user/User"
+import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
 import { Form, Input, Button, Checkbox, Alert } from "antd"
 import history from "../../api/History"
@@ -8,9 +8,9 @@ import { Link } from "react-router-dom"
 
 import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
-import { API } from "../../api/ApiHandler"
 import { useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
+import { COMPLETE } from "../../api/util/Status"
 
 /**
  * The /login page.
@@ -26,28 +26,11 @@ export default () => {
 
     const loginForm = async (values: Store) => {
         setLoading(true)
-        let data = new FormData()
 
-        // captcha is not required in testing env
-        if (process.env.NODE_ENV === "production") {
-            if (captcha === "") {
-                setError("Please fill out the reCAPTCHA")
+        const [status, data] = await login(values.username, values.password, captcha)
 
-                setLoading(false)
-                return
-            }
-
-            data.append("captcha", captcha)
-        }
-
-        data.append("username", values.username)
-        data.append("password", values.password)
-        data.append("remember", `${values.remember}`)
-
-        let request = await API.post(`/authenticate`, data)
-
-        if (request.status === 200) {
-            const { user, token } = request.data
+        if (status.status === COMPLETE) {
+            const { user, token } = data
 
             dispatch(logIn(token.token, user, token.expires))
 
@@ -55,7 +38,11 @@ export default () => {
             window.location.reload()
         } else {
             ref?.reset()
-            setError(request.data.payload)
+            setError(
+                status.message === undefined
+                    ? "There was an issue logging in."
+                    : status.message
+            )
         }
 
         setLoading(false)

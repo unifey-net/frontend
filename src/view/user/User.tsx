@@ -10,8 +10,8 @@ import Avatar from "antd/es/avatar"
 import { LoadingOutlined } from "@ant-design/icons"
 
 import { getBadges } from "../../api/user/Cosmetics"
-import UserProfile from "./UserProfile"
-import UserBadges from "./UserBadges"
+import UserProfile from "../../components/user/profile/UserProfile"
+import UserBadges from "../../components/user/UserBadges"
 import { useDefaultEmotes } from "../../api/community/useEmotes"
 
 export default function User() {

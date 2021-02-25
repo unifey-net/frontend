@@ -6,6 +6,9 @@ import { postFeed } from "../redux/actions/feeds.actions"
 import { User } from "./user/User"
 import Vote from "./user/Vote"
 
+/**
+ * A post.
+ */
 export type Post = {
     id: number
     createdAt: number
@@ -17,12 +20,18 @@ export type Post = {
     downvotes: number
 }
 
+/**
+ * The response when grabbing a post from the api.
+ */
 export type PostResponse = {
     post: Post
     author: User
     vote: Vote | null
 }
 
+/**
+ * A feed.
+ */
 export type Feed = {
     id: string
     banned: number[]
@@ -31,6 +40,12 @@ export type Feed = {
     pageCount: number
 }
 
+/**
+ * Grab a feed from the API then store it in Redux.
+ * 
+ * @param id The ID of the feed.
+ * @returns The state of the feed and status.
+ */
 export const useFeed = (id: string): [FeedState | null, any] => {
     let dispatch = useDispatch()
 

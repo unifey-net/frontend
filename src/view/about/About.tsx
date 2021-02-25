@@ -2,7 +2,10 @@ import React from "react"
 import ExternalLink from "../../components/ExternalLink"
 import Question from "./Question"
 
-export default () => {
+/**
+ * The /about page.
+ */
+const About = () => {
     return (
         <div className="flex items-center justify-center">
             <div>
@@ -34,3 +37,5 @@ export default () => {
         </div>
     )
 }
+
+export default About;

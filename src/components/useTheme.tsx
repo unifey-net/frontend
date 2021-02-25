@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { isAutoDark } from "../api/Util"
+import { isAutoDark } from "../api/util/Util"
 
 const DARK = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.9.1/antd.dark.css"
 const LIGHT = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.9.1/antd.min.js"

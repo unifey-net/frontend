@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import PostJsx from "./post/Post"
-import { Spin, Dropdown, Menu, Alert, Empty } from "antd"
+import { Spin, Dropdown, Menu, Alert, Empty, Button } from "antd"
 import {
     LoadingOutlined,
     DoubleRightOutlined,
@@ -16,7 +16,6 @@ import {
     bumpPage,
     changeSort,
 } from "../../redux/actions/feeds.actions"
-import debug from "../../api/Debug"
 import ButtonText from "../ButtonText"
 
 type Props = {
@@ -33,8 +32,6 @@ export default ({ id, focus, postBox }: Props) => {
     const sort = feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!    
 
     const updateSort = (sort: string) => {
-        debug("Sort has changed to %s", [sort])
-
         dispatch(
             changeSort({ sort, id })
         )
@@ -51,8 +48,6 @@ export default ({ id, focus, postBox }: Props) => {
         )
 
         if (querySort === "new" || querySort === "old" || querySort === "top") {
-            debug("Found sort in query %s", [querySort])
-
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
@@ -66,8 +61,6 @@ export default ({ id, focus, postBox }: Props) => {
      * Load another post.
      */
     const loadMore = async () => {
-        debug(`Loading more posts from ${id} (page: ${feed!!.page}, sort: ${sort})`)
-
         let resp = await getFeedPosts(id, sort, feed!!.page)
 
         switch (resp.status) {
@@ -144,10 +137,10 @@ export default ({ id, focus, postBox }: Props) => {
                             )}
 
                             <Dropdown overlay={menu}>
-                                <a className="cursor-pointer text-gray-100 hover:text-gray-300">
+                                <Button type="link" className="text-gray-100 hover:text-gray-300">
                                     Sort by{" "}
                                     {sort[0].toUpperCase() + sort.substring(1)}
-                                </a>
+                                </Button>
                             </Dropdown>
 
                             <ButtonText onClick={() => dispatch(feedClear(id))}>

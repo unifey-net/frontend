@@ -220,11 +220,14 @@ export default ({ post, vote, author, type, feed }: Props) => {
                             />
 
                             <Dropdown overlay={sortMenu}>
-                                <a className="cursor-pointer text-gray-100 hover:text-gray-300">
+                                <Button
+                                    type="link"
+                                    className="text-gray-100 hover:text-gray-300"
+                                >
                                     Sort by{" "}
                                     {commentSort[0] +
                                         commentSort.substring(1).toLowerCase()}
-                                </a>
+                                </Button>
                             </Dropdown>
                         </div>
 

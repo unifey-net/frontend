@@ -1,7 +1,7 @@
 import React from "react"
 import { Divider } from "antd"
 
-export default () => {
+const Privacy = () => {
     return (
         <div className="mx-20">
             <h1 className="text-4xl">Privacy Policy</h1>
@@ -396,3 +396,5 @@ export default () => {
         </div>
     )
 }
+
+export default Privacy;

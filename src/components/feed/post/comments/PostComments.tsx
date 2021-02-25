@@ -27,7 +27,7 @@ export default function PostComments({
     const [maxPage, setMaxPage] = useState(0)
     const [commentSize, setCommentSize] = useState(0) // the amount of comments the post has
 
-    const loadMore = async (maxPg: number, pg: number) => {
+    const loadMore = useCallback(async (maxPg: number, pg: number) => {
         if (maxPg !== 0 && pg > maxPage) return
 
         let url =
@@ -46,14 +46,14 @@ export default function PostComments({
                 setPage(prev => prev + 1)
                 setMaxPage(pages)
                 setCommentSize(amount)
-                setComments(prev => [...prev, ...comments])   
+                setComments(prev => [...prev, ...comments])
             } else {
                 setMaxPage(0)
             }
         }
 
         setLoaded(true)
-    }
+    }, [comment, feed, id, maxPage, sort])
 
     useEffect(() => {
         if (data == null) {
@@ -69,7 +69,7 @@ export default function PostComments({
 
             setLoaded(true)
         }
-    }, [])
+    }, [data, loadMore])
 
     useEffect(() => {
         if (sort !== initialSort && sort) {
@@ -84,7 +84,7 @@ export default function PostComments({
             setLoaded(false)
             loadMore(0, 1)
         }
-    }, [sort])
+    }, [sort, initialSort, loadMore])
 
     return (
         <>

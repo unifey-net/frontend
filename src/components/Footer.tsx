@@ -1,5 +1,5 @@
 import React from "react"
-import { BASE_URL, VERSION } from "../api/ApiHandler"
+import { VERSION } from "../api/ApiHandler"
 import { Link } from "react-router-dom"
 
 export default (): JSX.Element => {

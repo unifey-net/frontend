@@ -5,7 +5,10 @@ type Props = {
     answer: JSX.Element
 }
 
-export default ({ question, answer }: Props) => {
+/**
+ * A question for the /about page.
+ */
+const Question = ({ question, answer }: Props) => {
     return (
         <div>
             <h1 className="text-lg">{question}</h1>
@@ -13,3 +16,5 @@ export default ({ question, answer }: Props) => {
         </div>
     )
 }
+
+export default Question;

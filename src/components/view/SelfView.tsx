@@ -8,7 +8,7 @@ import {
     themeAuto,
 } from "../../redux/actions/theme.actions"
 import { BulbFilled, BulbOutlined, UserOutlined } from "@ant-design/icons"
-import { isAutoDark } from "../../api/Util"
+import { isAutoDark } from "../../api/util/Util"
 import SubMenu from "antd/lib/menu/SubMenu"
 import { getImageUrl } from "../../api/user/User"
 

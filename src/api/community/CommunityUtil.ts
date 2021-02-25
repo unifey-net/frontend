@@ -2,17 +2,23 @@ import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { getCommunityByName } from "./Community"
 import { postCommunity } from "../../redux/actions/community.actions"
-import { RequestStatus } from "../ApiHandler"
+import Status, { COMPLETE, ERROR, LOADING } from "../util/Status"
 import { Emote } from "../Emotes"
 import { Feed } from "../Feeds"
 import { getNameById } from "../../redux/reducers/community.reducer"
 
+/**
+ * Rules in a community.
+ */
 export type CommunityRule = {
     id: number
     title: string
     body: string
 }
 
+/**
+ * A community.
+ */
 export type Community = {
     id: number
     size: number
@@ -25,6 +31,9 @@ export type Community = {
     rules: CommunityRule[]
 }
 
+/**
+ * The data for a community returned by the API.
+ */
 export type CommunityRequest = {
     selfRole: number
     community: Community
@@ -32,15 +41,18 @@ export type CommunityRequest = {
     feed: Feed
 }
 
+/**
+ * Grab a community and store it in Redux.
+ * 
+ * @param name The name of the community.
+ * @returns The community request and status.
+ */
 export const useCommunity = (
     name: string
-): [CommunityRequest | null, RequestStatus] => {
+): [CommunityRequest | null, Status] => {
     let dispatch = useDispatch()
 
-    let [status, setStatus] = useState({
-        status: 0,
-        message: "This feed hasn't been loaded yet.",
-    })
+    let [status, setStatus] = useState({ status: LOADING } as Status)
 
     let storedCommunity = useSelector((state: any) => state.community[name])
 
@@ -51,17 +63,12 @@ export const useCommunity = (
             if (resp.status === 200) {
                 dispatch(postCommunity(resp.data))
 
-                setStatus(prev => ({
-                    ...prev,
-                    message: "This feed has been loaded.",
-                    status: 1,
-                }))
+                setStatus({ status: COMPLETE })
             } else {
-                setStatus(prev => ({
-                    ...prev,
-                    status: -1,
+                setStatus({
+                    status: ERROR,
                     message: resp.data.payload,
-                }))
+                })
             }
         }
 

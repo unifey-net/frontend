@@ -3,13 +3,13 @@ import React from "react"
 import Feed from "../../../components/feed/Feed"
 import { Empty, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import CommunityStaff from "./CommunityStaff"
+import CommunityStaff from "../../../components/community/CommunityStaff"
 import { useCommunity } from "../../../api/community/CommunityUtil"
-import { COMPLETE, LOADING, ERROR } from "../../../api/ApiHandler"
 import { useCommunityEmotes } from "../../../api/community/useEmotes"
-import DesktopCommunityProfile from "./profile/DesktopCommunityProfile"
-import MobileCommunityProfile from "./profile/MobileCommunityProfile"
-import CommunityProfileRules from "./rules/CommunityProfileRules"
+import DesktopCommunityProfile from "../../../components/community/profile/DesktopCommunityProfile"
+import MobileCommunityProfile from "../../../components/community/profile/MobileCommunityProfile"
+import CommunityProfileRules from "../../../components/community/rules/CommunityProfileRules"
+import { COMPLETE, LOADING, ERROR } from "../../../api/util/Status"
 
 /**
  * A community viewer.

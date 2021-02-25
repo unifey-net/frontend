@@ -2,7 +2,10 @@ import React from "react"
 import { signedIn, logout } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
 
-export default () => {
+/**
+ * The /logout page.
+ */
+const Logout = () => {
     if (!signedIn()) return <Redirect to="/login" />
 
     logout()
@@ -11,3 +14,5 @@ export default () => {
 
     return <Redirect to="/" />
 }
+
+export default Logout;

@@ -2,6 +2,7 @@ import { BASE_URL, API } from "../ApiHandler"
 import { logOut } from "../../redux/actions/auth.actions"
 import store from "../../redux/store"
 import { joinComm, leaveComm } from "../../redux/actions/auth.actions"
+import Status, { COMPLETE, ERROR } from "../util/Status"
 
 export type User = {
     id: number
@@ -142,5 +143,49 @@ export const joinCommunity = async (id: number) => {
         return request
     } else {
         return request
+    }
+}
+
+/**
+ * Send a request to login.
+ *
+ * @param username The inputted username.
+ * @param password The inputted password.
+ * @param captcha The possibly blank captcha.
+ */
+export const login = async (
+    username: string,
+    password: string,
+    captcha: string
+): Promise<[Status, any]> => {
+    const data = new FormData()
+
+    if (process.env.NODE_ENV === "production") {
+        if (captcha === "") {
+            return [
+                { status: ERROR, message: "Please fill out the reCAPTCHA!" },
+                {},
+            ]
+        }
+
+        data.append("captcha", captcha)
+    }
+
+    data.append("username", username)
+    data.append("password", password)
+    data.append("remember", `true`)
+
+    let request = await API.post(`/authenticate`, data)
+
+    if (request.status === 200) {
+        return [
+            { status: COMPLETE },
+            request.data
+        ]
+    } else {
+        return [ 
+            { status: ERROR, message: "There was an issue makign that request!" },
+            { }
+        ]
     }
 }
