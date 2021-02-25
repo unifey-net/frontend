@@ -178,14 +178,14 @@ export const login = async (
     let request = await API.post(`/authenticate`, data)
 
     if (request.status === 200) {
-        return [
-            { status: COMPLETE },
-            request.data
-        ]
+        return [{ status: COMPLETE }, request.data]
     } else {
-        return [ 
-            { status: ERROR, message: "There was an issue makign that request!" },
-            { }
+        return [
+            {
+                status: ERROR,
+                message: "There was an issue makign that request!",
+            },
+            {},
         ]
     }
 }

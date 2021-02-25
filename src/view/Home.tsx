@@ -33,7 +33,7 @@ export default function Home() {
                     </p>
                 </div>
             </div>
-            
+
             <Snake />
         </div>
     )

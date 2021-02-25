@@ -43,7 +43,7 @@ export type CommunityRequest = {
 
 /**
  * Grab a community and store it in Redux.
- * 
+ *
  * @param name The name of the community.
  * @returns The community request and status.
  */

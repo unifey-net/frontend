@@ -11,39 +11,39 @@ import ToastTheme from "../../../api/ToastTheme"
 const { TextArea } = Input
 
 export default (post: Post | CommentObject): [() => void, JSX.Element] => {
-    const [visible, setVisible] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [reason, setReason] = useState("UNIFEY" as "UNIFEY" | "COMMUNITY");
+    const [visible, setVisible] = useState(false)
+    const [confirmLoading, setConfirmLoading] = useState(false)
+    const [error, setError] = useState("")
+    const [reason, setReason] = useState("UNIFEY" as "UNIFEY" | "COMMUNITY")
 
     /**
      * Submit a report.
      */
     const submitReport = async () => {
-        setConfirmLoading(true);
+        setConfirmLoading(true)
 
-        let report = document.getElementById("report-post") as HTMLInputElement;
+        let report = document.getElementById("report-post") as HTMLInputElement
 
         if (report.value === "") {
-            setError("You must include a reason!");
-            setConfirmLoading(false);
-            return;
+            setError("You must include a reason!")
+            setConfirmLoading(false)
+            return
         }
 
-        const type = (post as CommentObject).parent ? "COMMENT" : "POST";
+        const type = (post as CommentObject).parent ? "COMMENT" : "POST"
 
-        let req = await sendReport({ id: post.id, type }, reason, report.value);
+        let req = await sendReport({ id: post.id, type }, reason, report.value)
 
         if (req.status !== 200) {
-            setError(req.data.payload);
-            setConfirmLoading(false);
-            return;
+            setError(req.data.payload)
+            setConfirmLoading(false)
+            return
         }
 
-        setConfirmLoading(false);
-        setVisible(false);
-        toast.success("Successfully reported post.", ToastTheme);
-    };
+        setConfirmLoading(false)
+        setVisible(false)
+        toast.success("Successfully reported post.", ToastTheme)
+    }
 
     const closeReport = () => {
         // i have no idea why this works and without settimeout it doesn't, but at this point I just give up.
@@ -118,4 +118,4 @@ export default (post: Post | CommentObject): [() => void, JSX.Element] => {
     )
 
     return [() => setVisible(true), modal]
-};
+}

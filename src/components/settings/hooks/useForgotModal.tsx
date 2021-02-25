@@ -134,4 +134,4 @@ const useForgotModal = (): [JSX.Element, (verify: string) => void] => {
     ]
 }
 
-export default useForgotModal;
+export default useForgotModal

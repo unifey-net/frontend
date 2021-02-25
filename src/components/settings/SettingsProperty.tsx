@@ -35,4 +35,4 @@ const SettingsProperty = ({ name, input, update }: Props) => {
     )
 }
 
-export default SettingsProperty;
+export default SettingsProperty

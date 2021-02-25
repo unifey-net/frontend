@@ -397,4 +397,4 @@ const Privacy = () => {
     )
 }
 
-export default Privacy;
+export default Privacy

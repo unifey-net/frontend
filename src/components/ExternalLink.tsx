@@ -1,7 +1,7 @@
 import React from "react"
 
 type LinkProps = {
-    link: string,
+    link: string
     children: string
 }
 

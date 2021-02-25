@@ -1,6 +1,6 @@
 /**
  * The status of a web request.
- * 
+ *
  * @param status The status of the request.
  * @param message An optional message that describes the status.
  */
@@ -9,7 +9,7 @@ type Status = {
     message?: string
 }
 
-export default Status;
+export default Status
 
 /**
  * A complete web request.

@@ -42,7 +42,7 @@ export type Feed = {
 
 /**
  * Grab a feed from the API then store it in Redux.
- * 
+ *
  * @param id The ID of the feed.
  * @returns The state of the feed and status.
  */

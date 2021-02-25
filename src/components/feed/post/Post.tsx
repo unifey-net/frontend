@@ -34,7 +34,9 @@ type Props = {
  * A post
  */
 export default ({ post, vote, author, type, feed }: Props) => {
-    const [commentSort, setCommentSort] = useState("TOP" as "TOP" | "OLD" | "NEW")
+    const [commentSort, setCommentSort] = useState(
+        "TOP" as "TOP" | "OLD" | "NEW"
+    )
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
 

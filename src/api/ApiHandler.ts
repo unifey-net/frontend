@@ -6,7 +6,10 @@ import store from "../redux/store"
  *
  * @type {string}
  */
-const BASE_URL: string = process.env.NODE_ENV === "production" ? "https://beta-api.unifey.net" : "http://localhost:8077"
+const BASE_URL: string =
+    process.env.NODE_ENV === "production"
+        ? "https://beta-api.unifey.net"
+        : "http://localhost:8077"
 
 /**
  * The Axios API.
@@ -24,7 +27,7 @@ const API = axios.create({
 })
 
 /**
- * The version, manually kept up to date :( 
+ * The version, manually kept up to date :(
  */
 const VERSION = "Alpha v0.5.0"
 

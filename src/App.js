@@ -49,7 +49,6 @@ export default function App() {
                 <div className="content-container px-8 lg:px-0">
                     <Switch>
                         <Route
-
                             path="/c/:name/moderate"
                             component={ModerateCommunity}
                             exact

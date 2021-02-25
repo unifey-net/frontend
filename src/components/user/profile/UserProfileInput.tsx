@@ -49,7 +49,9 @@ const UserProfileInput = ({
                     <Input
                         ref={input}
                         value={value}
-                        onChange={(inputValue: ChangeEvent<HTMLInputElement>) => {
+                        onChange={(
+                            inputValue: ChangeEvent<HTMLInputElement>
+                        ) => {
                             setValue(inputValue.target.value)
                             setDisabled(
                                 inputValue.target.value.length === 0 ||
@@ -89,4 +91,4 @@ const UserProfileInput = ({
     )
 }
 
-export default UserProfileInput;
+export default UserProfileInput

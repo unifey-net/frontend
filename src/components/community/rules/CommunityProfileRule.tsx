@@ -1,9 +1,6 @@
 import React, { useState } from "react"
 import { Rule } from "./CommunityProfileRules"
-import {
-    CaretDownOutlined,
-    CaretRightOutlined,
-} from "@ant-design/icons"
+import { CaretDownOutlined, CaretRightOutlined } from "@ant-design/icons"
 
 type Props = {
     rule: Rule

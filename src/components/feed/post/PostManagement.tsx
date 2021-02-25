@@ -6,7 +6,7 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined,
     CaretDownFilled,
-    FlagOutlined
+    FlagOutlined,
 } from "@ant-design/icons"
 import {
     Post,

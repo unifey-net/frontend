@@ -28,4 +28,4 @@ const Community = ({ community, index }: Props) => {
     )
 }
 
-export default Community;
+export default Community

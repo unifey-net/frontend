@@ -64,4 +64,4 @@ const UnverifiedWarning = ({ attempts, addAttempt }: Props) => {
     )
 }
 
-export default UnverifiedWarning;
+export default UnverifiedWarning

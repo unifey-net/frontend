@@ -132,4 +132,4 @@ const UserProfile = ({ user }: Props): JSX.Element => {
     )
 }
 
-export default UserProfile;
+export default UserProfile

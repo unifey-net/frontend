@@ -15,27 +15,43 @@ const About = () => {
 
                 <Question
                     question="What is Unifey?"
-                    answer={<p>
-                        Unifey is an open-source social media platform dedicated to free speech and privacy.
-                    </p>}
+                    answer={
+                        <p>
+                            Unifey is an open-source social media platform
+                            dedicated to free speech and privacy.
+                        </p>
+                    }
                 />
 
                 <Question
                     question="Where can I view Unifey's source code?"
-                    answer={<p>
-                        You can view Unifey's source code on our <ExternalLink link="https://github.com/unifey-net">GitHub</ExternalLink>. This contains our frontend as well as our backend's code.
-                    </p>}
+                    answer={
+                        <p>
+                            You can view Unifey's source code on our{" "}
+                            <ExternalLink link="https://github.com/unifey-net">
+                                GitHub
+                            </ExternalLink>
+                            . This contains our frontend as well as our
+                            backend's code.
+                        </p>
+                    }
                 />
 
                 <Question
                     question="If I have an issue or need help where can I find help?"
-                    answer={<p>
-                        We'll quickly respond to your question on our <ExternalLink link="https://unifey.net/discord">Discord</ExternalLink> server.
-                    </p>}
+                    answer={
+                        <p>
+                            We'll quickly respond to your question on our{" "}
+                            <ExternalLink link="https://unifey.net/discord">
+                                Discord
+                            </ExternalLink>{" "}
+                            server.
+                        </p>
+                    }
                 />
             </div>
         </div>
     )
 }
 
-export default About;
+export default About

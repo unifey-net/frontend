@@ -25,7 +25,8 @@ export default function Settings() {
      * Update the username.
      */
     const updateUsername = async () => {
-        let username = (document.getElementById("username") as HTMLInputElement).value
+        let username = (document.getElementById("username") as HTMLInputElement)
+            .value
 
         let form = new FormData()
 
@@ -46,7 +47,8 @@ export default function Settings() {
      * Update the password.
      */
     const updatePassword = async () => {
-        let password = (document.getElementById("password") as HTMLInputElement).value
+        let password = (document.getElementById("password") as HTMLInputElement)
+            .value
 
         let form = new FormData()
 

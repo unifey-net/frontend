@@ -5,11 +5,7 @@ import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import { API } from "../../../../api/ApiHandler"
 import { Alert, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import Status, {
-    LOADING,
-    COMPLETE,
-    ERROR,
-} from "../../../../api/util/Status"
+import Status, { LOADING, COMPLETE, ERROR } from "../../../../api/util/Status"
 
 type Props = {
     community: CommunityRequest

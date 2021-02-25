@@ -15,4 +15,4 @@ const Logout = () => {
     return <Redirect to="/" />
 }
 
-export default Logout;
+export default Logout

@@ -17,9 +17,11 @@ export default function PostComments({
     feed,
     data,
     comment,
-    sort
+    sort,
 }: Props): JSX.Element {
-    const [initialSort, setInitialSort] = useState((sort ? sort : "NEW") as "TOP" | "OLD" | "NEW")
+    const [initialSort, setInitialSort] = useState(
+        (sort ? sort : "NEW") as "TOP" | "OLD" | "NEW"
+    )
     const [comments, setComments] = useState([] as any[])
     const [loaded, setLoaded] = useState(false)
 
@@ -27,33 +29,36 @@ export default function PostComments({
     const [maxPage, setMaxPage] = useState(0)
     const [commentSize, setCommentSize] = useState(0) // the amount of comments the post has
 
-    const loadMore = useCallback(async (maxPg: number, pg: number) => {
-        if (maxPg !== 0 && pg > maxPage) return
+    const loadMore = useCallback(
+        async (maxPg: number, pg: number) => {
+            if (maxPg !== 0 && pg > maxPage) return
 
-        let url =
-            typeof comment == undefined
-                ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${pg}`
-                : `/feeds/${feed}/post/${id}/comments?page=${pg}&sort=${
-                      sort ? sort : "NEW"
-                  }`
+            let url =
+                typeof comment == undefined
+                    ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${pg}`
+                    : `/feeds/${feed}/post/${id}/comments?page=${pg}&sort=${
+                          sort ? sort : "NEW"
+                      }`
 
-        let req = await API.get(url)
+            let req = await API.get(url)
 
-        if (req.status === 200) {
-            const { pages, amount, comments } = req.data
+            if (req.status === 200) {
+                const { pages, amount, comments } = req.data
 
-            if (pages !== 0) {
-                setPage(prev => prev + 1)
-                setMaxPage(pages)
-                setCommentSize(amount)
-                setComments(prev => [...prev, ...comments])
-            } else {
-                setMaxPage(0)
+                if (pages !== 0) {
+                    setPage(prev => prev + 1)
+                    setMaxPage(pages)
+                    setCommentSize(amount)
+                    setComments(prev => [...prev, ...comments])
+                } else {
+                    setMaxPage(0)
+                }
             }
-        }
 
-        setLoaded(true)
-    }, [comment, feed, id, maxPage, sort])
+            setLoaded(true)
+        },
+        [comment, feed, id, maxPage, sort]
+    )
 
     useEffect(() => {
         if (data == null) {
@@ -75,7 +80,7 @@ export default function PostComments({
         if (sort !== initialSort && sort) {
             console.log("updating sort")
             setInitialSort(sort)
-            
+
             setPage(1)
             setMaxPage(0)
             setCommentSize(0)
@@ -106,7 +111,10 @@ export default function PostComments({
                     ))}
 
                     {commentSize > comments.length && (
-                        <Button type="link" onClick={() => loadMore(maxPage, page + 1)}>
+                        <Button
+                            type="link"
+                            onClick={() => loadMore(maxPage, page + 1)}
+                        >
                             {commentSize - comments.length} more
                         </Button>
                     )}

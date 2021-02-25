@@ -9,7 +9,7 @@ import PageHeader from "../../../components/PageHeader"
 
 /**
  * The /communities page.
- * 
+ *
  * Lists the top 10 communities. Page is still subject to change.
  */
 const Communities = () => {
@@ -70,4 +70,4 @@ const Communities = () => {
     )
 }
 
-export default Communities;
+export default Communities

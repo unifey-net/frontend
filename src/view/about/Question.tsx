@@ -17,4 +17,4 @@ const Question = ({ question, answer }: Props) => {
     )
 }
 
-export default Question;
+export default Question

@@ -121,7 +121,12 @@ export default ({ rule, community, index, update }: Props) => {
                     {!manage && <p>{body}</p>}
 
                     {manage && (
-                        <Input size="small" className="-py-4" ref={bodyRef} defaultValue={body} />
+                        <Input
+                            size="small"
+                            className="-py-4"
+                            ref={bodyRef}
+                            defaultValue={body}
+                        />
                     )}
                 </div>
 

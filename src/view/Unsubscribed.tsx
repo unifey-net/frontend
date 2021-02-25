@@ -16,4 +16,4 @@ const Unsubscribed = () => {
     )
 }
 
-export default Unsubscribed;
+export default Unsubscribed

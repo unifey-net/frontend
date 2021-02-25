@@ -27,7 +27,11 @@ export default () => {
     const loginForm = async (values: Store) => {
         setLoading(true)
 
-        const [status, data] = await login(values.username, values.password, captcha)
+        const [status, data] = await login(
+            values.username,
+            values.password,
+            captcha
+        )
 
         if (status.status === COMPLETE) {
             const { user, token } = data

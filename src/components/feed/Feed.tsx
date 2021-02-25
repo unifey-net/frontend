@@ -1,10 +1,7 @@
 import React, { useEffect } from "react"
 import PostJsx from "./post/Post"
 import { Spin, Dropdown, Menu, Alert, Empty, Button } from "antd"
-import {
-    LoadingOutlined,
-    DoubleRightOutlined,
-} from "@ant-design/icons"
+import { LoadingOutlined, DoubleRightOutlined } from "@ant-design/icons"
 import InfiniteScroll from "react-infinite-scroller"
 import PostBox from "./PostBox"
 import { getFeedPosts, useFeed } from "../../api/Feeds"
@@ -29,12 +26,11 @@ export default ({ id, focus, postBox }: Props) => {
 
     let [feed, status] = useFeed(id)
 
-    const sort = feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!    
+    const sort =
+        feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!
 
     const updateSort = (sort: string) => {
-        dispatch(
-            changeSort({ sort, id })
-        )
+        dispatch(changeSort({ sort, id }))
 
         dispatch(feedClear(id))
     }
@@ -137,7 +133,10 @@ export default ({ id, focus, postBox }: Props) => {
                             )}
 
                             <Dropdown overlay={menu}>
-                                <Button type="link" className="text-gray-100 hover:text-gray-300">
+                                <Button
+                                    type="link"
+                                    className="text-gray-100 hover:text-gray-300"
+                                >
                                     Sort by{" "}
                                     {sort[0].toUpperCase() + sort.substring(1)}
                                 </Button>

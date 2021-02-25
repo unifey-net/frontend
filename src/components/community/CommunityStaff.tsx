@@ -116,4 +116,4 @@ const CommunityStaff = ({ id }: Props) => {
     )
 }
 
-export default CommunityStaff;
+export default CommunityStaff
