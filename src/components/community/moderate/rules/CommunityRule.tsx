@@ -4,7 +4,7 @@ import { Input, message } from "antd"
 import { Rule } from "./CommunityRules"
 import { removeRule } from "../../../../redux/actions/community.actions"
 import { API } from "../../../../api/ApiHandler"
-import ButtonText from "../../../ButtonText"
+import LinkButton from "../../../LinkButton"
 
 type Props = {
     rule: Rule
@@ -131,16 +131,16 @@ export default ({ rule, community, index, update }: Props) => {
                 </div>
 
                 <div className={`flex flex-row gap-2`}>
-                    <ButtonText onClick={() => setManage(prev => !prev)}>
+                    <LinkButton onClick={() => setManage(prev => !prev)}>
                         Edit
-                    </ButtonText>
+                    </LinkButton>
 
-                    <ButtonText onClick={deleteRule}>Delete</ButtonText>
+                    <LinkButton onClick={deleteRule}>Delete</LinkButton>
 
                     {manage && (
-                        <ButtonText onClick={save} loading={loading}>
+                        <LinkButton onClick={save} loading={loading}>
                             Save
-                        </ButtonText>
+                        </LinkButton>
                     )}
                 </div>
             </div>

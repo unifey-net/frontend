@@ -27,8 +27,9 @@ h6 {
 p,
 a,
 span,
+button,
 label {
-    font-family: $default-font;
+    font-family: $default-font !important;
 }
 
 a:hover {

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import PostJsx from "./post/Post"
-import { Spin, Dropdown, Menu, Alert, Empty, Button } from "antd"
-import { LoadingOutlined, DoubleRightOutlined } from "@ant-design/icons"
+import { Spin, Alert, Empty } from "antd"
+import { LoadingOutlined, } from "@ant-design/icons"
 import InfiniteScroll from "react-infinite-scroller"
 import PostBox from "./PostBox"
 import { getFeedPosts, useFeed } from "../../api/Feeds"
@@ -13,7 +13,8 @@ import {
     bumpPage,
     changeSort,
 } from "../../redux/actions/feeds.actions"
-import ButtonText from "../ButtonText"
+import LinkButton from "../LinkButton"
+import useSortChanger from "./SortChanger"
 
 type Props = {
     id: string
@@ -26,14 +27,7 @@ export default ({ id, focus, postBox }: Props) => {
 
     let [feed, status] = useFeed(id)
 
-    const sort =
-        feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!
-
-    const updateSort = (sort: string) => {
-        dispatch(changeSort({ sort, id }))
-
-        dispatch(feedClear(id))
-    }
+    const [sort, button] = useSortChanger("NEW", id)
 
     /**
      * Handle sorting.
@@ -88,23 +82,6 @@ export default ({ id, focus, postBox }: Props) => {
         }
     }
 
-    /**
-     * The sort menu management.
-     */
-    const menu = (
-        <Menu>
-            <Menu.Item onClick={() => updateSort("old")}>
-                <span>{sort === "new" && <DoubleRightOutlined />} New</span>
-            </Menu.Item>
-            <Menu.Item onClick={() => updateSort("old")}>
-                <span>{sort === "old" && <DoubleRightOutlined />} Old</span>
-            </Menu.Item>
-            <Menu.Item onClick={() => updateSort("top")}>
-                <span>{sort === "top" && <DoubleRightOutlined />} Top</span>
-            </Menu.Item>
-        </Menu>
-    )
-
     return (
         <div>
             {status.status === -1 && (
@@ -132,19 +109,11 @@ export default ({ id, focus, postBox }: Props) => {
                                 />
                             )}
 
-                            <Dropdown overlay={menu}>
-                                <Button
-                                    type="link"
-                                    className="text-gray-100 hover:text-gray-300"
-                                >
-                                    Sort by{" "}
-                                    {sort[0].toUpperCase() + sort.substring(1)}
-                                </Button>
-                            </Dropdown>
+                            {button}
 
-                            <ButtonText onClick={() => dispatch(feedClear(id))}>
+                            <LinkButton onClick={() => dispatch(feedClear(id))}>
                                 Reload
-                            </ButtonText>
+                            </LinkButton>
                         </div>
                     )}
 

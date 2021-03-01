@@ -21,6 +21,7 @@ import { stopEditing } from "../../../redux/actions/editor.actions"
 import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
 import { DoubleRightOutlined } from "@ant-design/icons"
+import LinkButton from "../../LinkButton"
 
 type Props = {
     post: Post
@@ -222,14 +223,11 @@ export default ({ post, vote, author, type, feed }: Props) => {
                             />
 
                             <Dropdown overlay={sortMenu}>
-                                <Button
-                                    type="link"
-                                    className="text-gray-100 hover:text-gray-300"
-                                >
+                                <LinkButton>
                                     Sort by{" "}
                                     {commentSort[0] +
                                         commentSort.substring(1).toLowerCase()}
-                                </Button>
+                                </LinkButton>
                             </Dropdown>
                         </div>
 
