@@ -7,7 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons"
 type Props = {
     id: number
     feed: string
-    sort?: "TOP" | "OLD" | "NEW"
+    sort?: "NEW" | "TOP" | "OLD"
     data?: any
     comment?: number
 }
@@ -20,7 +20,7 @@ export default function PostComments({
     sort,
 }: Props): JSX.Element {
     const [initialSort, setInitialSort] = useState(
-        (sort ? sort : "NEW") as "TOP" | "OLD" | "NEW"
+        (sort ? sort : "NEW") as "NEW" | "TOP" | "OLD"
     )
     const [comments, setComments] = useState([] as any[])
     const [loaded, setLoaded] = useState(false)

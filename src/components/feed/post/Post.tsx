@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { message, Button, Input, Menu, Dropdown } from "antd"
+import { message, Button, Input } from "antd"
 import { useDispatch } from "react-redux"
 import PostComments from "./comments/PostComments"
 import PostVote from "./PostVote"
@@ -20,8 +20,7 @@ import PostManagement from "./PostManagement"
 import { stopEditing } from "../../../redux/actions/editor.actions"
 import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
-import { DoubleRightOutlined } from "@ant-design/icons"
-import LinkButton from "../../LinkButton"
+import useSortChanger from "../SortChanger"
 
 type Props = {
     post: Post
@@ -35,39 +34,14 @@ type Props = {
  * A post
  */
 export default ({ post, vote, author, type, feed }: Props) => {
-    const [commentSort, setCommentSort] = useState(
-        "TOP" as "TOP" | "OLD" | "NEW"
-    )
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
-
-    const sortMenu = (
-        <Menu>
-            <Menu.Item onClick={() => updateSort("NEW")}>
-                <span>
-                    {commentSort === "NEW" && <DoubleRightOutlined />} New
-                </span>
-            </Menu.Item>
-            <Menu.Item onClick={() => updateSort("OLD")}>
-                <span>
-                    {commentSort === "OLD" && <DoubleRightOutlined />} Old
-                </span>
-            </Menu.Item>
-            <Menu.Item onClick={() => updateSort("TOP")}>
-                <span>
-                    {commentSort === "TOP" && <DoubleRightOutlined />} Top
-                </span>
-            </Menu.Item>
-        </Menu>
-    )
-
-    const updateSort = (sort: "TOP" | "OLD" | "NEW") => {
-        setCommentSort(sort)
-    }
 
     let emotes = useEmotes()
     const editing = useEditingStatus(post.id)
     const dispatch = useDispatch()
+
+    const [sort, button] = useSortChanger("TOP")
 
     /**
      * Complete editing.
@@ -222,19 +196,13 @@ export default ({ post, vote, author, type, feed }: Props) => {
                                 feed={post.feed}
                             />
 
-                            <Dropdown overlay={sortMenu}>
-                                <LinkButton>
-                                    Sort by{" "}
-                                    {commentSort[0] +
-                                        commentSort.substring(1).toLowerCase()}
-                                </LinkButton>
-                            </Dropdown>
+                            {button}
                         </div>
 
                         <PostComments
                             feed={post.feed}
                             id={post.id}
-                            sort={commentSort}
+                            sort={sort}
                             data={null}
                         />
                     </>

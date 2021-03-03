@@ -1,7 +1,5 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { changeSort, feedClear } from "../../redux/actions/feeds.actions"
 import LinkButton from "../LinkButton"
 
 type SortChangerProps = {
@@ -23,26 +21,31 @@ export const SortChanger: React.FC<SortChangerProps> = ({ onChange, sort }) => {
 /**
  * Handles the sort changing. (for feeds)
  */
-const useSortChanger = (defaultSort: "NEW" | "TOP" | "OLD", id: string): [string, JSX.Element] => {
+const useSortChanger = (
+    defaultSort: "NEW" | "TOP" | "OLD",
+    onSortChange?: (newSort: string) => void
+): ["NEW" | "TOP" | "OLD", JSX.Element] => {
     const [sort, setSort] = useState(defaultSort)
-    const dispatch = useDispatch()
+    const [prevSort, setPrevSort] = useState(defaultSort)
 
     useEffect(() => {
-        dispatch(changeSort({ sort, id }))
-        dispatch(feedClear(id))
-    }, [sort, dispatch, id])
+        setPrevSort(sort)
+        if (onSortChange && prevSort !== sort) {
+            onSortChange(sort)
+        }
+    }, [sort, onSortChange, prevSort])
 
     const onChange = () => {
         switch (sort) {
             case "NEW":
                 setSort("OLD")
-                break;
+                break
             case "OLD":
                 setSort("TOP")
-                break;
+                break
             case "TOP":
                 setSort("NEW")
-                break;
+                break
         }
     }
 

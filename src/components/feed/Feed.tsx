@@ -1,8 +1,7 @@
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import PostJsx from "./post/Post"
 import { Spin, Alert, Empty } from "antd"
 import { LoadingOutlined, } from "@ant-design/icons"
-import InfiniteScroll from "react-infinite-scroller"
 import PostBox from "./PostBox"
 import { getFeedPosts, useFeed } from "../../api/Feeds"
 import FocusedPost from "./post/FocusedPost"
@@ -15,6 +14,7 @@ import {
 } from "../../redux/actions/feeds.actions"
 import LinkButton from "../LinkButton"
 import useSortChanger from "./SortChanger"
+import InfiniteScroll from "react-infinite-scroll-component"
 
 type Props = {
     id: string
@@ -27,17 +27,20 @@ export default ({ id, focus, postBox }: Props) => {
 
     let [feed, status] = useFeed(id)
 
-    const [sort, button] = useSortChanger("NEW", id)
+    const [sort, button] = useSortChanger("NEW", sort => {
+        dispatch(changeSort({ sort, id }))
+        dispatch(feedClear(id))
+    })
 
     /**
-     * Handle sorting.
-     */
+    //  * Handle sorting.
+    //  */
     useEffect(() => {
         let querySort = new URL(window.location.toString()).searchParams.get(
             "sort"
         )
 
-        if (querySort === "new" || querySort === "old" || querySort === "top") {
+        if ((querySort === "NEW" || querySort === "OLD" || querySort === "TOP") && querySort !== sort) {
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
@@ -45,18 +48,23 @@ export default ({ id, focus, postBox }: Props) => {
                 })
             )
         }
-    }, [dispatch, id])
+    }, [dispatch, id, sort])
 
     /**
      * Load another post.
      */
-    const loadMore = async () => {
+    const loadMore = useCallback(async () => {
+        let pageCount = feed?.feed.pageCount !== undefined ? feed?.feed.pageCount : 0;
+        let currentPage = feed?.page !== undefined ? feed?.page : 0;
+
+        if (pageCount === 0 || currentPage === 0 || currentPage > pageCount)
+            return
+
         let resp = await getFeedPosts(id, sort, feed!!.page)
+        dispatch(bumpPage(id))
 
         switch (resp.status) {
             case 200: {
-                dispatch(bumpPage(id))
-
                 let posts = resp.data.posts
 
                 dispatch(
@@ -80,7 +88,14 @@ export default ({ id, focus, postBox }: Props) => {
                 break
             }
         }
-    }
+    }, [dispatch, feed, id, sort])
+
+    useEffect(() => {
+        // if feed grab is successful, start init load
+        if (status.status === 1) {
+            loadMore()
+        }
+    }, [status, loadMore])
 
     return (
         <div>
@@ -132,7 +147,8 @@ export default ({ id, focus, postBox }: Props) => {
 
                             {!focus && (
                                 <InfiniteScroll
-                                    loadMore={loadMore}
+                                    dataLength={feed.posts.length}
+                                    next={() => loadMore()}
                                     hasMore={feed.feed.pageCount >= feed.page}
                                     loader={
                                         <Spin

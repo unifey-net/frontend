@@ -48,6 +48,7 @@ export default ({ community }: Props) => {
                                 <CommunityRule
                                     rule={{ title, body, id }}
                                     index={index}
+                                    key={index}
                                 />
                             )
                         })}
