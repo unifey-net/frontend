@@ -74,6 +74,8 @@ export const useCommunity = (
 
         if (storedCommunity === undefined) {
             grabCommunity()
+        } else {
+            setStatus({ status: COMPLETE }) // previously been loaded (already in redux)
         }
     }, [name, dispatch, storedCommunity])
 

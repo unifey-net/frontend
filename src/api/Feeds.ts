@@ -5,6 +5,7 @@ import { FeedState } from "../redux/reducers/feeds.reducer"
 import { postFeed } from "../redux/actions/feeds.actions"
 import { User } from "./user/User"
 import Vote from "./user/Vote"
+import Status, { COMPLETE, ERROR, LOADING } from "./util/Status"
 
 /**
  * A post.
@@ -50,9 +51,8 @@ export const useFeed = (id: string): [FeedState | null, any] => {
     let dispatch = useDispatch()
 
     let [status, setStatus] = useState({
-        status: 0,
-        message: "This feed hasn't been loaded yet.",
-    })
+        status: LOADING,
+    } as Status)
 
     let storedFeed = useSelector((state: any) => state.feeds[id])
 
@@ -63,21 +63,21 @@ export const useFeed = (id: string): [FeedState | null, any] => {
             if (resp.status === 200) {
                 dispatch(postFeed({ feed: resp.data as Feed }))
 
-                setStatus(prev => ({
-                    ...prev,
-                    status: 1,
-                }))
+                setStatus({
+                    status: COMPLETE,
+                })
             } else {
-                setStatus(prev => ({
-                    ...prev,
-                    status: -1,
+                setStatus({
+                    status: ERROR,
                     message: resp.data.payload,
-                }))
+                })
             }
         }
 
         if (storedFeed === undefined) {
             grabFeed()
+        } else {
+            setStatus({ status: COMPLETE }) // already loaded in redux
         }
     }, [id, dispatch, storedFeed])
 

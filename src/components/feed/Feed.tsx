@@ -15,6 +15,7 @@ import {
 import LinkButton from "../LinkButton"
 import useSortChanger from "./SortChanger"
 import InfiniteScroll from "react-infinite-scroll-component"
+import { COMPLETE, ERROR, LOADING } from "../../api/util/Status"
 
 type Props = {
     id: string
@@ -99,39 +100,43 @@ export default ({ id, focus, postBox }: Props) => {
 
     return (
         <div>
-            {status.status === -1 && (
+            {!focus && (
+                <div className="flex flex-row justify-evenly accent mb-2 rounded p-2 gap-8">
+                    {postBox && (
+                        <PostBox
+                            feed={id}
+                            action={() => {
+                                dispatch(feedClear(id))
+                                loadMore()
+                            }}
+                        />
+                    )}
+
+                    {button}
+
+                    <LinkButton onClick={() => dispatch(feedClear(id))}>
+                        Reload
+                    </LinkButton>
+                </div>
+            )}
+
+            {status.status === ERROR && (
                 <Alert
-                    message="There was an issue with this feed."
+                    message="There was an issue loading this feed."
                     description={status.message}
                     type="error"
                     showIcon
                 />
             )}
 
-            {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
+            {status.status === LOADING && (
+                <div className="flex flex-rows justify-center items-center">
+                    <Spin indicator={<LoadingOutlined />} />
+                </div>
+            )}
 
-            {feed !== null && feed.feed !== undefined && (
+            {feed !== null && feed.feed !== undefined && status.status === COMPLETE && (
                 <>
-                    {!focus && (
-                        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2 gap-8">
-                            {postBox && (
-                                <PostBox
-                                    feed={id}
-                                    action={() => {
-                                        dispatch(feedClear(id))
-                                        loadMore()
-                                    }}
-                                />
-                            )}
-
-                            {button}
-
-                            <LinkButton onClick={() => dispatch(feedClear(id))}>
-                                Reload
-                            </LinkButton>
-                        </div>
-                    )}
-
                     {feed.feed.postCount === 0 && (
                         <Empty
                             style={{ minWidth: "200px" }}
@@ -141,7 +146,7 @@ export default ({ id, focus, postBox }: Props) => {
                         />
                     )}
 
-                    {status.status === 1 && feed.feed.postCount !== 0 && (
+                    {feed.feed.postCount !== 0 && (
                         <>
                             {focus && <FocusedPost feed={id} id={focus} />}
 
@@ -151,10 +156,12 @@ export default ({ id, focus, postBox }: Props) => {
                                     next={() => loadMore()}
                                     hasMore={feed.feed.pageCount >= feed.page}
                                     loader={
-                                        <Spin
-                                            key={0}
-                                            indicator={<LoadingOutlined />}
-                                        />
+                                        <div className="flex flex-row justify-center align-center">
+                                            <Spin
+                                                key={0}
+                                                indicator={<LoadingOutlined />}
+                                            />
+                                        </div>
                                     }
                                 >
                                     <ul className="feed-container">
