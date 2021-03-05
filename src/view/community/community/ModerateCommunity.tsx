@@ -33,28 +33,27 @@ export default () => {
                         {community.community.name}
                     </h1>
 
-                    <div
-                        className=""
-                        style={{ marginLeft: "32rem", marginRight: "32rem" }}
-                    >
-                        <Tabs
-                            activeKey={activeTab}
-                            onChange={tab => setActiveTab(tab)}
-                            tabPosition="left"
-                        >
-                            <TabPane tab="General Settings" key="1">
-                                <GeneralSettings community={community!!} />
-                            </TabPane>
-                            <TabPane tab="Reports" key="2">
-                                <CommunityReports community={community!!} />
-                            </TabPane>
-                            <TabPane tab="Roles" key="3">
-                                <CommunityRoles community={community!!} />
-                            </TabPane>
-                            <TabPane tab="Rules" key="4">
-                                <CommunityRules community={community!!} />
-                            </TabPane>
-                        </Tabs>
+                    <div className="flex items-center flex-col justify-center">
+                        <div className="max-w-sm md:max-w-md lg:max-w-6xl variable-min-w">
+                            <Tabs
+                                activeKey={activeTab}
+                                onChange={tab => setActiveTab(tab)}
+                                tabPosition="left"
+                            >
+                                <TabPane tab="General Settings" key="1">
+                                    <GeneralSettings community={community!!} />
+                                </TabPane>
+                                <TabPane tab="Reports" key="2">
+                                    <CommunityReports community={community!!} />
+                                </TabPane>
+                                <TabPane tab="Roles" key="3">
+                                    <CommunityRoles community={community!!} />
+                                </TabPane>
+                                <TabPane tab="Rules" key="4">
+                                    <CommunityRules community={community!!} />
+                                </TabPane>
+                            </Tabs>
+                        </div>
                     </div>
                 </>
             )}
