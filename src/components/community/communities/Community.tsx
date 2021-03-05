@@ -16,7 +16,9 @@ const Community = ({ community, index }: Props) => {
             {index !== undefined && (
                 <div className="flex flex-col gap-2 min-w-lg">
                     <span className="text-gray-600 text-sm">
-                        #{index + 1} <br /> {community.size} Members
+                        #{index + 1}
+                        <br />
+                        <span className="text-xs">{community.size} Members</span>
                     </span>
                 </div>
             )}
