@@ -10,7 +10,7 @@ type Props = {
     action: any
 }
 
-export default ({ feed, action }: Props): JSX.Element => {
+const PostBox: React.FC<Props> = ({ feed, action }) => {
     let [visible, setVisible] = useState(false)
     let [loading, setLoading] = useState(false)
 
@@ -93,3 +93,5 @@ export default ({ feed, action }: Props): JSX.Element => {
         </div>
     )
 }
+
+export default PostBox;

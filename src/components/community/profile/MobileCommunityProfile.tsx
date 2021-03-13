@@ -11,11 +11,10 @@ import {
 } from "../../../redux/actions/editor.actions"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
 
-type Props = {
-    community: CommunityRequest
-}
-
-export default ({ community }: Props) => {
+/**
+ * A community profile for mobile.
+ */
+const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ community }) => {
     const dispatch = useDispatch()
     const editing = useEditCommunity(community.community.id)
 
@@ -76,3 +75,5 @@ export default ({ community }: Props) => {
         </div>
     )
 }
+
+export default MobileCommunityProfile;

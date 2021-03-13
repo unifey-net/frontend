@@ -3,7 +3,7 @@ import { Form, Modal, Alert } from "antd"
 import { useState } from "react"
 import { Store } from "antd/lib/form/interface"
 
-export default (
+const useInputModal = (
     callback: (store: Store) => Promise<string>,
     items: JSX.Element[]
 ): [JSX.Element, () => void] => {
@@ -53,3 +53,5 @@ export default (
         () => setVisible(prev => !prev),
     ]
 }
+
+export default useInputModal;

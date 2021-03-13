@@ -13,7 +13,7 @@ type Props = {
     postType?: string
 }
 
-export default ({ vote, post, postType }: Props): JSX.Element => {
+const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
     let [number, setNumber] = useState(post.upvotes - post.downvotes)
 
     let [hasDownVoted, setDownVoted] = useState(false)
@@ -132,3 +132,5 @@ export default ({ vote, post, postType }: Props): JSX.Element => {
         </div>
     )
 }
+
+export default PostVote;

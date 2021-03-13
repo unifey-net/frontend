@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { getCommunityById } from "../../api/community/Community"
 import Community from "../community/communities/Community"
+import CustomFeed from "../feed/CustomFeed"
 
 const LoggedInHome: React.FC = () => {
     const [communities, setCommunities] = useState([] as any[])
@@ -30,13 +31,14 @@ const LoggedInHome: React.FC = () => {
             <h1 className="text-4xl">Welcome back, {name}.</h1>
             <p>You have no new notifications.</p>
 
-            <div>
-                <p>
-                    This is where a personalized feed would go, if that actually
-                    existed.
-                </p>
-                <div className="flex flex-col">
-                    {communities.map(community => <Community community={community} />)}
+            <div className="flex justify-evenly flex-row gap-8">
+                <CustomFeed url={"/feeds/self"} />
+                <div className="">
+                    <div className="accent mb-2 rounded">
+                        {communities.map(community => (
+                            <Community community={community} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,14 +4,10 @@ import { API } from "../../api/ApiHandler"
 import { Spin, Alert } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 
-type Props = {
-    id: number
-}
-
 /**
  * A communities staff members. This appears as a section of the far right sidebar.
  */
-const CommunityStaff = ({ id }: Props) => {
+const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
     let [staff, setStaff] = useState([] as any[])
     let [status, setStatus] = useState({
         status: 0,

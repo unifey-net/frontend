@@ -2,9 +2,9 @@ import React, { useState } from "react"
 import UserView from "../../../view/UserView"
 import { Dropdown, Menu } from "antd"
 import { getRoleName, UserRole } from "../../../../api/community/Roles"
-import { API } from "../../../../api/ApiHandler"
 import toast from "react-hot-toast"
 import ToastTheme from "../../../../api/ToastTheme"
+import { updateUserRole } from "../../../../api/community/Community"
 
 type Props = {
     index: number
@@ -13,21 +13,16 @@ type Props = {
     community: number
 }
 
-export default ({ index, userRole, selfRole, community }: Props) => {
+/**
+ * A community role.
+ */
+const CommunityRole: React.FC<Props> = ({ index, userRole, selfRole, community }) => {
     const { name, id } = userRole
 
     const [role, setRole] = useState(userRole.role)
 
     const updateRole = async (role: number) => {
-        let formData = new FormData()
-
-        formData.append("target", `${id}`)
-        formData.append("role", `${role}`)
-
-        const request = await API.post(
-            `/community/${community}/roles`,
-            formData
-        )
+        const request = await updateUserRole(community, id, role)
 
         if (request.status === 200) {
             setRole(role)
@@ -81,3 +76,5 @@ export default ({ index, userRole, selfRole, community }: Props) => {
         </div>
     )
 }
+
+export default CommunityRole

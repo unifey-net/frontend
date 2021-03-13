@@ -12,7 +12,7 @@ import { isAutoDark } from "../../api/util/Util"
 import SubMenu from "antd/lib/menu/SubMenu"
 import { getImageUrl } from "../../api/user/User"
 
-export default () => {
+const SelfView: React.FC = () => {
     let dispatch = useDispatch()
 
     let theme = useSelector((store: any) => store.theme)
@@ -89,3 +89,5 @@ export default () => {
         </div>
     )
 }
+
+export default SelfView

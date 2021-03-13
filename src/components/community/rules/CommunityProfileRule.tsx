@@ -10,7 +10,7 @@ type Props = {
 /**
  * An individual rule for a community.
  */
-export default ({ rule, index }: Props) => {
+const CommunityProfileRule: React.FC<Props> = ({ rule, index }) => {
     const [extended, setExtended] = useState(false)
 
     /**
@@ -45,3 +45,5 @@ export default ({ rule, index }: Props) => {
         </li>
     )
 }
+
+export default CommunityProfileRule

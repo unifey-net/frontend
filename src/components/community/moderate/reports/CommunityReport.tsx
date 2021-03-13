@@ -12,15 +12,16 @@ type Props = {
     community: CommunityRequest
 }
 
-export default ({ index, reportRequest, community }: Props) => {
+/**
+ * A community report.
+ */
+const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: Props) => {
     const { report, data } = reportRequest
 
     const [extended, setExtended] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
 
     const [deleted, setDeleted] = useState(false)
-
-    const extend = () => setExtended(prev => !prev)
 
     /**
      * Delete a report.
@@ -44,9 +45,9 @@ export default ({ index, reportRequest, community }: Props) => {
     }
 
     const caret = extended ? (
-        <CaretRightFilled onClick={extend} />
+        <CaretRightFilled onClick={() => setExtended(prev => !prev)} />
     ) : (
-        <CaretDownFilled onClick={extend} />
+        <CaretDownFilled onClick={() => setExtended(prev => !prev)} />
     )
 
     return (
@@ -91,3 +92,5 @@ export default ({ index, reportRequest, community }: Props) => {
         </div>
     )
 }
+
+export default CommunityReport;

@@ -13,12 +13,10 @@ import { stopEditing } from "../../../../redux/actions/editor.actions"
 import { parseBody } from "../../../../api/Emotes"
 import useEmotes from "../../../../api/community/useEmotes"
 
-type Props = {
-    comment: any
-    children: any
-}
-
-export default ({ comment, children }: Props): JSX.Element => {
+/**
+ * Post comments.
+ */
+const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
     const [content, setContent] = useState(comment.comment.content)
     const post = useSelector((state: any) => state.post)
     const dispatch = useDispatch()
@@ -123,3 +121,5 @@ export default ({ comment, children }: Props): JSX.Element => {
         </Comment>
     )
 }
+
+export default PostComment

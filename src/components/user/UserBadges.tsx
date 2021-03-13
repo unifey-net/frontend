@@ -1,11 +1,7 @@
 import React from "react"
 import { Tooltip } from "antd"
 
-type Props = {
-    badges: any
-}
-
-export default ({ badges }: Props) => {
+const UserBadges: React.FC<{ badges: any }> = ({ badges }) => {
     if (badges.length === 0) return <></>
 
     return (
@@ -25,3 +21,5 @@ export default ({ badges }: Props) => {
         </div>
     )
 }
+
+export default UserBadges

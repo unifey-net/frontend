@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react"
 import CommunityReport from "./CommunityReport"
 import { ReportRequest } from "../../../../api/Reports"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
-import { API } from "../../../../api/ApiHandler"
 import { Alert, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import Status, { LOADING, COMPLETE, ERROR } from "../../../../api/util/Status"
+import { getCommunityReports} from "../../../../api/Reports"
 
 type Props = {
     community: CommunityRequest
 }
 
-export default ({ community }: Props) => {
+/**
+ * A communities reports.
+ */
+const CommunityReports: React.FC<Props> = ({ community }) => {
     const [reports, setReports] = useState([] as ReportRequest[])
     const [status, setStatus] = useState({
         message: "",
@@ -20,7 +23,7 @@ export default ({ community }: Props) => {
 
     useEffect(() => {
         const loadReports = async () => {
-            let request = await API.get(`/report/cf_${community.community.id}`)
+            let request = await getCommunityReports(community.community.id)
 
             if (request.status !== 200) {
                 setStatus({ message: request.data.payload, status: ERROR })
@@ -76,3 +79,5 @@ export default ({ community }: Props) => {
         </>
     )
 }
+
+export default CommunityReports

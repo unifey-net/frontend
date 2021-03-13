@@ -12,13 +12,7 @@ type Props = {
     comment?: number
 }
 
-export default function PostComments({
-    id,
-    feed,
-    data,
-    comment,
-    sort,
-}: Props): JSX.Element {
+const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
     const [initialSort, setInitialSort] = useState(
         (sort ? sort : "NEW") as "NEW" | "TOP" | "OLD"
     )
@@ -123,3 +117,5 @@ export default function PostComments({
         </>
     )
 }
+
+export default PostComments

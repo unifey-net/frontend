@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react"
 import CommunityRole from "./CommunityRole"
-import { API } from "../../../../api/ApiHandler"
 import { UserRole } from "../../../../api/community/Roles"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import { Alert, Button, Spin } from "antd"
 import { LoadingOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import useSetRoleModal from "./setRole/useSetRoleModal"
 import Status, { COMPLETE, LOADING, ERROR } from "../../../../api/util/Status"
+import { getRoles } from "../../../../api/community/Community"
 
 type Props = {
     community: CommunityRequest
 }
 
-const CommunityRoles = ({ community }: Props) => {
+/**
+ * A communities roles.
+ */
+const CommunityRoles: React.FC<Props> = ({ community }) => {
     const [roles, setRoles] = useState([] as UserRole[])
     const [{ status, message }, setStatus] = useState({
         message: "",
@@ -22,10 +25,8 @@ const CommunityRoles = ({ community }: Props) => {
     const [modal, toggle] = useSetRoleModal(community)
 
     useEffect(() => {
-        const loadReports = async () => {
-            let request = await API.get(
-                `/community/${community.community.id}/roles`
-            )
+        const loadRoles = async () => {
+            let request = await getRoles(community.community.id)
 
             if (request.status !== 200) {
                 setStatus({ message: request.data.payload, status: ERROR })
@@ -36,7 +37,7 @@ const CommunityRoles = ({ community }: Props) => {
             }
         }
 
-        loadReports()
+        loadRoles()
     }, [community.community.id])
 
     return (

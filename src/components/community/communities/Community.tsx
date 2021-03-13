@@ -10,7 +10,7 @@ type Props = {
 /**
  * An individual community for the /communities page.
  */
-const Community = ({ community, index }: Props) => {
+const Community: React.FC<Props> = ({ community, index }) => {
     return (
         <div className="rounded flex flex-row justify-between gap-8 p-4">
             {index !== undefined && (

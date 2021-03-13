@@ -1,6 +1,6 @@
 import React from "react"
 import ExternalLink from "../../components/ExternalLink"
-import Question from "./Question"
+import Question from "../../components/Question"
 
 /**
  * The /about page.

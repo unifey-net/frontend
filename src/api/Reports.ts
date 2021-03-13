@@ -53,3 +53,7 @@ export const sendReport = async (
 
     return await API.put("/report", form)
 }
+
+export const getCommunityReports = async (id: number) => {
+    return await API.get(`/report/cf_${id}`)
+}

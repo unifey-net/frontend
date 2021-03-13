@@ -10,7 +10,7 @@ type Props = {
 /**
  * A user's avatar and their username.
  */
-export default ({ username, showUsername }: Props) => {
+const UserView = ({ username, showUsername }: Props) => {
     return (
         <a href={`/u/${username}`}>
             <Tooltip title={username}>
@@ -21,3 +21,5 @@ export default ({ username, showUsername }: Props) => {
         </a>
     )
 }
+
+export default UserView

@@ -31,7 +31,7 @@ type Props = {
     object: Post | CommentObject
 }
 
-export default ({ object, type }: Props): JSX.Element => {
+const PostManagement: React.FC<Props> = ({ object, type }) => {
     const [self, setSelf] = useState({} as User)
     const post = useSelector((state: any) => state.post)
 
@@ -122,3 +122,5 @@ export default ({ object, type }: Props): JSX.Element => {
         </Dropdown>
     )
 }
+
+export default PostManagement;

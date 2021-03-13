@@ -10,13 +10,13 @@ type Props = {
     hideTitle?: boolean
 }
 
-const UserProfileInput = ({
+const UserProfileInput: React.FC<Props> = ({
     type,
     initialValue,
     update,
     editing,
     hideTitle,
-}: Props): JSX.Element => {
+}) => {
     let input = React.createRef<Input>()
 
     // if the value is changed, that becomes the new initial value.

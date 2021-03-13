@@ -2,7 +2,7 @@ import React from "react"
 import { VERSION } from "../api/ApiHandler"
 import { Link } from "react-router-dom"
 
-export default (): JSX.Element => {
+const Footer: React.FC = () => {
     return (
         <footer className="footer">
             <p>
@@ -13,3 +13,5 @@ export default (): JSX.Element => {
         </footer>
     )
 }
+
+export default Footer

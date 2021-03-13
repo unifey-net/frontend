@@ -11,7 +11,7 @@ type Props = {
     user: User
 }
 
-const UserProfile = ({ user }: Props): JSX.Element => {
+const UserProfile: React.FC<{ user: User }> = ({ user }) => {
     let [editing, setEditing] = useState(false)
     let self = useSelector((state: any) => state.auth.user)
 

@@ -14,7 +14,7 @@ type Props = {
 /**
  * Either leaving or joining a community. Will give a button that gives the option to join or leave depending on member status.
  */
-export default ({ community, className, type }: Props): JSX.Element => {
+const CommunityManage: React.FC<Props> = ({ community, className, type }) => {
     let self = useSelector((store: any) => store.auth.user)
 
     const joinLeave = async () => {
@@ -66,3 +66,5 @@ export default ({ community, className, type }: Props): JSX.Element => {
         )
     }
 }
+
+export default CommunityManage

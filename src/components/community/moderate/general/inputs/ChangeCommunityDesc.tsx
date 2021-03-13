@@ -3,43 +3,43 @@ import { CommunityRequest } from "../../../../../api/community/CommunityUtil"
 import useInputModal from "../useInputModal"
 import { Store } from "antd/lib/form/interface"
 import { Form, Input, Button } from "antd"
-import { API } from "../../../../../api/ApiHandler"
+import { updateCommunityDescription } from "../../../../../api/community/Community"
 
 type Props = {
     community: CommunityRequest
 }
 
-export default ({ community }: Props) => {
-    let [modal, toggle] = useInputModal(
-        async (store: Store) => {
-            let { desc } = store
+/**
+ * Change a communities description.
+ */
+const ChangeCommunityDesc: React.FC<Props> = ({ community }) => {
+    const onOk = async (store: Store) => {
+        let { desc } = store
 
-            let form = new FormData()
+        let request = await updateCommunityDescription(
+            desc,
+            community.community.id
+        )
 
-            form.append("description", desc === undefined ? "" : desc)
+        return request.status === 200 ? "" : request.data.payload
+    }
 
-            let request = await API.put(
-                `/community/${community.community.id}/description`,
-                form
-            )
+    const form = [
+        <Form.Item
+            name="desc"
+            label="New Description"
+            rules={[
+                {
+                    max: 256,
+                    message: "The name cannot be over 16 characters!",
+                },
+            ]}
+        >
+            <Input />
+        </Form.Item>,
+    ]
 
-            return request.status === 200 ? "" : request.data.payload
-        },
-        [
-            <Form.Item
-                name="desc"
-                label="New Description"
-                rules={[
-                    {
-                        max: 256,
-                        message: "The name cannot be over 16 characters!",
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>,
-        ]
-    )
+    let [modal, toggle] = useInputModal(onOk, form)
 
     return (
         <div>
@@ -54,3 +54,5 @@ export default ({ community }: Props) => {
         </div>
     )
 }
+
+export default ChangeCommunityDesc

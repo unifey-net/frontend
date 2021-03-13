@@ -10,7 +10,7 @@ import ToastTheme from "../../../api/ToastTheme"
 
 const { TextArea } = Input
 
-export default (post: Post | CommentObject): [() => void, JSX.Element] => {
+const usePostReport = (post: Post | CommentObject): [() => void, JSX.Element] => {
     const [visible, setVisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [error, setError] = useState("")
@@ -119,3 +119,5 @@ export default (post: Post | CommentObject): [() => void, JSX.Element] => {
 
     return [() => setVisible(true), modal]
 }
+
+export default usePostReport

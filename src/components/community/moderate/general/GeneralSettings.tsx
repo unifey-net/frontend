@@ -1,16 +1,41 @@
 import React from "react"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
-import { message } from "antd"
 import CommunityPermission from "./CommunityPermission"
 import ChangeCommunityName from "./inputs/ChangeCommunityName"
 import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc"
-import { API } from "../../../../api/ApiHandler"
+import { updateCommunityPermissionRole } from "../../../../api/community/Community"
+import toast from "react-hot-toast"
+import ToastTheme from "../../../../api/ToastTheme"
 
 type Props = {
     community: CommunityRequest
 }
 
-export default ({ community }: Props) => {
+/**
+ * General settings for moderating community.
+ */
+const GeneralSettings: React.FC<Props> = ({ community }) => {
+    /**
+     * Update a communities permission.
+     * 
+     * @param role The role number.
+     * @param type The type. (post/comment/view)
+     */
+    const updatePermission = async (role: number, type: string) => {
+        const request = await updateCommunityPermissionRole(
+            community.community.id,
+            role,
+            type
+        )
+
+        if (request.status !== 200) {
+            toast.error(
+                "There was an issue updating the permissions.",
+                ToastTheme
+            )
+        }
+    }
+
     return (
         <>
             <h1 className="text-2xl">General Settings</h1>
@@ -20,71 +45,35 @@ export default ({ community }: Props) => {
                 <div className="flex flex-col gap-8">
                     <CommunityPermission
                         initialValue={1}
-                        community={community}
                         title="Post Level"
                         desc="This is what level a user must be to be able to create a
                         post."
                         action="create posts."
-                        save={async value => {
-                            let form = new FormData()
-
-                            form.append("role", `${value}`)
-
-                            let request = await API.put(
-                                `/community/${community.community.id}/roles/post`,
-                                form
-                            )
-
-                            if (request.status !== 200) {
-                                message.error(request.data.payload)
-                            }
-                        }}
+                        save={async value =>
+                            await updatePermission(value, "post")
+                        }
                     />
 
                     <CommunityPermission
                         initialValue={1}
-                        community={community}
                         title="View Level"
                         desc="This is what level a user must be to be able to view
                         posts."
                         action="view posts."
-                        save={async value => {
-                            let form = new FormData()
-
-                            form.append("role", `${value}`)
-
-                            let request = await API.put(
-                                `/community/${community.community.id}/roles/view`,
-                                form
-                            )
-
-                            if (request.status !== 200) {
-                                message.error(request.data.payload)
-                            }
-                        }}
+                        save={async value =>
+                            await updatePermission(value, "view")
+                        }
                     />
 
                     <CommunityPermission
                         initialValue={1}
-                        community={community}
                         title="Comment Level"
                         desc="This is what level a user must be to be able to comment
                         on posts."
                         action="comment on posts."
-                        save={async value => {
-                            let form = new FormData()
-
-                            form.append("role", `${value}`)
-
-                            let request = await API.put(
-                                `/community/${community.community.id}/roles/comment`,
-                                form
-                            )
-
-                            if (request.status !== 200) {
-                                message.error(request.data.payload)
-                            }
-                        }}
+                        save={async value =>
+                            await updatePermission(value, "comment")
+                        }
                     />
                 </div>
             </div>
@@ -99,3 +88,5 @@ export default ({ community }: Props) => {
         </>
     )
 }
+
+export default GeneralSettings;

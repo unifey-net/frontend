@@ -8,7 +8,7 @@ type Props = {
     update: () => Promise<void>
 }
 
-const SettingsProperty = ({ name, input, update }: Props) => {
+const SettingsProperty: React.FC<Props> = ({ name, input, update }) => {
     let [loading, setLoading] = useState(false)
 
     let self = useSelector((store: any) => store.auth.user)

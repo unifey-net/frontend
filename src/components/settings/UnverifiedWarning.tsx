@@ -7,7 +7,7 @@ type Props = {
     addAttempt: () => void
 }
 
-const UnverifiedWarning = ({ attempts, addAttempt }: Props) => {
+const UnverifiedWarning: React.FC<Props> = ({ attempts, addAttempt }) => {
     const [loading, setLoading] = useState(false)
 
     /**

@@ -1,25 +1,25 @@
 import React, { useState } from "react"
-import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import { Radio, Tooltip, Button } from "antd"
 import { RadioChangeEvent } from "antd/lib/radio"
 
 type Props = {
     action: string
-    community: CommunityRequest
     title: string
     desc: string
     initialValue: number
     save: (value: number) => Promise<void>
 }
 
-export default ({
+/**
+ * Change an action to have a required permission level.
+ */
+const CommunityPermission: React.FC<Props> = ({
     action,
-    community,
     title,
     desc,
     initialValue,
     save,
-}: Props) => {
+}) => {
     const [pre, setPre] = useState(initialValue)
     const [value, setValue] = useState(initialValue)
     const [loading, setLoading] = useState(false)
@@ -67,3 +67,5 @@ export default ({
         </div>
     )
 }
+
+export default CommunityPermission

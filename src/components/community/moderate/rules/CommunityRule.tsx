@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { Input, message } from "antd"
 import { Rule } from "./CommunityRules"
 import { removeRule } from "../../../../redux/actions/community.actions"
-import { API } from "../../../../api/ApiHandler"
+import { deleteCommunityRule, updateCommunityRuleBody, updateCommunityRuleTitle } from "../../../../api/community/Rules"
 import LinkButton from "../../../LinkButton"
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 /**
  * An individual rule for a community.
  */
-export default ({ rule, community, index, update }: Props) => {
+const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
     let dispatch = useDispatch()
 
     let bodyRef = React.createRef<Input>()
@@ -40,15 +40,7 @@ export default ({ rule, community, index, update }: Props) => {
         let titleValue = titleRef.current!!.state.value
 
         if (body !== bodyValue) {
-            let form = new FormData()
-
-            form.append("id", `${id}`)
-            form.append("body", `${bodyValue}`)
-
-            let request = await API.patch(
-                `/community/${community}/rules/body`,
-                form
-            )
+            let request = await updateCommunityRuleBody(community, id, bodyValue)
 
             if (request.status !== 200) {
                 message.error(request.data.payload)
@@ -58,15 +50,7 @@ export default ({ rule, community, index, update }: Props) => {
         }
 
         if (title !== titleValue) {
-            let form = new FormData()
-
-            form.append("id", `${id}`)
-            form.append("title", `${titleValue}`)
-
-            let request = await API.patch(
-                `/community/${community}/rules/title`,
-                form
-            )
+            let request = await updateCommunityRuleTitle(community, id, titleValue)
 
             if (request.status !== 200) {
                 message.error(request.data.payload)
@@ -83,7 +67,7 @@ export default ({ rule, community, index, update }: Props) => {
      * Delete a rule.
      */
     const deleteRule = async () => {
-        let request = await API.delete(`/community/${community}/rules/${id}`)
+        let request = await deleteCommunityRule(community, id)
 
         if (request.status !== 200) {
             message.error(request.data.payload)
@@ -147,3 +131,5 @@ export default ({ rule, community, index, update }: Props) => {
         </li>
     )
 }
+
+export default CommunityRule

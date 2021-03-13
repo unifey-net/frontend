@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react"
 import PostJsx from "./post/Post"
 import { Spin, Alert, Empty } from "antd"
-import { LoadingOutlined, } from "@ant-design/icons"
+import { LoadingOutlined } from "@ant-design/icons"
 import PostBox from "./PostBox"
 import { getFeedPosts, useFeed } from "../../api/Feeds"
 import FocusedPost from "./post/FocusedPost"
@@ -23,7 +23,7 @@ type Props = {
     focus?: number
 }
 
-export default ({ id, focus, postBox }: Props) => {
+const Feed: React.FC<Props> = ({ id, focus, postBox }) => {
     let dispatch = useDispatch()
 
     let [feed, status] = useFeed(id)
@@ -41,7 +41,12 @@ export default ({ id, focus, postBox }: Props) => {
             "sort"
         )
 
-        if ((querySort === "NEW" || querySort === "OLD" || querySort === "TOP") && querySort !== sort) {
+        if (
+            (querySort === "NEW" ||
+                querySort === "OLD" ||
+                querySort === "TOP") &&
+            querySort !== sort
+        ) {
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
@@ -55,8 +60,9 @@ export default ({ id, focus, postBox }: Props) => {
      * Load another post.
      */
     const loadMore = useCallback(async () => {
-        let pageCount = feed?.feed.pageCount !== undefined ? feed?.feed.pageCount : 0;
-        let currentPage = feed?.page !== undefined ? feed?.page : 0;
+        let pageCount =
+            feed?.feed.pageCount !== undefined ? feed?.feed.pageCount : 0
+        let currentPage = feed?.page !== undefined ? feed?.page : 0
 
         if (pageCount === 0 || currentPage === 0 || currentPage > pageCount)
             return
@@ -135,53 +141,61 @@ export default ({ id, focus, postBox }: Props) => {
                 </div>
             )}
 
-            {feed !== null && feed.feed !== undefined && status.status === COMPLETE && (
-                <>
-                    {feed.feed.postCount === 0 && (
-                        <Empty
-                            style={{ minWidth: "200px" }}
-                            description={
-                                <p>There are no posts in this feed.</p>
-                            }
-                        />
-                    )}
+            {feed !== null &&
+                feed.feed !== undefined &&
+                status.status === COMPLETE && (
+                    <>
+                        {feed.feed.postCount === 0 && (
+                            <Empty
+                                style={{ minWidth: "200px" }}
+                                description={
+                                    <p>There are no posts in this feed.</p>
+                                }
+                            />
+                        )}
 
-                    {feed.feed.postCount !== 0 && (
-                        <>
-                            {focus && <FocusedPost feed={id} id={focus} />}
+                        {feed.feed.postCount !== 0 && (
+                            <>
+                                {focus && <FocusedPost feed={id} id={focus} />}
 
-                            {!focus && (
-                                <InfiniteScroll
-                                    dataLength={feed.posts.length}
-                                    next={() => loadMore()}
-                                    hasMore={feed.feed.pageCount >= feed.page}
-                                    loader={
-                                        <div className="flex flex-row justify-center align-center">
-                                            <Spin
-                                                key={0}
-                                                indicator={<LoadingOutlined />}
-                                            />
-                                        </div>
-                                    }
-                                >
-                                    <ul className="feed-container">
-                                        {feed.posts.map((post, index) => (
-                                            <li key={index}>
-                                                <PostJsx
-                                                    author={post.author}
-                                                    post={post.post}
-                                                    vote={post.vote}
-                                                    feed={id}
+                                {!focus && (
+                                    <InfiniteScroll
+                                        dataLength={feed.posts.length}
+                                        next={() => loadMore()}
+                                        hasMore={
+                                            feed.feed.pageCount >= feed.page
+                                        }
+                                        loader={
+                                            <div className="flex flex-row justify-center align-center">
+                                                <Spin
+                                                    key={0}
+                                                    indicator={
+                                                        <LoadingOutlined />
+                                                    }
                                                 />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </InfiniteScroll>
-                            )}
-                        </>
-                    )}
-                </>
-            )}
+                                            </div>
+                                        }
+                                    >
+                                        <ul className="feed-container">
+                                            {feed.posts.map((post, index) => (
+                                                <li key={index}>
+                                                    <PostJsx
+                                                        author={post.author}
+                                                        post={post.post}
+                                                        vote={post.vote}
+                                                        feed={id}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </InfiniteScroll>
+                                )}
+                            </>
+                        )}
+                    </>
+                )}
         </div>
     )
 }
+
+export default Feed

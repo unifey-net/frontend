@@ -5,11 +5,12 @@ import { Divider } from "antd"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
 import { Link } from "react-router-dom"
 
-type Props = {
-    community: CommunityRequest
-}
-
-export default ({ community }: Props) => {
+/**
+ * A communities profile for Desktop.
+ */
+const DesktopCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
+    community,
+}) => {
     return (
         <div
             className="accent p-4 rounded invisible lg:visible"
@@ -59,3 +60,5 @@ export default ({ community }: Props) => {
         </div>
     )
 }
+
+export default DesktopCommunityProfile

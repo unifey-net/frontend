@@ -20,13 +20,13 @@ type Props = {
 /**
  * The communities rules. This appears on the far right sidebar.
  */
-export default ({ community, type }: Props) => {
+const CommunityRules: React.FC<Props> = ({ community, type }) => {
     let rules = community.community.rules
 
     let [showing, setShowing] = useState(5)
     let [toggle, modal] = useRuleModal(community.community.id)
 
-    // todo i don't know man....
+    // TODO: i don't know man....
     let [update, setUpdate] = useState(0)
 
     /**
@@ -87,3 +87,5 @@ export default ({ community, type }: Props) => {
         </>
     )
 }
+
+export default CommunityRules

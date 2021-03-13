@@ -101,6 +101,13 @@ export const getFeedPosts = async (id: string, sort: string, page: number) => {
 }
 
 /**
+ * Get the self feed.
+ */
+export const getSelfFeed = async () => {
+    return await API.get(`/feeds/self`)
+}
+
+/**
  * Get a feed.
  * @param {string} id
  */
@@ -195,6 +202,13 @@ export const updatePostContent = async (
     return await API.post(`/feeds/${feed}/post/${id}/content`, form)
 }
 
+/**
+ * Update a post's title.
+ *
+ * @param feed The feed where the post resides.
+ * @param id The ID of the post.
+ * @param title The new title for the post.
+ */
 export const updatePostTitle = async (
     feed: string,
     id: number,
@@ -207,6 +221,14 @@ export const updatePostTitle = async (
     return await API.post(`/feeds/${feed}/post/${id}/title`, form)
 }
 
+/**
+ * Update a comment's content.
+ *
+ * @param feed The feed where the post resides.
+ * @param post The post where the comment resides.
+ * @param id The comment's ID.
+ * @param content The new content for the comment.
+ */
 export const updateCommentContent = async (
     feed: string,
     post: number,
@@ -221,4 +243,36 @@ export const updateCommentContent = async (
         `/feeds/${feed}/post/${post}/comments/${id}/content`,
         form
     )
+}
+
+/**
+ * Create a comment.
+ *
+ * @param feed The feed where the post resides.
+ * @param post The post to reply to.
+ * @param content The content of the reply.
+ * @param level The level of the comment. This dictates the URL.
+ */
+export const createComment = async (
+    feed: string,
+    post: number,
+    content: string,
+    level: any
+) => {
+    let form = new FormData()
+
+    form.append("content", content)
+
+    switch (level.level) {
+        case 1: {
+            return await API.put(
+                `/feeds/${feed}/post/${post}/comments/${level.id}`,
+                form
+            )
+        }
+
+        default: { // case 0
+            return await API.put(`/feeds/${feed}/post/${post}/comments`, form)
+        }
+    }
 }

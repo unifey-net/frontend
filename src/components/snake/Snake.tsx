@@ -3,7 +3,7 @@ import { Button } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import useSnake from "./useSnake"
 
-export default () => {
+const Snake: React.FC = () => {
     const [visible, setVisible] = useState(false)
     const [modal, setModal] = useState(false)
     const [snake, status, score, restart] = useSnake()
@@ -70,3 +70,5 @@ export default () => {
         </>
     )
 }
+
+export default Snake

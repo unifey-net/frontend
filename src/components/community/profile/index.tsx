@@ -8,7 +8,15 @@ type Props = {
     mobile: boolean
 }
 
-export default ({ mobile, community }: Props) => {
-    if (mobile) return <MobileCommunityProfile community={community} />
-    else return <DesktopCommunityProfile community={community} />
+/**
+ * A community profile.
+ */
+const CommunityProfile: React.FC<Props> = ({ mobile, community }) => {
+    return mobile ? (
+        <MobileCommunityProfile community={community} />
+    ) : (
+        <DesktopCommunityProfile community={community} />
+    )
 }
+
+export default CommunityProfile
