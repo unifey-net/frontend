@@ -5,7 +5,11 @@ import { FeedState } from "../redux/reducers/feeds.reducer"
 import { postFeed } from "../redux/actions/feeds.actions"
 import { User } from "./user/User"
 import Vote from "./user/Vote"
+import Status, { COMPLETE, ERROR, LOADING } from "./util/Status"
 
+/**
+ * A post.
+ */
 export type Post = {
     id: number
     createdAt: number
@@ -17,12 +21,18 @@ export type Post = {
     downvotes: number
 }
 
+/**
+ * The response when grabbing a post from the api.
+ */
 export type PostResponse = {
     post: Post
     author: User
     vote: Vote | null
 }
 
+/**
+ * A feed.
+ */
 export type Feed = {
     id: string
     banned: number[]
@@ -31,13 +41,18 @@ export type Feed = {
     pageCount: number
 }
 
+/**
+ * Grab a feed from the API then store it in Redux.
+ *
+ * @param id The ID of the feed.
+ * @returns The state of the feed and status.
+ */
 export const useFeed = (id: string): [FeedState | null, any] => {
     let dispatch = useDispatch()
 
     let [status, setStatus] = useState({
-        status: 0,
-        message: "This feed hasn't been loaded yet.",
-    })
+        status: LOADING,
+    } as Status)
 
     let storedFeed = useSelector((state: any) => state.feeds[id])
 
@@ -48,21 +63,21 @@ export const useFeed = (id: string): [FeedState | null, any] => {
             if (resp.status === 200) {
                 dispatch(postFeed({ feed: resp.data as Feed }))
 
-                setStatus(prev => ({
-                    ...prev,
-                    status: 1,
-                }))
+                setStatus({
+                    status: COMPLETE,
+                })
             } else {
-                setStatus(prev => ({
-                    ...prev,
-                    status: -1,
+                setStatus({
+                    status: ERROR,
                     message: resp.data.payload,
-                }))
+                })
             }
         }
 
         if (storedFeed === undefined) {
             grabFeed()
+        } else {
+            setStatus({ status: COMPLETE }) // already loaded in redux
         }
     }, [id, dispatch, storedFeed])
 
@@ -83,6 +98,13 @@ export const useEditingStatus = (post: number): boolean => {
  */
 export const getFeedPosts = async (id: string, sort: string, page: number) => {
     return await API.get(`/feeds/${id}/posts?page=${page}&sort=${sort}`)
+}
+
+/**
+ * Get the self feed.
+ */
+export const getSelfFeed = async () => {
+    return await API.get(`/feeds/self`)
 }
 
 /**
@@ -180,6 +202,13 @@ export const updatePostContent = async (
     return await API.post(`/feeds/${feed}/post/${id}/content`, form)
 }
 
+/**
+ * Update a post's title.
+ *
+ * @param feed The feed where the post resides.
+ * @param id The ID of the post.
+ * @param title The new title for the post.
+ */
 export const updatePostTitle = async (
     feed: string,
     id: number,
@@ -192,6 +221,14 @@ export const updatePostTitle = async (
     return await API.post(`/feeds/${feed}/post/${id}/title`, form)
 }
 
+/**
+ * Update a comment's content.
+ *
+ * @param feed The feed where the post resides.
+ * @param post The post where the comment resides.
+ * @param id The comment's ID.
+ * @param content The new content for the comment.
+ */
 export const updateCommentContent = async (
     feed: string,
     post: number,
@@ -206,4 +243,36 @@ export const updateCommentContent = async (
         `/feeds/${feed}/post/${post}/comments/${id}/content`,
         form
     )
+}
+
+/**
+ * Create a comment.
+ *
+ * @param feed The feed where the post resides.
+ * @param post The post to reply to.
+ * @param content The content of the reply.
+ * @param level The level of the comment. This dictates the URL.
+ */
+export const createComment = async (
+    feed: string,
+    post: number,
+    content: string,
+    level: any
+) => {
+    let form = new FormData()
+
+    form.append("content", content)
+
+    switch (level.level) {
+        case 1: {
+            return await API.put(
+                `/feeds/${feed}/post/${post}/comments/${level.id}`,
+                form
+            )
+        }
+
+        default: { // case 0
+            return await API.put(`/feeds/${feed}/post/${post}/comments`, form)
+        }
+    }
 }

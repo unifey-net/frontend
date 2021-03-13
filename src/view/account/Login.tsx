@@ -1,16 +1,16 @@
 import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { signedIn } from "../../api/user/User"
+import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, message, Alert } from "antd"
+import { Form, Input, Button, Checkbox, Alert } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
 import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
-import { API } from "../../api/ApiHandler"
 import { useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
+import { COMPLETE } from "../../api/util/Status"
 
 /**
  * The /login page.
@@ -27,24 +27,14 @@ export default () => {
     const loginForm = async (values: Store) => {
         setLoading(true)
 
-        if (captcha === "") {
-            setError("Please fill out the reCAPTCHA")
+        const [status, data] = await login(
+            values.username,
+            values.password,
+            captcha
+        )
 
-            setLoading(false)
-            return
-        }
-
-        let data = new FormData()
-
-        data.append("username", values.username)
-        data.append("password", values.password)
-        data.append("remember", `${values.remember}`)
-        data.append("captcha", captcha)
-
-        let request = await API.post(`/authenticate`, data)
-
-        if (request.status === 200) {
-            const { user, token } = request.data
+        if (status.status === COMPLETE) {
+            const { user, token } = data
 
             dispatch(logIn(token.token, user, token.expires))
 
@@ -52,7 +42,11 @@ export default () => {
             window.location.reload()
         } else {
             ref?.reset()
-            setError(request.data.payload)
+            setError(
+                status.message === undefined
+                    ? "There was an issue logging in."
+                    : status.message
+            )
         }
 
         setLoading(false)
@@ -121,16 +115,18 @@ export default () => {
                             </FormItem>
                         </div>
 
-                        <Form.Item>
-                            <ReCAPTCHA
-                                ref={(ref: ReCAPTCHA) => setRef(ref)}
-                                sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
-                                theme="dark"
-                                onChange={token =>
-                                    setCaptcha(token === null ? "" : token)
-                                }
-                            />
-                        </Form.Item>
+                        {process.env.NODE_ENV === "production" && (
+                            <Form.Item>
+                                <ReCAPTCHA
+                                    ref={(ref: ReCAPTCHA) => setRef(ref)}
+                                    sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
+                                    theme="dark"
+                                    onChange={token =>
+                                        setCaptcha(token === null ? "" : token)
+                                    }
+                                />
+                            </Form.Item>
+                        )}
 
                         <Form.Item>
                             <div className="flex flex-row justify-center items-center">

@@ -31,6 +31,7 @@ export const getRoleName = (role: number) => {
  * A role assigned to a user.
  */
 export type UserRole = {
-    user: number
+    id: number
+    name: string
     role: number
 }

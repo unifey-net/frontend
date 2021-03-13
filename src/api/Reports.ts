@@ -1,9 +1,5 @@
 import { API } from "./ApiHandler"
 
-const doesntFitTopic = "DOES_NOT_FIT_TOPIC"
-const spam = "SPAM"
-const breaksTos = "BREAKS_TOS"
-
 /**
  * A report.
  */
@@ -56,4 +52,8 @@ export const sendReport = async (
     form.append("reasonText", reasonText)
 
     return await API.put("/report", form)
+}
+
+export const getCommunityReports = async (id: number) => {
+    return await API.get(`/report/cf_${id}`)
 }

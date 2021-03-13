@@ -1,7 +1,3 @@
-import store from "../redux/store"
-import { API } from "./ApiHandler"
-import { postEmotes } from "../redux/actions/emotes.actions"
-
 export type Emote = {
     name: string
     url: string

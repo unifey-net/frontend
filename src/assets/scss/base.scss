@@ -27,8 +27,9 @@ h6 {
 p,
 a,
 span,
+button,
 label {
-    font-family: $default-font;
+    font-family: $default-font !important;
 }
 
 a:hover {
@@ -42,4 +43,18 @@ a:hover {
 .divider {
     border: #2c2c2c solid 1.5px;
     border-radius: 1px;
+}
+
+.variable-min-w {
+    @media (max-width: 599px) {
+        min-width: 12rem;
+    }
+
+    @media (min-width: 600px) and (max-width: 1199px) {
+        min-width: 36rem;
+    }
+
+    @media (min-width: 1200px) {
+        min-width: 48rem;
+    }
 }

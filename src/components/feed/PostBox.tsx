@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { message, Input, Button, Modal } from "antd"
 import { createPost } from "../../api/Feeds"
+import LinkButton from "../LinkButton"
 
 const { TextArea } = Input
 
@@ -9,7 +10,7 @@ type Props = {
     action: any
 }
 
-export default ({ feed, action }: Props): JSX.Element => {
+const PostBox: React.FC<Props> = ({ feed, action }) => {
     let [visible, setVisible] = useState(false)
     let [loading, setLoading] = useState(false)
 
@@ -52,9 +53,7 @@ export default ({ feed, action }: Props): JSX.Element => {
 
     return (
         <div className="post-box-container">
-            <Button type="link" onClick={showModal}>
-                Create Post
-            </Button>
+            <LinkButton onClick={showModal}>Create Post</LinkButton>
 
             <Modal
                 title="Create new Post"
@@ -94,3 +93,5 @@ export default ({ feed, action }: Props): JSX.Element => {
         </div>
     )
 }
+
+export default PostBox;

@@ -1,13 +1,14 @@
 import React from "react"
 
-type Props = {
-    date: number
-}
-
-export default ({ date }: Props): JSX.Element => {
+/**
+ * About a post.
+ */
+const PostAbout: React.FC<{ date: number }> = ({ date }) => {
     return (
         <span className="invisible lg:visible">
             Posted on {new Date(date).toLocaleString()}
         </span>
     )
 }
+
+export default PostAbout;

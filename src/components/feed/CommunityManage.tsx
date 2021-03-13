@@ -1,18 +1,20 @@
 import React from "react"
-import { Button, message } from "antd"
+import { Button } from "antd"
 import { leaveCommunity, joinCommunity, signedIn } from "../../api/user/User"
 import { useSelector } from "react-redux"
+import toast from "react-hot-toast"
+import ToastTheme from "../../api/ToastTheme"
 
 type Props = {
     community: number
     className?: string
-    style: "BUTTON" | "TEXT"
+    type: "BUTTON" | "TEXT"
 }
 
 /**
  * Either leaving or joining a community. Will give a button that gives the option to join or leave depending on member status.
  */
-export default ({ community, className, style }: Props): JSX.Element => {
+const CommunityManage: React.FC<Props> = ({ community, className, type }) => {
     let self = useSelector((store: any) => store.auth.user)
 
     const joinLeave = async () => {
@@ -20,22 +22,22 @@ export default ({ community, className, style }: Props): JSX.Element => {
             let request = await leaveCommunity(community)
 
             if (request.status === 200) {
-                message.success("Successfully left community!")
+                toast.success("Successfully left community!", ToastTheme)
             } else {
-                message.error("Failed to leave community!")
+                toast.error(request.data.payload, ToastTheme)
             }
         } else {
             let request = await joinCommunity(community)
 
             if (request.status === 200) {
-                message.success("Successfully joined community!")
+                toast.success("Successfully joined community!", ToastTheme)
             } else {
-                message.error("Failed to join community!")
+                toast.error(request.data.payload, ToastTheme)
             }
         }
     }
 
-    if (style === "BUTTON") {
+    if (type === "BUTTON") {
         return (
             <Button
                 className={className}
@@ -64,3 +66,5 @@ export default ({ community, className, style }: Props): JSX.Element => {
         )
     }
 }
+
+export default CommunityManage

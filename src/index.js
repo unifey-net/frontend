@@ -8,7 +8,7 @@ import store from "./redux/store"
 
 console.log(`%cSTOP!`, "color:red;font-size:64px")
 console.log(
-    "%cPasting anything here can give users full access to your account. Unless you know what you're doing, I would stay away.",
+    "%cPasting anything here can give users full access to your account.",
     "color:red;font-size:28px;"
 )
 

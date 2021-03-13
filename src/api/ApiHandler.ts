@@ -2,15 +2,18 @@ import axios from "axios"
 import store from "../redux/store"
 
 /**
- * The base URL to the API.
+ * The base URL to the API. Relies on the node env.
  *
  * @type {string}
  */
-const BASE_URL: string = "https://beta-api.unifey.net" // incase you're curious, this is my local pc ip. wanted to do testing on my phone so lol
-// it's now localhost but you can imagine at one point it was a local ip
-// it might also be beta-api.unifey.net
-// :)
+const BASE_URL: string =
+    process.env.NODE_ENV === "production"
+        ? "https://beta-api.unifey.net"
+        : "http://localhost:8077"
 
+/**
+ * The Axios API.
+ */
 const API = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
@@ -23,16 +26,9 @@ const API = axios.create({
     validateStatus: () => true,
 })
 
-const VERSION = "Alpha v0.4.0"
-const CLIENT = "Unifey Web Client"
+/**
+ * The version, manually kept up to date :(
+ */
+const VERSION = "Alpha v0.5.0"
 
-export type RequestStatus = {
-    message: string
-    status: number
-}
-
-export const COMPLETE = 1
-export const LOADING = 0
-export const ERROR = -1
-
-export { VERSION, CLIENT, API, BASE_URL }
+export { VERSION, API, BASE_URL }

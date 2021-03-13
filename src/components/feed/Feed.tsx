@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useCallback, useEffect } from "react"
 import PostJsx from "./post/Post"
-import { Spin, Dropdown, Menu, Button, Alert, Empty } from "antd"
-import {
-    LoadingOutlined,
-    DoubleRightOutlined,
-    ReloadOutlined,
-} from "@ant-design/icons"
-import InfiniteScroll from "react-infinite-scroller"
+import { Spin, Alert, Empty } from "antd"
+import { LoadingOutlined } from "@ant-design/icons"
 import PostBox from "./PostBox"
 import { getFeedPosts, useFeed } from "../../api/Feeds"
 import FocusedPost from "./post/FocusedPost"
@@ -17,8 +12,10 @@ import {
     bumpPage,
     changeSort,
 } from "../../redux/actions/feeds.actions"
-import debug from "../../api/Debug"
-import { Emote } from "../../api/Emotes"
+import LinkButton from "../LinkButton"
+import useSortChanger from "./SortChanger"
+import InfiniteScroll from "react-infinite-scroll-component"
+import { COMPLETE, ERROR, LOADING } from "../../api/util/Status"
 
 type Props = {
     id: string
@@ -26,34 +23,30 @@ type Props = {
     focus?: number
 }
 
-export default ({ id, focus, postBox }: Props) => {
+const Feed: React.FC<Props> = ({ id, focus, postBox }) => {
     let dispatch = useDispatch()
 
     let [feed, status] = useFeed(id)
 
-    const sort = feed?.sort === undefined || feed?.sort === null ? "new" : feed?.sort!!    
-
-    const updateSort = (sort: string) => {
-        debug("Sort has changed to %s", [sort])
-
-        dispatch(
-            changeSort({ sort, id })
-        )
-
+    const [sort, button] = useSortChanger("NEW", sort => {
+        dispatch(changeSort({ sort, id }))
         dispatch(feedClear(id))
-    }
+    })
 
     /**
-     * Handle sorting.
-     */
+    //  * Handle sorting.
+    //  */
     useEffect(() => {
         let querySort = new URL(window.location.toString()).searchParams.get(
             "sort"
         )
 
-        if (querySort === "new" || querySort === "old" || querySort === "top") {
-            debug("Found sort in query %s", [querySort])
-
+        if (
+            (querySort === "NEW" ||
+                querySort === "OLD" ||
+                querySort === "TOP") &&
+            querySort !== sort
+        ) {
             dispatch(
                 changeSort({
                     sort: querySort.toLowerCase(),
@@ -61,20 +54,24 @@ export default ({ id, focus, postBox }: Props) => {
                 })
             )
         }
-    }, [dispatch, id])
+    }, [dispatch, id, sort])
 
     /**
      * Load another post.
      */
-    const loadMore = async () => {
-        debug(`Loading more posts from ${id} (page: ${feed!!.page}, sort: ${sort})`)
+    const loadMore = useCallback(async () => {
+        let pageCount =
+            feed?.feed.pageCount !== undefined ? feed?.feed.pageCount : 0
+        let currentPage = feed?.page !== undefined ? feed?.page : 0
+
+        if (pageCount === 0 || currentPage === 0 || currentPage > pageCount)
+            return
 
         let resp = await getFeedPosts(id, sort, feed!!.page)
+        dispatch(bumpPage(id))
 
         switch (resp.status) {
             case 200: {
-                dispatch(bumpPage(id))
-
                 let posts = resp.data.posts
 
                 dispatch(
@@ -98,119 +95,107 @@ export default ({ id, focus, postBox }: Props) => {
                 break
             }
         }
-    }
+    }, [dispatch, feed, id, sort])
 
-    /**
-     * The sort menu management.
-     */
-    const menu = (
-        <Menu>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("new")}>
-                    {sort === "new" && <DoubleRightOutlined />} New
-                </Button>
-            </Menu.Item>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("old")}>
-                    {sort === "old" && <DoubleRightOutlined />} Old
-                </Button>
-            </Menu.Item>
-            <Menu.Item>
-                <Button type="link" onClick={() => updateSort("top")}>
-                    {sort === "top" && <DoubleRightOutlined />} Top
-                </Button>
-            </Menu.Item>
-        </Menu>
-    )
+    useEffect(() => {
+        // if feed grab is successful, start init load
+        if (status.status === 1) {
+            loadMore()
+        }
+    }, [status, loadMore])
 
     return (
         <div>
-            {status.status === -1 && (
+            {!focus && (
+                <div className="flex flex-row justify-evenly accent mb-2 rounded p-2 gap-8">
+                    {postBox && (
+                        <PostBox
+                            feed={id}
+                            action={() => {
+                                dispatch(feedClear(id))
+                                loadMore()
+                            }}
+                        />
+                    )}
+
+                    {button}
+
+                    <LinkButton onClick={() => dispatch(feedClear(id))}>
+                        Reload
+                    </LinkButton>
+                </div>
+            )}
+
+            {status.status === ERROR && (
                 <Alert
-                    message="There was an issue with this feed."
+                    message="There was an issue loading this feed."
                     description={status.message}
                     type="error"
                     showIcon
                 />
             )}
 
-            {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
-
-            {feed !== null && feed.feed !== undefined && (
-                <>
-                    {!focus && (
-                        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2">
-                            {postBox && (
-                                <PostBox
-                                    feed={id}
-                                    action={() => {
-                                        dispatch(feedClear(id))
-                                        loadMore()
-                                    }}
-                                />
-                            )}
-
-                            <Dropdown overlay={menu}>
-                                <Button
-                                    type="link"
-                                    onClick={e => e.preventDefault()}
-                                >
-                                    Sort by{" "}
-                                    {sort[0].toUpperCase() + sort.substring(1)}
-                                </Button>
-                            </Dropdown>
-
-                            <Button
-                                type="link"
-                                onClick={() => dispatch(feedClear(id))}
-                            >
-                                Reload
-                            </Button>
-                        </div>
-                    )}
-
-                    {feed.feed.postCount === 0 && (
-                        <Empty
-                            style={{ minWidth: "200px" }}
-                            description={
-                                <p>There are no posts in this feed.</p>
-                            }
-                        />
-                    )}
-
-                    {status.status === 1 && feed.feed.postCount !== 0 && (
-                        <>
-                            {focus && <FocusedPost feed={id} id={focus} />}
-
-                            {!focus && (
-                                <InfiniteScroll
-                                    loadMore={loadMore}
-                                    hasMore={feed.feed.pageCount >= feed.page}
-                                    loader={
-                                        <Spin
-                                            key={0}
-                                            indicator={<LoadingOutlined />}
-                                        />
-                                    }
-                                >
-                                    <ul className="feed-container">
-                                        {feed.posts.map((post, index) => (
-                                            <li key={index}>
-                                                <PostJsx
-                                                    author={post.author}
-                                                    post={post.post}
-                                                    vote={post.vote}
-                                                    feed={id}
-                                                />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </InfiniteScroll>
-                            )}
-                        </>
-                    )}
-                </>
+            {status.status === LOADING && (
+                <div className="flex flex-rows justify-center items-center">
+                    <Spin indicator={<LoadingOutlined />} />
+                </div>
             )}
+
+            {feed !== null &&
+                feed.feed !== undefined &&
+                status.status === COMPLETE && (
+                    <>
+                        {feed.feed.postCount === 0 && (
+                            <Empty
+                                style={{ minWidth: "200px" }}
+                                description={
+                                    <p>There are no posts in this feed.</p>
+                                }
+                            />
+                        )}
+
+                        {feed.feed.postCount !== 0 && (
+                            <>
+                                {focus && <FocusedPost feed={id} id={focus} />}
+
+                                {!focus && (
+                                    <InfiniteScroll
+                                        dataLength={feed.posts.length}
+                                        next={() => loadMore()}
+                                        hasMore={
+                                            feed.feed.pageCount >= feed.page
+                                        }
+                                        loader={
+                                            <div className="flex flex-row justify-center align-center">
+                                                <Spin
+                                                    key={0}
+                                                    indicator={
+                                                        <LoadingOutlined />
+                                                    }
+                                                />
+                                            </div>
+                                        }
+                                    >
+                                        <ul className="feed-container">
+                                            {feed.posts.map((post, index) => (
+                                                <li key={index}>
+                                                    <PostJsx
+                                                        author={post.author}
+                                                        post={post.post}
+                                                        vote={post.vote}
+                                                        feed={id}
+                                                    />
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </InfiniteScroll>
+                                )}
+                            </>
+                        )}
+                    </>
+                )}
         </div>
     )
 }
+
+export default Feed

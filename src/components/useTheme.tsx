@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux"
-import { isAutoDark } from "../api/Util"
+import { isAutoDark } from "../api/util/Util"
 
 const DARK = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.9.1/antd.dark.css"
 const LIGHT = "https://cdnjs.cloudflare.com/ajax/libs/antd/4.9.1/antd.min.js"
 
-export default (): [string, string] => {
+const useTheme = (): [string, string] => {
     const theme = useSelector((state: any) => state.theme)
 
     let clazz = ""
@@ -41,3 +41,5 @@ export default (): [string, string] => {
 
     return [clazz, file]
 }
+
+export default useTheme

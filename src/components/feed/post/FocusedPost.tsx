@@ -6,15 +6,11 @@ import { getPost } from "../../../api/Feeds"
 import History from "../../../api/History"
 import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
-import { Emote } from "../../../api/Emotes"
-import useEmotes from "../../../api/community/useEmotes"
 
-type Props = {
-    id: number
-    feed: string
-}
-
-export default ({ id, feed }: Props): JSX.Element => {
+/**
+ * A fullscreen post.
+ */
+const FocusedPost: React.FC<{ id: number; feed: string }> = ({ id, feed }) => {
     const dispatch = useDispatch()
 
     let [loaded, setLoaded] = useState(false)
@@ -57,3 +53,5 @@ export default ({ id, feed }: Props): JSX.Element => {
         </>
     )
 }
+
+export default FocusedPost;

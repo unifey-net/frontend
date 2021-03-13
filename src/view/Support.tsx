@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-export default () => {
+const Support = () => {
     return (
         <div className="flex flex-col items-center mx-64">
             <h1 className="text-6xl">Unifey Support</h1>
@@ -12,3 +12,5 @@ export default () => {
         </div>
     )
 }
+
+export default Support

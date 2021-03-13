@@ -1,4 +1,3 @@
-import debug from "../../api/Debug"
 import {
     COMMUNITY__POST,
     COMMUNITY__ADD_RULE,

@@ -11,24 +11,25 @@ import Communities from "./view/community/communities/Communities"
 import history from "./api/History"
 import User from "./view/user/User"
 import Login from "./view/account/Login"
-import Home from "./view/home/Home"
+import Home from "./view/Home"
 import Logout from "./view/account/Logout"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Unsubscribed from "./view/Unsubscribed"
 import Support from "./view/Support"
-import ForgotPassword from "./view/settings/forgot/Forgot"
+import ForgotPassword from "./view/settings/Forgot"
 import NotFound from "./view/NotFound"
 
-import { useDispatch, useSelector } from "react-redux"
-import Settings from "./view/settings/settings/Settings"
+import { useDispatch } from "react-redux"
+import Settings from "./view/settings/Settings"
 import Unverified from "./view/Unverified"
-import Verify from "./view/settings/verify/Verify"
+import Verify from "./view/settings/Verify"
 import Privacy from "./view/Privacy"
-import ModerateCommunity from "./view/community/community/moderate/ModerateCommunity"
+import ModerateCommunity from "./view/community/community/ModerateCommunity"
 import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
 import useTheme from "./components/useTheme"
+import { Toaster } from "react-hot-toast"
 
 export default function App() {
     const dispatch = useDispatch()
@@ -42,6 +43,8 @@ export default function App() {
             <link rel="stylesheet" type="text/css" href={file} />
             <div className={clazz}>
                 <Header />
+
+                <Toaster />
 
                 <div className="content-container px-8 lg:px-0">
                     <Switch>

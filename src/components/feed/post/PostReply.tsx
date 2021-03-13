@@ -1,8 +1,10 @@
 import React, { useState } from "react"
-import { Modal, Form, Input, Alert, message } from "antd"
+import { Modal, Form, Input, Alert } from "antd"
 import { signedIn } from "../../../api/user/User"
-import { API } from "../../../api/ApiHandler"
 import { Store } from "antd/lib/form/interface"
+import { createComment } from "../../../api/Feeds"
+import toast from "react-hot-toast"
+import ToastTheme from "../../../api/ToastTheme"
 
 const { TextArea } = Input
 
@@ -14,13 +16,13 @@ type ReplyModalProps = {
     onCancel: () => void
 }
 
-const ReplyModal = ({
+const ReplyModal: React.FC<ReplyModalProps> = ({
     visible,
     onCreate,
     onCancel,
     loading,
     error,
-}: ReplyModalProps): JSX.Element => {
+}) => {
     const [form] = Form.useForm()
 
     return (
@@ -86,7 +88,7 @@ type Props = {
     id?: number
 }
 
-export default ({ feed, level, post, id }: Props): JSX.Element => {
+const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -94,40 +96,13 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
     const submit = async (values: Store) => {
         setLoading(true)
 
-        let form = new FormData()
+        let request = await createComment(feed, post, values["comment"], { level, id })
 
-        form.append("content", values["comment"])
-
-        switch (level) {
-            case 0: {
-                let req = await API.put(
-                    `/feeds/${feed}/post/${post}/comments`,
-                    form
-                )
-
-                if (req.status !== 200) {
-                    setError(req.data.payload)
-                } else {
-                    setVisible(false)
-                    message.success("Posted reply!")
-                }
-                break
-            }
-
-            case 1: {
-                let req = await API.put(
-                    `/feeds/${feed}/post/${post}/comments/${id}`,
-                    form
-                )
-
-                if (req.status !== 200) {
-                    setError(req.data.payload)
-                } else {
-                    setVisible(false)
-                    message.success("Posted reply!")
-                }
-                break
-            }
+        if (request.status !== 200) {
+            setError(request.data.payload)
+        } else {
+            setVisible(false)
+            toast.success("Successfully posted reply!", ToastTheme)
         }
 
         setLoading(false)
@@ -163,3 +138,5 @@ export default ({ feed, level, post, id }: Props): JSX.Element => {
         </>
     )
 }
+
+export default PostReply;

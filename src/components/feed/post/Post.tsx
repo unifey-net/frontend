@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { message, Button, Input } from "antd"
 import { useDispatch } from "react-redux"
-import { getCommunityById } from "../../../api/community/Community"
 import PostComments from "./comments/PostComments"
 import PostVote from "./PostVote"
 import History from "../../../api/History"
@@ -14,14 +13,14 @@ import {
 } from "../../../api/Feeds"
 import Vote from "../../../api/user/Vote"
 import { User } from "../../../api/user/User"
-import { parseBody, Emote } from "../../../api/Emotes"
+import { parseBody } from "../../../api/Emotes"
 import PostAbout from "./PostAbout"
 import UserView from "../../view/UserView"
 import PostManagement from "./PostManagement"
 import { stopEditing } from "../../../redux/actions/editor.actions"
 import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
-import debug from "../../../api/Debug"
+import useSortChanger from "../SortChanger"
 
 type Props = {
     post: Post
@@ -41,6 +40,8 @@ export default ({ post, vote, author, type, feed }: Props) => {
     let emotes = useEmotes()
     const editing = useEditingStatus(post.id)
     const dispatch = useDispatch()
+
+    const [sort, button] = useSortChanger("TOP")
 
     /**
      * Complete editing.
@@ -187,16 +188,21 @@ export default ({ post, vote, author, type, feed }: Props) => {
 
                 {type === "focused" && (
                     <>
-                        <PostReply
-                            post={post.id}
-                            id={post.id}
-                            level={0}
-                            feed={post.feed}
-                        />
+                        <div className="flex flex-row justify-between">
+                            <PostReply
+                                post={post.id}
+                                id={post.id}
+                                level={0}
+                                feed={post.feed}
+                            />
+
+                            {button}
+                        </div>
 
                         <PostComments
                             feed={post.feed}
                             id={post.id}
+                            sort={sort}
                             data={null}
                         />
                     </>
