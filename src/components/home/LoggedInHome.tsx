@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { getCommunityById } from "../../api/community/Community"
 import Community from "../community/communities/Community"
-import CustomFeed from "../feed/CustomFeed"
+import CustomFeed from "../feed/controller/CustomFeedController"
 
 const LoggedInHome: React.FC = () => {
     const [communities, setCommunities] = useState([] as any[])

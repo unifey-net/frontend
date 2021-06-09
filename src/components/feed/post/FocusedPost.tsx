@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react"
 import { Spin, Button } from "antd"
 import { LoadingOutlined, ArrowLeftOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux"
-import { getPost } from "../../../api/Feeds"
+import { getPost, PostResponse } from "../../../api/Feeds"
 import History from "../../../api/History"
 import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
+import { API } from "../../../api/ApiHandler"
 
 /**
  * A fullscreen post.
  */
-const FocusedPost: React.FC<{ id: number; feed: string }> = ({ id, feed }) => {
+const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed })  => {
     const dispatch = useDispatch()
 
     let [loaded, setLoaded] = useState(false)
@@ -18,10 +19,10 @@ const FocusedPost: React.FC<{ id: number; feed: string }> = ({ id, feed }) => {
 
     useEffect(() => {
         const loadPost = async () => {
-            let req = await getPost(feed, id)
+            let req = await API.get(`/feeds/${feed}/post/${post}`)
 
             if (req.status === 200) {
-                dispatch(updatePost(id))
+                dispatch(updatePost(post))
                 setPost(req.data)
             }
 
@@ -29,27 +30,19 @@ const FocusedPost: React.FC<{ id: number; feed: string }> = ({ id, feed }) => {
         }
 
         loadPost()
-    }, [id, feed, dispatch])
+    }, [postId, feed, dispatch])
+
+    if (!loaded) {
+        return <Spin indicator={<LoadingOutlined />} />
+    }
 
     return (
         <>
-            {loaded && (
-                <>
-                    <Button ghost onClick={() => History.go(-1)}>
-                        <ArrowLeftOutlined />
-                    </Button>
+            <Button ghost onClick={() => History.go(-1)}>
+                <ArrowLeftOutlined />
+            </Button>
 
-                    <Post
-                        type="focused"
-                        author={post.author}
-                        post={post.post}
-                        vote={post.vote}
-                        feed={feed}
-                    />
-                </>
-            )}
-
-            {!loaded && <Spin indicator={<LoadingOutlined />} />}
+            <Post type="focused" postResponse={post} />
         </>
     )
 }
