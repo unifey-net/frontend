@@ -30,6 +30,9 @@ import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
 import useTheme from "./components/useTheme"
 import { Toaster } from "react-hot-toast"
+import { QueryClient, QueryClientProvider } from "react-query"
+
+const queryClient = new QueryClient()
 
 export default function App() {
     const dispatch = useDispatch()
@@ -39,75 +42,89 @@ export default function App() {
     const [clazz, file] = useTheme()
 
     return (
-        <Router history={history}>
-            <link rel="stylesheet" type="text/css" href={file} />
-            <div className={clazz}>
-                <Header />
+        <QueryClientProvider client={queryClient}>
+            <Router history={history}>
+                <link rel="stylesheet" type="text/css" href={file} />
+                <div className={clazz}>
+                    <Header />
 
-                <Toaster />
+                    <Toaster />
 
-                <div className="content-container px-8 lg:px-0">
-                    <Switch>
-                        <Route
-                            path="/c/:name/moderate"
-                            component={ModerateCommunity}
-                            exact
-                        />
+                    <div className="content-container px-8 lg:px-0">
+                        <Switch>
+                            <Route
+                                path="/c/:name/moderate"
+                                component={ModerateCommunity}
+                                exact
+                            />
 
-                        <Route path="/u/:name/:post" exact component={User} />
-                        <Route
-                            path="/c/:name/:post"
-                            component={Community}
-                            exact
-                        />
-                        <Route path="/u/:name" exact component={User} />
-                        <Route path="/c/:name" exact component={Community} />
+                            <Route
+                                path="/u/:name/:post"
+                                exact
+                                component={User}
+                            />
+                            <Route
+                                path="/c/:name/:post"
+                                component={Community}
+                                exact
+                            />
+                            <Route path="/u/:name" exact component={User} />
+                            <Route
+                                path="/c/:name"
+                                exact
+                                component={Community}
+                            />
 
-                        <Route exact path="/tos" component={Tos} />
-                        <Route
-                            exact
-                            path="/unsubscribed"
-                            component={Unsubscribed}
-                        />
-                        <Route exact path="/about" component={About} />
-                        <Route exact path="/support" component={Support} />
-                        <Route
-                            exact
-                            path="/unverified"
-                            component={Unverified}
-                        />
+                            <Route exact path="/tos" component={Tos} />
+                            <Route
+                                exact
+                                path="/unsubscribed"
+                                component={Unsubscribed}
+                            />
+                            <Route exact path="/about" component={About} />
+                            <Route exact path="/support" component={Support} />
+                            <Route
+                                exact
+                                path="/unverified"
+                                component={Unverified}
+                            />
 
-                        <Route exact path="/settings" component={Settings} />
+                            <Route
+                                exact
+                                path="/settings"
+                                component={Settings}
+                            />
 
-                        <Route
-                            exact
-                            path="/settings/forgot"
-                            component={ForgotPassword}
-                        />
+                            <Route
+                                exact
+                                path="/settings/forgot"
+                                component={ForgotPassword}
+                            />
 
-                        <Route
-                            exact
-                            path="/settings/verify"
-                            component={Verify}
-                        />
+                            <Route
+                                exact
+                                path="/settings/verify"
+                                component={Verify}
+                            />
 
-                        <Route exact path="/" component={Home} />
-                        <Route
-                            exact
-                            path="/communities"
-                            component={Communities}
-                        />
-                        <Route exact path="/login" component={Login} />
-                        <Route exact path="/logout" component={Logout} />
+                            <Route exact path="/" component={Home} />
+                            <Route
+                                exact
+                                path="/communities"
+                                component={Communities}
+                            />
+                            <Route exact path="/login" component={Login} />
+                            <Route exact path="/logout" component={Logout} />
 
-                        <Route exact path="/privacy" component={Privacy} />
+                            <Route exact path="/privacy" component={Privacy} />
 
-                        <Route component={NotFound} />
-                    </Switch>
+                            <Route component={NotFound} />
+                        </Switch>
+                    </div>
+
+                    <Footer />
                 </div>
-
-                <Footer />
-            </div>
-        </Router>
+            </Router>
+        </QueryClientProvider>
     )
 }

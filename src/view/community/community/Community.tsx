@@ -1,6 +1,6 @@
 import { useRouteMatch } from "react-router-dom"
 import React from "react"
-import Feed from "../../../components/feed/Feed"
+import Feed from "../../../components/feed/FeedSkeleton"
 import { Empty, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import CommunityStaff from "../../../components/community/CommunityStaff"
@@ -10,6 +10,8 @@ import DesktopCommunityProfile from "../../../components/community/profile/Deskt
 import MobileCommunityProfile from "../../../components/community/profile/MobileCommunityProfile"
 import CommunityProfileRules from "../../../components/community/rules/CommunityProfileRules"
 import { COMPLETE, LOADING, ERROR } from "../../../api/util/Status"
+import FeedController from "../../../components/feed/controller/FeedController"
+import FocusedPost from "../../../components/feed/post/FocusedPost"
 
 /**
  * A community viewer.
@@ -47,14 +49,19 @@ export default function Community() {
                     <br />
 
                     <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
-                        <Feed
-                            id={`cf_${community.community.id}`}
-                            postBox={
-                                community.selfRole >=
-                                community.community.postRole
-                            }
-                            focus={post}
-                        />
+                        {post && (
+                            <FocusedPost postId={post} feed={community.feed.id} />
+                        )}
+
+                        {!post && (
+                            <FeedController
+                                id={`cf_${community.community.id}`}
+                                usePostbox={
+                                    community.selfRole >=
+                                    community.community.postRole
+                                }
+                            />
+                        )}
 
                         <div className="flex flex-col gap-8">
                             <DesktopCommunityProfile community={community} />

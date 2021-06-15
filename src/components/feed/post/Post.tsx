@@ -10,6 +10,7 @@ import {
     useEditingStatus,
     updatePostContent,
     updatePostTitle,
+    PostResponse,
 } from "../../../api/Feeds"
 import Vote from "../../../api/user/Vote"
 import { User } from "../../../api/user/User"
@@ -23,17 +24,17 @@ import useEmotes from "../../../api/community/useEmotes"
 import useSortChanger from "../SortChanger"
 
 type Props = {
-    post: Post
-    vote: Vote | null
-    author: User
+    postResponse: PostResponse
     type?: string
-    feed: string
 }
 
 /**
  * A post
  */
-export default ({ post, vote, author, type, feed }: Props) => {
+export default ({ postResponse, type }: Props) => {
+    const { post, vote, author } = postResponse
+    const feed = post.feed
+
     const [title, setTitle] = useState(post.title)
     const [content, setContent] = useState(post.content)
 
