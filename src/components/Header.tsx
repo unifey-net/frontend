@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import history from "../api/History"
-import Logo from "./logo"
+import Logo from "./Logo"
 import SelfView from "./view/SelfView"
 
 const Header: React.FC = () => {
