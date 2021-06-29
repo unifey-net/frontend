@@ -3,6 +3,22 @@ import { Link } from "react-router-dom"
 import { API } from "../../api/ApiHandler"
 import { Spin, Alert } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
+import styled from "styled-components"
+
+const CommunityStaffStyle = styled.div`
+    ul {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .green {
+        color: #58de33;
+    }
+
+    .red {
+        color: #de3350;
+    }
+`
 
 /**
  * A communities staff members. This appears as a section of the far right sidebar.
@@ -54,14 +70,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
     }, [id])
 
     return (
-        <div
-            className="accent p-4"
-            style={{
-                maxWidth: "200px",
-            }}
-        >
-            <h2 className="text-lg">Community Staff</h2>
-
+        <CommunityStaffStyle>
             {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
 
             {status.status === 1 && (
@@ -69,7 +78,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
                             let color =
-                                role === 2 ? "text-green-400" : "text-red-700"
+                                role === 2 ? "green" : "red"
 
                             return (
                                 <li key={index}>
@@ -108,7 +117,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                     showIcon
                 />
             )}
-        </div>
+        </CommunityStaffStyle>
     )
 }
 

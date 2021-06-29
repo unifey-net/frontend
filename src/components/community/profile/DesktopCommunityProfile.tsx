@@ -4,6 +4,23 @@ import Text from "antd/lib/typography/Text"
 import { Divider } from "antd"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
 import { Link } from "react-router-dom"
+import styled from "styled-components"
+import CommunityStaff from "../CommunityStaff"
+import CommunityProfileRules from "../rules/CommunityProfileRules"
+
+const DesktopProfileStyle = styled.div`
+    background-color: ${({ theme }) => theme.primary};
+    padding: 16px;
+    border-radius: 32px;
+    height: min-content;
+    max-width: 200px;
+
+    .top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+`
 
 /**
  * A communities profile for Desktop.
@@ -12,14 +29,8 @@ const DesktopCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
     community,
 }) => {
     return (
-        <div
-            className="accent p-4 rounded invisible lg:visible"
-            style={{
-                maxWidth: "200px",
-                height: "min-content",
-            }}
-        >
-            <div className="flex flex-row justify-between items-center -mb-3">
+        <DesktopProfileStyle>
+            <div className="top">
                 {community.selfRole === 4 && (
                     <Link to={`/c/${community.community.name}/moderate`}>
                         Moderate
@@ -34,7 +45,7 @@ const DesktopCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
 
             <Divider />
 
-            <div className="flex flex-row justify-between">
+            <div>
                 <h3 className="text-lg">{community.community.name} </h3>
             </div>
 
@@ -48,16 +59,24 @@ const DesktopCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
 
             <Divider />
 
-            <h3 className="text-lg">Member Count</h3>
+            <h3>Member Count</h3>
             <Text>{community.community.size} members.</Text>
 
             <Divider />
 
-            <h3 className="text-lg">Created On</h3>
+            <h3>Created On</h3>
             <Text>
                 {new Date(community.community.createdAt).toLocaleString()}
             </Text>
-        </div>
+
+            <Divider />
+
+            <h3>Staff Members</h3>
+            <CommunityStaff id={community.community.id} />
+
+            <h3>Rules</h3>
+            <CommunityProfileRules community={community} />
+        </DesktopProfileStyle>
     )
 }
 

@@ -6,12 +6,32 @@ import Text from "antd/lib/typography/Text"
 import { message, Divider } from "antd"
 import { API } from "../../../api/ApiHandler"
 import UserProfileInput from "./UserProfileInput"
+import styled from "styled-components"
+import { desktopMedia } from "../../../api/util/Media"
 
-type Props = {
-    user: User
-}
+const UserProfileStyle = styled.div<{ mobile: boolean }>`
+    padding: 1rem;
+    border-radius: 0.25rem;
+    height: min-content:
+    max-width: 200px;
 
-const UserProfile: React.FC<{ user: User }> = ({ user }) => {
+    .username-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    
+        .edit {
+            margin-top: 0.5rem;
+        }
+    }
+
+    ${({ mobile }) =>
+        mobile
+            ? `visibility: hidden; ${desktopMedia("visiblity: visible;")}`
+            : `visibility: visible; ${desktopMedia("visiblity: hidden;")}`}
+`
+
+const UserProfile: React.FC<{ user: User, type?: "mobile" }> = ({ user, type }) => {
     let [editing, setEditing] = useState(false)
     let self = useSelector((state: any) => state.auth.user)
 
@@ -80,19 +100,13 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
     }
 
     return (
-        <div
-            className="p-4 accent rounded invisible lg:visible"
-            style={{
-                maxWidth: "200px",
-                height: "min-content",
-            }}
-        >
-            <div className="flex flex-row justify-between">
-                <h3 className="text-lg">{user.username}</h3>
+        <UserProfileStyle mobile={type === "mobile"}>
+            <div className="username-container">
+                <h3>{user.username}</h3>
 
                 {self.id === user.id && (
                     <EditOutlined
-                        className="mt-2"
+                        className="edit"
                         onClick={() => setEditing(prev => !prev)}
                     />
                 )}
@@ -108,7 +122,7 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
 
             <Divider />
 
-            <h3 className="text-lg">Joined On</h3>
+            <h3>Joined On</h3>
             <Text>{new Date(user.createdAt).toLocaleString()}</Text>
 
             <Divider />
@@ -128,7 +142,7 @@ const UserProfile: React.FC<{ user: User }> = ({ user }) => {
                 editing={editing}
                 update={updateDiscord}
             />
-        </div>
+        </UserProfileStyle>
     )
 }
 

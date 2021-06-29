@@ -1,15 +1,24 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import styled from "styled-components"
+
+const SupportStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 16rem;
+    margin-right: 16rem;
+`
 
 const Support = () => {
     return (
-        <div className="flex flex-col items-center mx-64">
-            <h1 className="text-6xl">Unifey Support</h1>
+        <SupportStyle>
+            <h1>Unifey Support</h1>
             <p>
                 At the moment, you can contact us through our
                 <Link to="/discord"> Discord</Link>.
             </p>
-        </div>
+        </SupportStyle>
     )
 }
 

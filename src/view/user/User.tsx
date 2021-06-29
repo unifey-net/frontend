@@ -15,6 +15,42 @@ import UserBadges from "../../components/user/UserBadges"
 import { useDefaultEmotes } from "../../api/community/useEmotes"
 import FeedController from "../../components/feed/controller/FeedController"
 import FocusedPost from "../../components/feed/post/FocusedPost"
+import styled from "styled-components"
+import DefaultContainer from "../../components/DefaultContainer"
+import { desktopMedia, media } from "../../api/util/Media"
+
+const UserStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .row-two {
+        display: flex;
+        flex-direction: row;
+        gap: 4rem;
+    }
+
+    .row-one {
+        display: flex;
+        flex-direction: row;
+        gap: 4rem;
+
+        h1 {
+            font-size: 1.875rem;
+            line-height: 2.25rem;
+
+            ${desktopMedia(`
+                font-size: 2.25rem;
+                line-height: 2.5rem;
+            `)}
+        }
+
+        .mobile-profile {
+            ${media("display: block;", "display: none;", "display: none;")}
+        }
+    }
+`
 
 export default function User() {
     const {
@@ -60,38 +96,34 @@ export default function User() {
 
     if (!loaded.loaded)
         return (
-            <div className="flex flex-col items-center justify-center">
-                <div className="empty-container">
-                    <Spin indicator={<LoadingOutlined />}></Spin>
-                </div>
-            </div>
+            <DefaultContainer>
+                <Spin indicator={<LoadingOutlined />}></Spin>
+            </DefaultContainer>
         )
 
     if (loaded.error && loaded.loaded) {
         return (
-            <div className="flex flex-col items-center justify-center">
-                <div className="empty-container">
-                    <Empty description={"That user could not be found."} />
-                </div>
-            </div>
+            <DefaultContainer>
+                <Empty description={"That user could not be found."} />
+            </DefaultContainer>
         )
     }
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <div className="flex flex-col lg:block">
-                <h1 className="text-3xl lg:text-4xl">
+        <UserStyle>
+            <div className="row-one">
+                <h1>
                     {user.username}{" "}
                     <Avatar size={64} src={getImageUrl(user.username)} />
                     <UserBadges badges={user.badges} />
                 </h1>
 
-                <div className="block mb-6 lg:hidden">
-                    <UserProfile user={user} />
+                <div className="mobile-profile">
+                    <UserProfile user={user} type="mobile" />
                 </div>
             </div>
 
-            <div className="block lg:flex lg:flex-row lg:justify-between lg:gap-16">
+            <div className="row-two">
                 {!post && (
                     <FeedController
                         id={`uf_${user.id}`}
@@ -102,6 +134,6 @@ export default function User() {
 
                 <UserProfile user={user} />
             </div>
-        </div>
+        </UserStyle>
     )
 }

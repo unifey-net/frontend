@@ -11,8 +11,9 @@ import {
 } from "../../../redux/actions/feeds.actions"
 import community from "../../../redux/reducers/community.reducer"
 import FeedSkeleton from "../FeedSkeleton"
-import PostBox from "../PostBox"
+import PostBox from "../useCreatePost"
 import useSortChanger from "../SortChanger"
+import useCreatePost from "../useCreatePost"
 
 const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, usePostbox }) => {
     console.log(`${id} using PostBox: ${usePostbox}`)
@@ -96,25 +97,26 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
         }
     }, [status, loadMore])
 
+    const [modal, createPost] = useCreatePost(feed?.feed.id!!, () => {
+        dispatch(feedClear(id))
+        loadMore()
+    }) 
+
     const onReload = () => dispatch(feedClear(id))
 
     return (
-        <FeedSkeleton
-            loadMore={loadMore}
-            posts={feed?.posts === undefined ? [] : feed?.posts!!}
-            hasMore={() => feed?.feed.pageCount!! > feed?.page!!}
-            onReload={onReload}
-            changeSort={button}
-            postBox={
-                usePostbox ? <PostBox
-                    feed={id}
-                    action={() => {
-                        dispatch(feedClear(id))
-                        loadMore()
-                    }}
-                /> : <></>
-            }
-        />
+        <>
+            {usePostbox ? modal : <></>}
+            <FeedSkeleton
+                loadMore={loadMore}
+                posts={feed?.posts === undefined ? [] : feed?.posts!!}
+                hasMore={() => feed?.feed.pageCount!! > feed?.page!!}
+                onReload={onReload}
+                changeSort={button}
+                createPost={usePostbox ? createPost : undefined}
+                currentSort={sort}
+            />
+        </>
     )
 }
 

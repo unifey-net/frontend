@@ -1,9 +1,8 @@
 import React from "react"
 import { Route, Router, Switch } from "react-router-dom"
 
-import "./assets/scss/base.scss"
-import "./assets/main.css"
-
+import "antd/dist/antd.dark.css"
+ 
 import Community from "./view/community/community/Community"
 import Tos from "./view/Tos"
 import About from "./view/about/About"
@@ -28,29 +27,26 @@ import Privacy from "./view/Privacy"
 import ModerateCommunity from "./view/community/community/ModerateCommunity"
 import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
-import useTheme from "./components/useTheme"
 import { Toaster } from "react-hot-toast"
-import { QueryClient, QueryClientProvider } from "react-query"
-
-const queryClient = new QueryClient()
+import { ThemeProvider } from "styled-components"
+import GlobalStyle from "./util/GlobalStyle"
+import theme from "./util/Theme"
 
 export default function App() {
     const dispatch = useDispatch()
 
     if (isExpired()) dispatch(logOut())
 
-    const [clazz, file] = useTheme()
-
     return (
-        <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+            <GlobalStyle/>
             <Router history={history}>
-                <link rel="stylesheet" type="text/css" href={file} />
-                <div className={clazz}>
+                <div className="page-container">
                     <Header />
 
                     <Toaster />
 
-                    <div className="content-container px-8 lg:px-0">
+                    <div className="content-container">
                         <Switch>
                             <Route
                                 path="/c/:name/moderate"
@@ -125,6 +121,6 @@ export default function App() {
                     <Footer />
                 </div>
             </Router>
-        </QueryClientProvider>
+        </ThemeProvider>
     )
 }

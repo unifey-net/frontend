@@ -22,11 +22,66 @@ import { stopEditing } from "../../../redux/actions/editor.actions"
 import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
 import useSortChanger from "../SortChanger"
+import styled from "styled-components"
+import PostTag from "./PostTag"
+import { media } from "../../../api/util/Media"
 
 type Props = {
     postResponse: PostResponse
     type?: string
 }
+
+const PostStyle = styled.div`
+    background-color: ${({ theme }) => theme.primary};
+    ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
+    border-radius: 32px;
+
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+
+    .post-header {
+        padding-right: 32px;
+        padding-left: 32px;
+        padding-top: 16px;
+
+        .post-title {
+            color: white;
+        }
+
+        .user-view {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            gap: 8px;
+        }
+
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        background-color: ${({ theme }) => theme.secondary};
+        border-radius: 32px 32px 0 0;
+    }
+
+    .post-content {
+        padding: 16px;
+    }
+
+    .post-footer {
+        justify-content: space-between;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 16px;
+        display: flex;
+        flex-direction: row;
+        background-color: ${({ theme }) => theme.secondary};
+        border-radius: 0 0 32px 32px;
+    }
+`
 
 /**
  * A post
@@ -112,103 +167,55 @@ export default ({ postResponse, type }: Props) => {
     }
 
     return (
-        <>
-            <div
-                className={
-                    (type === "focused" ? "p-4" : "px-4 pt-4") +
-                    " accent rounded my-4 max-w-xs md:max-w-sm lg:max-w-md"
-                }
-            >
-                <div className="flex flex-row justify-between">
-                    {type !== "focused" && (
-                        <span
-                            className="text-lg text-blue-400 hover:text-blue-600 cursor-pointer"
-                            onClick={() => updateFocus()}
-                        >
-                            {post.title}
-                        </span>
-                    )}
+        <PostStyle>
+            <div className="post-header">
+                <div className="user-view">
+                    <p>{author.username}</p>
 
-                    {type === "focused" && (
-                        <>
-                            {editing && (
-                                <Input
-                                    id={`${post.id}_${author.id}_title`}
-                                    defaultValue={title}
-                                    style={{
-                                        marginBottom: ".5rem",
-                                    }}
-                                />
-                            )}
-
-                            {!editing && <p className="text-lg">{title}</p>}
-                        </>
-                    )}
-
-                    <UserView username={author.username} />
-                </div>
-                <div className="post-content">
-                    {editing && (
-                        <>
-                            <TextArea
-                                id={`${post.id}_${author.id}_content`}
-                                defaultValue={content}
-                                style={{
-                                    marginBottom: ".5rem",
-                                }}
-                            />
-
-                            <Button
-                                type="primary"
-                                onClick={editUpdate}
-                                style={{
-                                    marginBottom: ".5rem",
-                                }}
-                            >
-                                Update
-                            </Button>
-                        </>
-                    )}
-
-                    {!editing && (
-                        <p
-                            className={type === "focused" ? "" : "truncate"}
-                            dangerouslySetInnerHTML={{
-                                __html: parseBody(content, emotes),
-                            }}
-                        />
-                    )}
-                </div>
-                <div className="flex flex-row justify-between gap-4">
-                    <PostVote post={post} vote={vote} />
-
-                    <PostAbout date={post.createdAt} />
-
-                    <PostManagement type="post" object={post} />
+                    <PostTag>Tag</PostTag>
                 </div>
 
-                {type === "focused" && (
-                    <>
-                        <div className="flex flex-row justify-between">
-                            <PostReply
-                                post={post.id}
-                                id={post.id}
-                                level={0}
-                                feed={post.feed}
-                            />
+                <span className="post-title" onClick={() => updateFocus()}>
+                    {post.title}
+                </span>
 
-                            {button}
-                        </div>
-
-                        <PostComments
-                            feed={post.feed}
-                            id={post.id}
-                            sort={sort}
-                            data={null}
-                        />
-                    </>
-                )}
+                <PostAbout date={post.createdAt} />
             </div>
-        </>
+            <div className="post-content">
+                <p
+                    className="post-body"
+                    dangerouslySetInnerHTML={{
+                        __html: parseBody(content, emotes),
+                    }}
+                />
+            </div>
+            <div className="post-footer">
+                <PostVote post={post} vote={vote} />
+
+                <PostManagement type="post" object={post} />
+            </div>
+
+            {/* {type === "focused" && (
+                <>
+                    <div className="flex flex-row justify-between">
+                        <PostReply
+                            post={post.id}
+                            id={post.id}
+                            level={0}
+                            feed={post.feed}
+                        />
+
+                        {button}
+                    </div>
+
+                    <PostComments
+                        feed={post.feed}
+                        id={post.id}
+                        sort={sort}
+                        data={null}
+                    />
+                </>
+            )} */}
+        </PostStyle>
     )
 }

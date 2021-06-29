@@ -5,8 +5,8 @@ import React from "react"
  */
 const PostAbout: React.FC<{ date: number }> = ({ date }) => {
     return (
-        <span className="invisible lg:visible">
-            Posted on {new Date(date).toLocaleString()}
+        <span className="post-creation-date">
+            {new Date(date).toLocaleString()}
         </span>
     )
 }

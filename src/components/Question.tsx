@@ -1,4 +1,5 @@
 import React from "react"
+import styled from "styled-components"
 
 type Props = {
     question: string
@@ -11,7 +12,7 @@ type Props = {
 const Question: React.FC<Props> = ({ question, answer }) => {
     return (
         <div>
-            <h1 className="text-lg">{question}</h1>
+            <h2 className="text-lg">{question}</h2>
             {answer}
         </div>
     )

@@ -5,7 +5,24 @@ import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 
 import Community from "../../../components/community/communities/Community"
-import PageHeader from "../../../components/PageHeader"
+import DefaultContainer from "../../../components/DefaultContainer"
+import styled from "styled-components"
+
+const CommunitiesStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .communities {
+        max-width: 600px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+`
 
 /**
  * The /communities page.
@@ -44,29 +61,28 @@ const Communities = () => {
               }
             : {}
 
+    if (!loaded) {
+        return <DefaultContainer>
+            <Spin indicator={<LoadingOutlined />} />
+        </DefaultContainer>
+    }
+
     return (
-        <div className="flex flex-col items-center justify-center">
-            <PageHeader>Top Communities</PageHeader>
+        <CommunitiesStyle>
+            <h1>Top Communities</h1>
 
-            {!loaded && (
-                <Spin
-                    style={{ marginTop: "4rem" }}
-                    indicator={<LoadingOutlined />}
-                />
+            {communities.length === 0 && loaded && (
+                <Empty description="There aren't any communities available." />
             )}
-
-            {communities.length === 0 && loaded && <Empty />}
 
             {communities.length !== 0 && loaded && (
-                <ul className="flex flex-col max-w-sm">
+                <div className="communities">
                     {communities.map((community, index) => (
-                        <li key={index} style={getStyle(index)}>
-                            <Community index={index} community={community} />
-                        </li>
+                        <Community index={index} community={community} />
                     ))}
-                </ul>
+                </div>
             )}
-        </div>
+        </CommunitiesStyle>
     )
 }
 

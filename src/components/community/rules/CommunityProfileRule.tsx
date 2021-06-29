@@ -1,11 +1,32 @@
 import React, { useState } from "react"
 import { Rule } from "./CommunityProfileRules"
 import { CaretDownOutlined, CaretRightOutlined } from "@ant-design/icons"
+import styled from "styled-components"
 
 type Props = {
     rule: Rule
     index: number
 }
+
+const CommunityProfileStyle = styled.div`
+    .rule {
+        display: flex;
+        flex-direction: row;
+
+        gap: 2px;
+        justify-content: space-between;
+
+        .title {
+            display: flex;
+            flex-direction: row;
+
+            gap: 2px;
+        }
+    }
+
+    .rule-body {
+    }
+`
 
 /**
  * An individual rule for a community.
@@ -28,21 +49,18 @@ const CommunityProfileRule: React.FC<Props> = ({ rule, index }) => {
     )
 
     return (
-        <li>
-            <div className="divider"></div>
-            <h3 className={`text-base text-gray-300 my-2 transition`}>
-                <div className="flex flex-row gap-2 text-sm -mb-4 justify-between">
-                    <div className="flex flex-row gap-2">
-                        <p className="">#{index + 1}.</p>
-                        <p>{rule.title}</p>
-                    </div>
-
-                    {caret}
+        <CommunityProfileStyle>
+            <div className="rule">
+                <div className="title">
+                    <p className="">#{index + 1}.</p>
+                    <p>{rule.title}</p>
                 </div>
 
-                {extended && <p className="text-sm p-2">{rule.body}</p>}
-            </h3>
-        </li>
+                {caret}
+            </div>
+
+            {extended && <p className="rule-body">- {rule.body}</p>}
+        </CommunityProfileStyle>
     )
 }
 

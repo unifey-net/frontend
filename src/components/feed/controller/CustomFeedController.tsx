@@ -24,7 +24,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     const [maxPage, setMaxPage] = useState(-1)
     const [posts, setPosts] = useState([] as PostResponse[])
 
-    const [sort, button] = useSortChanger("NEW", sort => {
+    const [sort, changeSort] = useSortChanger("NEW", sort => {
         setPosts([])
         setPage(1)
         loadMore()
@@ -63,9 +63,9 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
         <FeedSkeleton
             loadMore={loadMore}
             hasMore={() => maxPage > page}
-            postBox={<></>}
             onReload={() => {}}
-            changeSort={button}
+            currentSort={sort}
+            changeSort={changeSort}
             posts={posts}
         />
     )
