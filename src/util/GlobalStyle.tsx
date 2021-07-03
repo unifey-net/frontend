@@ -86,6 +86,10 @@ export default createGlobalStyle<{ theme: ThemeType }>`
         color: #5b5bdc;
     }
 
+    a {
+        color: #5190f5;
+    }
+
     .anticon {
         vertical-align: 0 !important;
     }
