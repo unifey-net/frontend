@@ -1,17 +1,8 @@
 import React from "react"
-import CommunityManage from "../../feed/CommunityManage"
-import Text from "antd/lib/typography/Text"
-import { Divider } from "antd"
-import { EditOutlined, EditFilled } from "@ant-design/icons"
-import useEditCommunity from "../../../api/community/useEditCommunity"
-import { useDispatch } from "react-redux"
-import {
-    stopEditing,
-    startEditing,
-} from "../../../redux/actions/editor.actions"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
-import JoinCommunity from "./JoinCommunity"
-import styled, { ThemeContext } from "styled-components"
+import styled from "styled-components"
+import CommunityStaff from "../CommunityStaff"
+import CommunityProfileRules from "../rules/CommunityProfileRules"
 
 const MobileCommunityProfileStyle = styled.div`
     background-color: #191919;
@@ -26,16 +17,14 @@ const MobileCommunityProfileStyle = styled.div`
     align-items: center;
     justify-content: center;
 
-    .pair {
-        h4 {
-            font-size: 12px;
-            font-weight: normal;
-            color: #696761;
-        }
+    h4 {
+        font-size: 12px;
+        font-weight: normal;
+        color: #696761;
+    }
 
-        p {
-            color: white;
-        }
+    p {
+        color: white;
     }
 `
 
@@ -43,13 +32,10 @@ const MobileCommunityProfileStyle = styled.div`
  * A community profile for mobile.
  */
 const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ community }) => {
-    const dispatch = useDispatch()
-    const editing = useEditCommunity(community.community.id)
-
     return (
         <MobileCommunityProfileStyle>
             <div>
-                <div className="pair">
+                <div>
                     <h4>Description</h4>
                     <p
                         dangerouslySetInnerHTML={{
@@ -58,12 +44,12 @@ const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ com
                     />
                 </div>
 
-                <div className="pair">
+                <div>
                     <h4>Member Count</h4>
                     <p>{community.community.size} members.</p>
                 </div>
 
-                <div className="pair">
+                <div>
                     <h4>Created On</h4>
                     <p>
                         {new Date(
@@ -71,6 +57,12 @@ const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ com
                         ).toLocaleString()}
                     </p>
                 </div>
+
+                <h4>Staff Members</h4>
+                <CommunityStaff id={community.community.id} />
+
+                <h4>Rules</h4>
+                <CommunityProfileRules community={community} />
             </div>
         </MobileCommunityProfileStyle>
     )
