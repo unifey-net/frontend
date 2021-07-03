@@ -38,6 +38,7 @@ const CommunityStyle = styled.div<{ mobileSection: number }>`
         border-radius: 4px;
         margin-left: 16px;
         margin-right: 16px;
+        margin-bottom: 16px;
 
         .community-name {
             margin-top: 48px;
