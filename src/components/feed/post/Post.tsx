@@ -27,11 +27,11 @@ import PostTag from "./PostTag"
 import { media } from "../../../api/util/Media"
 
 type Props = {
-    postResponse: PostResponse
-    type?: string
+    postResponse: PostResponse,
+    allowFocusChange?: boolean
 }
 
-const PostStyle = styled.div`
+const PostStyle = styled.div<{ allowFocusChange: boolean }>`
     background-color: ${({ theme }) => theme.primary};
     ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
     border-radius: 32px;
@@ -47,6 +47,7 @@ const PostStyle = styled.div`
 
         .post-title {
             color: white;
+            cursor: ${({ })};
         }
 
         .user-view {
@@ -86,7 +87,7 @@ const PostStyle = styled.div`
 /**
  * A post
  */
-export default ({ postResponse, type }: Props) => {
+export default ({ postResponse, allowFocusChange }: Props) => {
     const { post, vote, author } = postResponse
     const feed = post.feed
 
@@ -96,8 +97,6 @@ export default ({ postResponse, type }: Props) => {
     let emotes = useEmotes()
     const editing = useEditingStatus(post.id)
     const dispatch = useDispatch()
-
-    const [sort, button] = useSortChanger("TOP")
 
     /**
      * Complete editing.
@@ -163,59 +162,40 @@ export default ({ postResponse, type }: Props) => {
      * Update focus.
      */
     const updateFocus = () => {
-        History.push(`${window.location.pathname}/${post.id}`)
+        if (allowFocusChange)
+            History.push(`${window.location.pathname}/${post.id}`)
     }
 
     return (
-        <PostStyle>
-            <div className="post-header">
-                <div className="user-view">
-                    <p>{author.username}</p>
+        <>
+            <PostStyle allowFocusChange={allowFocusChange === true}>
+                <div className="post-header">
+                    <div className="user-view">
+                        <p>{author.username}</p>
 
-                    <PostTag>Tag</PostTag>
-                </div>
-
-                <span className="post-title" onClick={() => updateFocus()}>
-                    {post.title}
-                </span>
-
-                <PostAbout date={post.createdAt} />
-            </div>
-            <div className="post-content">
-                <p
-                    className="post-body"
-                    dangerouslySetInnerHTML={{
-                        __html: parseBody(content, emotes),
-                    }}
-                />
-            </div>
-            <div className="post-footer">
-                <PostVote post={post} vote={vote} />
-
-                <PostManagement type="post" object={post} />
-            </div>
-
-            {/* {type === "focused" && (
-                <>
-                    <div className="flex flex-row justify-between">
-                        <PostReply
-                            post={post.id}
-                            id={post.id}
-                            level={0}
-                            feed={post.feed}
-                        />
-
-                        {button}
+                        <PostTag>Tag</PostTag>
                     </div>
 
-                    <PostComments
-                        feed={post.feed}
-                        id={post.id}
-                        sort={sort}
-                        data={null}
+                    <span className="post-title" onClick={() => updateFocus()}>
+                        {post.title}
+                    </span>
+
+                    <PostAbout date={post.createdAt} />
+                </div>
+                <div className="post-content">
+                    <p
+                        className="post-body"
+                        dangerouslySetInnerHTML={{
+                            __html: parseBody(content, emotes),
+                        }}
                     />
-                </>
-            )} */}
-        </PostStyle>
+                </div>
+                <div className="post-footer">
+                    <PostVote post={post} vote={vote} />
+
+                    <PostManagement type="post" object={post} />
+                </div>
+            </PostStyle>
+        </>
     )
 }

@@ -18,6 +18,7 @@ import DefaultContainer from "../../../components/DefaultContainer"
 import JoinCommunity from "../../../components/community/profile/JoinCommunity"
 import { media } from "../../../api/util/Media"
 import { useState } from "react"
+import Post from "../../../components/feed/post/Post"
 
 const CommunityStyle = styled.div<{ mobileSection: number }>`
     display: flex;
@@ -153,6 +154,8 @@ export default function Community() {
         params: { name, post },
     } = useRouteMatch()
 
+    console.log(post)
+
     let [mobileSection, setMobileSection] = useState(0)
     let [community, status] = useCommunity(name)
 
@@ -198,13 +201,22 @@ export default function Community() {
 
                 <div className="feed-details-container">
                     <div className="feed-section">
-                        <FeedController
-                            id={`cf_${community.community.id}`}
-                            usePostbox={
-                                community.selfRole >=
-                                community.community.postRole
-                            }
-                        />
+                        {!post && (
+                            <FeedController
+                                id={`cf_${community.community.id}`}
+                                usePostbox={
+                                    community.selfRole >=
+                                    community.community.postRole
+                                }
+                            />
+                        )}
+
+                        {post && (
+                            <FocusedPost
+                                postId={post}
+                                feed={community.feed.id}
+                            />
+                        )}
                     </div>
 
                     <div className="mobile-about-section">
@@ -216,8 +228,12 @@ export default function Community() {
                     </div>
 
                     <div className="mobile-context">
-                        <button onClick={() => setMobileSection(0)}>Feed</button>
-                        <button onClick={() => setMobileSection(1)}>About</button>
+                        <button onClick={() => setMobileSection(0)}>
+                            Feed
+                        </button>
+                        <button onClick={() => setMobileSection(1)}>
+                            About
+                        </button>
                     </div>
                 </div>
             </>

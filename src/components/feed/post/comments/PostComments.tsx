@@ -23,36 +23,33 @@ const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
     const [maxPage, setMaxPage] = useState(0)
     const [commentSize, setCommentSize] = useState(0) // the amount of comments the post has
 
-    const loadMore = useCallback(
-        async (maxPg: number, pg: number) => {
-            if (maxPg !== 0 && pg > maxPage) return
+    const loadMore = async (maxPg: number, pg: number) => {
+        if (maxPg !== 0 && pg > maxPage) return
 
-            let url =
-                typeof comment == undefined
-                    ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${pg}`
-                    : `/feeds/${feed}/post/${id}/comments?page=${pg}&sort=${
-                          sort ? sort : "NEW"
-                      }`
+        let url =
+            typeof comment == undefined
+                ? `/feeds/${feed}/post/${id}/comments/${comment}?page=${pg}`
+                : `/feeds/${feed}/post/${id}/comments?page=${pg}&sort=${
+                      sort ? sort : "NEW"
+                  }`
 
-            let req = await API.get(url)
+        let req = await API.get(url)
 
-            if (req.status === 200) {
-                const { pages, amount, comments } = req.data
+        if (req.status === 200) {
+            const { pages, amount, comments } = req.data
 
-                if (pages !== 0) {
-                    setPage(prev => prev + 1)
-                    setMaxPage(pages)
-                    setCommentSize(amount)
-                    setComments(prev => [...prev, ...comments])
-                } else {
-                    setMaxPage(0)
-                }
+            if (pages !== 0) {
+                setPage(prev => prev + 1)
+                setMaxPage(pages)
+                setCommentSize(amount)
+                setComments(prev => [...prev, ...comments])
+            } else {
+                setMaxPage(0)
             }
+        }
 
-            setLoaded(true)
-        },
-        [comment, feed, id, maxPage, sort]
-    )
+        setLoaded(true)
+    }
 
     useEffect(() => {
         if (data == null) {
@@ -68,7 +65,7 @@ const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
 
             setLoaded(true)
         }
-    }, [data, loadMore])
+    }, [data])
 
     useEffect(() => {
         if (sort !== initialSort && sort) {
