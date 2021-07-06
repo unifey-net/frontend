@@ -8,7 +8,6 @@ const CommunityStyle = styled.div`
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 16px;
-    margin-right: 16px;
     padding: 16px;
     border-radius: 16px;
     background-color: ${({ theme }) => theme.primary};
@@ -20,10 +19,6 @@ const CommunityStyle = styled.div`
 
         border-radius: 2px;
         border-bottom: 2px solid ${({ theme }) => theme.background};
-    }
-
-    h1 {
-        margin-right: 4px;
     }
 `
 

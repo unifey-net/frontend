@@ -33,7 +33,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     /**
      * Load another post.
      */
-    const loadMore = useCallback(async () => {
+    const loadMore = async () => {
         if (maxPage === 0 || (maxPage !== -1 && page > maxPage)) return
 
         const feed = await getCustomFeed(url, sort, page)
@@ -48,12 +48,12 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
         } else {
             setStatus({ status: ERROR, message: feed.data.payload })
         }
-    }, [maxPage, page, sort, url])
+    }
 
     // init load
     useEffect(() => {
         loadMore()
-    }, [loadMore])
+    }, [])
 
     if (status.status === LOADING) {
         return <Spin indicator={<LoadingOutlined/>} />

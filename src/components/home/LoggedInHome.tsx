@@ -20,9 +20,9 @@ const LoggedInHomeStyle = styled.div`
                 align-items: center;
                 flex-direction: column-reverse;
                 
-
                 .side-community-bar {
                     text-align: center;
+                    min-width: 300px;
                 }
             `,
             "flex-direction: row;",
@@ -34,6 +34,10 @@ const LoggedInHomeStyle = styled.div`
             background-color: ${({ theme }) => theme.primary};
             border-radius: 32px;
             padding: 16px;
+
+            div {
+                background-color: ${({ theme }) => theme.secondary};
+            }
         }
     }
 `
