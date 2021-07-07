@@ -75,8 +75,8 @@ const LoggedInHome: React.FC = () => {
                 {communities.length !== 0 && (
                     <div>
                         <div className="side-community-bar">
-                            {communities.map(community => (
-                                <Community community={community} />
+                            {communities.map((community, index) => (
+                                <Community community={community} key={index} />
                             ))}
                         </div>
                     </div>

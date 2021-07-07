@@ -118,7 +118,7 @@ const FeedSkeleton: React.FC<Props> = ({
 
                 <Empty
                     style={{ minWidth: "200px" }}
-                    description={<p>There are no posts in this feed.</p>}
+                    description={"There are no posts in this feed."}
                 />
             </div>
         )
