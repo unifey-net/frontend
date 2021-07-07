@@ -2,7 +2,6 @@ import { useRouteMatch } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 
 import { getUserByName, signedIn, getImageUrl } from "../../api/user/User"
-import Feed from "../../components/feed/FeedSkeleton"
 
 import { Empty, Spin } from "antd"
 import Avatar from "antd/es/avatar"
@@ -130,6 +129,7 @@ export default function User() {
                         usePostbox={signedIn()}
                     />
                 )}
+
                 {post && <FocusedPost postId={post} feed={`uf_${user.id}`} />}
 
                 <UserProfile user={user} />

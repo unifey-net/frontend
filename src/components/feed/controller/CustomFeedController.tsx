@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react"
-import PostJsx from "../post/Post"
-import { Spin, Alert, Empty } from "antd"
+import React, { useEffect, useState } from "react"
+import { Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { PostResponse } from "../../../api/Feeds"
-import LinkButton from "../../LinkButton"
 import useSortChanger from "../SortChanger"
-import InfiniteScroll from "react-infinite-scroll-component"
 import {
     CustomFeedResponse,
     getCustomFeed,
@@ -53,6 +50,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     // init load
     useEffect(() => {
         loadMore()
+        // eslint-disable-next-line
     }, [])
 
     if (status.status === LOADING) {

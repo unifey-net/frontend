@@ -2,16 +2,14 @@ import React from "react"
 import { useCallback, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { API } from "../../../api/ApiHandler"
-import { getFeedPosts, useFeed } from "../../../api/Feeds"
+import { useFeed } from "../../../api/Feeds"
 import {
     bumpPage,
     changeSort,
     feedClear,
     loadPost,
 } from "../../../redux/actions/feeds.actions"
-import community from "../../../redux/reducers/community.reducer"
 import FeedSkeleton from "../FeedSkeleton"
-import PostBox from "../useCreatePost"
 import useSortChanger from "../SortChanger"
 import useCreatePost from "../useCreatePost"
 
@@ -79,7 +77,7 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
             }
 
             case 401: {
-                // TODO
+                // TODO: separate error for no permission.
 
                 break
             }
@@ -107,6 +105,7 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
     return (
         <>
             {usePostbox ? modal : <></>}
+
             <FeedSkeleton
                 loadMore={loadMore}
                 posts={feed?.posts === undefined ? [] : feed?.posts!!}

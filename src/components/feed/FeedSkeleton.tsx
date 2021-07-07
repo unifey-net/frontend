@@ -145,7 +145,7 @@ const FeedSkeleton: React.FC<Props> = ({
             >
                 <FeedContainer>
                     {posts.map((post, index) => (
-                        <PostJsx postResponse={post} />
+                        <PostJsx key={index} allowFocusChange={true} postResponse={post} />
                     ))}
                 </FeedContainer>
             </InfiniteScroll>

@@ -9,10 +9,9 @@ import GeneralSettings from "../../../components/community/moderate/general/Gene
 import useQueryParameterTabs from "../../../components/useQueryParameterTabs"
 import NotFound from "../../NotFound"
 import CommunityRules from "../../../components/community/moderate/rules/CommunityRules"
-import { COMPLETE, ERROR, LOADING } from "../../../api/util/Status"
+import { ERROR, LOADING } from "../../../api/util/Status"
 import styled from "styled-components"
 import DefaultContainer from "../../../components/DefaultContainer"
-import { media } from "../../../api/util/Media"
 
 const { TabPane } = Tabs
 

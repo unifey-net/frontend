@@ -1,27 +1,13 @@
-import React, { useState } from "react"
-import { message, Button, Input } from "antd"
-import { useDispatch } from "react-redux"
-import PostComments from "./comments/PostComments"
+import React from "react"
 import PostVote from "./PostVote"
 import History from "../../../api/History"
-import PostReply from "./PostReply"
 import {
-    Post,
-    useEditingStatus,
-    updatePostContent,
-    updatePostTitle,
     PostResponse,
 } from "../../../api/Feeds"
-import Vote from "../../../api/user/Vote"
-import { User } from "../../../api/user/User"
 import { parseBody } from "../../../api/Emotes"
 import PostAbout from "./PostAbout"
-import UserView from "../../view/UserView"
 import PostManagement from "./PostManagement"
-import { stopEditing } from "../../../redux/actions/editor.actions"
-import TextArea from "antd/lib/input/TextArea"
 import useEmotes from "../../../api/community/useEmotes"
-import useSortChanger from "../SortChanger"
 import styled from "styled-components"
 import PostTag from "./PostTag"
 import { media } from "../../../api/util/Media"
@@ -89,74 +75,7 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
  */
 export default ({ postResponse, allowFocusChange }: Props) => {
     const { post, vote, author } = postResponse
-    const feed = post.feed
-
-    const [title, setTitle] = useState(post.title)
-    const [content, setContent] = useState(post.content)
-
     let emotes = useEmotes()
-    const editing = useEditingStatus(post.id)
-    const dispatch = useDispatch()
-
-    /**
-     * Complete editing.
-     */
-    const completeEditing = () => {
-        dispatch(stopEditing())
-    }
-
-    /**
-     * When the post content changes.
-     */
-    const onContentChange = async (data: string) => {
-        if (data === title || data === "") {
-            return
-        }
-
-        let request = await updatePostContent(feed, post.id, data)
-
-        if (request.status !== 200) {
-            message.error(request.data.payload)
-        } else {
-            message.success("Content has been successfully changed!")
-        }
-
-        setContent(data)
-    }
-
-    /**
-     * When the post title changes.
-     */
-    const onTitleChange = async (data: string) => {
-        if (data === title || data === "") {
-            return
-        }
-
-        let request = await updatePostTitle(feed, post.id, data)
-
-        if (request.status !== 200) {
-            message.error("There was an issue updating the title")
-        } else {
-            message.success("Title has been successfully changed!")
-        }
-
-        setTitle(data)
-    }
-
-    const editUpdate = async () => {
-        let content = document.getElementById(
-            `${post.id}_${author.id}_content`
-        ) as HTMLInputElement
-
-        let title = document.getElementById(
-            `${post.id}_${author.id}_title`
-        ) as HTMLInputElement
-
-        onContentChange(content.value)
-        onTitleChange(title.value)
-
-        completeEditing()
-    }
 
     /**
      * Update focus.
@@ -186,7 +105,7 @@ export default ({ postResponse, allowFocusChange }: Props) => {
                     <p
                         className="post-body"
                         dangerouslySetInnerHTML={{
-                            __html: parseBody(content, emotes),
+                            __html: parseBody(post.content, emotes),
                         }}
                     />
                 </div>

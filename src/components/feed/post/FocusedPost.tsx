@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { Spin, Button } from "antd"
 import { LoadingOutlined, ArrowLeftOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux"
-import { getPost, PostResponse } from "../../../api/Feeds"
 import History from "../../../api/History"
 import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
@@ -33,7 +32,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed 
             let req = await API.get(`/feeds/${feed}/post/${postId}`)
 
             if (req.status === 200) {
-                dispatch(updatePost(post))
+                dispatch(updatePost(postId))
                 setPost(req.data)
             }
 
@@ -41,7 +40,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed 
         }
 
         loadPost()
-    }, [postId, feed])
+    }, [postId, feed, dispatch])
 
     if (!loaded) {
         return <Spin indicator={<LoadingOutlined />} />

@@ -1,24 +1,19 @@
 import { useRouteMatch } from "react-router-dom"
 import React from "react"
-import Feed from "../../../components/feed/FeedSkeleton"
 import { Empty, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import CommunityStaff from "../../../components/community/CommunityStaff"
 import { useCommunity } from "../../../api/community/CommunityUtil"
 import { useCommunityEmotes } from "../../../api/community/useEmotes"
 import DesktopCommunityProfile from "../../../components/community/profile/DesktopCommunityProfile"
 import MobileCommunityProfile from "../../../components/community/profile/MobileCommunityProfile"
-import CommunityProfileRules from "../../../components/community/rules/CommunityProfileRules"
-import { COMPLETE, LOADING, ERROR } from "../../../api/util/Status"
+import { LOADING, ERROR } from "../../../api/util/Status"
 import FeedController from "../../../components/feed/controller/FeedController"
 import FocusedPost from "../../../components/feed/post/FocusedPost"
 import styled from "styled-components"
-import { STATUS_ENTER } from "rc-motion/lib/interface"
 import DefaultContainer from "../../../components/DefaultContainer"
 import JoinCommunity from "../../../components/community/profile/JoinCommunity"
 import { media } from "../../../api/util/Media"
 import { useState } from "react"
-import Post from "../../../components/feed/post/Post"
 
 const CommunityStyle = styled.div<{ mobileSection: number }>`
     display: flex;
@@ -145,16 +140,21 @@ const CommunityStyle = styled.div<{ mobileSection: number }>`
     }
 `
 
+type MatchParams = {
+    name: string,
+    post: string
+}
+
 /**
  * A community viewer.
  * @param {*} props
  */
 export default function Community() {
-    const {
-        params: { name, post },
-    } = useRouteMatch()
+    const { 
+        params: { name, post } 
+    } = useRouteMatch<MatchParams>()
 
-    console.log(post)
+    const postId = +post
 
     let [mobileSection, setMobileSection] = useState(0)
     let [community, status] = useCommunity(name)
@@ -213,7 +213,7 @@ export default function Community() {
 
                         {post && (
                             <FocusedPost
-                                postId={post}
+                                postId={postId}
                                 feed={community.feed.id}
                             />
                         )}

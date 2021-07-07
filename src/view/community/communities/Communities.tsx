@@ -54,13 +54,6 @@ const Communities = () => {
         loadCommunities()
     }, [])
 
-    const getStyle = (index: number) =>
-        index + 1 !== communities.length
-            ? {
-                  borderBottom: "1px solid white",
-              }
-            : {}
-
     if (!loaded) {
         return <DefaultContainer>
             <Spin indicator={<LoadingOutlined />} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import PostComment from "./PostComment"
 import { API } from "../../../../api/ApiHandler"
 import { Spin, Button } from "antd"
@@ -23,6 +23,7 @@ const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
     const [maxPage, setMaxPage] = useState(0)
     const [commentSize, setCommentSize] = useState(0) // the amount of comments the post has
 
+    // eslint-disable-next-line
     const loadMore = async (maxPg: number, pg: number) => {
         if (maxPg !== 0 && pg > maxPage) return
 
@@ -65,6 +66,7 @@ const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
 
             setLoaded(true)
         }
+        // eslint-disable-next-line
     }, [data])
 
     useEffect(() => {

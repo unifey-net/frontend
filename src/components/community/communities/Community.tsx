@@ -1,5 +1,4 @@
 import React from "react"
-import CommunityManage from "../../feed/CommunityManage"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 

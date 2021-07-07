@@ -1,6 +1,5 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useState } from "react"
-import LinkButton from "../LinkButton"
 
 /**
  * Handles the sort changing. (for feeds)

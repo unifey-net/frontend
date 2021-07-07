@@ -7,7 +7,7 @@ import App from "./App"
 import store from "./redux/store"
 import { VERSION } from "./api/ApiHandler"
 
-console.log(`Unifey ${VERSION}: ${process.env.NODE_ENV}`)
+console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV})`)
 
 console.log(`%cSTOP!`, "color:red;font-size:64px")
 console.log(
