@@ -71,13 +71,16 @@ const LoggedInHome: React.FC = () => {
 
             <div className="shelf">
                 <CustomFeed url={"/feeds/self"} />
-                <div className="">
-                    <div className="side-community-bar">
-                        {communities.map(community => (
-                            <Community community={community} />
-                        ))}
+
+                {communities.length !== 0 && (
+                    <div>
+                        <div className="side-community-bar">
+                            {communities.map(community => (
+                                <Community community={community} />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </LoggedInHomeStyle>
     )
