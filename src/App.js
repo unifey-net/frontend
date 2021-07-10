@@ -31,8 +31,13 @@ import { Toaster } from "react-hot-toast"
 import { ThemeProvider } from "styled-components"
 import GlobalStyle from "./util/GlobalStyle"
 import theme from "./util/Theme"
+import { useNotificationSocket } from "./api/notification/NotificationsSocket"
+import useNotificationPopUp from "./components/NotificationPopUp"
 
 export default function App() {
+    useNotificationSocket() // initialize notification socket
+    useNotificationPopUp()
+    
     const dispatch = useDispatch()
 
     if (isExpired()) dispatch(logOut())
@@ -44,7 +49,7 @@ export default function App() {
                 <div className="page-container">
                     <Header />
 
-                    <Toaster />
+                    <Toaster position="top-right" />
 
                     <div className="content-container">
                         <Switch>

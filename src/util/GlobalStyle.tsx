@@ -1,10 +1,40 @@
-import { createGlobalStyle } from "styled-components";
-import { ThemeType } from "./Theme";
+import { createGlobalStyle } from "styled-components"
+import { ThemeType } from "./Theme"
 
 /**
  * Global style
  */
 export default createGlobalStyle<{ theme: ThemeType }>`
+    // for notification toasts
+    .toast-notification {
+        div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .toast-name-column {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            p {
+                color: white;
+            }                
+
+            button {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+            }
+
+            span {
+                font-size: 12px;
+            }
+        }
+    }
+
     body {
         background-color: ${({ theme }) => `${theme.background}`};
     }

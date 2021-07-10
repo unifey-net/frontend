@@ -6,6 +6,7 @@ import emotes from "./emotes.reducer"
 import post from "./post.reducer"
 import editor from "./editor.reducer"
 import feeds from "./feeds.reducer"
+import notifications from "./notifications.reducer"
 
 export default combineReducers({
     auth,
@@ -15,4 +16,5 @@ export default combineReducers({
     post,
     editor,
     feeds,
+    notifications,
 })
