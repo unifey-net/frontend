@@ -17,7 +17,7 @@ const CommunitiesStyle = styled.div`
     .communities {
         max-width: 600px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
@@ -71,7 +71,7 @@ const Communities = () => {
             {communities.length !== 0 && loaded && (
                 <div className="communities">
                     {communities.map((community, index) => (
-                        <Community index={index} community={community} />
+                        <Community index={index} community={community} useNotifications={false} />
                     ))}
                 </div>
             )}

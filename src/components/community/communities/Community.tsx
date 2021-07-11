@@ -1,6 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import notifications from "../../../redux/reducers/notifications.reducer"
+import CommunityNotifications from "./CommunityNotifications"
 
 const CommunityStyle = styled.div`
     display: flex;
@@ -24,7 +26,11 @@ const CommunityStyle = styled.div`
 /**
  * An individual community for the /communities page.
  */
-const Community: React.FC<{ community: any, index?: number}> = ({ community, index }) => {
+const Community: React.FC<{
+    community: any
+    index?: number
+    useNotifications: boolean
+}> = ({ community, index, useNotifications }) => {
     return (
         <CommunityStyle>
             {index !== undefined && (
@@ -39,6 +45,12 @@ const Community: React.FC<{ community: any, index?: number}> = ({ community, ind
             <h2>
                 <Link to={`/c/${community.name}`}>{community.name}</Link>
             </h2>
+
+            {useNotifications ? (
+                <CommunityNotifications community={community.id as number} />
+            ) : (
+                <></>
+            )}
         </CommunityStyle>
     )
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { MdNotifications, MdNotificationsActive, MdNotificationsOff } from "react-icons/md"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { getCommunityById } from "../../api/community/Community"
@@ -44,15 +45,12 @@ const LoggedInHomeStyle = styled.div`
 
 const LoggedInHome: React.FC = () => {
     const [communities, setCommunities] = useState([] as any[])
-    let self = useSelector((store: any) => store.auth)
-
-    let name = self.user.username
+    let members = useSelector((store: any) => store.auth.user.member.members)
+    let name = useSelector((store: any) => store.auth.user.username)
 
     // load the user's communities.
     useEffect(() => {
         const loadCommunities = async () => {
-            const members = self.user.member.members
-
             for (let i = 0; members.length > i; i++) {
                 const member = members[i]
                 const community = await getCommunityById(member)
@@ -62,7 +60,8 @@ const LoggedInHome: React.FC = () => {
         }
 
         loadCommunities()
-    }, [self])
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <LoggedInHomeStyle>
@@ -76,7 +75,7 @@ const LoggedInHome: React.FC = () => {
                     <div>
                         <div className="side-community-bar">
                             {communities.map((community, index) => (
-                                <Community community={community} key={index} />
+                                <Community community={community} key={index} useNotifications={true} />
                             ))}
                         </div>
                     </div>

@@ -5,6 +5,7 @@ import React from "react"
 import { MdClose } from "react-icons/md"
 import { API } from "../api/ApiHandler"
 import { useNotificationSocket } from "../api/notification/NotificationsSocket"
+import { useState } from "react"
 
 const notificationToastTheme = {
     style: {
@@ -17,15 +18,15 @@ const notificationToastTheme = {
 const useNotificationPopUp = () => {
     const [deleteNotification] = useNotificationSocket()
     const notifications = useSelector((store: any) => store.notifications.notifications)
-    let oldSize = 0 // TODO: 
+    const [oldSize, setOldSize] = useState(notifications.length)
 
     const closeNotification = (toastId: string, notifId: number) => {
         toast.dismiss(toastId)
         deleteNotification(notifId)
     }
-
-    if (notifications.length > oldSize) {
-        oldSize = notifications.length
+    
+    if (notifications.length > oldSize && !(notifications.length - oldSize > 1 && oldSize === 0)) {
+        setOldSize(notifications.length)
         const notif = notifications[notifications.length - 1]
 
         console.log("Popup: %o", notif)

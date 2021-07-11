@@ -5,6 +5,8 @@ import {
     VERIFY_ACCOUNT,
     JOIN_COMMUNITY,
     LEAVE_COMMUNITY,
+    UN_SUBSCRIBE_COMMUNITY,
+    SUBSCRIBE_COMMUNITY,
 } from "../actions/auth.actions"
 
 let defaultState = {
@@ -24,6 +26,7 @@ let defaultState = {
         },
         member: {
             members: [],
+            notifications: []
         },
     },
 }
@@ -148,6 +151,51 @@ const auth = (state = getInitialState(), action) => {
                     member: {
                         ...state.user.member,
                         members: newMember,
+                    },
+                },
+            }
+
+            saveState(newState)
+
+            return newState
+        }
+
+        case SUBSCRIBE_COMMUNITY: {
+            const { id } = action.payload
+
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    member: {
+                        ...state.user.member,
+                        notifications: [...state.user.member.notifications, id],
+                    },
+                },
+            }
+
+            saveState(newState)
+
+            return newState
+        }
+
+        case UN_SUBSCRIBE_COMMUNITY: {
+            const { id } = action.payload
+
+            let newNotifs = state.user.member.notifications
+
+            const index = newNotifs.indexOf(id)
+            if (index > -1) {
+                newNotifs.splice(index, 1)
+            }
+
+            let newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    member: {
+                        ...state.user.member,
+                        notifications: newNotifs,
                     },
                 },
             }

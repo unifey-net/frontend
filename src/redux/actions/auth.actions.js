@@ -7,6 +7,9 @@ export const VERIFY_ACCOUNT = "VERIFY_ACCOUNT"
 export const JOIN_COMMUNITY = "JOIN_COMMUNITY"
 export const LEAVE_COMMUNITY = "LEAVE_COMMUNITY"
 
+export const SUBSCRIBE_COMMUNITY = "SUBSCRIBE_COMMUNITY"
+export const UN_SUBSCRIBE_COMMUNITY = "UN_SUBSCRIBE_COMMUNITY"
+
 /**
  * Login
  * @param {*} token
@@ -63,4 +66,14 @@ export const leaveComm = id => ({
 export const joinComm = id => ({
     type: JOIN_COMMUNITY,
     payload: { id },
+})
+
+export const subscribeComm = id => ({
+    type: SUBSCRIBE_COMMUNITY,
+    payload: { id }
+})
+
+export const unSubscribeComm = id => ({
+    type: UN_SUBSCRIBE_COMMUNITY,
+    payload: { id }
 })

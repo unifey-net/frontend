@@ -33,6 +33,7 @@ import GlobalStyle from "./util/GlobalStyle"
 import theme from "./util/Theme"
 import { useNotificationSocket } from "./api/notification/NotificationsSocket"
 import useNotificationPopUp from "./components/NotificationPopUp"
+import ToastTheme from "./api/ToastTheme"
 
 export default function App() {
     useNotificationSocket() // initialize notification socket
@@ -49,7 +50,7 @@ export default function App() {
                 <div className="page-container">
                     <Header />
 
-                    <Toaster position="top-right" />
+                    <Toaster position="top-right" toastOptions={ToastTheme} />
 
                     <div className="content-container">
                         <Switch>
