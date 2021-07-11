@@ -13,6 +13,12 @@ const CommunityStyle = styled.div`
     border-radius: 16px;
     background-color: ${({ theme }) => theme.primary};
 
+    .community-name-notif {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    } 
+    
     .member-count {
         display: flex;
         flex-direction: row;
@@ -42,15 +48,19 @@ const Community: React.FC<{
                 </div>
             )}
 
-            <h2>
-                <Link to={`/c/${community.name}`}>{community.name}</Link>
-            </h2>
+            <div className="community-name-notif">
+                <h2>
+                    <Link to={`/c/${community.name}`}>{community.name}</Link>
+                </h2>
 
-            {useNotifications ? (
-                <CommunityNotifications community={community.id as number} />
-            ) : (
-                <></>
-            )}
+                {useNotifications ? (
+                    <CommunityNotifications
+                        community={community.id as number}
+                    />
+                ) : (
+                    <></>
+                )}
+            </div>
         </CommunityStyle>
     )
 }

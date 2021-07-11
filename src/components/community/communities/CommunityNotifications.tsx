@@ -12,6 +12,7 @@ import { subscribeComm, unSubscribeComm } from "../../../redux/actions/auth.acti
 const CommunityNotificationButton = styled.button`
     background-color: transparent;
     border: none;
+    cursor: pointer;
 `
 
 const CommunityNotifications: React.FC<{ community: number }> = ({
