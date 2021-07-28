@@ -13,6 +13,14 @@ export const postCommunity = (community: CommunityRequest) => ({
     payload: community,
 })
 
+/**
+ * Add a rule to a community.
+ * 
+ * @param community The community's ID. 
+ * @param body The body of the rule.
+ * @param title The title of the rule.
+ * @param id The ID of the rule.
+ */
 export const addRule = (
     community: number,
     body: string,
@@ -23,6 +31,10 @@ export const addRule = (
     payload: { community, body, title, id },
 })
 
+/** 
+ * @param community The community where the rule resides.
+ * @param id The ID of the rule
+ */
 export const removeRule = (community: number, id: number) => ({
     type: COMMUNITY__REMOVE_RULE,
     payload: { community, id },

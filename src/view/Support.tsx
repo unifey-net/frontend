@@ -22,4 +22,8 @@ const Support = () => {
     )
 }
 
-export default Support
+export default {
+    exact: true,
+    path: "/support",
+    component: Support,
+}

@@ -1,22 +1,29 @@
 import React from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { Menu, Tooltip, Dropdown, Button, Avatar } from "antd"
+import { useSelector } from "react-redux"
+import { Menu, Dropdown, Button, Avatar, Badge } from "antd"
 import { Link } from "react-router-dom"
-import {
-    themeLight,
-    themeDark,
-    themeAuto,
-} from "../../redux/actions/theme.actions"
-import { BulbFilled, BulbOutlined, UserOutlined } from "@ant-design/icons"
-import { isAutoDark } from "../../api/util/Util"
-import SubMenu from "antd/lib/menu/SubMenu"
+import { UserOutlined } from "@ant-design/icons"
 import { getImageUrl } from "../../api/user/User"
+import styled from "styled-components"
+import UnreadNotificationCount from "../notifications/UnreadNotificationCount"
+import History from "../../api/History"
+
+const NotificationShelf = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+    gap: 4px;
+
+    span {
+        color: rgba(255, 255, 255, 0.85);
+    }
+`
 
 const SelfView: React.FC = () => {
-    let dispatch = useDispatch()
-
-    let theme = useSelector((store: any) => store.theme)
     let self = useSelector((store: any) => store.auth)
+    const unreadCount = useSelector((store: any) => store.notifications.unread)
 
     let name = self.user.username
 
@@ -26,49 +33,25 @@ const SelfView: React.FC = () => {
                 <Link to={`/u/${name}`}>View my Profile</Link>
             </Menu.Item>
             <Menu.Item key="1">
-                <Link to={`/logout`}>Sign Out</Link>
-            </Menu.Item>
-            <SubMenu title="Themes" key="2">
-                <Menu.Item key="0">
-                    <span
-                        className={theme.theme === "light" ? "g-active" : ""}
-                        onClick={() => dispatch(themeLight(true))}
-                    >
-                        Light Mode <BulbFilled />
-                    </span>
-                </Menu.Item>
-                <Menu.Item key="1">
-                    <span
-                        className={theme.theme === "dark" ? "g-active" : ""}
-                        onClick={() => dispatch(themeDark(true))}
-                    >
-                        Dark Mode <BulbOutlined />
-                    </span>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item key="2">
-                    <span
-                        className={theme.theme === "auto" ? "g-active" : ""}
-                        onClick={() => dispatch(themeAuto(true))}
-                    >
-                        <Tooltip title="Automatically change the theme to dark or light depending on your time.">
-                            <>
-                                Auto
-                                {isAutoDark() && <BulbOutlined />}
-                                {!isAutoDark() && <BulbFilled />}
-                            </>
-                        </Tooltip>
-                    </span>
-                </Menu.Item>
-            </SubMenu>
-            <Menu.Item key="4">
                 <Link to={`/settings`}>Settings</Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+                <NotificationShelf
+                    onClick={() => History.push("/notifications")}
+                >
+                    <span>Notifications</span>
+                    <UnreadNotificationCount count={unreadCount} overflow={100} />
+                </NotificationShelf>
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="3">
+                <Link to={`/logout`}>Sign Out</Link>
             </Menu.Item>
         </Menu>
     )
 
     return (
-        <div className="flex flex-row">
+        <>
             {self.isLoggedIn && (
                 <Dropdown overlay={menu}>
                     <Button
@@ -76,7 +59,9 @@ const SelfView: React.FC = () => {
                         onClick={e => e.preventDefault()}
                         type="link"
                     >
-                        <Avatar size={32} src={getImageUrl(name)} />
+                        <Badge count={unreadCount} overflowCount={9}>
+                            <Avatar size={32} src={getImageUrl(name)} />
+                        </Badge>
                     </Button>
                 </Dropdown>
             )}
@@ -86,7 +71,7 @@ const SelfView: React.FC = () => {
                     <Avatar size={32} icon={<UserOutlined />} />
                 </Link>
             )}
-        </div>
+        </>
     )
 }
 

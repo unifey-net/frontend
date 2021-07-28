@@ -31,4 +31,8 @@ const Unverified = () => {
     )
 }
 
-export default Unverified
+export default {
+    exact: true,
+    path: "/unverified",
+    component: Unverified,
+}

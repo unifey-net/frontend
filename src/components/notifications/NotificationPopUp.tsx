@@ -1,10 +1,9 @@
 import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
-import ToastTheme from "../api/ToastTheme"
+import ToastTheme from "../../api/ToastTheme"
 import React from "react"
 import { MdClose } from "react-icons/md"
-import { API } from "../api/ApiHandler"
-import { useNotificationSocket } from "../api/notification/NotificationsSocket"
+import { useNotificationSocket } from "../../api/notification/NotificationsSocket"
 import { useState } from "react"
 
 const notificationToastTheme = {
@@ -16,7 +15,7 @@ const notificationToastTheme = {
 }
 
 const useNotificationPopUp = () => {
-    const [deleteNotification] = useNotificationSocket()
+    const { deleteNotification } = useNotificationSocket()
     const notifications = useSelector((store: any) => store.notifications.notifications)
     const [oldSize, setOldSize] = useState(notifications.length)
 
@@ -29,7 +28,7 @@ const useNotificationPopUp = () => {
         setOldSize(notifications.length)
         const notif = notifications[notifications.length - 1]
 
-        console.log("Popup: %o", notif)
+        console.debug("Notification Popup: %o", notif)
     
         const toastId = toast(
             <div>

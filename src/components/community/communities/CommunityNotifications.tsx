@@ -6,7 +6,7 @@ import toast from "react-hot-toast"
 import { MdNotifications, MdNotificationsOff } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { API, BASE_URL } from "../../../api/ApiHandler"
+import { API } from "../../../api/ApiHandler"
 import { subscribeComm, unSubscribeComm } from "../../../redux/actions/auth.actions"
 
 const CommunityNotificationButton = styled.button`

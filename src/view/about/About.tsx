@@ -77,4 +77,8 @@ const About = () => {
     )
 }
 
-export default About
+export default {
+    exact: true,
+    path: "/about",
+    component: About,
+}

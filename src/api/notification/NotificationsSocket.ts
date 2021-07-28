@@ -15,16 +15,22 @@ const getUrl = (): string => {
     else return "ws://localhost:8077"
 }
 
-type NotificationsSocket = {}
-
 type SocketResponse = {
     response: any
     type: string
 }
 
+type NotificationSocket = {
+    deleteNotification: (id: number) => void,
+    readNotification: (id: number) => void,
+    unReadNotifiation: (id: number) => void,
+    deleteAllNotificiation: () => void,
+    readAllNotification: () => void
+}
+
 let socket: WebSocket | undefined = undefined
 
-export const useNotificationSocket = (): [(id: number) => void] => {
+export const useNotificationSocket = (): NotificationSocket => {
     const dispatch = useDispatch()
 
     if (!socket) {
@@ -99,9 +105,8 @@ export const useNotificationSocket = (): [(id: number) => void] => {
         }
     }
 
-    return [
-        (id) => {
-            console.log("Deleting notification: " + id)
+    return {
+        deleteNotification: (id) => {
             socket!!.send(
                 JSON.stringify({
                     action: "CLOSE_NOTIFICATION",
@@ -109,5 +114,35 @@ export const useNotificationSocket = (): [(id: number) => void] => {
                 })
             )
         },
-    ]
+        readNotification: (id) => {
+            socket!!.send(
+                JSON.stringify({
+                    action: "READ_NOTIFICATION",
+                    notification: id
+                })
+            )
+        },
+        deleteAllNotificiation: () => {
+            socket!!.send(
+                JSON.stringify({
+                    action: "CLOSE_ALL_NOTIFICATION"
+                })
+            )
+        },
+        readAllNotification: () => {
+            socket!!.send(
+                JSON.stringify({
+                    action: "READ_ALL_NOTIFICATION"
+                })
+            )
+        },
+        unReadNotifiation: (id) => {
+            socket!!.send(
+                JSON.stringify({
+                    action: "UN_READ_NOTIFICATION",
+                    notification: id
+                })
+            )
+        }
+    }
 }

@@ -1,4 +1,4 @@
-import { NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_UNREAD, NOTIF__SOCKET_AUTHENTICATE, NOTIF__SOCKET_CONNECT, NOTIF__SOCKET_DISCONNECT } from "../actions/notifications.actions"
+import { NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_ALL_READ_STATUS, NOTIF__SET_READ_STATUS, NOTIF__SET_UNREAD, NOTIF__SOCKET_AUTHENTICATE, NOTIF__SOCKET_CONNECT, NOTIF__SOCKET_DISCONNECT } from "../actions/notifications.actions"
 
 type NotificationsAuthenticationState = {
     authenticated: boolean,
@@ -8,7 +8,7 @@ type NotificationsAuthenticationState = {
 type NotificationsState = {
     connected: boolean,
     authenticated: NotificationsAuthenticationState,
-    notifications: number[],
+    notifications: any[],
     unread: number
 }
 
@@ -67,6 +67,54 @@ const notifications = (
             return {
                 ...state,
                 notifications: [...state.notifications, ...action.payload],
+            }
+        }
+
+        case NOTIF__SET_ALL_READ_STATUS: {
+            const newNotifs = state.notifications.map((notif) => ({ ...notif, read: true }))
+                         
+            return {
+                ...state,
+                notifications: [...newNotifs],
+                unread: 0
+            }
+        }
+
+        case NOTIF__SET_READ_STATUS: {
+            const { id, read } = action.payload
+            
+            let notifIndex = -1
+            const notifs = state.notifications as any[]
+
+            notifs.find((notif, i) => {
+                console.log(notif.id === id)
+                if (notif.id === id) {
+                    notifIndex = i
+                    return true
+                }
+
+                return false
+            })
+
+            let newUnread = state.unread
+            if (notifIndex !== -1) {
+                let current = notifs[notifIndex].read
+
+                notifs[notifIndex].read = read
+                
+                if (read !== current) {
+                    if (read) {
+                        newUnread -= 1
+                    } else {
+                        newUnread += 1
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                notifications: notifs,
+                unread: newUnread
             }
         }
 

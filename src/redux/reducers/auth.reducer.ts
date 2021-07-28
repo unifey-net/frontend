@@ -9,7 +9,29 @@ import {
     SUBSCRIBE_COMMUNITY,
 } from "../actions/auth.actions"
 
-let defaultState = {
+type AuthState = {
+    isLoggedIn: boolean;
+    token: string;
+    expire: number;
+    user: {
+        username: string;
+        id: string;
+        verified: boolean;
+        role: number;
+        createdAt: number;
+        profile: {
+            description: string;
+            discord: string;
+            location: string;
+        };
+        member: {
+            notifications: any[];
+            members: any[]
+        };
+    };
+}
+
+let defaultState: AuthState = {
     isLoggedIn: false,
     token: "",
     expire: -1,
@@ -34,7 +56,7 @@ let defaultState = {
 /**
  * Save the state.
  */
-const saveState = state => {
+const saveState = (state: AuthState) => {
     let json = JSON.stringify(state)
 
     localStorage.setItem("selfState", json)
@@ -57,7 +79,7 @@ const getInitialState = () => {
  * @param {*} state
  * @param {*} action
  */
-const auth = (state = getInitialState(), action) => {
+const auth = (state: AuthState = getInitialState(), action: any) => {
     switch (action.type) {
         case LOG_IN: {
             const { token, user, expire } = action.payload

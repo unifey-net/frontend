@@ -149,7 +149,7 @@ type MatchParams = {
  * A community viewer.
  * @param {*} props
  */
-export default function Community() {
+const Community = () => {
     const { 
         params: { name, post } 
     } = useRouteMatch<MatchParams>()
@@ -240,3 +240,16 @@ export default function Community() {
         </CommunityStyle>
     )
 }
+
+export default [
+    {
+        path: "/c/:name/:post",
+        component: Community,
+        exact: true,
+    },
+    {
+        path: "/c/:name",
+        exact: true,
+        component: Community,
+    },
+]

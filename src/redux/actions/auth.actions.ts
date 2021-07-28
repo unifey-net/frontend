@@ -16,7 +16,7 @@ export const UN_SUBSCRIBE_COMMUNITY = "UN_SUBSCRIBE_COMMUNITY"
  * @param {*} name
  * @param {*} id
  */
-export const logIn = (token, user, expire) => ({
+export const logIn = (token: string, user: any, expire: number) => ({
     type: LOG_IN,
     payload: {
         token,
@@ -37,7 +37,7 @@ export const logOut = () => ({
  * Update self name.
  * @param {string} name
  */
-export const updateName = name => ({
+export const updateName = (name: string) => ({
     type: UPDATE_NAME,
     payload: { name },
 })
@@ -45,7 +45,7 @@ export const updateName = name => ({
 /**
  * Verify account
  */
-export const verifyAccount = status => ({
+export const verifyAccount = (status: boolean) => ({
     type: VERIFY_ACCOUNT,
     payload: { status },
 })
@@ -54,7 +54,7 @@ export const verifyAccount = status => ({
  * Leave a community
  * @param {*} id
  */
-export const leaveComm = id => ({
+export const leaveComm = (id: number) => ({
     type: LEAVE_COMMUNITY,
     payload: { id },
 })
@@ -63,17 +63,27 @@ export const leaveComm = id => ({
  * Join a community
  * @param {*} id
  */
-export const joinComm = id => ({
+export const joinComm = (id: number) => ({
     type: JOIN_COMMUNITY,
     payload: { id },
 })
 
-export const subscribeComm = id => ({
+/**
+ * Subscribe to notifications for a community.
+ * 
+ * @param id The ID of the community.
+ */
+export const subscribeComm = (id: number) => ({
     type: SUBSCRIBE_COMMUNITY,
     payload: { id }
 })
 
-export const unSubscribeComm = id => ({
+/**
+ * Unsubscribe to notifications for a community.
+ * 
+ * @param id The ID of the community.
+ */
+export const unSubscribeComm = (id: number) => ({
     type: UN_SUBSCRIBE_COMMUNITY,
     payload: { id }
 })

@@ -34,7 +34,7 @@ const ModerateCommunity = () => {
     let [community, status] = useCommunity(name)
     let [activeTab, setActiveTab] = useQueryParameterTabs()
 
-    if (community && 3 > community.selfRole) return NotFound()
+    if (community && 3 > community.selfRole) return NotFound.component()
 
     if (status.status === LOADING) {
         return (
@@ -87,4 +87,8 @@ const ModerateCommunity = () => {
     )
 }
 
-export default ModerateCommunity
+export default {
+    path: "/c/:name/moderate",
+    component: ModerateCommunity,
+    exact: true,
+}

@@ -79,4 +79,8 @@ const Communities = () => {
     )
 }
 
-export default Communities
+export default {
+    exact: true,
+    path: "/communities",
+    components: Communities,
+}

@@ -11,7 +11,7 @@ const NotFoundStyle = styled.div`
     margin-right: 16rem;
 `
 
-const NotFound = () => {
+const NotFound = (): JSX.Element => {
     return (
         <NotFoundStyle>
             <h1>That page could not be found!</h1>
@@ -19,4 +19,6 @@ const NotFound = () => {
     )
 }
 
-export default NotFound
+export default {
+    component: NotFound,
+}

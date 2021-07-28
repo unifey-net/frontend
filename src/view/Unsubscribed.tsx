@@ -28,4 +28,8 @@ const Unsubscribed = () => {
     )
 }
 
-export default Unsubscribed
+export default {
+    exact: true,
+    path: "/unsubscribed",
+    component: Unsubscribed,
+}

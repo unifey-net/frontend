@@ -6,7 +6,7 @@ import { POST__SET } from "../actions/post.actions"
  * @param {*} state
  * @param {*} action
  */
-const post = (state = -1, action) => {
+const post = (state: number = -1, action: any) => {
     switch (action.type) {
         case POST__SET: {
             const { post } = action.payload

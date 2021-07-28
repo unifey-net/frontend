@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { MdNotifications, MdNotificationsActive, MdNotificationsOff } from "react-icons/md"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { getCommunityById } from "../../api/community/Community"

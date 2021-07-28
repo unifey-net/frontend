@@ -51,10 +51,17 @@ const UserStyle = styled.div`
     }
 `
 
-export default function User() {
+type MatchParams = {
+    name: string
+    post: string
+}
+
+const User = () => {
     const {
         params: { name, post },
-    } = useRouteMatch()
+    } = useRouteMatch<MatchParams>()
+
+    const postId = +post
 
     useDefaultEmotes()
 
@@ -130,10 +137,23 @@ export default function User() {
                     />
                 )}
 
-                {post && <FocusedPost postId={post} feed={`uf_${user.id}`} />}
+                {post && <FocusedPost postId={postId} feed={`uf_${user.id}`} />}
 
                 <UserProfile user={user} />
             </div>
         </UserStyle>
     )
 }
+
+export default [
+    {
+        path: "/u/:name/:post",
+        exact: true,
+        component: User,
+    },
+    {
+        path: "/u/:name",
+        exact: true,
+        component: User,
+    },
+]

@@ -6,7 +6,7 @@ import { EMOTES__POST } from "../actions/emotes.actions"
  * @param {*} state
  * @param {*} action
  */
-const emotes = (state = [], action) => {
+const emotes = (state: any[] = [], action: any) => {
     switch (action.type) {
         case EMOTES__POST: {
             const { emotes } = action.payload

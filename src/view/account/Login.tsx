@@ -15,7 +15,7 @@ import { COMPLETE } from "../../api/util/Status"
 /**
  * The /login page.
  */
-export default () => {
+const Login = () => {
     const dispatch = useDispatch()
 
     const [ref, setRef] = useState<ReCAPTCHA>()
@@ -144,4 +144,10 @@ export default () => {
             </div>
         </>
     )
+}
+
+export default {
+    exact: true,
+    path: "/login",
+    component: Login,
 }

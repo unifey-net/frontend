@@ -4,11 +4,17 @@ import DefaultHome from "../components/home/DefaultHome"
 import LoggedInHome from "../components/home/LoggedInHome"
 import Snake from "../components/snake/Snake"
 
-export default function Home() {
+const Home = () => {
     return (
         <>
             { signedIn() ? <LoggedInHome/> : <DefaultHome/> }
             <Snake/>
         </>
     )
+}
+
+export default {
+    exact: true,
+    path: "/",
+    component: Home,
 }
