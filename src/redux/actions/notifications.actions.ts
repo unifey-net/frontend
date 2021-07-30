@@ -6,6 +6,8 @@ export const NOTIF__SET_ALL_READ_STATUS = "NOTIF__SET_ALL_READ_STATUS"
 export const NOTIF__SOCKET_CONNECT = "NOTIF__SOCKET_CONNECT"
 export const NOTIF__SOCKET_DISCONNECT = "NOTIF__SOCKET_DISCONNECT"
 export const NOTIF__SOCKET_AUTHENTICATE = "NOTIF__SOCKET_AUTHENTICATE"
+export const NOTIF__DELETE = "NOTIF__DELETE"
+export const NOTIF__DELETE_ALL = "NOTIF__DELETE_ALL"
 
 /**
  * When the notification socket connects.
@@ -41,6 +43,24 @@ export const notifSetReadStatus = (id: number, read: boolean) => ({
  */
 export const notifSetAllReadStatus = () => ({
     type: NOTIF__SET_ALL_READ_STATUS,
+    payload: { }
+})
+
+/**
+ * Delete a notification by it's ID.
+ * 
+ * @param id The ID of the notification.
+ */
+export const notifDelete = (id: number) => ({
+    type: NOTIF__DELETE,
+    payload: { id } 
+})
+
+/**
+ * Delete all notifications.
+ */
+export const notifDeleteAll = () => ({
+    type: NOTIF__DELETE_ALL,
     payload: { }
 })
 

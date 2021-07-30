@@ -3,7 +3,11 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { useNotificationSocket } from "../../../api/notification/NotificationsSocket"
-import { notifSetAllReadStatus, notifSetReadStatus } from "../../../redux/actions/notifications.actions"
+import {
+    notifDeleteAll,
+    notifSetAllReadStatus,
+    notifSetReadStatus,
+} from "../../../redux/actions/notifications.actions"
 import FeedNotification from "./SingleNotification"
 
 const FeedStyle = styled.div`
@@ -18,6 +22,13 @@ const FeedStyle = styled.div`
         cursor: pointer;
     }
 
+    .notif-controls {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        justify-content: space-between;
+    }
+
     button:disabled {
         cursor: not-allowed;
     }
@@ -28,30 +39,38 @@ const NotificationsFeed: React.FC = () => {
         (store: any) => store.notifications.notifications
     )
     const unreadCount = useSelector((store: any) => store.notifications.unread)
+    // to make sure page updates on delete
+    const notificationCount = useSelector((store: any) => store.notifications.notificationCount)
+
     const dispatch = useDispatch()
 
-    const { readNotification, readAllNotification, unReadNotifiation } = useNotificationSocket()
+    const { readAllNotification, deleteAllNotificiation } =
+        useNotificationSocket()
 
     const markAllAsRead = () => {
         readAllNotification()
         dispatch(notifSetAllReadStatus())
     }
 
-    const markReadStatus = (id: number, read: boolean) => {
-        if (read) {
-            unReadNotifiation(id)
-        } else {
-            readNotification(id)
-        }
-        dispatch(notifSetReadStatus(id, read))
+    const deleteAll = () => {
+        deleteAllNotificiation()
+        dispatch(notifDeleteAll())
     }
-
 
     return (
         <FeedStyle>
-            <button disabled={unreadCount === 0} onClick={() => markAllAsRead()}>
-                Mark all as read
-            </button>
+            <div className="notif-controls">
+                <button disabled={unreadCount === 0} onClick={markAllAsRead}>
+                    Mark all as read
+                </button>
+
+                <button
+                    disabled={notifications.length === 0}
+                    onClick={deleteAll}
+                >
+                    Delete all
+                </button>
+            </div>
 
             {notifications.map(
                 ({ date, read, message, id }: any, index: number) => (
@@ -59,11 +78,14 @@ const NotificationsFeed: React.FC = () => {
                         date={date}
                         read={read}
                         message={message}
-                        onRead={() => markReadStatus(id, true)}
-                        onUnRead={() => markReadStatus(id, false)}
                         key={index}
+                        id={id}
                     />
                 )
+            )}
+
+            {notificationCount === 0 && (
+                <Empty description="You're all caught up!" />
             )}
         </FeedStyle>
     )

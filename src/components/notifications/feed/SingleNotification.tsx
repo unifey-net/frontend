@@ -1,5 +1,8 @@
 import styled from "styled-components"
 import React from "react"
+import { useNotificationSocket } from "../../../api/notification/NotificationsSocket"
+import { useDispatch } from "react-redux"
+import { notifDelete, notifSetReadStatus } from "../../../redux/actions/notifications.actions"
 
 const Notification = styled.div<{ unread: boolean }>`
     background-color: ${({ theme }) => theme.primary};
@@ -12,6 +15,7 @@ const Notification = styled.div<{ unread: boolean }>`
         align-items: center;
         justify-content: center;
         border-top: 1px solid white;
+        gap: 4px;
 
         button {
             margin-top: 16px;
@@ -38,17 +42,33 @@ type FeedNotificationProps = {
     message: string
     date: number
     read: boolean
-    onRead: () => void
-    onUnRead: () => void
+    id: number
 }
 
 const FeedNotification: React.FC<FeedNotificationProps> = ({
     message,
     date,
     read,
-    onRead,
-    onUnRead
+    id
 }) => {
+    const dispatch = useDispatch()
+    const { deleteNotification, readNotification, unReadNotifiation } = useNotificationSocket()
+
+    const deleteNotif = () => {
+        deleteNotification(id)
+        dispatch(notifDelete(id))
+    }
+
+    const onUnRead = () => {
+        unReadNotifiation(id)
+        dispatch(notifSetReadStatus(id, false))
+    }
+
+    const onRead = () => {
+        readNotification(id)
+        dispatch(notifSetReadStatus(id, true))
+    }
+
     return (
         <Notification unread={!read}>
             <div>
@@ -62,6 +82,10 @@ const FeedNotification: React.FC<FeedNotificationProps> = ({
             <div className="control">
                 <button onClick={read ? onUnRead : onRead}>
                     Mark as {read ? "unread" : "read"}
+                </button>
+
+                <button onClick={deleteNotif}>
+                    Delete
                 </button>
             </div>
         </Notification>

@@ -1,4 +1,4 @@
-import { NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_ALL_READ_STATUS, NOTIF__SET_READ_STATUS, NOTIF__SET_UNREAD, NOTIF__SOCKET_AUTHENTICATE, NOTIF__SOCKET_CONNECT, NOTIF__SOCKET_DISCONNECT } from "../actions/notifications.actions"
+import { NOTIF__DELETE, NOTIF__DELETE_ALL, NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_ALL_READ_STATUS, NOTIF__SET_READ_STATUS, NOTIF__SET_UNREAD, NOTIF__SOCKET_AUTHENTICATE, NOTIF__SOCKET_CONNECT, NOTIF__SOCKET_DISCONNECT } from "../actions/notifications.actions"
 
 type NotificationsAuthenticationState = {
     authenticated: boolean,
@@ -9,6 +9,8 @@ type NotificationsState = {
     connected: boolean,
     authenticated: NotificationsAuthenticationState,
     notifications: any[],
+    // so redux updates
+    notificationCount: number,
     unread: number
 }
 
@@ -19,6 +21,7 @@ const defaultNotificationState: NotificationsState = {
         tokenExpires: -1
     },
     notifications: [],
+    notificationCount: 0,
     unread: -1
 }
 
@@ -60,6 +63,7 @@ const notifications = (
             return {
                 ...state,
                 notifications: [...state.notifications, { id, message, date }],
+                notificationCount: state.notificationCount + 1
             }
         }
 
@@ -67,6 +71,7 @@ const notifications = (
             return {
                 ...state,
                 notifications: [...state.notifications, ...action.payload],
+                notificationCount: action.payload.length + state.notificationCount
             }
         }
 
@@ -115,6 +120,43 @@ const notifications = (
                 ...state,
                 notifications: notifs,
                 unread: newUnread
+            }
+        }
+
+        case NOTIF__DELETE_ALL: {
+            return {
+                ...state,
+                notifications: [],
+                notificationCount: 0,
+                unread: 0
+            }
+        }
+
+        case NOTIF__DELETE: {
+            const { id } = action.payload
+
+            let deleteIndex = -1
+            let notifs = state.notifications
+            let count = state.notificationCount
+
+            notifs.filter((obj, index) => {
+                if (obj.id === id) {
+                    deleteIndex = index
+                    return true
+                }
+
+                return true
+            })
+
+            if (deleteIndex !== -1) {
+                notifs.splice(deleteIndex, 1)
+                count -= 1
+            }
+
+            return {
+                ...state,
+                notifications: notifs,
+                notificationCount: count
             }
         }
 
