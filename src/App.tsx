@@ -16,7 +16,6 @@ import GlobalStyle from "./util/GlobalStyle"
 import theme from "./util/Theme"
 import { useNotificationSocket } from "./api/notification/NotificationsSocket"
 import useNotificationPopUp from "./components/notifications/NotificationPopUp"
-import ToastTheme from "./api/ToastTheme"
 import Pages from "./util/Pages"
 
 export default function App() {
@@ -34,7 +33,16 @@ export default function App() {
                 <div className="page-container">
                     <Header />
 
-                    <Toaster position="top-right" toastOptions={ToastTheme} />
+                    <Toaster
+                        position="top-right"
+                        toastOptions={{
+                            style: {
+                                borderRadius: "10px",
+                                background: "#333",
+                                color: "#fff",
+                            },
+                        }}
+                    />
 
                     <div className="content-container">
                         <Switch>

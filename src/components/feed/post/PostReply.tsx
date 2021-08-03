@@ -4,7 +4,6 @@ import { signedIn } from "../../../api/user/User"
 import { Store } from "antd/lib/form/interface"
 import { createComment } from "../../../api/Feeds"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../api/ToastTheme"
 
 const { TextArea } = Input
 
@@ -102,7 +101,7 @@ const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
             setError(request.data.payload)
         } else {
             setVisible(false)
-            toast.success("Successfully posted reply!", ToastTheme)
+            toast.success("Successfully posted reply!")
         }
 
         setLoading(false)

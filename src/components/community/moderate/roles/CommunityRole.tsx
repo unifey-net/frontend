@@ -3,7 +3,6 @@ import UserView from "../../../view/UserView"
 import { Dropdown, Menu } from "antd"
 import { getRoleName, UserRole } from "../../../../api/community/Roles"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../../api/ToastTheme"
 import { updateUserRole } from "../../../../api/community/Community"
 
 type Props = {
@@ -26,9 +25,9 @@ const CommunityRole: React.FC<Props> = ({ index, userRole, selfRole, community }
 
         if (request.status === 200) {
             setRole(role)
-            toast.success("Successfully update roles!", ToastTheme)
+            toast.success("Successfully update roles!")
         } else {
-            toast.error(request.data.payload, ToastTheme)
+            toast.error(request.data.payload)
         }
     }
 

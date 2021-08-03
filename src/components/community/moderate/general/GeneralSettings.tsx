@@ -5,7 +5,6 @@ import ChangeCommunityName from "./inputs/ChangeCommunityName"
 import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc"
 import { updateCommunityPermissionRole } from "../../../../api/community/Community"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../../api/ToastTheme"
 
 type Props = {
     community: CommunityRequest
@@ -30,8 +29,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
 
         if (request.status !== 200) {
             toast.error(
-                "There was an issue updating the permissions.",
-                ToastTheme
+                "There was an issue updating the permissions."
             )
         }
     }

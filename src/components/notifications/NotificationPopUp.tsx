@@ -1,17 +1,12 @@
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
-import ToastTheme from "../../api/ToastTheme"
 import React from "react"
 import { MdClose } from "react-icons/md"
 import { useNotificationSocket } from "../../api/notification/NotificationsSocket"
 import { useState } from "react"
-import { dispatch } from "react-hot-toast/dist/core/store"
 import { notifDelete } from "../../redux/actions/notifications.actions"
 
 const notificationToastTheme = {
-    style: {
-        ...ToastTheme.style
-    },
     className: "toast-notification",
     // icon: <MdNotifications/>
 }
