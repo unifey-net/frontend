@@ -80,7 +80,7 @@ const Communities = () => {
 }
 
 export default {
-    exact: true,
     path: "/communities",
-    components: Communities,
+    exact: true,
+    component: Communities,
 }
