@@ -188,7 +188,7 @@ const Community = () => {
                 <div className="community-name-container">
                     <div className="community-name">
                         <h1>{community.community.name}</h1>
-                        <JoinCommunity onClick={() => {}}>
+                        <JoinCommunity community={community.community.id}>
                             + Join Community
                         </JoinCommunity>
                     </div>
