@@ -4,6 +4,7 @@ import { API } from "../../api/ApiHandler"
 import { Spin, Alert } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import styled from "styled-components"
+import { COMPLETE, ERROR, LOADING } from "../../api/util/Status"
 
 const CommunityStaffStyle = styled.div`
     ul {
@@ -25,7 +26,7 @@ const CommunityStaffStyle = styled.div`
  */
 const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
     let [staff, setStaff] = useState([] as any[])
-    let [status, setStatus] = useState({
+    let [{ status, message }, setStatus] = useState({
         status: 0,
         message: "",
     })
@@ -49,7 +50,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 case 401: {
                     setStatus(prev => ({
                         ...prev,
-                        status: -2,
+                        status: -2
                     }))
 
                     break
@@ -59,6 +60,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                     setStatus(prev => ({
                         ...prev,
                         status: -1,
+                        message: request.data.payload
                     }))
 
                     break
@@ -71,9 +73,9 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
 
     return (
         <CommunityStaffStyle>
-            {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
+            {status === LOADING && <Spin indicator={<LoadingOutlined />} />}
 
-            {status.status === 1 && (
+            {status === COMPLETE && (
                 <ul className="flex flex-col">
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
@@ -98,21 +100,20 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 </ul>
             )}
 
-            {status.status === -1 && (
+            {status === ERROR && (
                 <Alert
-                    message={"There was an issue getting the staff members."}
-                    description={status.message}
-                    type="warning"
+                    message={message}
+                    type="error"
                     showIcon
                 />
             )}
 
-            {status.status === -2 && (
+            {status === -2 && (
                 <Alert
                     message={
                         "You don't have permission to view this community!"
                     }
-                    description={status.message}
+                    description={message}
                     type="error"
                     showIcon
                 />

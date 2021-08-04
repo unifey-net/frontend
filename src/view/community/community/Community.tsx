@@ -157,7 +157,7 @@ const Community = () => {
     const postId = +post
 
     let [mobileSection, setMobileSection] = useState(0)
-    let [community, status] = useCommunity(name)
+    let [community, { status, message }] = useCommunity(name)
 
     useCommunityEmotes(
         community?.emotes === undefined ? [] : community?.emotes!!
@@ -168,17 +168,17 @@ const Community = () => {
             <Empty description="You don't have permission to view this community." />
         )
 
-    if (status.status === LOADING)
+    if (status === LOADING)
         return (
             <DefaultContainer>
                 <Spin indicator={<LoadingOutlined />}></Spin>
             </DefaultContainer>
         )
 
-    if (status.status === ERROR || community == null)
+    if (status === ERROR || community == null)
         return (
             <DefaultContainer>
-                <Empty description="That community could not be found." />
+                <Empty description={message} />
             </DefaultContainer>
         )
 

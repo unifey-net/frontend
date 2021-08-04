@@ -183,7 +183,7 @@ export const login = async (
         return [
             {
                 status: ERROR,
-                message: "There was an issue makign that request!",
+                message: "There was an issue making that request!",
             },
             {},
         ]
