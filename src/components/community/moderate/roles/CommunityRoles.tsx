@@ -8,10 +8,20 @@ import useSetRoleModal from "./setRole/useSetRoleModal"
 import Status, { COMPLETE, LOADING, ERROR } from "../../../../api/util/Status"
 import { getRoles } from "../../../../api/community/Community"
 import ModeratePage from "../ModeratePage"
+import styled from "styled-components"
 
 type Props = {
     community: CommunityRequest
 }
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 16px;
+`
 
 /**
  * A communities roles.
@@ -64,6 +74,14 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
 
     return (
         <ModeratePage>
+            <ButtonContainer>
+                <Button onClick={toggle}>
+                    <PlusCircleOutlined />
+                </Button>
+            </ButtonContainer>
+
+            {modal}
+
             <ul>
                 {roles
                     .sort((a: UserRole, b: UserRole) => b.role - a.role)
@@ -76,14 +94,6 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
                         />
                     ))}
             </ul>
-
-            {modal}
-
-            <div className="flex justify-evenly">
-                <Button onClick={toggle}>
-                    <PlusCircleOutlined />
-                </Button>
-            </div>
         </ModeratePage>
     )
 }

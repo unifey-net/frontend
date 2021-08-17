@@ -18,6 +18,12 @@ const ModeratePage = styled.div`
         margin-top: 16px;
         margin-bottom: 16px;
     }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 `
 
 export default ModeratePage

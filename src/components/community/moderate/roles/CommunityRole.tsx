@@ -4,6 +4,7 @@ import { Dropdown, Menu } from "antd"
 import { getRoleName, UserRole } from "../../../../api/community/Roles"
 import toast from "react-hot-toast"
 import { updateUserRole } from "../../../../api/community/Community"
+import styled from "styled-components"
 
 type Props = {
     index: number
@@ -11,6 +12,24 @@ type Props = {
     selfRole: number
     community: number
 }
+
+const Role = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    background-color: ${({ theme }) => theme.primary};
+    padding: 8px;
+    padding-top: 16px;
+    padding-right: 32px;
+    padding-left: 32px;
+    border-radius: 4px;
+
+    .role-name {
+        padding-top: 6px;
+        cursor: pointer;
+    }
+`
 
 /**
  * A community role.
@@ -66,13 +85,13 @@ const CommunityRole: React.FC<Props> = ({ index, userRole, selfRole, community }
     )
 
     return (
-        <div className="accent rounded flex flex-row justify-between p-4 border-black">
+        <Role>
             <UserView username={name} showUsername={true} />
 
             <Dropdown overlay={modify} disabled={role > selfRole}>
-                <p className="cursor-pointer pt-2">{getRoleName(role)}</p>
+                <p className="role-name">{getRoleName(role)}</p>
             </Dropdown>
-        </div>
+        </Role>
     )
 }
 
