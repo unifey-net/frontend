@@ -25,3 +25,11 @@ export const LOADING = 0
  * There was an issue in the web request. The info on the error should be included in the status' message.
  */
 export const ERROR = -1
+
+/**
+ * The default status.
+ */
+export const DEFAULT_STATUS = {
+    status: LOADING,
+    message: ""
+} as Status

@@ -11,9 +11,10 @@ import FeedController from "../../../components/feed/controller/FeedController"
 import FocusedPost from "../../../components/feed/post/FocusedPost"
 import styled from "styled-components"
 import DefaultContainer from "../../../components/DefaultContainer"
-import JoinCommunity from "../../../components/community/profile/JoinCommunity"
+import JoinCommunity from "../../../components/community/profile/buttons/JoinCommunity"
 import { media } from "../../../api/util/Media"
 import { useState } from "react"
+import ModerateCommunity from "../../../components/community/profile/buttons/ModerateCommunity"
 
 const CommunityStyle = styled.div<{ mobileSection: number }>`
     display: flex;
@@ -41,6 +42,12 @@ const CommunityStyle = styled.div<{ mobileSection: number }>`
             display: flex;
             flex-direction: row;
             gap: 8px;
+
+            .community-buttons {
+                ${media("display: none;", "display: flex;", "display: flex;")}
+                flex-direction: row;
+                gap: 8px;
+            }
 
             button {
                 align-self: flex-start;
@@ -141,7 +148,7 @@ const CommunityStyle = styled.div<{ mobileSection: number }>`
 `
 
 type MatchParams = {
-    name: string,
+    name: string
     post: string
 }
 
@@ -150,8 +157,8 @@ type MatchParams = {
  * @param {*} props
  */
 const Community = () => {
-    const { 
-        params: { name, post } 
+    const {
+        params: { name, post },
     } = useRouteMatch<MatchParams>()
 
     const postId = +post
@@ -188,9 +195,14 @@ const Community = () => {
                 <div className="community-name-container">
                     <div className="community-name">
                         <h1>{community.community.name}</h1>
-                        <JoinCommunity community={community.community.id}>
-                            + Join Community
-                        </JoinCommunity>
+
+                        <div className="community-buttons">
+                            <JoinCommunity community={community.community.id} mobile={false} />
+                            <ModerateCommunity
+                                community={community.community.id}
+                                mobile={false}
+                            />
+                        </div>
                     </div>
                     <h6 className="community-link">
                         c/{community.community.name}
@@ -234,6 +246,8 @@ const Community = () => {
                         <button onClick={() => setMobileSection(1)}>
                             About
                         </button>
+                        <JoinCommunity community={community.community.id} mobile={true} />
+                        <ModerateCommunity community={community.community.id} mobile={true} />
                     </div>
                 </div>
             </>

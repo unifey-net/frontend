@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useDispatch } from "react-redux"
 import {
     massNotifReceive,
@@ -8,6 +9,7 @@ import {
     notifSocketDisconnect,
 } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
+import { VERSION } from "../ApiHandler"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
@@ -75,7 +77,13 @@ export const useNotificationSocket = (): NotificationSocket => {
 
             console.log("Notification Socket: %o", { response, type })
 
-            switch (type) {
+            switch (type.toLowerCase()) {
+                case "init": {
+                    const { version, frontend } = response
+                    console.log(`${version}: Expects frontend ${frontend} (${VERSION === frontend ? "OK" : `NOT OK, FOUND ${VERSION}`})`)
+                    break;
+                }
+
                 case "authenticated": {
                     dispatch(notifSocketAuthenticate(response.expire))
                     break

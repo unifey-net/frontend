@@ -6,8 +6,8 @@ import toast from "react-hot-toast"
 import { MdAdd, MdError, MdRemove } from "react-icons/md"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
-import { joinCommunity, leaveCommunity } from "../../../api/user/User"
-import { media } from "../../../api/util/Media"
+import { joinCommunity, leaveCommunity } from "../../../../api/user/User"
+import { media } from "../../../../api/util/Media"
 
 const JoinCommunityButton = styled.button`
     background-color: #bf1d48;
@@ -20,7 +20,7 @@ const JoinCommunityButton = styled.button`
 /**
  * The join community button found on communities pages.
  */
-const JoinCommunity: React.FC<{ community: number }> = ({ community }) => {
+const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
     const member = useSelector(
         (store: any) => store.auth.user.member.members
     ).includes(community)
@@ -55,9 +55,11 @@ const JoinCommunity: React.FC<{ community: number }> = ({ community }) => {
         }
     }
 
+    const message = `${member ? "Leave" : "Join"}${!mobile ? " Community" : ""}`
+
     return (
         <JoinCommunityButton onClick={onClick}>
-            {symbol} {member ? "Leave Community" : "Join Community"}
+            {symbol} {message}
         </JoinCommunityButton>
     )
 }

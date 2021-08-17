@@ -29,6 +29,6 @@ const API = axios.create({
 /**
  * The version, manually kept up to date :(
  */
-const VERSION = "Alpha v0.5.0"
+const VERSION = "0.6.0"
 
 export { VERSION, API, BASE_URL }

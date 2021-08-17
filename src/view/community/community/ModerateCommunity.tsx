@@ -20,7 +20,12 @@ type UrlProps = {
 }
 
 const ModerateCommunityStyle = styled.div`
-    div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .moderate-container {
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -61,7 +66,7 @@ const ModerateCommunity = () => {
                 {community.community.name}
             </h1>
 
-            <div>
+            <div className="moderate-container">
                 <div>
                     <Tabs
                         activeKey={activeTab}

@@ -7,6 +7,7 @@ import { LoadingOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import useSetRoleModal from "./setRole/useSetRoleModal"
 import Status, { COMPLETE, LOADING, ERROR } from "../../../../api/util/Status"
 import { getRoles } from "../../../../api/community/Community"
+import ModeratePage from "../ModeratePage"
 
 type Props = {
     community: CommunityRequest
@@ -40,28 +41,40 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
         loadRoles()
     }, [community.community.id])
 
+    if (status === ERROR) {
+        return (
+            <ModeratePage>
+                <Alert
+                    message="There was an issue loading roles in this community."
+                    description={message}
+                    showIcon
+                    type="error"
+                />
+            </ModeratePage>
+        )
+    }
+
+    if (status === LOADING) {
+        return (
+            <ModeratePage>
+                <Spin indicator={<LoadingOutlined />} />
+            </ModeratePage>
+        )
+    }
+
     return (
-        <>
-            <h1 className="text-2xl">Roles</h1>
-
-            <ul className="flex flex-col gap-4">
-                {status === COMPLETE &&
-                    roles
-                        .sort((a: UserRole, b: UserRole) => b.role - a.role)
-                        .map((role: UserRole, index: number) => (
-                            <CommunityRole
-                                index={index}
-                                userRole={role}
-                                selfRole={community.selfRole}
-                                community={community.community.id}
-                            />
-                        ))}
-
-                {status === LOADING && <Spin indicator={<LoadingOutlined />} />}
-
-                {status === ERROR && (
-                    <Alert message={message} showIcon type="error" />
-                )}
+        <ModeratePage>
+            <ul>
+                {roles
+                    .sort((a: UserRole, b: UserRole) => b.role - a.role)
+                    .map((role: UserRole, index: number) => (
+                        <CommunityRole
+                            index={index}
+                            userRole={role}
+                            selfRole={community.selfRole}
+                            community={community.community.id}
+                        />
+                    ))}
             </ul>
 
             {modal}
@@ -71,7 +84,7 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
                     <PlusCircleOutlined />
                 </Button>
             </div>
-        </>
+        </ModeratePage>
     )
 }
 
