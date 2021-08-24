@@ -1,4 +1,4 @@
-import { NOTIF__DELETE, NOTIF__DELETE_ALL, NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_ALL_READ_STATUS, NOTIF__SET_READ_STATUS, NOTIF__SET_UNREAD, NOTIF__SOCKET_AUTHENTICATE, NOTIF__SOCKET_CONNECT, NOTIF__SOCKET_DISCONNECT } from "../actions/notifications.actions"
+import { NOTIF__DELETE, NOTIF__DELETE_ALL, NOTIF__MASS_RECEIVE, NOTIF__RECEIVE, NOTIF__SET_ALL_READ_STATUS, NOTIF__SET_READ_STATUS, NOTIF__SET_UNREAD } from "../actions/notifications.actions"
 
 type NotificationsAuthenticationState = {
     authenticated: boolean,
@@ -33,30 +33,6 @@ const notifications = (
     action: any
 ) => {
     switch (action.type) {
-        case NOTIF__SOCKET_CONNECT: {
-            return {
-                ...state,
-                connected: true,
-            }
-        }
-
-        case NOTIF__SOCKET_DISCONNECT: {
-            return {
-                ...state,
-                connected: false,
-            }
-        }
-
-        case NOTIF__SOCKET_AUTHENTICATE: {
-            return {
-                ...state,
-                authenticated: {
-                    authenticated: true,
-                    tokenExpires: action.payload.expire,
-                },
-            }
-        }
-
         case NOTIF__RECEIVE: {
             const { id, message, date } = action.payload
 

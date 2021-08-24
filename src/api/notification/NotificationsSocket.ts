@@ -1,156 +1,80 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import {
     massNotifReceive,
     notifReceive,
-    notifSetUnread,
-    notifSocketAuthenticate,
-    notifSocketConnect,
-    notifSocketDisconnect,
+    notifSetUnread
 } from "../../redux/actions/notifications.actions"
-import store from "../../redux/store"
-import { VERSION } from "../ApiHandler"
-
-const getUrl = (): string => {
-    if (process.env.NODE_ENV === "production")
-        return "wss://unifey.ajkneisl.dev"
-    else return "ws://localhost:8077"
-}
-
-type SocketResponse = {
-    response: any
-    type: string
-}
+import { SocketResponse, useLiveSocket } from "../live/Live"
 
 type NotificationSocket = {
-    deleteNotification: (id: number) => void,
-    readNotification: (id: number) => void,
-    unReadNotifiation: (id: number) => void,
-    deleteAllNotificiation: () => void,
+    deleteNotification: (id: number) => void
+    readNotification: (id: number) => void
+    unReadNotifiation: (id: number) => void
+    deleteAllNotificiation: () => void
     readAllNotification: () => void
 }
 
-let socket: WebSocket | undefined = undefined
-
-export const useNotificationSocket = (): NotificationSocket => {
+export const useNotifications = () => {
+    const [last, setLast] = useState({ type: "NONE", response: { } } as SocketResponse)
     const dispatch = useDispatch()
+    const { type, response } = useSelector((state: any) => state.live.lastMessage) as SocketResponse
 
-    if (!socket) {
-        socket = new WebSocket(`${getUrl()}/notifications/live`)
+    if (type !== last.type && response !== last.response) {
+        setLast({ type, response })
 
-        socket.onopen = () => {
-            dispatch(notifSocketConnect())
+        switch (type.toLowerCase()) {
+            case "notification": {
+                dispatch(
+                    notifReceive(response.message, response.id, response.date)
+                )
+                break
+            }
 
-            socket!!.send(
-                JSON.stringify({
-                    action: "AUTHENTICATE",
-                    token: store.getState().auth.token,
-                })
-            )
+            case "success_receive_all_notification": {
+                dispatch(massNotifReceive(response))
+                break
+            }
 
-            // get all notifications and unread notifications (for number)
-            socket!!.send(
-                JSON.stringify({
-                    action: "GET_ALL_NOTIFICATION"
-                })
-            )
-
-            socket!!.send(
-                JSON.stringify({
-                    action: "GET_ALL_UNREAD_NOTIFICATION"
-                })
-            )
-        }
-
-        socket.onclose = message => {
-            dispatch(notifSocketDisconnect())
-        }
-
-        socket.onerror = message => {
-            console.log(message)
-        }
-
-        socket.onmessage = (message: any) => {
-            const { response, type } = JSON.parse(
-                message.data
-            ) as SocketResponse
-
-            console.log("Notification Socket: %o", { response, type })
-
-            switch (type.toLowerCase()) {
-                case "init": {
-                    const { version, frontend } = response
-                    console.log(`${version}: Expects frontend ${frontend} (${VERSION === frontend ? "OK" : `NOT OK, FOUND ${VERSION}`})`)
-                    break;
-                }
-
-                case "authenticated": {
-                    dispatch(notifSocketAuthenticate(response.expire))
-                    break
-                }
-
-                case "notification": {
-                    dispatch(
-                        notifReceive(
-                            response.message,
-                            response.id,
-                            response.date
-                        )
-                    )
-                    break;
-                }
-
-                case "success_receive_all_notification": {
-                    dispatch(massNotifReceive(response))
-                    break
-                }
-
-                case "success_receive_unread": {
-                    dispatch(notifSetUnread(response.count))
-                    break
-                }
+            case "success_receive_unread": {
+                dispatch(notifSetUnread(response.count))
+                break
             }
         }
     }
+}
+
+export const useNotificationActions = (): NotificationSocket => {
+    const [sendAction] = useLiveSocket()
 
     return {
-        deleteNotification: (id) => {
-            socket!!.send(
-                JSON.stringify({
-                    action: "CLOSE_NOTIFICATION",
-                    notification: id,
-                })
-            )
+        deleteNotification: id => {
+            sendAction({
+                action: "CLOSE_NOTIFICATION",
+                notification: id,
+            })
         },
-        readNotification: (id) => {
-            socket!!.send(
-                JSON.stringify({
-                    action: "READ_NOTIFICATION",
-                    notification: id
-                })
-            )
+        readNotification: id => {
+            sendAction({
+                action: "READ_NOTIFICATION",
+                notification: id,
+            })
         },
         deleteAllNotificiation: () => {
-            socket!!.send(
-                JSON.stringify({
-                    action: "CLOSE_ALL_NOTIFICATION"
-                })
-            )
+            sendAction({
+                action: "CLOSE_ALL_NOTIFICATION",
+            })
         },
         readAllNotification: () => {
-            socket!!.send(
-                JSON.stringify({
-                    action: "READ_ALL_NOTIFICATION"
-                })
-            )
+            sendAction({
+                action: "READ_ALL_NOTIFICATION",
+            })
         },
-        unReadNotifiation: (id) => {
-            socket!!.send(
-                JSON.stringify({
-                    action: "UN_READ_NOTIFICATION",
-                    notification: id
-                })
-            )
-        }
+        unReadNotifiation: id => {
+            sendAction({
+                action: "UN_READ_NOTIFICATION",
+                notification: id,
+            })
+        },
     }
 }

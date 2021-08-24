@@ -16,6 +16,7 @@ import Logout from "../view/account/Logout"
 import Privacy from "../view/Privacy"
 import NotFound from "../view/NotFound"
 import Notifications from "../view/account/Notifications"
+import Friends from "../view/account/Friends"
 
 type Page = {
     path?: string
@@ -41,5 +42,6 @@ export default [
     Login,
     Logout,
     Privacy,
+    Friends,
     NotFound,
 ] as Page[]

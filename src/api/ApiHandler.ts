@@ -1,4 +1,5 @@
 import axios from "axios"
+import { makeUseAxios } from "axios-hooks"
 import store from "../redux/store"
 
 /**
@@ -24,6 +25,10 @@ const API = axios.create({
               }
             : {},
     validateStatus: () => true,
+})
+
+export const useApi = makeUseAxios({
+    axios: API
 })
 
 /**

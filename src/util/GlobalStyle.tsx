@@ -128,6 +128,12 @@ export default createGlobalStyle<{ theme: ThemeType }>`
         border: #2c2c2c solid 1.5px;
         border-radius: 1px;
     }
+    
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
 
     .variable-min-w {
         @media (max-width: 599px) {

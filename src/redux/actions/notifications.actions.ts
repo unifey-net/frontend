@@ -3,19 +3,8 @@ export const NOTIF__MASS_RECEIVE = "NOTIF__MASS_RECEIVE"
 export const NOTIF__SET_UNREAD = "NOTIF__SET_UNREAD"
 export const NOTIF__SET_READ_STATUS = "NOTIF__SET_READ_STATUS"
 export const NOTIF__SET_ALL_READ_STATUS = "NOTIF__SET_ALL_READ_STATUS"
-export const NOTIF__SOCKET_CONNECT = "NOTIF__SOCKET_CONNECT"
-export const NOTIF__SOCKET_DISCONNECT = "NOTIF__SOCKET_DISCONNECT"
-export const NOTIF__SOCKET_AUTHENTICATE = "NOTIF__SOCKET_AUTHENTICATE"
 export const NOTIF__DELETE = "NOTIF__DELETE"
 export const NOTIF__DELETE_ALL = "NOTIF__DELETE_ALL"
-
-/**
- * When the notification socket connects.
- */
-export const notifSocketConnect = () => ({
-    type: NOTIF__SOCKET_CONNECT,
-    payload: { }
-})
 
 /**
  * Update the amount of notifications that are unread. 
@@ -88,24 +77,4 @@ export const notifReceive = (message: string, id: number, date: number) => ({
 export const massNotifReceive = (notifs: any[]) => ({
     type: NOTIF__MASS_RECEIVE,
     payload: notifs,
-})
-
-/**
- * If the socket is authenticated.
- * 
- * @param expire When the token expires.
- */
-export const notifSocketAuthenticate = (expire: number) => ({
-    type: NOTIF__SOCKET_AUTHENTICATE,
-    payload: {
-        expire
-    }
-})
-
-/**
- * When the socket is disconnected.
- */
-export const notifSocketDisconnect = () => ({
-    type: NOTIF__SOCKET_DISCONNECT,
-    payload: { }
 })

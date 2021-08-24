@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import React from "react"
-import { useNotificationSocket } from "../../../api/notification/NotificationsSocket"
 import { useDispatch } from "react-redux"
 import { notifDelete, notifSetReadStatus } from "../../../redux/actions/notifications.actions"
+import { useNotificationActions, useNotifications } from "../../../api/notification/NotificationsSocket"
 
 const Notification = styled.div<{ unread: boolean }>`
     background-color: ${({ theme }) => theme.primary};
@@ -52,7 +52,7 @@ const FeedNotification: React.FC<FeedNotificationProps> = ({
     id
 }) => {
     const dispatch = useDispatch()
-    const { deleteNotification, readNotification, unReadNotifiation } = useNotificationSocket()
+    const { deleteNotification, readNotification, unReadNotifiation } = useNotificationActions()
 
     const deleteNotif = () => {
         deleteNotification(id)

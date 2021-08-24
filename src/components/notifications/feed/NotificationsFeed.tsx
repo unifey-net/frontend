@@ -2,11 +2,10 @@ import { Empty } from "antd"
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import { useNotificationSocket } from "../../../api/notification/NotificationsSocket"
+import { useNotificationActions } from "../../../api/notification/NotificationsSocket"
 import {
     notifDeleteAll,
     notifSetAllReadStatus,
-    notifSetReadStatus,
 } from "../../../redux/actions/notifications.actions"
 import FeedNotification from "./SingleNotification"
 
@@ -44,8 +43,7 @@ const NotificationsFeed: React.FC = () => {
 
     const dispatch = useDispatch()
 
-    const { readAllNotification, deleteAllNotificiation } =
-        useNotificationSocket()
+    const { readAllNotification, deleteAllNotificiation } = useNotificationActions()
 
     const markAllAsRead = () => {
         readAllNotification()

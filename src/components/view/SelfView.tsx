@@ -23,6 +23,8 @@ const NotificationShelf = styled.div`
 
 const SelfView: React.FC = () => {
     let self = useSelector((store: any) => store.auth)
+    
+    const onlineCount = useSelector((store: any) => store.friends.online).length
     const unreadCount = useSelector((store: any) => store.notifications.unread)
 
     let name = self.user.username
@@ -30,7 +32,7 @@ const SelfView: React.FC = () => {
     const menu = (
         <Menu>
             <Menu.Item key="0">
-                <Link to={`/u/${name}`}>View my Profile</Link>
+                <Link to={`/u/${name}`}>Profile</Link>
             </Menu.Item>
             <Menu.Item key="1">
                 <Link to={`/settings`}>Settings</Link>
@@ -40,7 +42,19 @@ const SelfView: React.FC = () => {
                     onClick={() => History.push("/notifications")}
                 >
                     <span>Notifications</span>
-                    <UnreadNotificationCount count={unreadCount} overflow={100} />
+                    <UnreadNotificationCount
+                        count={unreadCount}
+                        overflow={100}
+                    />
+                </NotificationShelf>
+            </Menu.Item>
+            <Menu.Item key="3">
+                <NotificationShelf onClick={() => History.push("/friends")}>
+                    <span>Friends</span>
+                    <UnreadNotificationCount
+                        count={onlineCount}
+                        overflow={100}
+                    />
                 </NotificationShelf>
             </Menu.Item>
             <Menu.Divider />

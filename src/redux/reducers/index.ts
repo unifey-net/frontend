@@ -6,6 +6,8 @@ import post from "./post.reducer"
 import editor from "./editor.reducer"
 import feeds from "./feeds.reducer"
 import notifications from "./notifications.reducer"
+import live from "./live.reducer"
+import friends from "./friends.reducer"
 
 export default combineReducers({
     auth,
@@ -14,5 +16,7 @@ export default combineReducers({
     post,
     editor,
     feeds,
+    live,
+    friends,
     notifications,
 })
