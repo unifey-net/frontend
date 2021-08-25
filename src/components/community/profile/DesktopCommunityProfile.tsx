@@ -1,9 +1,32 @@
 import React from "react"
-import CommunityManage from "../../feed/CommunityManage"
-import Text from "antd/lib/typography/Text"
-import { Divider } from "antd"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
-import { Link } from "react-router-dom"
+import styled from "styled-components"
+import CommunityStaff from "../CommunityStaff"
+import CommunityProfileRules from "../rules/CommunityProfileRules"
+
+const DesktopProfileStyle = styled.div`
+    background-color: ${({ theme }) => theme.primary};
+    padding: 16px;
+    border-radius: 32px;
+    height: min-content;
+    max-width: 200px;
+
+    h4 {
+        font-size: 12px;
+        font-weight: normal;
+        color: #696761;
+    }
+
+    p {
+        color: #cccccc;
+    }
+
+    .top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+`
 
 /**
  * A communities profile for Desktop.
@@ -12,52 +35,34 @@ const DesktopCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
     community,
 }) => {
     return (
-        <div
-            className="accent p-4 rounded invisible lg:visible"
-            style={{
-                maxWidth: "200px",
-                height: "min-content",
-            }}
-        >
-            <div className="flex flex-row justify-between items-center -mb-3">
-                {community.selfRole === 4 && (
-                    <Link to={`/c/${community.community.name}/moderate`}>
-                        Moderate
-                    </Link>
-                )}
-
-                <CommunityManage
-                    community={community.community.id}
-                    type="TEXT"
-                />
-            </div>
-
-            <Divider />
-
-            <div className="flex flex-row justify-between">
-                <h3 className="text-lg">{community.community.name} </h3>
-            </div>
-
-            <Text>
+        <DesktopProfileStyle>
+            <div>
+                <h4>Description</h4>
                 <p
                     dangerouslySetInnerHTML={{
                         __html: community.community.description,
                     }}
                 />
-            </Text>
+            </div>
 
-            <Divider />
+            <div>
+                <h4>Member Count</h4>
+                <p>{community.community.size} members.</p>
+            </div>
 
-            <h3 className="text-lg">Member Count</h3>
-            <Text>{community.community.size} members.</Text>
+            <div>
+                <h4>Created On</h4>
+                <p>
+                    {new Date(community.community.createdAt).toLocaleString()}
+                </p>
+            </div>
 
-            <Divider />
+            <h4>Staff Members</h4>
+            <CommunityStaff id={community.community.id} />
 
-            <h3 className="text-lg">Created On</h3>
-            <Text>
-                {new Date(community.community.createdAt).toLocaleString()}
-            </Text>
-        </div>
+            <h4>Rules</h4>
+            <CommunityProfileRules community={community} />
+        </DesktopProfileStyle>
     )
 }
 

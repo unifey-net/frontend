@@ -1,10 +1,36 @@
 import React from "react"
 import { Divider } from "antd"
+import styled from "styled-components"
+
+const PrivacyStyle = styled.div`
+    margin-left: 5rem;
+    margin-right: 5rem;
+
+    h2 {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    h3 {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    h5 {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+`
 
 const Privacy = () => {
     return (
-        <div className="mx-20">
-            <h1 className="text-4xl">Privacy Policy</h1>
+        <PrivacyStyle>
+            <h1>Privacy Policy</h1>
             <Divider />
             <p>Last updated: July 28, 2020</p>
             <p>
@@ -19,8 +45,8 @@ const Privacy = () => {
                 information in accordance with this Privacy Policy.
             </p>
             <Divider />
-            <h1 className="text-2xl">Interpretation and Definitions</h1>
-            <h2 className="text-lg">Interpretation</h2>
+            <h2>Interpretation and Definitions</h2>
+            <h3>Interpretation</h3>
             <p>
                 The words of which the initial letter is capitalized have
                 meanings defined under the following conditions.
@@ -29,7 +55,7 @@ const Privacy = () => {
                 The following definitions shall have the same meaning regardless
                 of whether they appear in singular or in plural.
             </p>
-            <h2 className="text-lg">Definitions</h2>
+            <h3>Definitions</h3>
             <p>For the purposes of this Privacy Policy:</p>
             <ul>
                 <li>
@@ -97,17 +123,17 @@ const Privacy = () => {
                 </li>
             </ul>
             <Divider />
-            <h1 className="text-2xl">
+            <h2>
                 Collecting and Using Your Personal Data
-            </h1>
-            <h2 className="text-lg">Google Analytics</h2>
+            </h2>
+            <h3>Google Analytics</h3>
             We use Google Analytics on the Website. To find out more about how
             Google Analytics handles your data, visit{" "}
             <a href="https://policies.google.com/technologies/partner-sites">
                 their site
             </a>
-            .<h2 className="text-lg">Types of Data Collected</h2>
-            <h3 className="text-md">Personal Data</h3>
+            .<h3>Types of Data Collected</h3>
+            <h4 className="text-md">Personal Data</h4>
             <p>
                 While using Our Service, We may ask You to provide Us with
                 certain personally identifiable information that can be used to
@@ -118,7 +144,7 @@ const Privacy = () => {
                 <li>Email address</li>
                 <li>Usage Data</li>
             </ul>
-            <h3>Usage Data</h3>
+            <h4>Usage Data</h4>
             <p>Usage Data is collected automatically when using the Service.</p>
             <p>
                 Usage Data may include information such as Your Device's
@@ -140,7 +166,7 @@ const Privacy = () => {
                 You visit our Service or when You access the Service by or
                 through a mobile device.
             </p>
-            <h3>Tracking Technologies and Cookies</h3>
+            <h4>Tracking Technologies and Cookies</h4>
             <p>
                 We use Cookies and similar tracking technologies to track the
                 activity on Our Service and store certain information. Tracking
@@ -216,7 +242,7 @@ const Privacy = () => {
                 For more information about the cookies we use and your choices
                 regarding cookies, please visit our Cookies Policy.
             </p>
-            <h2>Use of Your Personal Data</h2>
+            <h4>Use of Your Personal Data</h4>
             <p>The Company may use Personal Data for the following purposes:</p>
             <ul>
                 <li>
@@ -260,7 +286,7 @@ const Privacy = () => {
             <p>
                 We do not share the information we collect with third parties.
             </p>
-            <h2 className="text-lg">Retention of Your Personal Data</h2>
+            <h4>Retention of Your Personal Data</h4>
             <p>
                 The Company will retain Your Personal Data only for as long as
                 is necessary for the purposes set out in this Privacy Policy. We
@@ -277,7 +303,7 @@ const Privacy = () => {
                 are legally obligated to retain this data for longer time
                 periods.
             </p>
-            <h2 className="text-lg">Transfer of Your Personal Data</h2>
+            <h4>Transfer of Your Personal Data</h4>
             <p>
                 Your information, including Personal Data, is processed at the
                 Company's operating offices and in any other places where the
@@ -299,15 +325,15 @@ const Privacy = () => {
                 controls in place including the security of Your data and other
                 personal information.
             </p>
-            <h2 className="text-lg">Disclosure of Your Personal Data</h2>
-            <h3 className="text-md">Law enforcement</h3>
+            <h4>Disclosure of Your Personal Data</h4>
+            <h5>Law enforcement</h5>
             <p>
                 Under certain circumstances, the Company may be required to
                 disclose Your Personal Data if required to do so by law or in
                 response to valid requests by public authorities (e.g. a court
                 or a government agency).
             </p>
-            <h3 className="text-md">Other legal requirements</h3>
+            <h5>Other legal requirements</h5>
             <p>
                 The Company may disclose Your Personal Data in the good faith
                 belief that such action is necessary to:
@@ -327,7 +353,7 @@ const Privacy = () => {
                 </li>
                 <li>Protect against legal liability</li>
             </ul>
-            <h2 className="text-lg">Security of Your Personal Data</h2>
+            <h4>Security of Your Personal Data</h4>
             <p>
                 The security of Your Personal Data is important to Us, but
                 remember that no method of transmission over the Internet, or
@@ -336,7 +362,7 @@ const Privacy = () => {
                 We cannot guarantee its absolute security.
             </p>
             <Divider />
-            <h1 className="text-2xl">Children's Privacy</h1>
+            <h3>Children's Privacy</h3>
             <p>
                 Our Service does not address anyone under the age of 13. We do
                 not knowingly collect personally identifiable information from
@@ -354,7 +380,7 @@ const Privacy = () => {
                 and use that information.
             </p>
             <Divider />
-            <h1 className="text-2xl">Links to Other Websites</h1>
+            <h3>Links to Other Websites</h3>
             <p>
                 Our Service may contain links to other websites that are not
                 operated by Us. If You click on a third party link, You will be
@@ -367,7 +393,7 @@ const Privacy = () => {
                 or services.
             </p>
             <Divider />
-            <h1 className="text-2xl">Changes to this Privacy Policy</h1>
+            <h3>Changes to this Privacy Policy</h3>
             <p>
                 We may update our Privacy Policy from time to time. We will
                 notify You of any changes by posting the new Privacy Policy on
@@ -384,17 +410,20 @@ const Privacy = () => {
                 they are posted on this page.
             </p>
             <Divider />
-            <h1 className="text-2xl">Contact Us</h1>
+            <h2>Contact Us</h2>
             <p>
                 If you have any questions about this Privacy Policy, You can
                 contact us:
             </p>
             <ul>
-                <li>By email: support@shog.dev</li>
                 <li>By Discord: https://unifey.net/discord</li>
             </ul>
-        </div>
+        </PrivacyStyle>
     )
 }
 
-export default Privacy
+export default {
+    exact: true,
+    path: "/privacy",
+    component: Privacy,
+}

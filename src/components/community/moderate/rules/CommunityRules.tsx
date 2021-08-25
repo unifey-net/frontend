@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import useRuleModal from "./useRuleModal"
 import CommunityRule from "./CommunityRule"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
+import ModeratePage from "../ModeratePage"
 
 /**
  * A communities' rule.
@@ -37,9 +38,8 @@ const CommunityRules: React.FC<Props> = ({ community, type }) => {
     }
 
     return (
-        <>
+        <ModeratePage>
             {modal}
-            <h1 className="text-2xl">Rules</h1>
 
             <ol>
                 {rules.length !== 0 &&
@@ -84,7 +84,7 @@ const CommunityRules: React.FC<Props> = ({ community, type }) => {
                     </span>
                 )}
             </div>
-        </>
+        </ModeratePage>
     )
 }
 

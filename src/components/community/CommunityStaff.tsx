@@ -3,13 +3,30 @@ import { Link } from "react-router-dom"
 import { API } from "../../api/ApiHandler"
 import { Spin, Alert } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
+import styled from "styled-components"
+import { COMPLETE, ERROR, LOADING } from "../../api/util/Status"
+
+const CommunityStaffStyle = styled.div`
+    ul {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .green {
+        color: #58de33;
+    }
+
+    .red {
+        color: #de3350;
+    }
+`
 
 /**
  * A communities staff members. This appears as a section of the far right sidebar.
  */
 const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
     let [staff, setStaff] = useState([] as any[])
-    let [status, setStatus] = useState({
+    let [{ status, message }, setStatus] = useState({
         status: 0,
         message: "",
     })
@@ -33,7 +50,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 case 401: {
                     setStatus(prev => ({
                         ...prev,
-                        status: -2,
+                        status: -2
                     }))
 
                     break
@@ -43,6 +60,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                     setStatus(prev => ({
                         ...prev,
                         status: -1,
+                        message: request.data.payload
                     }))
 
                     break
@@ -54,22 +72,15 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
     }, [id])
 
     return (
-        <div
-            className="accent p-4"
-            style={{
-                maxWidth: "200px",
-            }}
-        >
-            <h2 className="text-lg">Community Staff</h2>
+        <CommunityStaffStyle>
+            {status === LOADING && <Spin indicator={<LoadingOutlined />} />}
 
-            {status.status === 0 && <Spin indicator={<LoadingOutlined />} />}
-
-            {status.status === 1 && (
+            {status === COMPLETE && (
                 <ul className="flex flex-col">
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
                             let color =
-                                role === 2 ? "text-green-400" : "text-red-700"
+                                role === 2 ? "green" : "red"
 
                             return (
                                 <li key={index}>
@@ -89,26 +100,25 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 </ul>
             )}
 
-            {status.status === -1 && (
+            {status === ERROR && (
                 <Alert
-                    message={"There was an issue getting the staff members."}
-                    description={status.message}
-                    type="warning"
-                    showIcon
-                />
-            )}
-
-            {status.status === -2 && (
-                <Alert
-                    message={
-                        "You don't have permission to view this community!"
-                    }
-                    description={status.message}
+                    message={message}
                     type="error"
                     showIcon
                 />
             )}
-        </div>
+
+            {status === -2 && (
+                <Alert
+                    message={
+                        "You don't have permission to view this community!"
+                    }
+                    description={message}
+                    type="error"
+                    showIcon
+                />
+            )}
+        </CommunityStaffStyle>
     )
 }
 

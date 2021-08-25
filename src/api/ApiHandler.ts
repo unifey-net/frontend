@@ -1,4 +1,5 @@
 import axios from "axios"
+import { makeUseAxios } from "axios-hooks"
 import store from "../redux/store"
 
 /**
@@ -26,9 +27,13 @@ const API = axios.create({
     validateStatus: () => true,
 })
 
+export const useApi = makeUseAxios({
+    axios: API
+})
+
 /**
  * The version, manually kept up to date :(
  */
-const VERSION = "Alpha v0.5.0"
+const VERSION = "0.6.0"
 
 export { VERSION, API, BASE_URL }

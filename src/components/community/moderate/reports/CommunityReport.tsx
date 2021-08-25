@@ -5,6 +5,9 @@ import { Button, message } from "antd"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import { Link } from "react-router-dom"
 import { API } from "../../../../api/ApiHandler"
+import styled from "styled-components"
+import { useDispatch } from "react-redux"
+import { removeCommunityReport } from "../../../../redux/actions/community.actions"
 
 type Props = {
     index: number
@@ -12,16 +15,36 @@ type Props = {
     community: CommunityRequest
 }
 
+const Report = styled.div`
+    background-color: ${({ theme }) => theme.primary};
+    padding: 8px;
+    border-radius: 4px;
+
+    .report-header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .extended {
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            margin-top: 8px;  
+        }
+    }
+`
+
 /**
  * A community report.
  */
 const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: Props) => {
     const { report, data } = reportRequest
+    const dispatch = useDispatch()
 
     const [extended, setExtended] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
-
-    const [deleted, setDeleted] = useState(false)
 
     /**
      * Delete a report.
@@ -34,8 +57,7 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
         )
 
         if (request.status === 200) {
-            setDeleted(true)
-
+            dispatch(removeCommunityReport(community.community.id, report.id))
             message.success("Successfully deleted report.")
         } else {
             message.error(request.data.payload)
@@ -51,31 +73,29 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
     )
 
     return (
-        <div
-            className={`p-4 border-black mb-2 rounded accent ${
-                deleted ? "hidden" : ""
-            }`}
-        >
-            <div className="flex flex-row justify-between">
+        <Report>
+            <div className="report-header">
+                <strong>#{index}</strong>
+
                 <span>
-                    <strong>#{index}</strong> —{" "}
-                    {fixReportType(report.reportType)}: {report.reason}
+                    {new Date(report.date).toLocaleString()} — {report.reason}
                 </span>
 
                 <span>{caret}</span>
             </div>
 
             {extended && (
-                <div className="flex flex-row justify-between mt-4">
-                    <span className="mt-1">
-                        {new Date(report.date).toLocaleString()} | Reported by{" "}
-                        {data.target}
-                    </span>
-
-                    <div className="flex flex-row justify-evenly gap-2">
+                <div className="extended">
+                    <div className="buttons">
                         <Button type="primary">
                             <Link to={data.url} target="_blank">
                                 View Post/Comment
+                            </Link>
+                        </Button>
+
+                        <Button type="primary">
+                            <Link to={`/u/${data.target}`} target="_blank">
+                                Reporter
                             </Link>
                         </Button>
 
@@ -89,7 +109,7 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
                     </div>
                 </div>
             )}
-        </div>
+        </Report>
     )
 }
 

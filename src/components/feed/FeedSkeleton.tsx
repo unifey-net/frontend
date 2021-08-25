@@ -3,16 +3,77 @@ import PostJsx from "./post/Post"
 import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { PostResponse } from "../../api/Feeds"
-import LinkButton from "../LinkButton"
 import InfiniteScroll from "react-infinite-scroll-component"
+import styled from "styled-components"
+import { MdRefresh, MdArrowDropDown } from "react-icons/md"
+import DefaultContainer from "../DefaultContainer"
+import { media } from "../../api/util/Media"
+
+const LinksStyle = styled.div`
+
+    ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: ${props => props.theme.primary};
+    border-radius: 32px;
+    margin-bottom: 8px;
+    padding: 8px;
+
+    button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
+
+    .create-post:disabled {
+        cursor: not-allowed;
+    }
+`
+
+/**
+ * A skeleton of the links on the top of a feed. Create post etc.
+ */
+const LinksSkeleton: React.FC<{
+    onReload: () => void
+    createPost?: () => void | undefined
+    changeSort: () => void 
+    currentSort: string
+}> = ({ onReload, createPost, changeSort, currentSort }) => {
+    return (
+        <LinksStyle>
+            <button
+                disabled={!createPost}
+                onClick={createPost}
+                className="create-post"
+            >
+                + Create Post
+            </button>
+
+            <div className="reload-change-sort">
+                <button onClick={changeSort} className="change-sort">
+                    Sort by{" "}
+                    {currentSort[0] + currentSort.toLowerCase().substring(1)}{" "}
+                    <MdArrowDropDown />
+                </button>
+                <button onClick={onReload} className="reload">
+                    <MdRefresh />
+                </button>
+            </div>
+        </LinksStyle>
+    )
+}
 
 /**
  * Props for FeedSkeleton
  * 
  */
 type Props = {
-    postBox: JSX.Element
-
     posts: PostResponse[]
 
     isFeedEmpty?: boolean
@@ -20,38 +81,29 @@ type Props = {
     hasMore: () => boolean
     loadMore: () => void
     onReload: () => void
-    changeSort: JSX.Element
+
+    createPost?: () => void | undefined
+
+    changeSort: () => void
+    currentSort: string
 }
 
-/**
- * A skeleton of the links on the top of a feed. Create post etc.
- */
-const LinksSkeleton: React.FC<{
-    onReload: () => void
-    postBox: JSX.Element
-    changeSort: JSX.Element
-}> = ({ onReload, postBox, changeSort }) => {
-    return (
-        <div className="flex flex-row justify-evenly accent mb-2 rounded p-2 gap-8">
-            {postBox}
-
-            {changeSort}
-
-            <LinkButton onClick={onReload}>Reload</LinkButton>
-        </div>
-    )
-}
+const FeedContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`
 
 /**
  * A skeleton of the feed, with imported functionality.
  */
 const FeedSkeleton: React.FC<Props> = ({
-    postBox,
+    createPost,
     loadMore,
     posts,
     hasMore,
     onReload,
     changeSort,
+    currentSort,
     isFeedEmpty,
 }) => {
     if (isFeedEmpty || posts.length === 0) {
@@ -60,12 +112,13 @@ const FeedSkeleton: React.FC<Props> = ({
                 <LinksSkeleton
                     onReload={onReload}
                     changeSort={changeSort}
-                    postBox={postBox}
+                    createPost={createPost}
+                    currentSort={currentSort}
                 />
 
                 <Empty
                     style={{ minWidth: "200px" }}
-                    description={<p>There are no posts in this feed.</p>}
+                    description={"There are no posts in this feed."}
                 />
             </div>
         )
@@ -76,7 +129,8 @@ const FeedSkeleton: React.FC<Props> = ({
             <LinksSkeleton
                 onReload={onReload}
                 changeSort={changeSort}
-                postBox={postBox}
+                createPost={createPost}
+                currentSort={currentSort}
             />
 
             <InfiniteScroll
@@ -84,18 +138,16 @@ const FeedSkeleton: React.FC<Props> = ({
                 next={loadMore}
                 hasMore={hasMore()}
                 loader={
-                    <div className="flex flex-row justify-center align-center">
+                    <DefaultContainer>
                         <Spin key={0} indicator={<LoadingOutlined />} />
-                    </div>
+                    </DefaultContainer>
                 }
             >
-                <ul className="feed-container">
+                <FeedContainer>
                     {posts.map((post, index) => (
-                        <li key={index}>
-                            <PostJsx postResponse={post} />
-                        </li>
+                        <PostJsx key={index} allowFocusChange={true} postResponse={post} />
                     ))}
-                </ul>
+                </FeedContainer>
             </InfiniteScroll>
         </div>
     )

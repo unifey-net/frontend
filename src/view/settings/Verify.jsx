@@ -10,7 +10,7 @@ import { verifyAccount } from "../../redux/actions/auth.actions"
 /**
  * Verify an account's email.
  */
-export default function Verify() {
+const Verify = () => {
     let dispatch = useDispatch()
 
     useEffect(() => {
@@ -45,4 +45,10 @@ export default function Verify() {
     }
 
     return <Spin indicator={<LoadingOutlined />} />
+}
+
+export default {
+    exact: true,
+    path: "/settings/verify",
+    component: Verify,
 }

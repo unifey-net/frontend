@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import CommunityRule from "./CommunityProfileRule"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
+import styled from "styled-components"
 
 /**
  * A communities' rule.
@@ -14,6 +15,18 @@ export type Rule = {
 type Props = {
     community: CommunityRequest
 }
+
+const CommunityRulesStyles = styled.div`
+    background-color: ${({ theme }) => theme.primary};
+    padding: 8px;
+    max-width: 200px;
+    border-radius: 32px;
+
+    .rules {
+        display: flex;
+        flex-direction: column;
+    }
+`
 
 /**
  * The communities rules. This appears on the far right sidebar.
@@ -31,15 +44,8 @@ export default ({ community }: Props) => {
     }
 
     return (
-        <div
-            className="accent p-4 rounded invisible lg:visible"
-            style={{
-                maxWidth: "200px",
-            }}
-        >
-            <h2 className="text-lg text-gray-400">Community Rules</h2>
-
-            <ol>
+        <CommunityRulesStyles>
+            <div className="rules">
                 {rules.length !== 0 &&
                     rules
                         .slice(0, showing)
@@ -56,7 +62,7 @@ export default ({ community }: Props) => {
                 {rules.length === 0 && (
                     <p>There are no rules in this community.</p>
                 )}
-            </ol>
+            </div>
 
             <div className="flex flex-row justify-between">
                 {rules.length > showing && (
@@ -72,6 +78,6 @@ export default ({ community }: Props) => {
                     </span>
                 )}
             </div>
-        </div>
+        </CommunityRulesStyles>
     )
 }

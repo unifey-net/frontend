@@ -7,10 +7,21 @@ import { LoadingOutlined, PlusCircleOutlined } from "@ant-design/icons"
 import useSetRoleModal from "./setRole/useSetRoleModal"
 import Status, { COMPLETE, LOADING, ERROR } from "../../../../api/util/Status"
 import { getRoles } from "../../../../api/community/Community"
+import ModeratePage from "../ModeratePage"
+import styled from "styled-components"
 
 type Props = {
     community: CommunityRequest
 }
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 16px;
+`
 
 /**
  * A communities roles.
@@ -40,38 +51,50 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
         loadRoles()
     }, [community.community.id])
 
+    if (status === ERROR) {
+        return (
+            <ModeratePage>
+                <Alert
+                    message="There was an issue loading roles in this community."
+                    description={message}
+                    showIcon
+                    type="error"
+                />
+            </ModeratePage>
+        )
+    }
+
+    if (status === LOADING) {
+        return (
+            <ModeratePage>
+                <Spin indicator={<LoadingOutlined />} />
+            </ModeratePage>
+        )
+    }
+
     return (
-        <>
-            <h1 className="text-2xl">Roles</h1>
-
-            <ul className="flex flex-col gap-4">
-                {status === COMPLETE &&
-                    roles
-                        .sort((a: UserRole, b: UserRole) => b.role - a.role)
-                        .map((role: UserRole, index: number) => (
-                            <CommunityRole
-                                index={index}
-                                userRole={role}
-                                selfRole={community.selfRole}
-                                community={community.community.id}
-                            />
-                        ))}
-
-                {status === LOADING && <Spin indicator={<LoadingOutlined />} />}
-
-                {status === ERROR && (
-                    <Alert message={message} showIcon type="error" />
-                )}
-            </ul>
-
-            {modal}
-
-            <div className="flex justify-evenly">
+        <ModeratePage>
+            <ButtonContainer>
                 <Button onClick={toggle}>
                     <PlusCircleOutlined />
                 </Button>
-            </div>
-        </>
+            </ButtonContainer>
+
+            {modal}
+
+            <ul>
+                {roles
+                    .sort((a: UserRole, b: UserRole) => b.role - a.role)
+                    .map((role: UserRole, index: number) => (
+                        <CommunityRole
+                            index={index}
+                            userRole={role}
+                            selfRole={community.selfRole}
+                            community={community.community.id}
+                        />
+                    ))}
+            </ul>
+        </ModeratePage>
     )
 }
 

@@ -179,6 +179,7 @@ export default (): [JSX.Element, SnakeStatus, number, () => void] => {
             <Layer>
                 {snake.location.map((location, index) => (
                     <Snake
+                        key={index}
                         x={location.x}
                         y={location.y}
                         color={index === 0 ? "yellow" : "lightgreen"}

@@ -88,7 +88,7 @@ export const useCommunity = (
  * @param id The ID of the community.
  */
 export const useExistingCommunityId = (id: number): CommunityRequest => {
-    let state = useSelector((state: any) => state)
+    let state = useSelector((state: any) => state.community)
     let key = getNameById(state, id)
 
     return state[key]

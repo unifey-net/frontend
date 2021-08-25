@@ -6,7 +6,6 @@ import { Post } from "../../../api/Feeds"
 import { sendReport } from "../../../api/Reports"
 import { RadioChangeEvent } from "antd/lib/radio"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../api/ToastTheme"
 
 const { TextArea } = Input
 
@@ -42,7 +41,7 @@ const usePostReport = (post: Post | CommentObject): [() => void, JSX.Element] =>
 
         setConfirmLoading(false)
         setVisible(false)
-        toast.success("Successfully reported post.", ToastTheme)
+        toast.success("Successfully reported post.")
     }
 
     const closeReport = () => {

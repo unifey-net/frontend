@@ -1,24 +1,43 @@
 import React from "react"
+import styled from "styled-components"
+
+const Home = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .questions {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+
+        p {
+            overflow-wrap: break-word;
+            max-width: 20rem;
+        }
+    }
+`
 
 const DefaultHome: React.FC = () => {
     return (
-        <div className="flex flex-col items-center justify-center">
+        <Home>
             <div>
                 <img src="/homepage.png" alt="Large Unifey Logo"></img>
             </div>
 
-            <div className="flex flex-row gap-8">
+            <div className="questions">
                 <div>
-                    <h2 className="text-lg">What is Unifey?</h2>
-                    <p className="break-words max-w-xs">
+                    <h2>What is Unifey?</h2>
+                    <p>
                         Unifey is an open source social-media platform,
                         dedicated to freely exchange ideas.
                     </p>
                 </div>
 
-                <div>
-                    <h2 className="text-lg">How can I learn more?</h2>
-                    <p className="break-words max-w-xs">
+                <div className="learn-more">
+                    <h2>How can I learn more?</h2>
+                    <p>
                         You can join our
                         <a
                             target="_blank"
@@ -32,7 +51,7 @@ const DefaultHome: React.FC = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </Home>
     )
 }
 

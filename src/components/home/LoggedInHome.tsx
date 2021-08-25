@@ -1,20 +1,55 @@
 import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import styled from "styled-components"
 import { getCommunityById } from "../../api/community/Community"
+import { media } from "../../api/util/Media"
 import Community from "../community/communities/Community"
 import CustomFeed from "../feed/controller/CustomFeedController"
+import Notifications from "../user/Notifications"
+
+const LoggedInHomeStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .shelf {
+        display: flex;
+        ${media(
+            `
+                align-items: center;
+                flex-direction: column-reverse;
+                
+                .side-community-bar {
+                    text-align: center;
+                    min-width: 300px;
+                }
+            `,
+            "flex-direction: row;",
+            "flex-direction: row;"
+        )}
+        gap: 16px;
+
+        .side-community-bar {
+            background-color: ${({ theme }) => theme.primary};
+            border-radius: 32px;
+            padding: 16px;
+
+            div {
+                background-color: ${({ theme }) => theme.secondary};
+            }
+        }
+    }
+`
 
 const LoggedInHome: React.FC = () => {
     const [communities, setCommunities] = useState([] as any[])
-    let self = useSelector((store: any) => store.auth)
-
-    let name = self.user.username
+    let members = useSelector((store: any) => store.auth.user.member.members)
+    let name = useSelector((store: any) => store.auth.user.username)
 
     // load the user's communities.
     useEffect(() => {
         const loadCommunities = async () => {
-            const members = self.user.member.members
-
             for (let i = 0; members.length > i; i++) {
                 const member = members[i]
                 const community = await getCommunityById(member)
@@ -24,24 +59,28 @@ const LoggedInHome: React.FC = () => {
         }
 
         loadCommunities()
-    }, [self])
+        //eslint-disable-next-line
+    }, [])
 
     return (
-        <div className="flex flex-col items-center justify-center">
-            <h1 className="text-4xl">Welcome back, {name}.</h1>
-            <p>You have no new notifications.</p>
+        <LoggedInHomeStyle>
+            <h1>Welcome back, {name}.</h1>
+            <Notifications />
 
-            <div className="flex justify-evenly flex-row gap-8">
+            <div className="shelf">
                 <CustomFeed url={"/feeds/self"} />
-                <div className="">
-                    <div className="accent mb-2 rounded">
-                        {communities.map(community => (
-                            <Community community={community} />
-                        ))}
+
+                {communities.length !== 0 && (
+                    <div>
+                        <div className="side-community-bar">
+                            {communities.map((community, index) => (
+                                <Community community={community} key={index} useNotifications={true} />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
-        </div>
+        </LoggedInHomeStyle>
     )
 }
 

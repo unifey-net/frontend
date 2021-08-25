@@ -5,7 +5,7 @@ import ChangeCommunityName from "./inputs/ChangeCommunityName"
 import ChangeCommunityDesc from "./inputs/ChangeCommunityDesc"
 import { updateCommunityPermissionRole } from "../../../../api/community/Community"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../../api/ToastTheme"
+import ModeratePage from "../ModeratePage"
 
 type Props = {
     community: CommunityRequest
@@ -30,19 +30,17 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
 
         if (request.status !== 200) {
             toast.error(
-                "There was an issue updating the permissions.",
-                ToastTheme
+                "There was an issue updating the permissions."
             )
         }
     }
 
     return (
-        <>
-            <h1 className="text-2xl">General Settings</h1>
+        <ModeratePage>
+            <div className="settings-cluster">
+                <h3 className="cluster-title">Community Permissions</h3>
 
-            <div className="mb-4">
-                <h2 className="text-lg">Community Permissions</h2>
-                <div className="flex flex-col gap-8">
+                <div className="cluster-items">
                     <CommunityPermission
                         initialValue={1}
                         title="Post Level"
@@ -78,14 +76,15 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                 </div>
             </div>
 
-            <div className="mt-8">
-                <h2 className="text-lg">Other</h2>
-                <div className="flex flex-col gap-8">
+            <div className="settings-cluster">
+                <h3 className="cluster-title">Other</h3>
+
+                <div className="cluster-items">
                     <ChangeCommunityName community={community} />
                     <ChangeCommunityDesc community={community} />
                 </div>
             </div>
-        </>
+        </ModeratePage>
     )
 }
 

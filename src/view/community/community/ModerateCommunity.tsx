@@ -9,7 +9,9 @@ import GeneralSettings from "../../../components/community/moderate/general/Gene
 import useQueryParameterTabs from "../../../components/useQueryParameterTabs"
 import NotFound from "../../NotFound"
 import CommunityRules from "../../../components/community/moderate/rules/CommunityRules"
-import { COMPLETE, ERROR, LOADING } from "../../../api/util/Status"
+import { ERROR, LOADING } from "../../../api/util/Status"
+import styled from "styled-components"
+import DefaultContainer from "../../../components/DefaultContainer"
 
 const { TabPane } = Tabs
 
@@ -17,64 +19,81 @@ type UrlProps = {
     name: string
 }
 
-export default () => {
+const ModerateCommunityStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .moderate-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+`
+
+const ModerateCommunity = () => {
     const { name } = useParams() as UrlProps
 
     let [community, status] = useCommunity(name)
     let [activeTab, setActiveTab] = useQueryParameterTabs()
 
-    if (community && 3 > community.selfRole) return NotFound()
+    if (community && 3 > community.selfRole) return NotFound.component()
+
+    if (status.status === LOADING) {
+        return (
+            <DefaultContainer>
+                <Spin indicator={<LoadingOutlined />} />
+            </DefaultContainer>
+        )
+    }
+
+    if (status.status === ERROR || community === null) {
+        return (
+            <Alert
+                message="Uh oh."
+                description={status.message}
+                showIcon
+                type="error"
+            />
+        )
+    }
 
     return (
-        <>
-            {status.status === COMPLETE && community !== null && (
-                <>
-                    <h1 className="text-3xl lg:text-4xl text-center">
-                        {community.community.name}
-                    </h1>
+        <ModerateCommunityStyle>
+            <h1>
+                {community.community.name}
+            </h1>
 
-                    <div className="flex items-center flex-col justify-center">
-                        <div className="max-w-sm md:max-w-md lg:max-w-6xl variable-min-w">
-                            <Tabs
-                                activeKey={activeTab}
-                                onChange={tab => setActiveTab(tab)}
-                                tabPosition="left"
-                            >
-                                <TabPane tab="General Settings" key="1">
-                                    <GeneralSettings community={community!!} />
-                                </TabPane>
-                                <TabPane tab="Reports" key="2">
-                                    <CommunityReports community={community!!} />
-                                </TabPane>
-                                <TabPane tab="Roles" key="3">
-                                    <CommunityRoles community={community!!} />
-                                </TabPane>
-                                <TabPane tab="Rules" key="4">
-                                    <CommunityRules community={community!!} />
-                                </TabPane>
-                            </Tabs>
-                        </div>
-                    </div>
-                </>
-            )}
-
-            {status.status === LOADING && (
-                <div className="flex justify-center">
-                    <div className="flex flex-col">
-                        <Spin indicator={<LoadingOutlined />} />
-                        <p>If this page doesn't load, try reloading. (F5)</p>
-                    </div>
+            <div className="moderate-container">
+                <div>
+                    <Tabs
+                        activeKey={activeTab}
+                        onChange={tab => setActiveTab(tab)}
+                        tabPosition="left"
+                    >
+                        <TabPane tab="General Settings" key="1">
+                            <GeneralSettings community={community!!} />
+                        </TabPane>
+                        <TabPane tab="Reports" key="2">
+                            <CommunityReports community={community!!} />
+                        </TabPane>
+                        <TabPane tab="Roles" key="3">
+                            <CommunityRoles community={community!!} />
+                        </TabPane>
+                        <TabPane tab="Rules" key="4">
+                            <CommunityRules community={community!!} />
+                        </TabPane>
+                    </Tabs>
                 </div>
-            )}
-
-            {status.status === ERROR && (
-                <Alert
-                    message="Uh oh."
-                    description={status.message}
-                    showIcon
-                    type="error"
-                />
-            )}
-        </>
+            </div>
+        </ModerateCommunityStyle>
     )
+}
+
+export default {
+    path: "/c/:name/moderate",
+    component: ModerateCommunity,
+    exact: true,
 }

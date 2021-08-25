@@ -1,19 +1,35 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import styled from "styled-components"
+
+const UnsubscribedStyle = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 16rem;
+    margin-right: 16rem;
+    margin-top: 12rem;
+
+    p {
+        max-width: 25rem;
+    }
+`
 
 const Unsubscribed = () => {
     return (
-        <div className="flex flex-col items-center mx-64">
-            <h1 className="text-2xl">
-                You have been unsubscribed from Unifey.
-            </h1>
+        <UnsubscribedStyle>
+            <h2>You have been unsubscribed from Unifey.</h2>
             <p>
                 You will no longer be able to receive emails from us, even if
                 you create an account with your own email. If this is a mistake,
                 please <Link to="/support">contact us</Link>.
             </p>
-        </div>
+        </UnsubscribedStyle>
     )
 }
 
-export default Unsubscribed
+export default {
+    exact: true,
+    path: "/unsubscribed",
+    component: Unsubscribed,
+}

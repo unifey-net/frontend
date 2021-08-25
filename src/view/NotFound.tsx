@@ -1,11 +1,24 @@
 import React from "react"
+import styled from "styled-components"
 
-const NotFound = () => {
+const NotFoundStyle = styled.div`
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    margin-left: 16rem;
+    margin-right: 16rem;
+`
+
+const NotFound = (): JSX.Element => {
     return (
-        <div className="flex flex-col items-center mx-64">
-            <h1 className="text-4xl">That page could not be found!</h1>
-        </div>
+        <NotFoundStyle>
+            <h1>That page could not be found!</h1>
+        </NotFoundStyle>
     )
 }
 
-export default NotFound
+export default {
+    component: NotFound,
+}

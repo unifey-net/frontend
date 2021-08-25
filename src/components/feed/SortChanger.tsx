@@ -1,22 +1,5 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useState } from "react"
-import LinkButton from "../LinkButton"
-
-type SortChangerProps = {
-    onChange: () => void
-    sort: string
-}
-
-/**
- * The sort changer button.
- */
-export const SortChanger: React.FC<SortChangerProps> = ({ onChange, sort }) => {
-    return (
-        <LinkButton onClick={() => onChange()}>
-            {sort[0] + sort.substring(1).toLowerCase()}
-        </LinkButton>
-    )
-}
 
 /**
  * Handles the sort changing. (for feeds)
@@ -24,7 +7,7 @@ export const SortChanger: React.FC<SortChangerProps> = ({ onChange, sort }) => {
 const useSortChanger = (
     defaultSort: "NEW" | "TOP" | "OLD",
     onSortChange?: (newSort: string) => void
-): ["NEW" | "TOP" | "OLD", JSX.Element] => {
+): ["NEW" | "TOP" | "OLD", () => void] => {
     const [sort, setSort] = useState(defaultSort)
     const [prevSort, setPrevSort] = useState(defaultSort)
 
@@ -49,7 +32,7 @@ const useSortChanger = (
         }
     }
 
-    return [sort, <SortChanger sort={sort} onChange={onChange} />]
+    return [sort, onChange]
 }
 
 export default useSortChanger

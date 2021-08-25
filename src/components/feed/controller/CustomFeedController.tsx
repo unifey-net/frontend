@@ -1,11 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react"
-import PostJsx from "../post/Post"
-import { Spin, Alert, Empty } from "antd"
+import React, { useEffect, useState } from "react"
+import { Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { PostResponse } from "../../../api/Feeds"
-import LinkButton from "../../LinkButton"
 import useSortChanger from "../SortChanger"
-import InfiniteScroll from "react-infinite-scroll-component"
 import {
     CustomFeedResponse,
     getCustomFeed,
@@ -24,7 +21,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     const [maxPage, setMaxPage] = useState(-1)
     const [posts, setPosts] = useState([] as PostResponse[])
 
-    const [sort, button] = useSortChanger("NEW", sort => {
+    const [sort, changeSort] = useSortChanger("NEW", sort => {
         setPosts([])
         setPage(1)
         loadMore()
@@ -33,7 +30,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     /**
      * Load another post.
      */
-    const loadMore = useCallback(async () => {
+    const loadMore = async () => {
         if (maxPage === 0 || (maxPage !== -1 && page > maxPage)) return
 
         const feed = await getCustomFeed(url, sort, page)
@@ -48,12 +45,13 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
         } else {
             setStatus({ status: ERROR, message: feed.data.payload })
         }
-    }, [maxPage, page, sort, url])
+    }
 
     // init load
     useEffect(() => {
         loadMore()
-    }, [loadMore])
+        // eslint-disable-next-line
+    }, [])
 
     if (status.status === LOADING) {
         return <Spin indicator={<LoadingOutlined/>} />
@@ -63,9 +61,9 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
         <FeedSkeleton
             loadMore={loadMore}
             hasMore={() => maxPage > page}
-            postBox={<></>}
             onReload={() => {}}
-            changeSort={button}
+            currentSort={sort}
+            changeSort={changeSort}
             posts={posts}
         />
     )

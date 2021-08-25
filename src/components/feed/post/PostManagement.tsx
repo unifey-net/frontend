@@ -22,7 +22,6 @@ import {
 } from "../../../redux/actions/editor.actions"
 import usePostReport from "./usePostReport"
 import toast from "react-hot-toast"
-import ToastTheme from "../../../api/ToastTheme"
 
 const { confirm } = Modal
 
@@ -86,7 +85,7 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
         if (signedIn()) {
             toggle()
         } else {
-            toast.error("You must be signed in for this!", ToastTheme)
+            toast.error("You must be signed in for this!")
         }
     }
 

@@ -6,12 +6,27 @@ import { Tooltip, message } from "antd"
 import { useSelector } from "react-redux"
 import Vote from "../../../api/user/Vote"
 import { Post } from "../../../api/Feeds"
+import styled from "styled-components"
 
 type Props = {
     vote: Vote | null
     post: Post
     postType?: string
 }
+
+const PostStyle = styled.div<{ hasUpVoted: boolean; hasDownVoted: boolean }>`
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+
+    .upvote {
+        color: ${({ hasUpVoted }) => (hasUpVoted ? "#d9a521;" : "inherit;")};
+    }
+
+    .downvote {
+        color: ${({ hasDownVoted }) => (hasDownVoted ? "#d9a521;" : "inherit;")};
+    }
+`
 
 const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
     let [number, setNumber] = useState(post.upvotes - post.downvotes)
@@ -115,21 +130,21 @@ const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
     }
 
     return (
-        <div className="flex flex-row justify-between gap-2">
-            <p className={hasUpVoted ? "text-red-600" : ""}>
+        <PostStyle hasDownVoted={hasDownVoted} hasUpVoted={hasUpVoted}>
+            <p className="upvote">
                 <Tooltip title="Upvote this post">
                     <UpOutlined onClick={upVote} />
                 </Tooltip>
             </p>
 
-            <p className={hasDownVoted ? "text-red-600" : ""}>
+            <p>{number}</p>
+
+            <p className="downvote">
                 <Tooltip title="Downvote this post">
                     <DownOutlined onClick={downVote} />
                 </Tooltip>
             </p>
-
-            <p>{number}</p>
-        </div>
+        </PostStyle>
     )
 }
 

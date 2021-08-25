@@ -5,6 +5,9 @@ import * as serviceWorker from "./serviceWorker"
 import { Provider } from "react-redux"
 import App from "./App"
 import store from "./redux/store"
+import { VERSION } from "./api/ApiHandler"
+
+console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV})`)
 
 console.log(`%cSTOP!`, "color:red;font-size:64px")
 console.log(

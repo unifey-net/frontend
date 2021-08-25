@@ -14,7 +14,7 @@ import { updateName, verifyAccount } from "../../redux/actions/auth.actions"
 import SettingsProperty from "../../components/settings/SettingsProperty"
 import UnverifiedWarning from "../../components/settings/UnverifiedWarning"
 
-export default function Settings() {
+const Settings = () => {
     let dispatch = useDispatch()
     let self = useSelector((state: any) => state.auth.user)
 
@@ -198,4 +198,10 @@ export default function Settings() {
             </div>
         </div>
     )
+}
+
+export default {
+    exact: true,
+    path: "/settings",
+    components: Settings,
 }

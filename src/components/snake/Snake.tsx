@@ -61,6 +61,7 @@ const Snake: React.FC = () => {
                                 <Button onClick={restart}>Restart</Button>
                             )}
                         </div>
+                        
                         <div className="flex flex-row items-center justify-center">
                             {snake}
                         </div>

@@ -15,4 +15,8 @@ const Logout = () => {
     return <Redirect to="/" />
 }
 
-export default Logout
+export default {
+    exact: true,
+    path: "/logout",
+    component: Logout,
+}
