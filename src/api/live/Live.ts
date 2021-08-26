@@ -18,7 +18,7 @@ import Status, { COMPLETE, ERROR, LOADING } from "../util/Status"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
-        return "wss://unifey.ajkneisl.dev"
+        return "wss://unifeyapi.ajkneisl.dev"
     else return "ws://localhost:8077"
 }
 
@@ -57,7 +57,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
         }
 
         socket.onclose = message => {
-            console.log(`LIVE Socket Disconnected: ${message}`)
+            console.log(`LIVE Socket Disconnected: %o`, message)
             dispatch(liveSocketDisconnect())
         }
 
