@@ -1,10 +1,9 @@
 import React from "react"
 import toast from "react-hot-toast";
-import { MdAdd, MdMessage, MdRemove } from "react-icons/md";
+import { MdRemove } from "react-icons/md";
 import styled from "styled-components";
 import { API } from "../../api/ApiHandler";
 import { Friend } from "../../api/user/Friends";
-import friends from "../../redux/reducers/friends.reducer";
 
 const FriendStyle = styled.div`
     display: flex;

@@ -7,8 +7,7 @@ import {
     MdArrowForward,
     MdCancel,
     MdRefresh,
-    MdSchedule,
-    MdTimer,
+    MdSchedule
 } from "react-icons/md"
 import { API, useApi } from "../../../api/ApiHandler"
 import useAddFriendModal from "./AddFriendModal"

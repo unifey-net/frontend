@@ -1,20 +1,16 @@
-import { message } from "antd"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import toast from "react-hot-toast"
+import { useDispatch } from "react-redux"
+import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
     liveSocketAuthenticate,
     liveSocketConnect,
     liveSocketDisconnect,
     liveSocketRecent,
 } from "../../redux/actions/live.actions"
-import {
-    massNotifReceive,
-    notifReceive,
-    notifSetUnread,
-} from "../../redux/actions/notifications.actions"
+import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
-import Status, { COMPLETE, ERROR, LOADING } from "../util/Status"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
@@ -27,16 +23,27 @@ export type SocketResponse = {
     type: string
 }
 
-type LiveSocket = {
-    recentAction: any
-}
-
 let socket = new WebSocket(`${getUrl()}/live`)
 
 export const useLiveSocket = (): [(action: any) => void] => {
+    const [lastPong, setLastPong] = useState(Date.now())
+    const pingInterval = 5000
+    
+    const ping = () => {
+        console.debug("LIVE Socket: Ping")
+        socket.send(JSON.stringify({ "action": "PING" }))
+
+        setTimeout(() => ping(), pingInterval)
+    }
+
     const dispatch = useDispatch()
 
     const sendAction = (action: any) => {
+        if (Date.now() - lastPong > 1000 * 15) {
+            console.error("LIVE Socket: Socket isn't responding.")
+            return
+        }
+
         socket.send(JSON.stringify(action))
     }
 
@@ -54,10 +61,12 @@ export const useLiveSocket = (): [(action: any) => void] => {
             sendAction({
                 action: "GET_ALL_UNREAD_NOTIFICATION",
             })
+
+            ping()
         }
 
         socket.onclose = message => {
-            console.log(`LIVE Socket Disconnected: %o`, message)
+            console.debug(`LIVE Socket Disconnected: %o`, message)
             dispatch(liveSocketDisconnect())
         }
 
@@ -70,7 +79,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 message.data
             ) as SocketResponse
 
-            console.log("LIVE Socket: %o", { response, type })
+            console.debug("LIVE Socket: %o", { response, type })
 
             switch (type.toLowerCase()) {
                 case "init": {
@@ -86,16 +95,54 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     break
                 }
 
+                case "pong": {
+                    console.debug("LIVE Socket: Received pong.")
+                    setLastPong(Date.now())
+                    break
+                }
+
                 case "authenticated": {
                     dispatch(liveSocketAuthenticate())
                     break
                 }
-            }
 
-            
+                case "notification": {
+                    dispatch(
+                        notifReceive(
+                            response.message,
+                            response.id,
+                            response.date
+                        )
+                    )
+                    break
+                }
+
+                case "success_receive_all_notification": {
+                    dispatch(massNotifReceive(response))
+                    break
+                }
+
+                case "success_receive_unread": {
+                    dispatch(notifSetUnread(response.count))
+                    break
+                }
+
+                case "friend_online": {
+                    toast(`${response.friend} has come online!`)
+                    dispatch(setFriendOnline(response.id, response.friend))
+                    break
+                }
+
+                case "friend_offline": {
+                    toast(`${response.friend} has gone offline!`)
+                    dispatch(setFriendOnline(response.id, response.friend))
+                    break
+                }
+            }
             
             store.dispatch(liveSocketRecent(type, response))
         }
+        //eslint-disable-next-line
     }, [dispatch])
 
     return [sendAction]
