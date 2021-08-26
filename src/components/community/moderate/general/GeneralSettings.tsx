@@ -42,7 +42,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
 
                 <div className="cluster-items">
                     <CommunityPermission
-                        initialValue={1}
+                        initialValue={community.community.postRole}
                         title="Post Level"
                         desc="This is what level a user must be to be able to create a
                         post."
@@ -53,7 +53,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                     />
 
                     <CommunityPermission
-                        initialValue={1}
+                        initialValue={community.community.viewRole}
                         title="View Level"
                         desc="This is what level a user must be to be able to view
                         posts."
@@ -64,7 +64,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                     />
 
                     <CommunityPermission
-                        initialValue={1}
+                        initialValue={community.community.commentRole}
                         title="Comment Level"
                         desc="This is what level a user must be to be able to comment
                         on posts."
