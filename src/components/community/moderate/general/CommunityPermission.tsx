@@ -36,16 +36,16 @@ const CommunityPermission: React.FC<Props> = ({
                 value={value}
             >
                 <Tooltip title={"Anyone can " + action}>
-                    <Radio value={1}>Default</Radio>
+                    <Radio value={0}>Default</Radio>
                 </Tooltip>
                 <Tooltip title={"You must be a member to " + action}>
-                    <Radio value={2}>Member</Radio>
+                    <Radio value={1}>Member</Radio>
                 </Tooltip>
                 <Tooltip title={"You must be a moderator to " + action}>
-                    <Radio value={3}>Moderator</Radio>
+                    <Radio value={2}>Moderator</Radio>
                 </Tooltip>
                 <Tooltip title={"You must be an administrator to " + action}>
-                    <Radio value={4}>Administrator</Radio>
+                    <Radio value={3}>Administrator</Radio>
                 </Tooltip>
             </Radio.Group>
 

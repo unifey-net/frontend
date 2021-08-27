@@ -7,6 +7,7 @@ import {
     LEAVE_COMMUNITY,
     UN_SUBSCRIBE_COMMUNITY,
     SUBSCRIBE_COMMUNITY,
+    AUTH__IMPORT_USER,
 } from "../actions/auth.actions"
 
 type AuthState = {
@@ -31,47 +32,49 @@ type AuthState = {
     };
 }
 
-let defaultState: AuthState = {
-    isLoggedIn: false,
-    token: "",
-    expire: -1,
-    user: {
-        username: "",
-        id: "-1",
-        verified: false,
-        role: -1,
-        createdAt: -1,
-        profile: {
-            description: "",
-            discord: "",
-            location: "",
+let defaultState = (token: string = "") => {
+    return {
+        isLoggedIn: token !== "",
+        token: token,
+        expire: -1,
+        user: {
+            username: "",
+            id: "-1",
+            verified: false,
+            role: -1,
+            createdAt: -1,
+            profile: {
+                description: "",
+                discord: "",
+                location: "",
+            },
+            member: {
+                members: [],
+                notifications: [],
+            },
         },
-        member: {
-            members: [],
-            notifications: []
-        },
-    },
+    }
 }
 
 /**
  * Save the state.
  */
-const saveState = (state: AuthState) => {
-    let json = JSON.stringify(state)
+const saveState = (token: string) => {
+    let json = JSON.stringify({ token })
 
-    localStorage.setItem("selfState", json)
+    localStorage.setItem("token", json)
 }
 
 /**
- * The inital state for an auth
+ * Get the token
  */
-const getInitialState = () => {
-    let local = localStorage.getItem("selfState")
+const getTokenFromStorage = () => {
+    let local = localStorage.getItem("token")
 
     if (local !== null && local !== "" && local !== undefined)
-        return JSON.parse(local)
+        return JSON.parse(local).token
 
-    return defaultState
+    return ""
 }
 
 /**
@@ -79,28 +82,35 @@ const getInitialState = () => {
  * @param {*} state
  * @param {*} action
  */
-const auth = (state: AuthState = getInitialState(), action: any) => {
+const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: any) => {
     switch (action.type) {
         case LOG_IN: {
-            const { token, user, expire } = action.payload
+            const { token } = action.payload
 
             let newState = {
                 ...state,
-                isLoggedIn: true,
-                expire,
-                token,
-                user,
+                token: token,
+                isLoggedIn: true
             }
 
-            saveState(newState)
+            saveState(token)
 
             return newState
+        }
+
+        case AUTH__IMPORT_USER: {
+            const { user } = action.payload
+
+            return {
+                ...state,
+                user
+            }
         }
 
         case LOG_OUT: {
             let newState = defaultState
 
-            saveState(defaultState)
+            saveState("")
 
             return newState
         }
@@ -116,8 +126,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                 },
             }
 
-            saveState(newState)
-
             return newState
         }
 
@@ -131,8 +139,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                     verified: status,
                 },
             }
-
-            saveState(newState)
 
             return newState
         }
@@ -150,8 +156,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                     },
                 },
             }
-
-            saveState(newState)
 
             return newState
         }
@@ -177,8 +181,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                 },
             }
 
-            saveState(newState)
-
             return newState
         }
 
@@ -195,8 +197,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                     },
                 },
             }
-
-            saveState(newState)
 
             return newState
         }
@@ -221,8 +221,6 @@ const auth = (state: AuthState = getInitialState(), action: any) => {
                     },
                 },
             }
-
-            saveState(newState)
 
             return newState
         }

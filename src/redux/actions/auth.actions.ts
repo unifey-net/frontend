@@ -1,3 +1,5 @@
+import { User } from "../../api/user/User"
+
 export const LOG_IN = "LOG_IN"
 export const LOG_OUT = "LOG_OUT"
 
@@ -10,19 +12,24 @@ export const LEAVE_COMMUNITY = "LEAVE_COMMUNITY"
 export const SUBSCRIBE_COMMUNITY = "SUBSCRIBE_COMMUNITY"
 export const UN_SUBSCRIBE_COMMUNITY = "UN_SUBSCRIBE_COMMUNITY"
 
+export const AUTH__IMPORT_USER = "AUTH__IMPORT_USER"
+
 /**
  * Login
  * @param {*} token
  * @param {*} name
  * @param {*} id
  */
-export const logIn = (token: string, user: any, expire: number) => ({
+export const logIn = (token: string) => ({
     type: LOG_IN,
     payload: {
-        token,
-        user,
-        expire,
+        token
     },
+})
+
+export const importUser = (user: User) => ({
+    type: AUTH__IMPORT_USER,
+    payload: { user }
 })
 
 /**

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { fixReportType, ReportRequest } from "../../../../api/Reports"
+import { ReportRequest } from "../../../../api/Reports"
 import { CaretDownFilled, CaretRightFilled } from "@ant-design/icons"
 import { Button, message } from "antd"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"

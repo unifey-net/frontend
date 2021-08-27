@@ -1,5 +1,4 @@
-import React, { useState } from "react"
-import { MdArrowDownward, MdArrowForward } from "react-icons/md"
+import React from "react"
 import styled from "styled-components"
 import ReceivedFriendRequests from "./ReceivedFriendRequests"
 import SentFriendRequests from "./SentFriendRequests"

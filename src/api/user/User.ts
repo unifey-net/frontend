@@ -3,6 +3,7 @@ import { logOut } from "../../redux/actions/auth.actions"
 import store from "../../redux/store"
 import { joinComm, leaveComm } from "../../redux/actions/auth.actions"
 import Status, { COMPLETE, ERROR } from "../util/Status"
+import { Cosmetic } from "./Cosmetics"
 
 export type User = {
     id: number
@@ -10,8 +11,20 @@ export type User = {
     role: number
     verified: boolean
     createdAt: number
-    profile: any
-    member: any
+    profile: Profile
+    member: Member
+}
+
+export type Profile = {
+    description: string,
+    discord: string,
+    location: string
+    cosmetics: Cosmetic[]
+}
+
+export type Member = {
+    member: number[],
+    notifications: number[]
 }
 
 /**

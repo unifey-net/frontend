@@ -11,6 +11,7 @@ import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
+import DefaultContainer from "../../components/DefaultContainer"
 
 /**
  * The /login page.
@@ -34,9 +35,9 @@ const Login = () => {
         )
 
         if (status.status === COMPLETE) {
-            const { user, token } = data
+            const { token } = data
 
-            dispatch(logIn(token.token, user, token.expires))
+            dispatch(logIn(token.token))
 
             history.push("/")
             window.location.reload()
@@ -55,94 +56,83 @@ const Login = () => {
     if (signedIn()) return <Redirect to="/" />
 
     return (
-        <>
-            <div className="flex flex-col items-center justify-center">
-                <h1 className="text-6xl">Login</h1>
+        <DefaultContainer>
+            <h1>Login</h1>
 
-                {error !== "" && (
-                    <>
-                        <div className="-mt-8"></div>
-                        <Alert type="error" showIcon message={error} />
+            {error !== "" && <Alert type="error" showIcon message={error} />}
 
-                        <div className="my-2"></div>
-                    </>
-                )}
-
-                <div className="form-container">
-                    <Form
-                        name="basic"
-                        initialValues={{
-                            remember: false,
-                        }}
-                        onFinish={loginForm}
-                        onFinishFailed={() => {}}
+            <div>
+                <Form
+                    name="basic"
+                    initialValues={{
+                        remember: false,
+                    }}
+                    onFinish={loginForm}
+                    onFinishFailed={() => {}}
+                >
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your username!",
+                            },
+                        ]}
                     >
-                        <Form.Item
-                            label="Username"
-                            name="username"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please input your username!",
-                                },
-                            ]}
-                        >
-                            <Input id="username" />
+                        <Input id="username" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your password!",
+                            },
+                        ]}
+                    >
+                        <Input.Password id="password" />
+                    </Form.Item>
+
+                    <div>
+                        <Form.Item name="remember" valuePropName="checked">
+                            <Checkbox>Remember me</Checkbox>
                         </Form.Item>
 
-                        <Form.Item
-                            label="Password"
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please input your password!",
-                                },
-                            ]}
-                        >
-                            <Input.Password id="password" />
-                        </Form.Item>
+                        <FormItem>
+                            <Link to="/settings/forgot">Forgot Password</Link>
+                        </FormItem>
+                    </div>
 
-                        <div className="flex flex-row justify-between">
-                            <Form.Item name="remember" valuePropName="checked">
-                                <Checkbox>Remember me</Checkbox>
-                            </Form.Item>
-
-                            <FormItem>
-                                <Link to="/settings/forgot">
-                                    Forgot Password
-                                </Link>
-                            </FormItem>
-                        </div>
-
-                        {process.env.NODE_ENV === "production" && (
-                            <Form.Item>
-                                <ReCAPTCHA
-                                    ref={(ref: ReCAPTCHA) => setRef(ref)}
-                                    sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
-                                    theme="dark"
-                                    onChange={token =>
-                                        setCaptcha(token === null ? "" : token)
-                                    }
-                                />
-                            </Form.Item>
-                        )}
-
+                    {process.env.NODE_ENV === "production" && (
                         <Form.Item>
-                            <div className="flex flex-row justify-center items-center">
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    loading={loading}
-                                >
-                                    Submit
-                                </Button>
-                            </div>
+                            <ReCAPTCHA
+                                ref={(ref: ReCAPTCHA) => setRef(ref)}
+                                sitekey="6Le268IZAAAAAHyH4NpDlBDkOHwbj-HAAf5QWRkH"
+                                theme="dark"
+                                onChange={token =>
+                                    setCaptcha(token === null ? "" : token)
+                                }
+                            />
                         </Form.Item>
-                    </Form>
-                </div>
+                    )}
+
+                    <Form.Item>
+                        <div className="flex flex-row justify-center items-center">
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                loading={loading}
+                            >
+                                Submit
+                            </Button>
+                        </div>
+                    </Form.Item>
+                </Form>
             </div>
-        </>
+        </DefaultContainer>
     )
 }
 

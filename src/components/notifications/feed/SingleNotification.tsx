@@ -2,7 +2,7 @@ import styled from "styled-components"
 import React from "react"
 import { useDispatch } from "react-redux"
 import { notifDelete, notifSetReadStatus } from "../../../redux/actions/notifications.actions"
-import { useNotificationActions, useNotifications } from "../../../api/notification/NotificationsSocket"
+import { useNotificationActions } from "../../../api/notification/NotificationsSocket"
 
 const Notification = styled.div<{ unread: boolean }>`
     background-color: ${({ theme }) => theme.primary};

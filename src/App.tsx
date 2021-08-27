@@ -14,15 +14,13 @@ import { Toaster } from "react-hot-toast"
 import { ThemeProvider } from "styled-components"
 import GlobalStyle from "./util/GlobalStyle"
 import theme from "./util/Theme"
-import { useNotifications } from "./api/notification/NotificationsSocket"
 import useNotificationPopUp from "./components/notifications/NotificationPopUp"
 import Pages from "./util/Pages"
 import { IconContext } from "react-icons/lib"
-import { useFriends } from "./api/user/Friends"
+import { useLiveSocket } from "./api/live/Live"
 
 export default function App() {
-    useNotifications() // listens to live socket and updates redux
-    useFriends()
+    useLiveSocket()
     useNotificationPopUp()
 
     const dispatch = useDispatch()
@@ -53,8 +51,9 @@ export default function App() {
 
                         <div className="content-container">
                             <Switch>
-                                {Pages.map(({ path, component, exact }) => (
+                                {Pages.map(({ path, component, exact }, index) => (
                                     <Route
+                                        key={index}
                                         path={path}
                                         component={component}
                                         exact={exact}

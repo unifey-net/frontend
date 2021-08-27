@@ -58,7 +58,7 @@ const SelfView: React.FC = () => {
                 </NotificationShelf>
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="3">
+            <Menu.Item key="4">
                 <Link to={`/logout`}>Sign Out</Link>
             </Menu.Item>
         </Menu>
