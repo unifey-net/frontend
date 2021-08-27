@@ -1,4 +1,4 @@
-type Cosmetic = {
+export type Cosmetic = {
     type: number
     desc: string
     id: string

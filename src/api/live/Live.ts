@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
+import { importUser } from "../../redux/actions/auth.actions"
 import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
     liveSocketAuthenticate,
@@ -11,6 +12,7 @@ import {
 import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
+import { signedIn, User } from "../user/User"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
@@ -31,7 +33,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
     
     const ping = () => {
         console.debug("LIVE Socket: Ping")
-        socket.send(JSON.stringify({ "action": "PING" }))
+        socket.send("ping")
 
         setTimeout(() => ping(), pingInterval)
     }
@@ -51,18 +53,24 @@ export const useLiveSocket = (): [(action: any) => void] => {
         socket.onopen = () => {
             dispatch(liveSocketConnect())
 
-            socket.send(`bearer ${store.getState().auth.token}`)
-
-            // get all notifications and unread notifications (for number)
-            sendAction({
-                action: "GET_ALL_NOTIFICATION",
-            })
-
-            sendAction({
-                action: "GET_ALL_UNREAD_NOTIFICATION",
-            })
-
             ping()
+
+            if (signedIn()) {
+                socket.send(`bearer ${store.getState().auth.token}`)
+
+                sendAction({
+                    action: "GET_USER"
+                })
+
+                // get all notifications and unread notifications (for number)
+                sendAction({
+                    action: "GET_ALL_NOTIFICATION",
+                })
+
+                sendAction({
+                    action: "GET_ALL_UNREAD_NOTIFICATION",
+                })
+            }
         }
 
         socket.onclose = message => {
@@ -93,6 +101,15 @@ export const useLiveSocket = (): [(action: any) => void] => {
                         })`
                     )
                     break
+                }
+
+                case "get_user": {
+                    const user = response as User
+
+                    console.log(`LIVE Socket: Hello ${user.username}`)
+                    dispatch(importUser(user))
+
+                    break;
                 }
 
                 case "pong": {

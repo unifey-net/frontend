@@ -35,9 +35,9 @@ const Login = () => {
         )
 
         if (status.status === COMPLETE) {
-            const { user, token } = data
+            const { token } = data
 
-            dispatch(logIn(token.token, user, token.expires))
+            dispatch(logIn(token.token))
 
             history.push("/")
             window.location.reload()

@@ -44,7 +44,7 @@ const LoggedInHomeStyle = styled.div`
 
 const LoggedInHome: React.FC = () => {
     const [communities, setCommunities] = useState([] as any[])
-    let members = useSelector((store: any) => store.auth.user.member.members)
+    let members = useSelector((store: any) => store.auth.user.member.member)
     let name = useSelector((store: any) => store.auth.user.username)
 
     // load the user's communities.
