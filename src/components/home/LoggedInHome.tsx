@@ -60,7 +60,7 @@ const LoggedInHome: React.FC = () => {
 
         loadCommunities()
         //eslint-disable-next-line
-    }, [])
+    }, [members])
 
     return (
         <LoggedInHomeStyle>

@@ -22,18 +22,27 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     const [posts, setPosts] = useState([] as PostResponse[])
 
     const [sort, changeSort] = useSortChanger("NEW", sort => {
+        console.debug(`Feed (SELF): Sort has changed to ${sort}`)
+
         setPosts([])
         setPage(1)
-        loadMore()
+
+        loadMore(true)
     })
 
     /**
      * Load another post.
      */
-    const loadMore = async () => {
-        if (maxPage === 0 || (maxPage !== -1 && page > maxPage)) return
+    const loadMore = async (sortChanged: boolean = false) => {
+        if ((maxPage === 0 || (maxPage !== -1 && page > maxPage)) && !sortChanged) return
 
-        const feed = await getCustomFeed(url, sort, page)
+        let requestingPage = sortChanged ? 1 : page
+
+        console.debug(
+            `Feed (SELF): Requesting page NO.${requestingPage} with sort ${sort} (${url})`
+        )
+
+        const feed = await getCustomFeed(url, sort, requestingPage)
 
         if (feed.status === 200) {
             setStatus({ status: COMPLETE })
