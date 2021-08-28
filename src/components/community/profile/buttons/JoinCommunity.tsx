@@ -22,7 +22,7 @@ const JoinCommunityButton = styled.button`
  */
 const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
     const member = useSelector(
-        (store: any) => store.auth.user.member.members
+        (store: any) => store.auth.user.member.member
     ).includes(community)
 
     const [symbol, setSymbol] = useState(member ? <MdRemove /> : <MdAdd />)

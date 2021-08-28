@@ -27,7 +27,7 @@ type AuthState = {
         };
         member: {
             notifications: any[];
-            members: any[]
+            member: any[]
         };
     };
 }
@@ -49,7 +49,7 @@ let defaultState = (token: string = "") => {
                 location: "",
             },
             member: {
-                members: [],
+                member: [],
                 notifications: [],
             },
         },
@@ -152,7 +152,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
                     ...state.user,
                     member: {
                         ...state.user.member,
-                        members: [...state.user.member.members, id],
+                        members: [...state.user.member.member, id],
                     },
                 },
             }
@@ -163,7 +163,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
         case LEAVE_COMMUNITY: {
             const { id } = action.payload
 
-            let newMember = state.user.member.members
+            let newMember = state.user.member.member
 
             const index = newMember.indexOf(id)
             if (index > -1) {
