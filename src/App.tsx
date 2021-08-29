@@ -7,7 +7,7 @@ import history from "./api/History"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { isExpired } from "./api/user/User"
 import { logOut } from "./redux/actions/auth.actions"
 import { Toaster } from "react-hot-toast"
@@ -18,6 +18,7 @@ import useNotificationPopUp from "./components/notifications/NotificationPopUp"
 import Pages from "./util/Pages"
 import { IconContext } from "react-icons/lib"
 import { useLiveSocket } from "./api/live/Live"
+import MultipleInstances from "./util/MultipleInstances"
 
 export default function App() {
     useLiveSocket()
@@ -26,6 +27,10 @@ export default function App() {
     const dispatch = useDispatch()
 
     if (isExpired()) dispatch(logOut())
+
+    if (useSelector((store: any) => store.live.error) === 1008) {
+        return <MultipleInstances/>
+    }
 
     return (
         <ThemeProvider theme={theme}>

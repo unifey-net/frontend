@@ -75,11 +75,10 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
         socket.onclose = message => {
             console.debug(`LIVE Socket Disconnected: %o`, message)
-            dispatch(liveSocketDisconnect())
+            dispatch(liveSocketDisconnect(message.code))
         }
 
         socket.onerror = message => {
-            console.log(message)
         }
 
         socket.onmessage = (message: any) => {

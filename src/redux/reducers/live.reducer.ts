@@ -6,13 +6,15 @@ type LiveState = {
     authenticated: boolean
     lastUsed: number
     lastMessage: SocketResponse
+    error: number
 }
 
 const defaultLiveState: LiveState = {
     connected: false,
     authenticated: false,
     lastUsed: -1,
-    lastMessage: { type: "NONE", response: {} }
+    lastMessage: { type: "NONE", response: {} },
+    error: -1
 }
 
 /**
@@ -38,10 +40,13 @@ const live = (
         }
 
         case LIVE__SOCKET_DISCONNECT: {
+            const { error } = payload
+
             return {
                 ...state,
                 connected: false,
-                authenticated: false
+                authenticated: false,
+                error
             }
         }
 

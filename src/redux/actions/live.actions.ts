@@ -14,9 +14,9 @@ export const liveSocketConnect = () => ({
 /**
  * Socket disconnect.
  */
-export const liveSocketDisconnect = () => ({
+export const liveSocketDisconnect = (error: number) => ({
     type: LIVE__SOCKET_DISCONNECT,
-    payload: { }
+    payload: { error }
 })
 
 /**
