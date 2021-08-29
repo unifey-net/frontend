@@ -14,12 +14,13 @@ import useSortChanger from "../SortChanger"
 import useCreatePost from "../useCreatePost"
 
 const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, usePostbox }) => {
-    console.log(`${id} using PostBox: ${usePostbox}`)
     let dispatch = useDispatch()
 
     let [feed, status] = useFeed(id)
 
     const [sort, button] = useSortChanger("NEW", sort => {
+        console.debug(`Feed (${id}): Sort has changed to ${sort}`)
+
         dispatch(changeSort({ sort, id }))
         dispatch(feedClear(id))
     })
@@ -57,6 +58,10 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
 
         if (pageCount === 0 || currentPage === 0 || currentPage > pageCount)
             return
+        
+        console.debug(
+            `Feed (${id}): Requesting page NO.${feed!!.page} with sort ${sort}`
+        )
 
         let resp = await API.get(`/feeds/${id}/posts?page=${feed!!.page}&sort=${sort}`)
         dispatch(bumpPage(id))
@@ -77,7 +82,7 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
             }
 
             case 401: {
-                // TODO: separate error for no permission.
+                console.error(`Feed (${id}): Error 401`)
 
                 break
             }
