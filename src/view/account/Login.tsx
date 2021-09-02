@@ -12,6 +12,19 @@ import { useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
+import styled from "styled-components"
+
+const LoginForm = styled.div`
+    .error {
+        margin-bottom: 16px;
+    }
+
+    .remember-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+`
 
 /**
  * The /login page.
@@ -28,9 +41,12 @@ const Login = () => {
     const loginForm = async (values: Store) => {
         setLoading(true)
 
+        const { username, password, remember } = values
+
         const [status, data] = await login(
-            values.username,
-            values.password,
+            username,
+            password,
+            remember,
             captcha
         )
 
@@ -59,9 +75,11 @@ const Login = () => {
         <DefaultContainer>
             <h1>Login</h1>
 
-            {error !== "" && <Alert type="error" showIcon message={error} />}
+            <LoginForm>
+                {error !== "" && (
+                    <Alert type="error" showIcon message={error} className="error" />
+                )}
 
-            <div>
                 <Form
                     name="basic"
                     initialValues={{
@@ -96,7 +114,7 @@ const Login = () => {
                         <Input.Password id="password" />
                     </Form.Item>
 
-                    <div>
+                    <div className="remember-container">
                         <Form.Item name="remember" valuePropName="checked">
                             <Checkbox>Remember me</Checkbox>
                         </Form.Item>
@@ -131,7 +149,7 @@ const Login = () => {
                         </div>
                     </Form.Item>
                 </Form>
-            </div>
+            </LoginForm>
         </DefaultContainer>
     )
 }

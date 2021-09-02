@@ -16,14 +16,14 @@ export type User = {
 }
 
 export type Profile = {
-    description: string,
-    discord: string,
+    description: string
+    discord: string
     location: string
     cosmetics: Cosmetic[]
 }
 
 export type Member = {
-    member: number[],
+    member: number[]
     notifications: number[]
 }
 
@@ -169,15 +169,15 @@ export const joinCommunity = async (id: number) => {
 export const login = async (
     username: string,
     password: string,
+    remember: boolean,
     captcha: string
-): Promise<[Status, any]> => {
+): Promise<[Status, any?]> => {
     const data = new FormData()
 
     if (process.env.NODE_ENV === "production") {
         if (captcha === "") {
             return [
                 { status: ERROR, message: "Please fill out the reCAPTCHA!" },
-                {},
             ]
         }
 
@@ -186,7 +186,7 @@ export const login = async (
 
     data.append("username", username)
     data.append("password", password)
-    data.append("remember", `true`)
+    data.append("remember", `${remember}`)
 
     let request = await API.post(`/authenticate`, data)
 
@@ -196,9 +196,8 @@ export const login = async (
         return [
             {
                 status: ERROR,
-                message: "There was an issue making that request!",
-            },
-            {},
+                message: request.data.payload,
+            }
         ]
     }
 }
