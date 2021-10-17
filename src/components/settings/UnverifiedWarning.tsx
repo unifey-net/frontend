@@ -1,31 +1,25 @@
 import React, { useState } from "react"
 import { Alert, message, Tooltip, Button } from "antd"
 import { Link } from "react-router-dom"
+import { resend } from "../../api/user/Email"
 
-type Props = {
-    attempts: number
-    addAttempt: () => void
-}
-
-const UnverifiedWarning: React.FC<Props> = ({ attempts, addAttempt }) => {
+const UnverifiedWarning: React.FC = () => {
     const [loading, setLoading] = useState(false)
 
     /**
      * Resend the email.
      */
     const resendEmail = async () => {
-        if (attempts >= 10) {
-            message.error(
-                "You have reached the limit for resends. Please contact our support."
-            )
-            return
-        }
-
         setLoading(true)
 
-        message.success("Email has been sent! Check your inbox.", 2.5)
+        const request = await resend(0)
 
-        addAttempt()
+        if (request === 0) {
+            message.success("Email has been sent! Check your inbox.", 2.5)
+        } else {
+            message.error(`You must wait til ${new Date(+request).toLocaleString()} before requesting another resend!`)
+        }
+
         setLoading(false)
     }
 
@@ -34,29 +28,17 @@ const UnverifiedWarning: React.FC<Props> = ({ attempts, addAttempt }) => {
             style={{
                 marginBottom: "32px",
             }}
-            message="Your email is not verified."
+            message={
+                <Link to="/unverified">
+                    Your account's email hasn't been verified yet.
+                </Link>
+            }
             type="error"
             description={
                 <p>
-                    This limits your account is various ways. <br /> Including
-                    being able to change your: username, password and email.{" "}
-                    <br /> To learn more, visit{" "}
-                    <Link to="/unverified">here</Link>
-                    .
-                    <br />
-                    Didn't receive the email?
-                    <Tooltip
-                        title={`You have ${10 - attempts} remaining attempts.`}
-                    >
-                        <Button
-                            type="link"
-                            loading={loading}
-                            onClick={resendEmail}
-                        >
-                            Resend {attempts}
-                            /10
-                        </Button>
-                    </Tooltip>
+                    <Button loading={loading} onClick={resendEmail}>
+                        Resend email
+                    </Button>
                 </p>
             }
             showIcon

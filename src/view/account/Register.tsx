@@ -6,15 +6,17 @@ import { Form, Input, Button, Checkbox, Alert } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
-import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
+import { API } from "../../api/ApiHandler"
 
-const LoginForm = styled.div`
+const RegisterForm = styled.div`
+    min-width: 300px;
+    max-width: 300px;
     .error {
         margin-bottom: 16px;
     }
@@ -27,9 +29,9 @@ const LoginForm = styled.div`
 `
 
 /**
- * The /login page.
+ * The /register page.
  */
-const Login = () => {
+const Register = () => {
     const dispatch = useDispatch()
 
     const [ref, setRef] = useState<ReCAPTCHA>()
@@ -41,28 +43,26 @@ const Login = () => {
     const loginForm = async (values: Store) => {
         setLoading(true)
 
-        const { username, password, remember } = values
+        const { username, password, tos, email } = values
 
-        const [status, data] = await login(
-            username,
-            password,
-            remember,
-            captcha
-        )
+        const form = new FormData()
 
-        if (status.status === COMPLETE) {
-            const { token } = data
+        form.append("username", username)
+        form.append("password", password)
+        form.append("tos", tos)
+        form.append("email", email)
 
-            dispatch(logIn(token.token))
+        const response = await API.put("/user/register", form)
+
+        if (response.status === 200) {
+            dispatch(logIn(response.data.token))
 
             history.push("/")
             window.location.reload()
         } else {
             ref?.reset()
             setError(
-                status.message === undefined
-                    ? "There was an issue logging in."
-                    : status.message
+                response.data.payload
             )
         }
 
@@ -73,9 +73,9 @@ const Login = () => {
 
     return (
         <DefaultContainer>
-            <h1>Login</h1>
+            <h1>Register</h1>
 
-            <LoginForm>
+            <RegisterForm>
                 {error !== "" && (
                     <Alert
                         type="error"
@@ -107,6 +107,22 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item
+                        name="email"
+                        label="Email"
+                        rules={[
+                            {
+                                type: "email",
+                            },
+                            {
+                                required: true,
+                                message: "Please input your email!",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
                         label="Password"
                         name="password"
                         rules={[
@@ -119,15 +135,57 @@ const Login = () => {
                         <Input.Password id="password" />
                     </Form.Item>
 
-                    <div className="remember-container">
-                        <Form.Item name="remember" valuePropName="checked">
-                            <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                    <Form.Item
+                        name="confirm"
+                        label="Confirm Password"
+                        dependencies={["password"]}
+                        hasFeedback
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please confirm your password!",
+                            },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (
+                                        !value ||
+                                        getFieldValue("password") === value
+                                    ) {
+                                        return Promise.resolve()
+                                    }
+                                    return Promise.reject(
+                                        new Error(
+                                            "The two passwords that you entered do not match!"
+                                        )
+                                    )
+                                },
+                            }),
+                        ]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
 
-                        <FormItem>
-                            <Link to="/settings/forgot">Forgot Password</Link>
-                        </FormItem>
-                    </div>
+                    <Form.Item
+                        name="tos"
+                        valuePropName="checked"
+                        rules={[
+                            {
+                                validator: (_, value) =>
+                                    value
+                                        ? Promise.resolve()
+                                        : Promise.reject(
+                                              new Error(
+                                                  "You must accept the TOS and Privacy Policy!"
+                                              )
+                                          ),
+                            },
+                        ]}
+                    >
+                        <Checkbox>
+                            I accept the <Link to={"/tos"}>TOS</Link> and{" "}
+                            <Link to={"/privacy"}>Privacy Policy</Link>.
+                        </Checkbox>
+                    </Form.Item>
 
                     {process.env.NODE_ENV === "production" && (
                         <Form.Item>
@@ -150,21 +208,23 @@ const Login = () => {
                                     htmlType="submit"
                                     loading={loading}
                                 >
-                                    Submit
+                                    Register
                                 </Button>
                             </div>
                         </Form.Item>
 
-                        <p>or <Link to={"/register"}>register</Link>.</p>
+                        <p>
+                            or <Link to={"/login"}>login</Link>.
+                        </p>
                     </div>
                 </Form>
-            </LoginForm>
+            </RegisterForm>
         </DefaultContainer>
     )
 }
 
 export default {
     exact: true,
-    path: "/login",
-    component: Login,
+    path: "/register",
+    component: Register,
 }

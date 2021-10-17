@@ -108,7 +108,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
         }
 
         case LOG_OUT: {
-            let newState = defaultState
+            let newState = defaultState()
 
             saveState("")
 

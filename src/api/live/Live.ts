@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
-import { importUser } from "../../redux/actions/auth.actions"
+import { importUser, logOut } from "../../redux/actions/auth.actions"
 import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
     liveSocketAuthenticate,
@@ -12,6 +12,7 @@ import {
 import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
+import History from "../History"
 import { signedIn, User } from "../user/User"
 
 const getUrl = (): string => {
@@ -152,6 +153,13 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 case "friend_offline": {
                     toast(`${response.friend} has gone offline!`)
                     dispatch(setFriendOnline(response.id, response.friend))
+                    break
+                }
+
+                case "sign_out": {
+                    History.push("/?msg=pswd")
+                    dispatch(logOut())
+                    window.location.reload()
                     break
                 }
             }
