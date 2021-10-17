@@ -73,7 +73,7 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
 /**
  * A post
  */
-export default ({ postResponse, allowFocusChange }: Props) => {
+const Post = ({ postResponse, allowFocusChange }: Props) => {
     const { post, vote, author } = postResponse
     let emotes = useEmotes()
 
@@ -116,3 +116,5 @@ export default ({ postResponse, allowFocusChange }: Props) => {
         </PostStyle>
     )
 }
+
+export default Post
