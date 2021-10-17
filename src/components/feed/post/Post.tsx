@@ -91,7 +91,7 @@ export default ({ postResponse, allowFocusChange }: Props) => {
                 <div className="user-view">
                     <p>{author.username}</p>
 
-                    <PostTag>Tag</PostTag>
+                    {/* <PostTag>Tag</PostTag> */}
                 </div>
 
                 <span className="post-title" onClick={() => updateFocus()}>
