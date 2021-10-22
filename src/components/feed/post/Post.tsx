@@ -14,7 +14,7 @@ import { media } from "../../../api/util/Media"
 
 type Props = {
     postResponse: PostResponse,
-    allowFocusChange?: boolean
+    focusChange?: (() => void)| boolean
 }
 
 const PostStyle = styled.div<{ allowFocusChange: boolean }>`
@@ -73,7 +73,7 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
 /**
  * A post
  */
-const Post = ({ postResponse, allowFocusChange }: Props) => {
+const Post = ({ postResponse, focusChange }: Props) => {
     const { post, vote, author } = postResponse
     let emotes = useEmotes()
 
@@ -81,12 +81,15 @@ const Post = ({ postResponse, allowFocusChange }: Props) => {
      * Update focus.
      */
     const updateFocus = () => {
-        if (allowFocusChange)
+        if (focusChange === true)
             History.push(`${window.location.pathname}/${post.id}`)
+        else if (typeof focusChange === "function") {
+            focusChange()
+        }
     }
 
     return (
-        <PostStyle allowFocusChange={allowFocusChange === true}>
+        <PostStyle allowFocusChange={focusChange === true || typeof focusChange === "function"}>
             <div className="post-header">
                 <div className="user-view">
                     <p>{author.username}</p>

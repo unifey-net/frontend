@@ -2,7 +2,7 @@ import React from "react"
 import PostJsx from "./post/Post"
 import { Spin, Empty } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import { PostResponse } from "../../api/Feeds"
+import { Post, PostResponse } from "../../api/Feeds"
 import InfiniteScroll from "react-infinite-scroll-component"
 import styled from "styled-components"
 import { MdRefresh, MdArrowDropDown } from "react-icons/md"
@@ -86,6 +86,8 @@ type Props = {
 
     changeSort: () => void
     currentSort: string
+
+    focusChange?: (post: PostResponse) => void
 }
 
 const FeedContainer = styled.div`
@@ -105,6 +107,7 @@ const FeedSkeleton: React.FC<Props> = ({
     changeSort,
     currentSort,
     isFeedEmpty,
+    focusChange
 }) => {
     if (isFeedEmpty || posts.length === 0) {
         return (
@@ -145,7 +148,17 @@ const FeedSkeleton: React.FC<Props> = ({
             >
                 <FeedContainer>
                     {posts.map((post, index) => (
-                        <PostJsx key={index} allowFocusChange={true} postResponse={post} />
+                        <PostJsx
+                            key={index}
+                            focusChange={
+                                focusChange
+                                    ? () => {
+                                          focusChange(post)
+                                      }
+                                    : true
+                            }
+                            postResponse={post}
+                        />
                     ))}
                 </FeedContainer>
             </InfiniteScroll>
