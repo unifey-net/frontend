@@ -33,7 +33,7 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
         status: LOADING,
     } as Status)
 
-    const [modal, toggle] = useSetRoleModal(community)
+    const [modal, toggle, newRole] = useSetRoleModal(community)
 
     useEffect(() => {
         const loadRoles = async () => {
@@ -83,7 +83,7 @@ const CommunityRoles: React.FC<Props> = ({ community }) => {
             {modal}
 
             <ul>
-                {roles
+                {(newRole.id === -1 ? roles : [...roles, newRole])
                     .sort((a: UserRole, b: UserRole) => b.role - a.role)
                     .map((role: UserRole, index: number) => (
                         <CommunityRole
