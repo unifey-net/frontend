@@ -51,6 +51,7 @@ const Register = () => {
         form.append("password", password)
         form.append("tos", tos)
         form.append("email", email)
+        form.append("captcha", captcha)
 
         const response = await API.put("/user/register", form)
 

@@ -47,6 +47,7 @@ const Create = () => {
         form.append("description", description)
         form.append("tos", tos)
         form.append("name", name)
+        form.append("captcha", captcha)
 
         const response = await API.put("/community", form)
 
