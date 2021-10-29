@@ -1,6 +1,6 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { Menu, Dropdown, Button, Avatar, Badge } from "antd"
+import { Menu, Dropdown, Button, Avatar, Badge, Spin } from "antd"
 import { Link } from "react-router-dom"
 import { getImageUrl } from "../../api/user/User"
 import styled from "styled-components"
@@ -86,14 +86,18 @@ const SelfView: React.FC = () => {
                         type="link"
                     >
                         <Badge count={unreadCount} overflowCount={9}>
-                            <Avatar size={32} src={getImageUrl(name)} />
+                            {name === "" ? (
+                                <Spin />
+                            ) : (
+                                <Avatar size={32} src={getImageUrl(name)} />
+                            )}
                         </Badge>
                     </Button>
                 </Dropdown>
             )}
 
             {!self.isLoggedIn && (
-                <Link to={`/login`} style={{marginTop: "8px"}}>
+                <Link to={`/login`} style={{ marginTop: "8px" }}>
                     <MdAccountCircle size={32} />
                 </Link>
             )}
