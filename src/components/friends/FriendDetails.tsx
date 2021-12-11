@@ -1,9 +1,12 @@
-import React from "react"
+import Modal from "antd/lib/modal/Modal";
+import React, { useState } from "react"
 import toast from "react-hot-toast";
 import { MdRemove } from "react-icons/md";
 import styled from "styled-components";
 import { API } from "../../api/ApiHandler";
 import { Friend } from "../../api/user/Friends";
+import Messages from "../messaging/Messages";
+import useMessagingModal from "../messaging/MessagingModal";
 
 const FriendStyle = styled.div`
     display: flex;

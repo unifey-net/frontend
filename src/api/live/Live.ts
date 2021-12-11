@@ -1,6 +1,9 @@
+import { chain } from "lodash"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
+import Message from "../../components/messaging/objects/Message"
+import { getChannels, loadMessageHistory, messagesIncoming } from "../../components/messaging/redux/messages.actions"
 import { importUser, logOut } from "../../redux/actions/auth.actions"
 import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
@@ -71,6 +74,10 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 sendAction({
                     action: "GET_ALL_UNREAD_NOTIFICATION",
                 })
+
+                sendAction({
+                    action: "GET_CHANNELS"
+                })
             }
         }
 
@@ -109,7 +116,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     console.log(`LIVE Socket: Hello ${user.username}`)
                     dispatch(importUser(user))
 
-                    break;
+                    break
                 }
 
                 case "pong": {
@@ -153,6 +160,42 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 case "friend_offline": {
                     toast(`${response.friend} has gone offline!`)
                     dispatch(setFriendOnline(response.id, response.friend))
+                    break
+                }
+
+                case "incoming_message": {
+                    toast("New message!")
+
+                    dispatch(
+                        messagesIncoming(
+                            response.channel,
+                            response.message,
+                            response.sentFrom
+                        )
+                    )
+                    break
+                }
+
+                case "message_history": {
+                    const { channel, page, maxPage, messages } = response
+
+                    dispatch(loadMessageHistory(
+                        channel, page, maxPage, messages as Message[]
+                    ))
+
+                    break
+                }
+
+                case "channels": {
+                    dispatch(
+                        getChannels(
+                            response.map((ch: any) => ({
+                                ...ch.channel,
+                                pageCount: ch.pageCount,
+                                messageCount: ch.messageCount,
+                            }))
+                        )
+                    )
                     break
                 }
 

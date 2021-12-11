@@ -19,6 +19,7 @@ import Notifications from "../view/account/Notifications"
 import Friends from "../view/account/Friends"
 import Register from "../view/account/Register"
 import Create from "../view/community/Create"
+import Messages from "../view/account/Messages"
 
 type Page = {
     path?: string
@@ -31,6 +32,7 @@ export default [
     ...Community,
     ...User,
     Tos,
+    Messages,
     Create,
     Unsubscribed,
     About,

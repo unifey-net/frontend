@@ -8,6 +8,7 @@ import feeds from "./feeds.reducer"
 import notifications from "./notifications.reducer"
 import live from "./live.reducer"
 import friends from "./friends.reducer"
+import messages from "../../components/messaging/redux/messages.reducer"
 
 export default combineReducers({
     auth,
@@ -19,4 +20,5 @@ export default combineReducers({
     live,
     friends,
     notifications,
+    messages
 })

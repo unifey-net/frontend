@@ -68,8 +68,11 @@ const SelfView: React.FC = () => {
                         />
                     </NotificationShelf>
                 </Menu.Item>
-                <Menu.Divider />
                 <Menu.Item key="4">
+                    <Link to={`/messages`}>Messages</Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="5">
                     <Link to={`/logout`}>Sign Out</Link>
                 </Menu.Item>
             </SelfViewLink>
@@ -85,7 +88,7 @@ const SelfView: React.FC = () => {
                         onClick={e => e.preventDefault()}
                         type="link"
                     >
-                        <Badge count={unreadCount} overflowCount={9}>
+                        <Badge count={unreadCount === -1 ? undefined : unreadCount} overflowCount={9}>
                             {name === "" ? (
                                 <Spin />
                             ) : (

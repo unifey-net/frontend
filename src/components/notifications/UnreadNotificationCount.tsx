@@ -11,7 +11,7 @@ const UnreadNotificationStyle = styled.span`
 
 const UnreadNotificationCount: React.FC<{ count: number, overflow?: number }> = ({ count, overflow }) => {
     return <UnreadNotificationStyle>
-        {overflow && count > overflow ? `{overflow}+` : count }
+        { overflow && count > overflow ? `{overflow}+` : count }
     </UnreadNotificationStyle>
 }
 
