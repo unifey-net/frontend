@@ -30,7 +30,7 @@ const Channel: React.FC<{ channel: GroupMessageChannel | DirectMessageChannel }>
                     : `Direct Message - ${channel.id}`}
             </button>
 
-            { "name" in channel && <GroupChatSettings channel={channel}/> }
+            { "name" in channel && selfId === channel.owner && <GroupChatSettings channel={channel}/> }
 
             {modal}
         </ChannelStyle>
