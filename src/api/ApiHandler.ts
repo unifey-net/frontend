@@ -34,6 +34,6 @@ export const useApi = makeUseAxios({
 /**
  * The version, manually kept up to date :(
  */
-const VERSION = "0.7.0"
+const VERSION = "0.8.0"
 
 export { VERSION, API, BASE_URL }
