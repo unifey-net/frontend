@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
 import Message from "../../components/messaging/objects/Message"
-import { getChannels, loadMessageHistory, messagesIncoming } from "../../components/messaging/redux/messages.actions"
+import { getChannels, loadMessageHistory, messagesIncoming, startTyping, stopTyping } from "../../components/messaging/redux/messages.actions"
 import { importUser, logOut } from "../../redux/actions/auth.actions"
 import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
@@ -173,6 +173,27 @@ export const useLiveSocket = (): [(action: any) => void] => {
                             response.sentFrom
                         )
                     )
+                    break
+                }
+
+                case "start_typing": {
+                    dispatch(
+                        startTyping(
+                            response.channel.id,
+                            response.user
+                        )
+                    )
+                    break
+                }
+
+                case "stop_typing": {
+                    dispatch(
+                        stopTyping(
+                            response.channel.id,
+                            response.user
+                        )
+                    )
+
                     break
                 }
 

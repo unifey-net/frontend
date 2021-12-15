@@ -8,6 +8,9 @@ export const MESSAGES__GET_CHANNELS = "MESSAGES__GET_CHANNELS"
 export const MESSAGES__OUTGOING = "MESSAGES__OUTGOING"
 export const MESSAGES__LOAD_HISTORY = "MESSAGES__LOAD_HISTORY"
 
+export const MESSAGES__CHANNEL__START_TYPING = "MESSAGES__CHANNEL__START_TYPING"
+export const MESSAGES__CHANNEL__STOP_TYPING = "MESSAGES__CHANNEL__STOP_TYPING"
+
 export const MESSAGES__GROUP__CHANGE_NAME = "MESSAGES__GROUP__CHANGE_NAME"
 export const MESSAGES__GROUP__CHANGE_DESCRIPTION = "MESSAGES__GROUP__CHANGE_DESCRIPTION"
 export const MESSAGES__GROUP__REMOVE_MEMBER = "MESSAGES__GROUP__REMOVE_MEMBER"
@@ -49,4 +52,14 @@ export const changeGroupChatName = (channel: GroupMessageChannel, name: string) 
 export const changeGroupChatDescription = (channel: GroupMessageChannel, description: string) => ({
     type: MESSAGES__GROUP__CHANGE_DESCRIPTION,
     payload: { channel, description }
+})
+
+export const startTyping = (channel: number, user: { username: string, id: number }) => ({
+    type: MESSAGES__CHANNEL__START_TYPING,
+    payload: { channel, user }
+})
+
+export const stopTyping = (channel: number, user: { username: string, id: number }) => ({
+    type: MESSAGES__CHANNEL__STOP_TYPING,
+    payload: { channel, user }
 })

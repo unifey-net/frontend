@@ -14,6 +14,7 @@ import GroupMessageChannel from "./objects/GroupMessageChannel"
 import IncomingMessageResponse from "./objects/IncomingMessageResponse"
 import Message from "./objects/Message"
 import SendMessage from "./SendMessage"
+import UsersTyping from "./UsersTyping"
 
 const MessagesStyles = styled.div`
     display: flex;
@@ -34,7 +35,7 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
     const endRef = useRef<HTMLDivElement>(null)
     const { loadMessageHistory } = useMessageSocket()
 
-    const { messages, pageCount: maxPage } = useSelector(
+    const { messages, pageCount: maxPage, typing } = useSelector(
         (state: any) => state.messages
     )[`${id}`]
     const { username: selfUsername, id: selfId } = useSelector(
@@ -108,6 +109,8 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
                         )
                     }
                 })}
+
+                <UsersTyping channel={id} />
 
                 <div ref={endRef} />
             </InfiniteScroll>

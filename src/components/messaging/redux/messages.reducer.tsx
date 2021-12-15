@@ -1,4 +1,4 @@
-import { MESSAGES__GET_CHANNELS, MESSAGES__GROUP__CHANGE_DESCRIPTION, MESSAGES__GROUP__CHANGE_NAME, MESSAGES__GROUP__REMOVE_MEMBER, MESSAGES__INCOMING, MESSAGES__LOAD_HISTORY, MESSAGES__OUTGOING } from "./messages.actions"
+import { MESSAGES__CHANNEL__START_TYPING, MESSAGES__CHANNEL__STOP_TYPING, MESSAGES__GET_CHANNELS, MESSAGES__GROUP__CHANGE_DESCRIPTION, MESSAGES__GROUP__CHANGE_NAME, MESSAGES__GROUP__REMOVE_MEMBER, MESSAGES__INCOMING, MESSAGES__LOAD_HISTORY, MESSAGES__OUTGOING } from "./messages.actions"
 import GroupMessageChannel from "../objects/GroupMessageChannel" 
 import Message from "../objects/Message"
 import IncomingMessageResponse from "../objects/IncomingMessageResponse"
@@ -50,7 +50,7 @@ const messages = (state: any = {}, action: any) => {
             let { channels } = action.payload
 
             const newState = {
-                ...state
+                ...state,
             }
 
             for (let i = 0; channels.length > i; i++) {
@@ -59,7 +59,8 @@ const messages = (state: any = {}, action: any) => {
                 newState[channel.id] = {
                     ...channel,
                     ...state[channel.id],
-                    messages: []
+                    messages: [],
+                    typing: [],
                 } as StoredMessageChannel
             }
 
@@ -91,7 +92,7 @@ const messages = (state: any = {}, action: any) => {
         }
 
         case MESSAGES__GROUP__CHANGE_NAME: {
-            const { channel, name } = action.payload 
+            const { channel, name } = action.payload
 
             return {
                 ...state,
@@ -124,8 +125,46 @@ const messages = (state: any = {}, action: any) => {
                     ...state[channel],
                     messages: [...messages, ...state[channel].messages],
                     page,
-                    maxPage
-                }
+                    maxPage,
+                },
+            }
+        }
+
+        case MESSAGES__CHANNEL__STOP_TYPING: {
+            const {
+                user: { id },
+                channel,
+            } = action.payload
+
+            return {
+                ...state,
+                [channel]: {
+                    ...state[channel],
+                    typing: state[channel].typing.filter(
+                        (filterUser: { id: number; username: string }) =>
+                            filterUser.id !== id
+                    ),
+                },
+            }
+        }
+
+        case MESSAGES__CHANNEL__START_TYPING: {
+            const { user, channel } = action.payload
+
+            if (
+                state[channel].typing.filter(
+                    (filterUser: { id: number }) => user.id === filterUser.id
+                ).length > 0
+            ) {
+                return state
+            } else {
+                 return {
+                     ...state,
+                     [channel]: {
+                         ...state[channel],
+                         typing: [...state[channel].typing, user],
+                     },
+                 }
             }
         }
 

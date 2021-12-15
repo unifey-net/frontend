@@ -1,5 +1,5 @@
 import { Button, Input, Tooltip } from "antd"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { MdError } from "react-icons/md"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
@@ -25,6 +25,27 @@ const SendBox = styled.div`
 
 const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
     const ref = React.createRef<Input>()
+
+    const [content, setContent] = useState("")
+    const [lastTypingUpdate, setLastTypingUpdate] = useState(0)
+
+    useEffect(() => {
+        if (content !== "") {
+            if (Date.now() - lastTypingUpdate > 2000) {
+                send({
+                    action: "START_TYPING",
+                    channel,
+                })
+
+                setLastTypingUpdate(Date.now())
+            }
+        } else {
+            send({
+                action: "STOP_TYPING",
+                channel
+            })
+        }
+    }, [content])
 
     const [send] = useLiveSocket()
     const [loading, setLoading] = useState(false)
@@ -62,7 +83,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
     }
 
     return <SendBox>
-        <Input id="msgbox" prefix={prefix} ref={ref} onPressEnter={() => sendMessage()} />
+        <Input id="msgbox" prefix={prefix} onChange={(ev) => setContent(ev.target.value)} ref={ref} onPressEnter={() => sendMessage()} />
 
         <Button loading={loading} onClick={sendMessage}>Send</Button>
     </SendBox>
