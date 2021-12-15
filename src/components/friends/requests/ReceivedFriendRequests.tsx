@@ -87,7 +87,7 @@ const ReceivedFriendRequests: React.FC = () => {
                                             <MdCheckCircle />
                                         </button>
                                     </p>
-                                    <p>{data.receivedFrom.username}</p>
+                                    <p>{data.sentFrom.username}</p>
                                     <p>
                                         <MdSchedule />{" "}
                                         {new Date(

@@ -22,6 +22,8 @@ import {
 } from "../../../redux/actions/editor.actions"
 import usePostReport from "./usePostReport"
 import toast from "react-hot-toast"
+import { getNameById } from "../../../redux/reducers/community.reducer"
+import { useCommunity } from "../../../api/community/CommunityUtil"
 
 const { confirm } = Modal
 
@@ -31,19 +33,19 @@ type Props = {
 }
 
 const PostManagement: React.FC<Props> = ({ object, type }) => {
-    const [self, setSelf] = useState({} as User)
+    const self = useSelector((state: any) => state.auth.user) as User
     const post = useSelector((state: any) => state.post)
 
+    const storedCommunity = useSelector(
+        (state: any) =>
+            state.community[getNameById(state.community, +object.feed.substring(3))]
+    )
+        
     const editing = useEditingStatus(object.id)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        const loadSelf = async () => {
-            setSelf(await getSelf())
-        }
-
-        loadSelf()
-    }, [])
+    const isModerator = storedCommunity !== undefined && storedCommunity.selfRole >= 2
+    const isOwner = self.id === object.authorId
 
     const toggleEditing = () => {
         if (editing) {
@@ -89,33 +91,29 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
         }
     }
 
-    const elevatedMenu = (
-        <Menu>
-            <Menu.Item key={1} onClick={toggleEditing}>
-                Edit <EditOutlined />
-            </Menu.Item>
-
-            <Menu.Item key={2} onClick={confirmDelete}>
-                Delete <DeleteOutlined />
-            </Menu.Item>
-
-            <Menu.Item key={3} onClick={openMenu}>
-                Report <FlagOutlined /> {modal}
-            </Menu.Item>
-        </Menu>
-    )
-
-    const regularMenu = (
+    const menu = (
         <Menu>
             <Menu.Item key={1} onClick={openMenu}>
                 Report <FlagOutlined /> {modal}
             </Menu.Item>
+
+            {(isModerator || isOwner) && (
+                <Menu.Item key={2} onClick={confirmDelete}>
+                    Delete <DeleteOutlined />
+                </Menu.Item>
+            )}
+
+            {isOwner && (
+                <Menu.Item key={3} onClick={toggleEditing}>
+                    Edit <EditOutlined />
+                </Menu.Item>
+            )}
         </Menu>
     )
 
     return (
         <Dropdown
-            overlay={self.id === object.authorId ? elevatedMenu : regularMenu}
+            overlay={menu}
         >
             <CaretDownFilled className="hover:text-blue-600 cursor-pointer" />
         </Dropdown>

@@ -11,16 +11,24 @@ import {
 import { getEmailVerificationStatus, getEmail } from "../../api/user/Email"
 import { API } from "../../api/ApiHandler"
 import { updateName, verifyAccount } from "../../redux/actions/auth.actions"
-import SettingsProperty from "../../components/settings/SettingsProperty"
+import SettingsProperty from "../../components/settings/properties/PasswordProperty"
 import UnverifiedWarning from "../../components/settings/UnverifiedWarning"
+import styled from "styled-components"
+import toast from "react-hot-toast"
+import UsernameProperty from "../../components/settings/properties/UsernameProperty"
+import PasswordProperty from "../../components/settings/properties/PasswordProperty"
+import EmailProperty from "../../components/settings/properties/EmailProperty"
+
+const SettingsStyle = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+`
 
 const Settings = () => {
     let dispatch = useDispatch()
     let self = useSelector((state: any) => state.auth.user)
-
-    let [attempts, setAttempts] = useState(1)
-    let [email, setEmail] = useState("")
-
     /**
      * Update the username.
      */
@@ -34,12 +42,25 @@ const Settings = () => {
 
         let request = await API.put("/user/name", form)
 
+        switch (request.status) {
+            case 200: {
+                return
+            }
+
+            case 429: {
+                return
+            }
+
+
+        }
+
         if (request.status === 200) {
             message.success("Your username has been updated.")
 
             dispatch(updateName(username))
+            return ""
         } else {
-            message.error("There was an issue with that username.")
+            return request.data.payload
         }
     }
 
@@ -58,57 +79,11 @@ const Settings = () => {
 
         if (request.status === 200) {
             message.success("Your password has been updated.")
+            return ""
         } else {
-            message.error("There was an issue with that password.")
+            return request.data.payload
         }
     }
-
-    /**
-     * Update the email.
-     */
-    const updateEmail = async () => {
-        let email = (document.getElementById("email") as HTMLInputElement).value
-
-        let form = new FormData()
-
-        form.append("email", email)
-
-        let request = await API.put("/user/email", form)
-
-        if (request.status === 200) {
-            message.success(
-                "Your email has been updated. A verification request has been sent."
-            )
-            dispatch(verifyAccount(false))
-            setEmail(email)
-        } else {
-            message.error("There was an issue with that email.")
-        }
-    }
-
-    useEffect(() => {
-        const loadAttempts = async () => {
-            let request = await getEmailVerificationStatus()
-
-            if (request !== null && request.status === 200) {
-                setAttempts(request.data.payload)
-            }
-        }
-
-        const loadEmail = async () => {
-            let request = await getEmail()
-
-            if (request !== null && request.status === 200) {
-                setEmail(request.data.payload)
-            }
-        }
-
-        loadEmail()
-
-        if (!self.verified) {
-            loadAttempts()
-        }
-    }, [self.verified])
 
     if (!signedIn()) {
         history.push("/")
@@ -116,92 +91,31 @@ const Settings = () => {
         return
     }
 
+
     return (
-        <div className="flex flex-col items-center justify-center">
+        <SettingsStyle>
             {!self.verified && (
-                <UnverifiedWarning
-                    addAttempt={() => setAttempts(prev => prev + 1)}
-                    attempts={attempts}
-                />
+                <UnverifiedWarning />
             )}
 
             <div>
-                <h1 className="text-2xl">Account Settings</h1>
+                <h1>Account Settings</h1>
                 <p>Modify your Unifey account settings.</p>
 
                 <br />
 
-                <div className="flex flex-col gap-4">
-                    {email !== "" && (
-                        <SettingsProperty
-                            name={"Email"}
-                            input={
-                                <Input
-                                    addonAfter={
-                                        self.verified ? (
-                                            <Tooltip
-                                                title={
-                                                    "This email is verified."
-                                                }
-                                            >
-                                                <CheckCircleOutlined />
-                                            </Tooltip>
-                                        ) : (
-                                            <Tooltip
-                                                title={
-                                                    "This email is not verified."
-                                                }
-                                            >
-                                                <WarningOutlined />
-                                            </Tooltip>
-                                        )
-                                    }
-                                    defaultValue={email}
-                                    id="email"
-                                    disabled={!self.verified}
-                                />
-                            }
-                            update={updateEmail}
-                        />
-                    )}
-
-                    {email === "" && <Spin indicator={<LoadingOutlined />} />}
-                </div>
-
+                <EmailProperty/>
                 <Divider />
-
-                <SettingsProperty
-                    name={"Password"}
-                    input={
-                        <Input
-                            id="password"
-                            type="password"
-                            disabled={!self.verified}
-                        />
-                    }
-                    update={updatePassword}
-                />
-
+                <PasswordProperty/>
                 <Divider />
-
-                <SettingsProperty
-                    name={"Username"}
-                    input={
-                        <Input
-                            id="username"
-                            disabled={!self.verified}
-                            defaultValue={self.username}
-                        />
-                    }
-                    update={updateUsername}
-                />
+                <UsernameProperty/>
             </div>
-        </div>
+        </SettingsStyle>
     )
 }
 
 export default {
     exact: true,
     path: "/settings",
-    components: Settings,
+    component: Settings,
 }

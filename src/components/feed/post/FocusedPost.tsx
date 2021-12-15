@@ -52,7 +52,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed 
                 <ArrowLeftOutlined />
             </Button>
 
-            <Post postResponse={post} allowFocusChange={false} />
+            <Post postResponse={post} focusChange={false} />
 
             <div>
                 <PostReply

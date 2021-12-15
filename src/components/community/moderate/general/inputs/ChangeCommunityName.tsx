@@ -4,14 +4,14 @@ import useInputModal from "../useInputModal"
 import { Store } from "antd/lib/form/interface"
 import { Button, Form, Input, Tooltip } from "antd"
 import { API } from "../../../../../api/ApiHandler"
+import toast from "react-hot-toast"
 
 type Props = {
     community: CommunityRequest
 }
 
 const ChangeCommunityName: React.FC<Props> =  ({ community }) => {
-    // the name change cooldown. if this is not -1, then it is the timestamp when the name change will be available.
-    const [cooldown] = useState(-1)
+    const [cooldown, setCooldown] = useState(-1)
 
     const onOk = async (store: Store) => {
         let { password, name } = store
@@ -26,7 +26,25 @@ const ChangeCommunityName: React.FC<Props> =  ({ community }) => {
             form
         )
 
-        return request.status === 200 ? "" : request.data.payload
+        switch (request.status) {
+            case 200: {
+                toast.success("The communites name has successfully been changed!")
+                return ""
+            }
+
+            case 429: {
+                const retryWhen = request.headers["x-rate-limit-reset"]
+                const date = new Date(+retryWhen)
+
+                setCooldown(+retryWhen)
+
+                return `You can change the name at ${date.toLocaleString()}.`
+            }
+
+            default: {
+                return request.data.payload
+            }
+        }
     }
 
     const forms = [
@@ -74,12 +92,9 @@ const ChangeCommunityName: React.FC<Props> =  ({ community }) => {
     return (
         <div>
             <h3>Name</h3>
-            <p>
-                You can only change the name of a community once every 30 days.
-            </p>
 
             {cooldown === -1 && (
-                <Button type="primary" onClick={toggle} disabled>
+                <Button type="primary" onClick={toggle}>
                     Change
                 </Button>
             )}

@@ -92,6 +92,12 @@ export default createGlobalStyle<{ theme: ThemeType }>`
         color: #969696;
     }
 
+    .ant-btn {
+        span {
+            color: white !important;
+        }
+    }
+
     h2 {
         font-size: 1.125rem;
         line-height: 1.75rem;

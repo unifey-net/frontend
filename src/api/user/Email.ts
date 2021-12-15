@@ -12,16 +12,21 @@ export const getEmailVerificationStatus = async () => {
 
 /**
  * Resend the email.
+ * 
+ * @param type 0: email verification, 1: password reset
  */
-export const resend = async (type: string, id: string) => {
-    if (!signedIn()) return null
+export const resend = async (type: number): Promise<number> => {
+    if (!signedIn()) return -1
 
     let form = new FormData()
 
-    form.append("type", type)
-    form.append("id", id)
+    form.append("type", `${type}`)
 
-    return await API.post("/email/resend", form)
+    const request = await API.post("/email/resend", form)
+
+    if (request.status === 429) {
+        return request.headers["x-rate-limit-reset"]      
+    } else return 0
 }
 
 export const getEmail = async () => {

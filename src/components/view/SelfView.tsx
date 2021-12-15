@@ -1,12 +1,12 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { Menu, Dropdown, Button, Avatar, Badge } from "antd"
+import { Menu, Dropdown, Button, Avatar, Badge, Spin } from "antd"
 import { Link } from "react-router-dom"
-import { UserOutlined } from "@ant-design/icons"
 import { getImageUrl } from "../../api/user/User"
 import styled from "styled-components"
 import UnreadNotificationCount from "../notifications/UnreadNotificationCount"
 import History from "../../api/History"
+import { MdAccountCircle } from "react-icons/md"
 
 const NotificationShelf = styled.div`
     display: flex;
@@ -21,6 +21,16 @@ const NotificationShelf = styled.div`
     }
 `
 
+const SelfViewLink = styled.div`
+    a {
+        color: white;
+    }
+
+    span:hover {
+        color: #969696;
+    }
+`
+
 const SelfView: React.FC = () => {
     let self = useSelector((store: any) => store.auth)
     
@@ -31,36 +41,41 @@ const SelfView: React.FC = () => {
 
     const menu = (
         <Menu>
-            <Menu.Item key="0">
-                <Link to={`/u/${name}`}>Profile</Link>
-            </Menu.Item>
-            <Menu.Item key="1">
-                <Link to={`/settings`}>Settings</Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-                <NotificationShelf
-                    onClick={() => History.push("/notifications")}
-                >
-                    <span>Notifications</span>
-                    <UnreadNotificationCount
-                        count={unreadCount}
-                        overflow={100}
-                    />
-                </NotificationShelf>
-            </Menu.Item>
-            <Menu.Item key="3">
-                <NotificationShelf onClick={() => History.push("/friends")}>
-                    <span>Friends</span>
-                    <UnreadNotificationCount
-                        count={onlineCount}
-                        overflow={100}
-                    />
-                </NotificationShelf>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item key="4">
-                <Link to={`/logout`}>Sign Out</Link>
-            </Menu.Item>
+            <SelfViewLink>
+                <Menu.Item key="0">
+                    <Link to={`/u/${name}`}>Profile</Link>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <Link to={`/settings`}>Settings</Link>
+                </Menu.Item>
+                <Menu.Item key="2">
+                    <NotificationShelf
+                        onClick={() => History.push("/notifications")}
+                    >
+                        <span>Notifications</span>
+                        <UnreadNotificationCount
+                            count={unreadCount}
+                            overflow={100}
+                        />
+                    </NotificationShelf>
+                </Menu.Item>
+                <Menu.Item key="3">
+                    <NotificationShelf onClick={() => History.push("/friends")}>
+                        <span>Friends</span>
+                        <UnreadNotificationCount
+                            count={onlineCount}
+                            overflow={100}
+                        />
+                    </NotificationShelf>
+                </Menu.Item>
+                <Menu.Item key="4">
+                    <Link to={`/messages`}>Messages</Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item key="5">
+                    <Link to={`/logout`}>Sign Out</Link>
+                </Menu.Item>
+            </SelfViewLink>
         </Menu>
     )
 
@@ -73,16 +88,20 @@ const SelfView: React.FC = () => {
                         onClick={e => e.preventDefault()}
                         type="link"
                     >
-                        <Badge count={unreadCount} overflowCount={9}>
-                            <Avatar size={32} src={getImageUrl(name)} />
+                        <Badge count={unreadCount === -1 ? undefined : unreadCount} overflowCount={9}>
+                            {name === "" ? (
+                                <Spin />
+                            ) : (
+                                <Avatar size={32} src={getImageUrl(name)} />
+                            )}
                         </Badge>
                     </Button>
                 </Dropdown>
             )}
 
             {!self.isLoggedIn && (
-                <Link to={`/login`} className="mt-2">
-                    <Avatar size={32} icon={<UserOutlined />} />
+                <Link to={`/login`} style={{ marginTop: "8px" }}>
+                    <MdAccountCircle size={32} />
                 </Link>
             )}
         </>

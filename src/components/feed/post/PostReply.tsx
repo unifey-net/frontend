@@ -101,11 +101,11 @@ const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
             setError(request.data.payload)
         } else {
             setVisible(false)
+            window.location.reload()
             toast.success("Successfully posted reply!")
         }
 
         setLoading(false)
-        window.location.reload()
     }
 
     return (

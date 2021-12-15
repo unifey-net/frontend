@@ -14,7 +14,7 @@ import { media } from "../../../api/util/Media"
 
 type Props = {
     postResponse: PostResponse,
-    allowFocusChange?: boolean
+    focusChange?: (() => void)| boolean
 }
 
 const PostStyle = styled.div<{ allowFocusChange: boolean }>`
@@ -33,7 +33,7 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
 
         .post-title {
             color: white;
-            cursor: ${({ })};
+            cursor: ${({ allowFocusChange }) => allowFocusChange ? "pointer" : "inherit"};
         }
 
         .user-view {
@@ -73,7 +73,7 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
 /**
  * A post
  */
-export default ({ postResponse, allowFocusChange }: Props) => {
+const Post = ({ postResponse, focusChange }: Props) => {
     const { post, vote, author } = postResponse
     let emotes = useEmotes()
 
@@ -81,40 +81,43 @@ export default ({ postResponse, allowFocusChange }: Props) => {
      * Update focus.
      */
     const updateFocus = () => {
-        if (allowFocusChange)
+        if (focusChange === true)
             History.push(`${window.location.pathname}/${post.id}`)
+        else if (typeof focusChange === "function") {
+            focusChange()
+        }
     }
 
     return (
-        <>
-            <PostStyle allowFocusChange={allowFocusChange === true}>
-                <div className="post-header">
-                    <div className="user-view">
-                        <p>{author.username}</p>
+        <PostStyle allowFocusChange={focusChange === true || typeof focusChange === "function"}>
+            <div className="post-header">
+                <div className="user-view">
+                    <p>{author.username}</p>
 
-                        <PostTag>Tag</PostTag>
-                    </div>
-
-                    <span className="post-title" onClick={() => updateFocus()}>
-                        {post.title}
-                    </span>
-
-                    <PostAbout date={post.createdAt} />
+                    {/* <PostTag>Tag</PostTag> */}
                 </div>
-                <div className="post-content">
-                    <p
-                        className="post-body"
-                        dangerouslySetInnerHTML={{
-                            __html: parseBody(post.content, emotes),
-                        }}
-                    />
-                </div>
-                <div className="post-footer">
-                    <PostVote post={post} vote={vote} />
 
-                    <PostManagement type="post" object={post} />
-                </div>
-            </PostStyle>
-        </>
+                <span className="post-title" onClick={() => updateFocus()}>
+                    {post.title}
+                </span>
+
+                <PostAbout date={post.createdAt} />
+            </div>
+            <div className="post-content">
+                <p
+                    className="post-body"
+                    dangerouslySetInnerHTML={{
+                        __html: parseBody(post.content, emotes),
+                    }}
+                />
+            </div>
+            <div className="post-footer">
+                <PostVote post={post} vote={vote} />
+
+                <PostManagement type="post" object={post} />
+            </div>
+        </PostStyle>
     )
 }
+
+export default Post

@@ -1,5 +1,6 @@
 import { Empty, Spin } from "antd"
 import React from "react"
+import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { useApi } from "../../api/ApiHandler"
 import { Friend } from "../../api/user/Friends"

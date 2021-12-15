@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { getCommunityById } from "../../api/community/Community"
+import { useLiveSocket } from "../../api/live/Live"
 import { media } from "../../api/util/Media"
 import Community from "../community/communities/Community"
 import CustomFeed from "../feed/controller/CustomFeedController"
@@ -43,18 +44,22 @@ const LoggedInHomeStyle = styled.div`
 `
 
 const LoggedInHome: React.FC = () => {
+    const [sendAction] = useLiveSocket();
+
     const [communities, setCommunities] = useState([] as any[])
-    let members = useSelector((store: any) => store.auth.user.member.member)
+    let members = useSelector((store: any) => store.auth.user.member.members)
     let name = useSelector((store: any) => store.auth.user.username)
 
     // load the user's communities.
     useEffect(() => {
         const loadCommunities = async () => {
-            for (let i = 0; members.length > i; i++) {
-                const member = members[i]
-                const community = await getCommunityById(member)
+            if (members) {
+                for (let i = 0; members.length > i; i++) {
+                    const member = members[i]
+                    const community = await getCommunityById(member)
 
-                setCommunities(prev => [...prev, community.data.community])
+                    setCommunities(prev => [...prev, community.data.community])
+                }
             }
         }
 

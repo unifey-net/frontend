@@ -1,7 +1,10 @@
+import { chain } from "lodash"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
-import { importUser } from "../../redux/actions/auth.actions"
+import Message from "../../components/messaging/objects/Message"
+import { getChannels, loadMessageHistory, messagesIncoming, startTyping, stopTyping } from "../../components/messaging/redux/messages.actions"
+import { importUser, logOut } from "../../redux/actions/auth.actions"
 import { setFriendOnline } from "../../redux/actions/friends.actions"
 import {
     liveSocketAuthenticate,
@@ -12,6 +15,7 @@ import {
 import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
+import History from "../History"
 import { signedIn, User } from "../user/User"
 
 const getUrl = (): string => {
@@ -70,16 +74,19 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 sendAction({
                     action: "GET_ALL_UNREAD_NOTIFICATION",
                 })
+
+                sendAction({
+                    action: "GET_CHANNELS"
+                })
             }
         }
 
         socket.onclose = message => {
             console.debug(`LIVE Socket Disconnected: %o`, message)
-            dispatch(liveSocketDisconnect())
+            dispatch(liveSocketDisconnect(message.code))
         }
 
         socket.onerror = message => {
-            console.log(message)
         }
 
         socket.onmessage = (message: any) => {
@@ -109,7 +116,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     console.log(`LIVE Socket: Hello ${user.username}`)
                     dispatch(importUser(user))
 
-                    break;
+                    break
                 }
 
                 case "pong": {
@@ -153,6 +160,70 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 case "friend_offline": {
                     toast(`${response.friend} has gone offline!`)
                     dispatch(setFriendOnline(response.id, response.friend))
+                    break
+                }
+
+                case "incoming_message": {
+                    toast("New message!")
+
+                    dispatch(
+                        messagesIncoming(
+                            response.channel,
+                            response.message,
+                            response.sentFrom
+                        )
+                    )
+                    break
+                }
+
+                case "start_typing": {
+                    dispatch(
+                        startTyping(
+                            response.channel.id,
+                            response.user
+                        )
+                    )
+                    break
+                }
+
+                case "stop_typing": {
+                    dispatch(
+                        stopTyping(
+                            response.channel.id,
+                            response.user
+                        )
+                    )
+
+                    break
+                }
+
+                case "message_history": {
+                    const { channel, page, maxPage, messages } = response
+
+                    dispatch(loadMessageHistory(
+                        channel, page, maxPage, messages as Message[]
+                    ))
+
+                    break
+                }
+
+                case "channels": {
+                    dispatch(
+                        getChannels(
+                            response.map((ch: any) => ({
+                                ...ch.channel,
+                                pageCount: ch.pageCount,
+                                messageCount: ch.messageCount,
+                            }))
+                        )
+                    )
+                    break
+                }
+
+                case "sign_out": {
+                    History.push("/?msg=pswd")
+                    dispatch(logOut())
+                    window.location.reload()
                     break
                 }
             }

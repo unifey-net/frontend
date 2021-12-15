@@ -1,9 +1,9 @@
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
-import React from "react"
+import React, { useEffect } from "react"
 import { MdClose } from "react-icons/md"
 import { useState } from "react"
-import { notifDelete } from "../../redux/actions/notifications.actions"
+import { notifDelete, notifSetReadStatus } from "../../redux/actions/notifications.actions"
 import { useNotificationActions } from "../../api/notification/NotificationsSocket"
 
 const notificationToastTheme = {
@@ -13,7 +13,8 @@ const notificationToastTheme = {
 
 const useNotificationPopUp = () => {
     const dispatch = useDispatch()
-    const { deleteNotification } = useNotificationActions()
+    const { deleteNotification, readNotification } = useNotificationActions()
+
     const notifications = useSelector((store: any) => store.notifications.notifications)
     const [oldSize, setOldSize] = useState(notifications.length)
 
@@ -23,23 +24,32 @@ const useNotificationPopUp = () => {
         dispatch(notifDelete(notifId))
     }
     
-    if (notifications.length > oldSize && !(notifications.length - oldSize > 1 && oldSize === 0)) {
+    if (notifications.length > oldSize) {
         setOldSize(notifications.length)
         const notif = notifications[notifications.length - 1]
-    
-        const toastId = toast(
-            <div>
-                <div className="toast-name-column">
-                    <p>{notif.message}</p>
-                    <span>{new Date(notif.date).toLocaleString()}</span>
-                </div>
 
-                <button onClick={() => closeNotification(toastId, notif.id)}>
-                    <MdClose />
-                </button>
-            </div>,
-            notificationToastTheme
-        )
+        console.debug(`Found Notif: ${notif.id}, Read: ${notif.read}`)
+
+        if (!notif.read) {
+            readNotification(notif.id)
+            dispatch(notifSetReadStatus(notif.id, true))
+
+            const toastId = toast(
+                <div>
+                    <div className="toast-name-column">
+                        <p>{notif.message}</p>
+                        <span>{new Date(notif.date).toLocaleString()}</span>
+                    </div>
+
+                    <button
+                        onClick={() => closeNotification(toastId, notif.id)}
+                    >
+                        <MdClose />
+                    </button>
+                </div>,
+                notificationToastTheme
+            )
+        }
     }
 }
 
