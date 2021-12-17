@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, Alert } from "antd"
+import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
@@ -13,6 +13,8 @@ import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
+import GoogleLogin from "react-google-login"
+import { API } from "../../api/ApiHandler"
 
 const LoginForm = styled.div`
     .error {
@@ -64,6 +66,27 @@ const Login = () => {
                     ? "There was an issue logging in."
                     : status.message
             )
+        }
+
+        setLoading(false)
+    }
+
+    const loginGoogle = async (obj: any) => {
+        setLoading(true)
+        console.log(obj)
+        const formData = new FormData()
+
+        formData.set("token", obj.accessToken)
+
+        const request = await API.post("/authenticate/connections/google", formData)
+    
+        if (request.status === 200) {
+            dispatch(logIn(request.data.token.token))
+
+            history.push("/")
+            window.location.reload()
+        } else {
+            setError(request.data.payload)
         }
 
         setLoading(false)
@@ -155,10 +178,29 @@ const Login = () => {
                             </div>
                         </Form.Item>
 
-                        <p>or <Link to={"/register"}>register</Link>.</p>
+                        <p>
+                            or <Link to={"/register"}>register</Link>.
+                        </p>
                     </div>
                 </Form>
             </LoginForm>
+
+            <Divider />
+
+            <div style={{color: "white!mportant"}}>
+                <GoogleLogin
+                    clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
+                    buttonText="Login with Google"
+                    onSuccess={loginGoogle}
+                    onFailure={() =>
+                        setError(
+                            "There was an issue trying to login with Google."
+                        )
+                    }
+                    cookiePolicy={"single_host_origin"}
+                    theme="dark"
+                />
+            </div>
         </DefaultContainer>
     )
 }
