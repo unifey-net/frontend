@@ -70,8 +70,8 @@ const Header: React.FC = () => {
 
     let pages = [
         {
-            name: "Home",
-            location: "/",
+            name: "Beta",
+            location: "/beta",
         },
         {
             name: "About",
