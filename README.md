@@ -1,18 +1,7 @@
-# Unifey
-
-The Unifey front-end.
+!(Line count)[https://img.shields.io/tokei/lines/github/unifey-net/frontend] !(Issues)[https://img.shields.io/github/issues/unifey-net/frontend]
+<h1 align="center">Unifey Frontend</h1>
+<hr>
 
 ## How to run yourself
 
-Unifey staff do not directly support self-hosting Unifey and will not support your endeavours.
-
-### Requirements
-- MongoDB database
-- ReCAPTCHA
-- Amazon S3 bucket
-
-### Frontend
-The frontend can be ran with `npm run start` in the main directory.
-
-### Backend
-The backend can be built with `gradle shadowJar` in the main directory.
+There is currently no instructions and we're not currently offering instructions on how to self host Unifey.
