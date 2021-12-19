@@ -2,17 +2,18 @@ import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, Alert } from "antd"
+import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
-import { useDispatch } from "react-redux"
+import { connect, useDispatch } from "react-redux"
 import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import { API } from "../../api/ApiHandler"
+import GoogleLogin from "react-google-login"
 
 const RegisterForm = styled.div`
     min-width: 300px;
@@ -28,6 +29,13 @@ const RegisterForm = styled.div`
     }
 `
 
+type ConnectionState = {
+    connected: boolean
+    authToken: string
+    type: "GOOGLE" | ""
+    email: string
+}
+
 /**
  * The /register page.
  */
@@ -36,9 +44,38 @@ const Register = () => {
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
+    const [usernameRef, setUsernameRef] = useState<Input>()
+    const [emailRef, setEmailRef] = useState<Input>()
+        
+    const [
+        { connected, authToken, type, email: connectionEmail },
+        setConnection,
+    ] = useState({
+        connected: false,
+        authToken: "",
+        type: "",
+        email: "",
+    } as ConnectionState)
+
+    console.log(emailRef?.state)
+
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState("")
+
+    const handleGoogle = (obj: any) => {
+        setLoading(true)
+        const email = obj.profileObj.email
+
+        setConnection({ connected: true, authToken: obj.accessToken, type: "GOOGLE", email })
+
+        const name = obj.profileObj.name.replace(" ", "")
+        usernameRef?.setValue(name)
+
+        emailRef?.setValue(email)
+
+        setLoading(false)
+    }
 
     const loginForm = async (values: Store) => {
         setLoading(true)
@@ -50,8 +87,15 @@ const Register = () => {
         form.append("username", username)
         form.append("password", password)
         form.append("tos", tos)
-        form.append("email", email)
         form.append("captcha", captcha)
+
+        if (connected) {
+            form.append("autoConToken", authToken)
+            form.append("autoConType", type)
+            form.append("email", connectionEmail)
+        } else {
+            form.append("email", email)
+        }
 
         const response = await API.put("/user/register", form)
 
@@ -102,9 +146,22 @@ const Register = () => {
                                 required: true,
                                 message: "Please input your username!",
                             },
+                            {
+                                pattern: /^[A-Za-z0-9-_]{2,16}\w+$/,
+                                message:
+                                    "A username can only have alphanumerics, dashes and underscores!",
+                            },
+                            {
+                                min: 3,
+                                max: 16,
+                                message: "A name must be between 3 and 16 characters!"
+                            }
                         ]}
                     >
-                        <Input id="username" />
+                        <Input
+                            ref={(obj: Input) => setUsernameRef(obj)}
+                            id="username"
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -115,12 +172,15 @@ const Register = () => {
                                 type: "email",
                             },
                             {
-                                required: true,
+                                required: !connected,
                                 message: "Please input your email!",
                             },
                         ]}
                     >
-                        <Input />
+                        <Input
+                            ref={(obj: Input) => setEmailRef(obj)}
+                            disabled={connected}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -130,6 +190,18 @@ const Register = () => {
                             {
                                 required: true,
                                 message: "Please input your password!",
+                            },
+                            {
+                                min: 8,
+                                max: 128,
+                                message:
+                                    "Your password must be over 8 characters!",
+                            },
+                            {
+                                pattern:
+                                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[$&+,:;=?@#|'<>.^*()%!-])[A-Za-z\d$&+,:;=?@#|'<>.^*()%!-]{8,128}$/,
+                                message:
+                                    "Your password must have a lowercase, an uppercase, and a special character!",
                             },
                         ]}
                     >
@@ -218,8 +290,25 @@ const Register = () => {
                             or <Link to={"/login"}>login</Link>.
                         </p>
                     </div>
+                    <Divider />
                 </Form>
             </RegisterForm>
+
+            <div>
+                <GoogleLogin
+                    clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
+                    buttonText="Login with Google"
+                    onSuccess={handleGoogle}
+                    onFailure={() =>
+                        setError(
+                            "There was an issue trying to login with Google."
+                        )
+                    }
+                    cookiePolicy={"single_host_origin"}
+                    theme="dark"
+                    disabled={connected}
+                />
+            </div>
         </DefaultContainer>
     )
 }

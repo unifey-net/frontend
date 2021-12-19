@@ -183,11 +183,11 @@ const Login = () => {
                         </p>
                     </div>
                 </Form>
+
+                <Divider /> 
             </LoginForm>
 
-            <Divider />
-
-            <div style={{color: "white!mportant"}}>
+            <div>
                 <GoogleLogin
                     clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
                     buttonText="Login with Google"
