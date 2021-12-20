@@ -15,6 +15,7 @@ import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import GoogleLogin from "react-google-login"
 import { API } from "../../api/ApiHandler"
+import { useForm } from "antd/lib/form/Form"
 
 const LoginForm = styled.div`
     .error {
@@ -34,6 +35,7 @@ const LoginForm = styled.div`
 const Login = () => {
     const dispatch = useDispatch()
 
+    const [form] = useForm()
     const [ref, setRef] = useState<ReCAPTCHA>()
 
     let [captcha, setCaptcha] = useState("")
@@ -61,6 +63,8 @@ const Login = () => {
             window.location.reload()
         } else {
             ref?.reset()
+            form.setFieldsValue({ password: "" })
+
             setError(
                 status.message === undefined
                     ? "There was an issue logging in."
@@ -73,7 +77,6 @@ const Login = () => {
 
     const loginGoogle = async (obj: any) => {
         setLoading(true)
-        console.log(obj)
         const formData = new FormData()
 
         formData.set("token", obj.accessToken)
@@ -109,6 +112,7 @@ const Login = () => {
                 )}
 
                 <Form
+                    form={form}
                     name="basic"
                     initialValues={{
                         remember: false,
