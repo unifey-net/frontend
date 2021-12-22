@@ -13,11 +13,12 @@ import PostTag from "./PostTag"
 import { media } from "../../../api/util/Media"
 
 type Props = {
-    postResponse: PostResponse,
-    focusChange?: (() => void)| boolean
+    postResponse: PostResponse
+    focusChange?: (() => void) | boolean
+    disableBottomBorderRadius: boolean
 }
 
-const PostStyle = styled.div<{ allowFocusChange: boolean }>`
+const PostStyle = styled.div<{ allowFocusChange: boolean, disableBottomBorderRadius: boolean }>`
     background-color: ${({ theme }) => theme.primary};
     ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
     border-radius: 32px;
@@ -66,14 +67,14 @@ const PostStyle = styled.div<{ allowFocusChange: boolean }>`
         display: flex;
         flex-direction: row;
         background-color: ${({ theme }) => theme.secondary};
-        border-radius: 0 0 32px 32px;
+        border-radius: ${({ disableBottomBorderRadius }) => disableBottomBorderRadius ? "0" : "0 0 32px 32px;"};
     }
 `
 
 /**
  * A post
  */
-const Post = ({ postResponse, focusChange }: Props) => {
+const Post = ({ postResponse, focusChange, disableBottomBorderRadius }: Props) => {
     const { post, vote, author } = postResponse
     let emotes = useEmotes()
 
@@ -89,7 +90,7 @@ const Post = ({ postResponse, focusChange }: Props) => {
     }
 
     return (
-        <PostStyle allowFocusChange={focusChange === true || typeof focusChange === "function"}>
+        <PostStyle allowFocusChange={focusChange === true || typeof focusChange === "function"} disableBottomBorderRadius={disableBottomBorderRadius}>
             <div className="post-header">
                 <div className="user-view">
                     <p>{author.username}</p>

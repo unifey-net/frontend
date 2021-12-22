@@ -158,6 +158,7 @@ const FeedSkeleton: React.FC<Props> = ({
                                     : true
                             }
                             postResponse={post}
+                            disableBottomBorderRadius={false}
                         />
                     ))}
                 </FeedContainer>

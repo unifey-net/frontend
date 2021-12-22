@@ -4,6 +4,7 @@ import { signedIn } from "../../../api/user/User"
 import { Store } from "antd/lib/form/interface"
 import { createComment } from "../../../api/Feeds"
 import toast from "react-hot-toast"
+import styled from "styled-components"
 
 const { TextArea } = Input
 
@@ -85,9 +86,14 @@ type Props = {
     level: number
     post: number
     id?: number
+    isOnComment: boolean
 }
 
-const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
+const ReplyButton = styled.button<{ isOnComment: boolean }>`
+    ${({ isOnComment }) => (isOnComment ? "margin-bottom: 16px;" : "")}
+`
+
+const PostReply: React.FC<Props> = ({ feed, level, post, id, isOnComment }) => {
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -95,7 +101,10 @@ const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
     const submit = async (values: Store) => {
         setLoading(true)
 
-        let request = await createComment(feed, post, values["comment"], { level, id })
+        let request = await createComment(feed, post, values["comment"], {
+            level,
+            id,
+        })
 
         if (request.status !== 200) {
             setError(request.data.payload)
@@ -112,14 +121,12 @@ const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
         <>
             {signedIn() && (
                 <>
-                    <span
-                        className={
-                            "cursor-pointer hover:text-blue-600 transition-colors ease-linear"
-                        }
+                    <ReplyButton
+                        isOnComment={isOnComment}
                         onClick={() => setVisible(true)}
                     >
-                        Reply to
-                    </span>
+                        {isOnComment ? "Reply" : "Add Comment"}
+                    </ReplyButton>
 
                     <ReplyModal
                         visible={visible}
@@ -138,4 +145,4 @@ const PostReply: React.FC<Props> = ({ feed, level, post, id }) => {
     )
 }
 
-export default PostReply;
+export default PostReply
