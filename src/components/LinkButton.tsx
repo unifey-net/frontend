@@ -1,4 +1,4 @@
-import { LoadingOutlined } from "@ant-design/icons";
+
 import { Spin } from "antd";
 import React from "react"
 
@@ -15,7 +15,7 @@ const LinkButton: React.FC<ButtonProps> = ({ children, onClick, loading }) => {
         >
             {children} 
             { loading &&
-                <Spin indicator={<LoadingOutlined/>}/>
+                <Spin/>
             }
         </button>
     )

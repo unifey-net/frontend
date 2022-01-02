@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import toast from "react-hot-toast"
-import History from "../api/History"
 import { signedIn } from "../api/user/User"
 import DefaultHome from "../components/home/DefaultHome"
 import LoggedInHome from "../components/home/LoggedInHome"

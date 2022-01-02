@@ -28,7 +28,7 @@ export default function App() {
 
     const dispatch = useDispatch()
 
-    console.log(useSelector((store: any) => store.auth.expire));
+    console.log(useSelector((store: any) => store.auth.expire))
 
     if (isExpired()) dispatch(logOut())
 
@@ -40,13 +40,13 @@ export default function App() {
         }
 
         case 1006: {
-            return <NoConnection/>
+            return <NoConnection />
         }
 
         // token has expired
         case 4011: {
             dispatch(logOut())
-            
+
             window.location.reload()
 
             toast.error("Your token has expired!")
@@ -79,14 +79,16 @@ export default function App() {
 
                         <div className="content-container">
                             <Switch>
-                                {Pages.map(({ path, component, exact }, index) => (
-                                    <Route
-                                        key={index}
-                                        path={path}
-                                        component={component}
-                                        exact={exact}
-                                    />
-                                ))}
+                                {Pages.map(
+                                    ({ path, component, exact }, index) => (
+                                        <Route
+                                            key={index}
+                                            path={path}
+                                            component={component}
+                                            exact={exact}
+                                        />
+                                    )
+                                )}
                             </Switch>
                         </div>
 
