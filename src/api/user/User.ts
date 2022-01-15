@@ -11,11 +11,10 @@ export type User = {
     role: number
     verified: boolean
     createdAt: number
-    profile: Profile
-    member: Member
 }
 
 export type Profile = {
+    id: number
     description: string
     discord: string
     location: string
@@ -23,6 +22,7 @@ export type Profile = {
 }
 
 export type Member = {
+    id: number
     member: number[]
     notifications: number[]
 }

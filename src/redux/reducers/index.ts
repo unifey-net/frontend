@@ -7,7 +7,7 @@ import editor from "./editor.reducer"
 import feeds from "./feeds.reducer"
 import notifications from "./notifications.reducer"
 import live from "./live.reducer"
-import friends from "./friends.reducer"
+import friends from "../../api/friends/redux/friends.reducer"
 import messages from "../../components/messaging/redux/messages.reducer"
 
 export default combineReducers({

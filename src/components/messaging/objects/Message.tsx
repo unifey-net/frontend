@@ -1,7 +1,8 @@
 type Message = {
     user: number,
+    id: number,
     channel: number,
-    message: String,
+    message: string,
     time: number,
     reactions: number[]
 }

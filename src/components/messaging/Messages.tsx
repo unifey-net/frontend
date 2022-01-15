@@ -8,6 +8,7 @@ import { Post } from "../../api/Feeds"
 import { useLiveSocket } from "../../api/live/Live"
 import { getSelf } from "../../api/user/User"
 import DefaultContainer from "../DefaultContainer"
+import MessageJsx from "./Message"
 import { useMessageSocket } from "./MessagesSocket"
 import DirectMessageChannel from "./objects/DirectMessageChannel"
 import GroupMessageChannel from "./objects/GroupMessageChannel"
@@ -93,19 +94,17 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
                             sentFrom: { second: username },
                         } = message as IncomingMessageResponse
                         return (
-                            <div className="message">
-                                ({new Date(time).toLocaleTimeString()}){" "}
-                                {username}: {content}
-                            </div>
+                            <MessageJsx
+                                user={username}
+                                message={content}
+                                time={new Date(time)}
+                            />
                         )
                     } else {
                         // outgoing
                         const { time, message: content } = message
                         return (
-                            <div className="message">
-                                ({new Date(time).toLocaleTimeString()}){" "}
-                                {selfUsername}: {content}
-                            </div>
+                            <MessageJsx user={selfUsername} message={content} time={new Date(time)} />
                         )
                     }
                 })}

@@ -1,3 +1,4 @@
+import { Member, Profile, User } from "../../api/user/User"
 import {
     LOG_IN,
     LOG_OUT,
@@ -10,26 +11,13 @@ import {
     AUTH__IMPORT_USER,
 } from "../actions/auth.actions"
 
-type AuthState = {
-    isLoggedIn: boolean;
-    token: string;
-    expire: number;
-    user: {
-        username: string;
-        id: string;
-        verified: boolean;
-        role: number;
-        createdAt: number;
-        profile: {
-            description: string;
-            discord: string;
-            location: string;
-        };
-        member: {
-            notifications: any[];
-            member: any[]
-        };
-    };
+export type AuthState = {
+    isLoggedIn: boolean
+    token: string
+    expire: number
+    user: User
+    member: Member
+    profile: Profile
 }
 
 let defaultState = (token: string = "") => {
@@ -38,20 +26,23 @@ let defaultState = (token: string = "") => {
         token: token,
         expire: -1,
         user: {
+            id: -1,
             username: "",
-            id: "-1",
-            verified: false,
             role: -1,
-            createdAt: -1,
-            profile: {
-                description: "",
-                discord: "",
-                location: "",
-            },
-            member: {
-                member: [],
-                notifications: [],
-            },
+            verified: false,
+            createdAt: 0,
+        },
+        member: {
+            id: -1,
+            member: [],
+            notifications: [],
+        },
+        profile: {
+            id: 0,
+            description: "",
+            discord: "",
+            location: "",
+            cosmetics: [],
         },
     }
 }
@@ -82,7 +73,10 @@ const getTokenFromStorage = () => {
  * @param {*} state
  * @param {*} action
  */
-const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: any) => {
+const auth = (
+    state: AuthState = defaultState(getTokenFromStorage()),
+    action: any
+) => {
     switch (action.type) {
         case LOG_IN: {
             const { token } = action.payload
@@ -90,7 +84,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
             let newState = {
                 ...state,
                 token: token,
-                isLoggedIn: true
+                isLoggedIn: true,
             }
 
             saveState(token)
@@ -99,11 +93,13 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
         }
 
         case AUTH__IMPORT_USER: {
-            const { user } = action.payload
+            const { user, member, profile } = action.payload
 
             return {
                 ...state,
-                user
+                user,
+                member,
+                profile
             }
         }
 
@@ -148,12 +144,9 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
 
             let newState = {
                 ...state,
-                user: {
-                    ...state.user,
-                    member: {
-                        ...state.user.member,
-                        members: [...state.user.member.member, id],
-                    },
+                member: {
+                    ...state.member,
+                    members: [...state.member.member, id],
                 },
             }
 
@@ -163,7 +156,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
         case LEAVE_COMMUNITY: {
             const { id } = action.payload
 
-            let newMember = state.user.member.member
+            let newMember = state.member.member
 
             const index = newMember.indexOf(id)
             if (index > -1) {
@@ -172,12 +165,9 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
 
             let newState = {
                 ...state,
-                user: {
-                    ...state.user,
-                    member: {
-                        ...state.user.member,
-                        members: newMember,
-                    },
+                member: {
+                    ...state.member,
+                    members: newMember,
                 },
             }
 
@@ -189,12 +179,9 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
 
             let newState = {
                 ...state,
-                user: {
-                    ...state.user,
-                    member: {
-                        ...state.user.member,
-                        notifications: [...state.user.member.notifications, id],
-                    },
+                member: {
+                    ...state.member,
+                    notifications: [...state.member.notifications, id],
                 },
             }
 
@@ -204,7 +191,7 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
         case UN_SUBSCRIBE_COMMUNITY: {
             const { id } = action.payload
 
-            let newNotifs = state.user.member.notifications
+            let newNotifs = state.member.notifications
 
             const index = newNotifs.indexOf(id)
             if (index > -1) {
@@ -213,12 +200,9 @@ const auth = (state: AuthState = defaultState(getTokenFromStorage()), action: an
 
             let newState = {
                 ...state,
-                user: {
-                    ...state.user,
-                    member: {
-                        ...state.user.member,
-                        notifications: newNotifs,
-                    },
+                member: {
+                    ...state.member,
+                    notifications: newNotifs,
                 },
             }
 

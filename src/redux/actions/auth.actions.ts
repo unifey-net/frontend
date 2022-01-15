@@ -1,4 +1,4 @@
-import { User } from "../../api/user/User"
+import { Member, Profile, User } from "../../api/user/User"
 
 export const LOG_IN = "LOG_IN"
 export const LOG_OUT = "LOG_OUT"
@@ -27,9 +27,9 @@ export const logIn = (token: string) => ({
     },
 })
 
-export const importUser = (user: User) => ({
+export const importUser = (user: User, member: Member, profile: Profile) => ({
     type: AUTH__IMPORT_USER,
-    payload: { user }
+    payload: { user, member, profile }
 })
 
 /**

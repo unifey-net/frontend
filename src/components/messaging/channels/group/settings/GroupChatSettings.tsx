@@ -22,7 +22,7 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
     const description = React.createRef<Input>()
 
     const {
-        groupChatSettings: { changeName, changeDescription },
+        groupChats: { changeName, changeDescription },
     } = useMessageSocket()
 
     const [loading, setLoading] = useState(false)

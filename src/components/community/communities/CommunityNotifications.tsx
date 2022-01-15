@@ -20,7 +20,7 @@ const CommunityNotifications: React.FC<{ community: number }> = ({
 }) => {
     const dispatch = useDispatch()
     const notifications = useSelector(
-        (store: any) => store.auth.user.member.notifications
+        (store: any) => store.auth.member.notifications
     ).includes(community)
 
     const [loading, setLoading] = useState(false)

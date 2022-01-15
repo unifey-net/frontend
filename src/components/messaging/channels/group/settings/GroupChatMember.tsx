@@ -27,7 +27,7 @@ const Member = styled.div<{ owner: boolean }>`
 
 const GroupChatMember: React.FC<{ user: number; channel: GroupMessageChannel }> = ({user, channel}) => {
     const {
-        groupChatSettings: { removeGroupChatMember },
+        groupChats: { removeGroupChatMember },
     } = useMessageSocket()
 
     const onKick = () => {

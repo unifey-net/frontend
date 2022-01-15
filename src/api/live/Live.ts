@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import Message from "../../components/messaging/objects/Message"
 import { getChannels, loadMessageHistory, messagesIncoming, startTyping, stopTyping } from "../../components/messaging/redux/messages.actions"
 import { importUser, logOut } from "../../redux/actions/auth.actions"
-import { setFriendOnline } from "../../redux/actions/friends.actions"
+import { getFriends, setFriendOnline } from "../friends/redux/friends.actions"
 import {
     liveSocketAuthenticate,
     liveSocketConnect,
@@ -16,7 +16,7 @@ import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/acti
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
 import History from "../History"
-import { signedIn, User } from "../user/User"
+import { Member, Profile, signedIn, User } from "../user/User"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
@@ -68,7 +68,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
                 // get all notifications and unread notifications (for number)
                 sendAction({
-                    action: "GET_ALL_NOTIFICATION",
+                    action: "GET_ALL_NOTIFICATIONS",
                 })
 
                 sendAction({
@@ -77,6 +77,10 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
                 sendAction({
                     action: "GET_CHANNELS"
+                })
+
+                sendAction({
+                    action: "GET_FRIENDS"
                 })
             }
         }
@@ -111,10 +115,15 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 }
 
                 case "get_user": {
-                    const user = response as User
+                    console.log(response)
+                    const { user, member, profile } = response as {
+                        user: User
+                        member: Member
+                        profile: Profile
+                    }
 
                     console.log(`LIVE Socket: Hello ${user.username}`)
-                    dispatch(importUser(user))
+                    dispatch(importUser(user, member, profile))
 
                     break
                 }
@@ -141,12 +150,12 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     break
                 }
 
-                case "success_receive_all_notification": {
+                case "get_all_notifications": {
                     dispatch(massNotifReceive(response))
                     break
                 }
 
-                case "success_receive_unread": {
+                case "get_all_unread_notification": {
                     dispatch(notifSetUnread(response.count))
                     break
                 }
@@ -177,22 +186,12 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 }
 
                 case "start_typing": {
-                    dispatch(
-                        startTyping(
-                            response.channel.id,
-                            response.user
-                        )
-                    )
+                    dispatch(startTyping(response.channel.id, response.user))
                     break
                 }
 
                 case "stop_typing": {
-                    dispatch(
-                        stopTyping(
-                            response.channel.id,
-                            response.user
-                        )
-                    )
+                    dispatch(stopTyping(response.channel.id, response.user))
 
                     break
                 }
@@ -200,9 +199,14 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 case "message_history": {
                     const { channel, page, maxPage, messages } = response
 
-                    dispatch(loadMessageHistory(
-                        channel, page, maxPage, messages as Message[]
-                    ))
+                    dispatch(
+                        loadMessageHistory(
+                            channel,
+                            page,
+                            maxPage,
+                            messages as Message[]
+                        )
+                    )
 
                     break
                 }
@@ -217,6 +221,11 @@ export const useLiveSocket = (): [(action: any) => void] => {
                             }))
                         )
                     )
+                    break
+                }
+
+                case "get_friends": {
+                    dispatch(getFriends(response))
                     break
                 }
 
