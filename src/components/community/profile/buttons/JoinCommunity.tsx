@@ -22,7 +22,7 @@ const JoinCommunityButton = styled.button`
  */
 const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
     const members = useSelector(
-        (store: any) => store.auth.user.member.members
+        (store: any) => store.auth.member.members
     )
 
     const member = members ? members.includes(community) : false 
