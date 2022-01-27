@@ -16,14 +16,12 @@ import {
 } from "../../../api/Feeds"
 import CommentObject from "../../../api/Comment"
 import { useDispatch, useSelector } from "react-redux"
-import {
-    startEditing,
-    stopEditing,
-} from "../../../redux/actions/editor.actions"
 import usePostReport from "./usePostReport"
 import toast from "react-hot-toast"
-import { getNameById } from "../../../redux/reducers/community.reducer"
 import { useCommunity } from "../../../api/community/CommunityUtil"
+import { getNameById } from "../../../api/community/redux/community.redux"
+import { RootState } from "../../../redux/store"
+import { startEditing, stopEditing } from "../../../redux/editor.redux"
 
 const { confirm } = Modal
 
@@ -33,14 +31,14 @@ type Props = {
 }
 
 const PostManagement: React.FC<Props> = ({ object, type }) => {
-    const self = useSelector((state: any) => state.auth.user) as User
-    const post = useSelector((state: any) => state.post)
+    const self = useSelector((state: RootState) => state.auth.user) as User
+    const post = useSelector((state: RootState) => state.post)
 
     const storedCommunity = useSelector(
         (state: any) =>
             state.community[getNameById(state.community, +object.feed.substring(3))]
     )
-        
+
     const editing = useEditingStatus(object.id)
     const dispatch = useDispatch()
 
@@ -52,7 +50,8 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
             dispatch(stopEditing())
         } else {
             dispatch(
-                startEditing(object.id, type === "comment" ? "comment" : "post")
+                startEditing({ id: object.id, type: type === "comment" ? "comment" : "post"
+                })
             )
         }
     }

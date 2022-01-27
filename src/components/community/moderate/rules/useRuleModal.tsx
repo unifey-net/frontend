@@ -2,8 +2,9 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Input, Alert, Modal, Form } from "antd"
 import { API } from "../../../../api/ApiHandler"
-import { addRule } from "../../../../redux/actions/community.actions"
 import { Store } from "antd/lib/form/interface"
+import { useAppDispatch } from "../../../../util/Redux"
+import { addRule } from "../../../../api/community/redux/community.redux"
 
 const { TextArea } = Input
 
@@ -11,7 +12,7 @@ const { TextArea } = Input
  * A modal used to create new rules for a community.
  */
 export default (community: number): [() => void, JSX.Element] => {
-    let dispatch = useDispatch()
+    let dispatch = useAppDispatch()
 
     const [form] = Form.useForm()
 
@@ -45,10 +46,12 @@ export default (community: number): [() => void, JSX.Element] => {
         } else {
             dispatch(
                 addRule(
-                    community,
-                    values.body,
-                    values.title,
-                    request.data.payload
+                    {
+                        community,
+                        body: values.body,
+                        title: values.title,
+                        id: request.data.payload,
+                    },
                 )
             )
             setVisible(false)

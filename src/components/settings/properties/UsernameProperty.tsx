@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { Alert, Button, Input, Tooltip } from "antd"
 import { API } from "../../../api/ApiHandler"
 import toast from "react-hot-toast"
-import { updateName } from "../../../redux/actions/auth.actions"
 import Property from "./Property"
+import { useAppDispatch } from "../../../util/Redux"
+import { updateName } from "../../../api/user/redux/auth.redux"
 
 const UsernameProperty: React.FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -28,8 +29,8 @@ const UsernameProperty: React.FC = () => {
         switch (request.status) {
             case 200: {
                 toast.success("Your username has been updated!")
-                dispatch(updateName(username))
-                
+                dispatch(updateName({ name: username }))
+
                 break
             }
 

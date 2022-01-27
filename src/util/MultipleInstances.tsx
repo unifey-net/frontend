@@ -1,10 +1,10 @@
 import React from "react"
-import { useDispatch } from "react-redux"
-import { logOut } from "../redux/actions/auth.actions"
 import ErrorPage from "./ErrorPage"
+import { useAppDispatch } from "./Redux"
+import { logOut } from "../api/user/redux/auth.redux"
 
 const MultipleInstances = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const signOut = () => {
         dispatch(logOut())

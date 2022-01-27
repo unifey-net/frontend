@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { EditOutlined } from "@ant-design/icons"
-import { User } from "../../../api/user/User"
+import { Profile, User } from "../../../api/user/User"
 import { useSelector } from "react-redux"
 import Text from "antd/lib/typography/Text"
 import { message, Divider } from "antd"
@@ -33,11 +33,11 @@ const UserProfileStyle = styled.div<{ mobile: boolean }>`
 
 const UserProfile: React.FC<{ user: User, type?: "mobile" }> = ({ user, type }) => {
     let [editing, setEditing] = useState(false)
-    let self = useSelector((state: any) => state.auth.user)
+    let auth = useSelector((state: any) => state.auth)
 
-    let [description, setDescription] = useState(user.profile.description)
-    let [location, setLocation] = useState(user.profile.location)
-    let [discord, setDiscord] = useState(user.profile.discord)
+    let [description, setDescription] = useState(auth.profile.description)
+    let [location, setLocation] = useState(auth.profile.location)
+    let [discord, setDiscord] = useState(auth.profile.discord)
 
     /**
      * Update the description.
@@ -104,7 +104,7 @@ const UserProfile: React.FC<{ user: User, type?: "mobile" }> = ({ user, type }) 
             <div className="username-container">
                 <h3>{user.username}</h3>
 
-                {self.id === user.id && (
+                {auth.user.id === user.id && (
                     <EditOutlined
                         className="edit"
                         onClick={() => setEditing(prev => !prev)}

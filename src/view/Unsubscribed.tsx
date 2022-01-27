@@ -15,6 +15,11 @@ const UnsubscribedStyle = styled.div`
     }
 `
 
+/**
+ * TODO: Change this to something other than it's own page.\
+ *
+ * When a user clicks that they don't want to receive Unifey emails anymore.
+ */
 const Unsubscribed = () => {
     return (
         <UnsubscribedStyle>

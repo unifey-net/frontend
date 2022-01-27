@@ -3,7 +3,6 @@ import { Spin, Button } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux"
 import History from "../../../api/History"
-import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
 import { API } from "../../../api/ApiHandler"
 import styled from "styled-components"
@@ -11,6 +10,7 @@ import PostComments from "./comments/PostComments"
 import PostReply from "./PostReply"
 import useSortChanger from "../SortChanger"
 import { MdArrowLeft } from "react-icons/md"
+import { postSlice } from "../../../api/Feeds"
 
 const FocusedPostStyle = styled.div`
     display: flex;
@@ -45,7 +45,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({
             let req = await API.get(`/feeds/${feed}/post/${postId}`)
 
             if (req.status === 200) {
-                dispatch(updatePost(postId))
+                dispatch(postSlice.actions.setPost({ post: postId }))
                 setPost(req.data)
             }
 

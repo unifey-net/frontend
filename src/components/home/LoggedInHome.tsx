@@ -47,7 +47,7 @@ const LoggedInHome: React.FC = () => {
     const [sendAction] = useLiveSocket();
 
     const [communities, setCommunities] = useState([] as any[])
-    let members = useSelector((store: any) => store.auth.user.member.members)
+    let members = useSelector((store: any) => store.auth.member.members)
     let name = useSelector((store: any) => store.auth.user.username)
 
     // load the user's communities.

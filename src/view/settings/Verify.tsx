@@ -5,15 +5,15 @@ import { API } from "../../api/ApiHandler"
 import { signedIn, getSelf } from "../../api/user/User"
 import History from "../../api/History"
 import { useDispatch, useSelector } from "react-redux"
-import { verifyAccount } from "../../redux/actions/auth.actions"
 import toast from "react-hot-toast"
+import { verifyAccount } from "../../api/user/redux/auth.redux"
 
 /**
  * Verify an account's email.
  */
 const Verify = () => {
     let dispatch = useDispatch()
-    const [hasAttempted, setHasAttempted] = useState(false) 
+    const [hasAttempted, setHasAttempted] = useState(false)
 
     const isAuthenticated = useSelector(
         (store: any) => store.live.authenticated
@@ -33,14 +33,14 @@ const Verify = () => {
             message.error("Failed to verify account.")
         } else {
             message.success("Successfully verified account!")
-            dispatch(verifyAccount(true))
+            dispatch(verifyAccount({ status: true }))
         }
     }
 
     useEffect(() => {
         if (isAuthenticated && !hasAttempted) {
             setHasAttempted(true)
-            
+
             let verify = new URL(window.location.href).searchParams.get(
                 "verify"
             )

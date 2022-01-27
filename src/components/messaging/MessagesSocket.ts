@@ -1,21 +1,55 @@
 import { useLiveSocket } from "../../api/live/Live"
 
+/**
+ * All of the available actions through the messaging modal.
+ */
 type MessagesSocket = {
     createGroupChat: (users: number[]) => void,
     loadMessageHistory: (channel: number, page: number) => void
-    groupChatSettings: GroupChatSettings
+    openDirectMessage: (user: number) => void
+    groupChats: GroupChats
+    messages: Messages
+    typing: Typing
 }
 
-type GroupChatSettings = {
+/**
+ * Manage group chats.
+ */
+type GroupChats = {
     removeGroupChatMember: (user: number, channel: number) => void,
     changeName: (channel: number, name: string) => void,
     changeDescription: (channel: number, description: string) => void
 }
 
+/**
+ * Manage messages.
+ */
+type Messages = {
+    deleteMessage: (id: number) => void,
+    sendMessage: (message: string, channel: number) => void
+}
+
+/**
+ * Manage typing.
+ */
+type Typing = {
+    startTyping: (channel: number) => void,
+    stopTyping: (channel: number) => void
+}
+
+/**
+ * Interact with the message socket.
+ */
 export const useMessageSocket = (): MessagesSocket => {
     const [sendAction] = useLiveSocket()
 
     return {
+        openDirectMessage: (user) => {
+            sendAction({
+                action: "OPEN_DIRECT_MESSAGE",
+                receiver: user
+            })
+        },
         loadMessageHistory: (channel, page) => {
             sendAction({
                 action: "GET_MESSAGES",
@@ -29,7 +63,36 @@ export const useMessageSocket = (): MessagesSocket => {
                 users: users,
             })
         },
-        groupChatSettings: {
+        messages: {
+            deleteMessage: (id) => {
+                sendAction({
+                    action: "DELETE_MESSAGE",
+                    id
+                })
+            },
+            sendMessage: (message, channel) => {
+                sendAction({
+                    action: "SEND_MESSAGE",
+                    message,
+                    channel
+                })
+            }
+        },
+        typing: {
+            startTyping: (channel: number) => {
+                sendAction({
+                    action: "START_TYPING",
+                    channel
+                })
+            },
+            stopTyping: (channel: number) => {
+                sendAction({
+                    action: "STOP_TYPING",
+                    channel
+                })
+            }
+        },
+        groupChats: {
             removeGroupChatMember: (user, channel) => {
                 sendAction({
                     action: "MODIFY_GROUP_CHAT",
