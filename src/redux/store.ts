@@ -7,6 +7,7 @@ import { editorSlice } from "./editor.redux"
 import { emoteSlice } from "../api/Emotes"
 import { notificationsSlice } from "../api/notification/Notifications"
 import { friendsSlice } from "../api/friends/redux/friends.redux"
+import { messageSlices } from "../components/messaging/redux/messages"
 
 const store = configureStore({
     reducer: {
@@ -18,7 +19,8 @@ const store = configureStore({
         emote: emoteSlice.reducer,
         notifications: notificationsSlice.reducer,
         friends: friendsSlice.reducer,
-        feeds: feedSlice.reducer
+        feeds: feedSlice.reducer,
+        messages: messageSlices.reducer
     },
     devTools: true
 })
