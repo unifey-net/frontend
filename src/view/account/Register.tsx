@@ -8,12 +8,13 @@ import { Link } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
 import { connect, useDispatch } from "react-redux"
-import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import { API } from "../../api/ApiHandler"
 import GoogleLogin from "react-google-login"
+import { useAppDispatch } from "../../util/Redux"
+import { logIn } from "../../api/user/redux/auth.redux"
 
 const RegisterForm = styled.div`
     min-width: 300px;
@@ -40,13 +41,13 @@ type ConnectionState = {
  * The /register page.
  */
 const Register = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
     const [usernameRef, setUsernameRef] = useState<Input>()
     const [emailRef, setEmailRef] = useState<Input>()
-        
+
     const [
         { connected, authToken, type, email: connectionEmail },
         setConnection,
@@ -100,7 +101,7 @@ const Register = () => {
         const response = await API.put("/user/register", form)
 
         if (response.status === 200) {
-            dispatch(logIn(response.data.token))
+            dispatch(logIn({ token: response.data.token }))
 
             history.push("/")
             window.location.reload()

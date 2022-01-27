@@ -9,13 +9,13 @@ import { Link } from "react-router-dom"
 import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
-import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import GoogleLogin from "react-google-login"
 import { API } from "../../api/ApiHandler"
 import { useForm } from "antd/lib/form/Form"
+import { logIn } from "../../api/user/redux/auth.redux"
 
 const LoginForm = styled.div`
     .error {
@@ -57,7 +57,7 @@ const Login = () => {
         if (status.status === COMPLETE) {
             const { token } = data
 
-            dispatch(logIn(token.token))
+            dispatch(logIn({ token: token.token }))
 
             history.push("/")
             window.location.reload()
@@ -82,7 +82,7 @@ const Login = () => {
         formData.set("token", obj.accessToken)
 
         const request = await API.post("/authenticate/connections/google", formData)
-    
+
         if (request.status === 200) {
             dispatch(logIn(request.data.token.token))
 
@@ -188,7 +188,7 @@ const Login = () => {
                     </div>
                 </Form>
 
-                <Divider /> 
+                <Divider />
             </LoginForm>
 
             <div>

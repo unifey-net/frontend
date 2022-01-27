@@ -2,13 +2,7 @@ import React from "react"
 import { useCallback, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { API } from "../../../api/ApiHandler"
-import { useFeed } from "../../../api/Feeds"
-import {
-    bumpPage,
-    changeSort,
-    feedClear,
-    loadPost,
-} from "../../../redux/actions/feeds.actions"
+import { bumpPage, changeSort, clearFeed, loadFeed, useFeed } from "../../../api/Feeds"
 import FeedSkeleton from "../FeedSkeleton"
 import useSortChanger from "../SortChanger"
 import useCreatePost from "../useCreatePost"
@@ -22,7 +16,7 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
         console.debug(`Feed (${id}): Sort has changed to ${sort}`)
 
         dispatch(changeSort({ sort, id }))
-        dispatch(feedClear(id))
+        dispatch(clearFeed({ id }))
     })
 
     /**
@@ -58,23 +52,25 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
 
         if (pageCount === 0 || currentPage === 0 || currentPage > pageCount)
             return
-        
+
         console.debug(
             `Feed (${id}): Requesting page NO.${feed!!.page} with sort ${sort}`
         )
 
         let resp = await API.get(`/feeds/${id}/posts?page=${feed!!.page}&sort=${sort}`)
-        dispatch(bumpPage(id))
+        dispatch(bumpPage({ id }))
 
         switch (resp.status) {
             case 200: {
                 let posts = resp.data.posts
 
                 dispatch(
-                    loadPost({
-                        posts,
-                        sort,
-                        id,
+                    loadFeed({
+                        post: {
+                            posts,
+                            sort,
+                            id,
+                        }
                     })
                 )
 
@@ -101,11 +97,11 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
     }, [status, loadMore])
 
     const [modal, createPost] = useCreatePost(feed?.feed.id!!, () => {
-        dispatch(feedClear(id))
+        dispatch(clearFeed({ id }))
         loadMore()
-    }) 
+    })
 
-    const onReload = () => dispatch(feedClear(id))
+    const onReload = () => dispatch(clearFeed({ id }))
 
     return (
         <>

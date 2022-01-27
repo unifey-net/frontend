@@ -1,22 +1,23 @@
-import { chain } from "lodash"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { useDispatch } from "react-redux"
 import Message from "../../components/messaging/objects/Message"
-import { getChannels, loadMessageHistory, messagesIncoming, startTyping, stopTyping } from "../../components/messaging/redux/messages.actions"
-import { importUser, logOut } from "../../redux/actions/auth.actions"
-import { getFriends, setFriendOnline } from "../friends/redux/friends.actions"
-import {
-    liveSocketAuthenticate,
-    liveSocketConnect,
-    liveSocketDisconnect,
-    liveSocketRecent,
-} from "../../redux/actions/live.actions"
-import { massNotifReceive, notifReceive, notifSetUnread } from "../../redux/actions/notifications.actions"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
 import History from "../History"
 import { Member, Profile, signedIn, User } from "../user/User"
+import { useAppDispatch, useAppSelector } from "../../util/Redux"
+import { authenticateSocket, connectSocket, disconnectSocket, socketResponse } from "./live.redux"
+import { importUser, logOut } from "../user/redux/auth.redux"
+import { massReceiveNotif, receiveNotif, setUnread } from "../notification/Notifications"
+import { getFriends, setOffline, setOnline } from "../friends/redux/friends.redux"
+import {
+    getChannels,
+    incomingMessage,
+    loadHistory,
+    startTyping,
+    stopTyping,
+} from "../../components/messaging/redux/messages"
+import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
@@ -33,16 +34,22 @@ let socket = new WebSocket(`${getUrl()}/live`)
 
 export const useLiveSocket = (): [(action: any) => void] => {
     const [lastPong, setLastPong] = useState(Date.now())
-    const pingInterval = 5000
-    
-    const ping = () => {
-        console.debug("LIVE Socket: Ping")
-        socket.send("ping")
+    const isAuthenticated = useAppSelector((state) => state.live.authenticated)
+    const pingInterval = 15000
 
-        setTimeout(() => ping(), pingInterval)
+    const ping = () => {
+        if (isAuthenticated) {
+            console.trace("LIVE Socket: Ping")
+            socket.send("ping")
+
+            setTimeout(() => ping(), pingInterval)
+        } else {
+            console.trace("LIVE Socket: Ping delayed, waiting for authorization.")
+            setTimeout(() => ping(), pingInterval)
+        }
     }
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const sendAction = (action: any) => {
         if (Date.now() - lastPong > 1000 * 15) {
@@ -55,7 +62,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
     useEffect(() => {
         socket.onopen = () => {
-            dispatch(liveSocketConnect())
+            dispatch(connectSocket())
 
             ping()
 
@@ -86,8 +93,8 @@ export const useLiveSocket = (): [(action: any) => void] => {
         }
 
         socket.onclose = message => {
-            console.debug(`LIVE Socket Disconnected: %o`, message)
-            dispatch(liveSocketDisconnect(message.code))
+            console.error(`LIVE Socket Disconnected: %o`, message)
+            dispatch(disconnectSocket({ error: message.code }))
         }
 
         socket.onerror = message => {
@@ -115,7 +122,6 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 }
 
                 case "get_user": {
-                    console.log(response)
                     const { user, member, profile } = response as {
                         user: User
                         member: Member
@@ -123,7 +129,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     }
 
                     console.log(`LIVE Socket: Hello ${user.username}`)
-                    dispatch(importUser(user, member, profile))
+                    dispatch(importUser( { user, member, profile }))
 
                     break
                 }
@@ -135,40 +141,40 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 }
 
                 case "authenticated": {
-                    dispatch(liveSocketAuthenticate())
+                    dispatch(authenticateSocket())
                     break
                 }
 
                 case "notification": {
                     dispatch(
-                        notifReceive(
-                            response.message,
-                            response.id,
-                            response.date
-                        )
+                        receiveNotif({
+                            message: response.message,
+                            id: response.id,
+                            date: response.date,
+                        })
                     )
                     break
                 }
 
                 case "get_all_notifications": {
-                    dispatch(massNotifReceive(response))
+                    dispatch(massReceiveNotif({ notifications: response }))
                     break
                 }
 
                 case "get_all_unread_notification": {
-                    dispatch(notifSetUnread(response.count))
+                    dispatch(setUnread({ unread: response.count }))
                     break
                 }
 
                 case "friend_online": {
                     toast(`${response.friend} has come online!`)
-                    dispatch(setFriendOnline(response.id, response.friend))
+                    dispatch(setOnline({ id: response.id }))
                     break
                 }
 
                 case "friend_offline": {
                     toast(`${response.friend} has gone offline!`)
-                    dispatch(setFriendOnline(response.id, response.friend))
+                    dispatch(setOffline({ id: response.id }))
                     break
                 }
 
@@ -176,22 +182,24 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     toast("New message!")
 
                     dispatch(
-                        messagesIncoming(
-                            response.channel,
-                            response.message,
-                            response.sentFrom
+                        incomingMessage(
+                            {
+                                channel: response.channel,
+                                message: response.message,
+                                sentFrom: response.sentFrom,
+                            },
                         )
                     )
                     break
                 }
 
                 case "start_typing": {
-                    dispatch(startTyping(response.channel.id, response.user))
+                    dispatch(startTyping({ channel: response.channel, user: response.user }))
                     break
                 }
 
                 case "stop_typing": {
-                    dispatch(stopTyping(response.channel.id, response.user))
+                    dispatch(stopTyping({ channel: response.channel, user: response.user }))
 
                     break
                 }
@@ -200,11 +208,13 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     const { channel, page, maxPage, messages } = response
 
                     dispatch(
-                        loadMessageHistory(
-                            channel,
-                            page,
-                            maxPage,
-                            messages as Message[]
+                        loadHistory(
+                            {
+                                channel,
+                                page,
+                                maxPage,
+                                messages,
+                            },
                         )
                     )
 
@@ -214,18 +224,18 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 case "channels": {
                     dispatch(
                         getChannels(
-                            response.map((ch: any) => ({
-                                ...ch.channel,
-                                pageCount: ch.pageCount,
-                                messageCount: ch.messageCount,
-                            }))
+                            { channels: response.map((ch: any) => ({
+                                    ...ch.channel,
+                                    pageCount: ch.pageCount,
+                                    messageCount: ch.messageCount,
+                                }))}
                         )
                     )
                     break
                 }
 
                 case "get_friends": {
-                    dispatch(getFriends(response))
+                    dispatch(getFriends({ friends: response }))
                     break
                 }
 
@@ -236,8 +246,8 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     break
                 }
             }
-            
-            store.dispatch(liveSocketRecent(type, response))
+
+            dispatch(socketResponse({ response }))
         }
         //eslint-disable-next-line
     }, [dispatch])

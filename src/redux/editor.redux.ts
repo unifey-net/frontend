@@ -31,3 +31,5 @@ export const editorSlice = createSlice({
         }
     }
 })
+
+export const { stopEditing, startEditing } = editorSlice.actions

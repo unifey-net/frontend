@@ -8,13 +8,11 @@ import { useSelector, useDispatch } from "react-redux"
 import PostAbout from "../PostAbout"
 import PostManagement from "../PostManagement"
 import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds"
-import TextArea, { TextAreaRef } from "antd/lib/input/TextArea"
-import { stopEditing } from "../../../../redux/actions/editor.actions"
 import { parseBody } from "../../../../api/Emotes"
 import useEmotes from "../../../../api/community/useEmotes"
 import styled from "styled-components"
-import { MdEast } from "react-icons/md"
-import useModal from "antd/lib/modal/useModal"
+import { useAppDispatch } from "../../../../util/Redux"
+import { stopEditing } from "../../../../redux/editor.redux"
 
 const Comment = styled.div<{ indent: number }>`
     margin-left: ${({ indent }) => (indent - 1) * 50}px;
@@ -52,9 +50,9 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
     const [loading, setLoading] = useState(false)
 
     const textAreaRef = React.createRef<Input>()
-    
+
     const post = useSelector((state: any) => state.post)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     let emotes = useEmotes()
 

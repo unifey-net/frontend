@@ -17,7 +17,7 @@ type Props = {
 const GeneralSettings: React.FC<Props> = ({ community }) => {
     /**
      * Update a communities permission.
-     * 
+     *
      * @param role The role number.
      * @param type The type. (post/comment/view)
      */
@@ -42,7 +42,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
 
                 <div className="cluster-items">
                     <CommunityPermission
-                        initialValue={community.community.postRole}
+                        initialValue={community.community.permissions.postRole}
                         title="Post Level"
                         desc="This is what level a user must be to be able to create a
                         post."
@@ -53,7 +53,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                     />
 
                     <CommunityPermission
-                        initialValue={community.community.viewRole}
+                        initialValue={community.community.permissions.viewRole}
                         title="View Level"
                         desc="This is what level a user must be to be able to view
                         posts."
@@ -64,7 +64,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                     />
 
                     <CommunityPermission
-                        initialValue={community.community.commentRole}
+                        initialValue={community.community.permissions.commentRole}
                         title="Comment Level"
                         desc="This is what level a user must be to be able to comment
                         on posts."

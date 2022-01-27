@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { getCommunityByName } from "./Community"
-import { postCommunity } from "../../redux/actions/community.actions"
 import Status, { COMPLETE, ERROR, LOADING } from "../util/Status"
 import { Emote } from "../Emotes"
 import { Feed } from "../Feeds"
-import { getNameById } from "../../redux/reducers/community.reducer"
+import { getNameById, postCommunity } from "./redux/community.redux"
 
 /**
  * Rules in a community.
@@ -23,12 +22,19 @@ export type Community = {
     id: number
     size: number
     createdAt: number
-    postRole: number
-    viewRole: number
-    commentRole: number
+    permissions: CommunityPermissions
     name: string
     description: string
     rules: CommunityRule[]
+}
+
+/**
+ * A communities permissions.
+ */
+export type CommunityPermissions = {
+    postRole: number
+    viewRole: number
+    commentRole: number
 }
 
 /**
@@ -61,7 +67,7 @@ export const useCommunity = (
             let resp = await getCommunityByName(name)
 
             if (resp.status === 200) {
-                dispatch(postCommunity(resp.data))
+                dispatch(postCommunity({ community: resp.data }))
 
                 setStatus({ status: COMPLETE })
             } else {

@@ -10,6 +10,9 @@ const SupportStyle = styled.div`
     margin-right: 16rem;
 `
 
+/**
+ * Where to receive Unifey support.
+ */
 const Support = () => {
     return (
         <SupportStyle>

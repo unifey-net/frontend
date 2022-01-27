@@ -3,11 +3,8 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { useNotificationActions } from "../../../api/notification/NotificationsSocket"
-import {
-    notifDeleteAll,
-    notifSetAllReadStatus,
-} from "../../../redux/actions/notifications.actions"
 import FeedNotification from "./SingleNotification"
+import { deleteAllNotifications, setAllReadStatus } from "../../../api/notification/Notifications"
 
 const FeedStyle = styled.div`
     display: flex;
@@ -47,12 +44,12 @@ const NotificationsFeed: React.FC = () => {
 
     const markAllAsRead = () => {
         readAllNotification()
-        dispatch(notifSetAllReadStatus())
+        dispatch(setAllReadStatus())
     }
 
     const deleteAll = () => {
         deleteAllNotificiation()
-        dispatch(notifDeleteAll())
+        dispatch(deleteAllNotifications())
     }
 
     return (

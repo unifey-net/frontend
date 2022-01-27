@@ -7,7 +7,8 @@ import styled from "styled-components"
 import UnreadNotificationCount from "../notifications/UnreadNotificationCount"
 import History from "../../api/History"
 import { MdAccountCircle } from "react-icons/md"
-import { AuthState } from "../../redux/reducers/auth.reducer"
+import { AuthState } from "../../api/user/redux/auth.redux"
+import { useAppSelector } from "../../util/Redux"
 
 const NotificationShelf = styled.div`
     display: flex;
@@ -33,11 +34,11 @@ const SelfViewLink = styled.div`
 `
 
 const SelfView: React.FC = () => {
-    let self = useSelector((store: any) => store.auth) as AuthState
+    let self = useAppSelector((store) => store.auth) as AuthState
 
     const onlineCount = useSelector((store: any) => store.friends.online).length
     const unreadCount = useSelector((store: any) => store.notifications.unread)
-    
+
     let name = self.user.username
 
     const menu = (

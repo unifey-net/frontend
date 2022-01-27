@@ -9,7 +9,6 @@ import Footer from "./components/Footer"
 
 import { useDispatch, useSelector } from "react-redux"
 import { isExpired } from "./api/user/User"
-import { logOut } from "./redux/actions/auth.actions"
 import toast, { Toaster } from "react-hot-toast"
 import { ThemeProvider } from "styled-components"
 import GlobalStyle from "./util/GlobalStyle"
@@ -21,12 +20,14 @@ import { useLiveSocket } from "./api/live/Live"
 import MultipleInstances from "./util/MultipleInstances"
 import NoConnection from "./util/NoConnection"
 import { Redirect } from "react-router-dom"
+import { useAppDispatch } from "./util/Redux"
+import { logOut } from "./api/user/redux/auth.redux"
 
 export default function App() {
     useLiveSocket()
     useNotificationPopUp()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     console.log(useSelector((store: any) => store.auth.expire))
 
@@ -47,11 +48,12 @@ export default function App() {
         case 4011: {
             dispatch(logOut())
 
-            window.location.reload()
-
             toast.error("Your token has expired!")
 
-            return <Redirect to="/login" />
+            window.location.reload()
+
+            history.push("")
+            break;
         }
     }
 

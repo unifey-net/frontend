@@ -1,21 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { authSlice } from "../api/user/redux/auth.redux"
 import { communitySlice } from "../api/community/redux/community.redux"
-import { postSlice } from "../api/Feeds"
+import { feedSlice, postSlice } from "../api/Feeds"
 import { liveSlice } from "../api/live/live.redux"
 import { editorSlice } from "./editor.redux"
 import { emoteSlice } from "../api/Emotes"
 import { notificationsSlice } from "../api/notification/Notifications"
+import { friendsSlice } from "../api/friends/redux/friends.redux"
 
 const store = configureStore({
     reducer: {
-        authSlice,
-        communitySlice,
-        postSlice,
-        liveSlice,
-        editorSlice,
-        emoteSlice,
-        notificationsSlice
+        auth: authSlice.reducer,
+        community: communitySlice.reducer,
+        post: postSlice.reducer,
+        live: liveSlice.reducer,
+        editor: editorSlice.reducer,
+        emote: emoteSlice.reducer,
+        notifications: notificationsSlice.reducer,
+        friends: friendsSlice.reducer,
+        feeds: feedSlice.reducer
     },
     devTools: true
 })

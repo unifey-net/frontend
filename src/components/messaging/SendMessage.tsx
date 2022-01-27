@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react"
 import { MdError } from "react-icons/md"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
-import { useLiveSocket } from "../../api/live/Live"
 import { useMessageSocket } from "./MessagesSocket"
-import { messagesOutgoing } from "./redux/messages.actions"
+import { outgoingMessage } from "./redux/messages"
 
 const SendBox = styled.div`
     display: flex;
@@ -25,8 +24,8 @@ const SendBox = styled.div`
 `
 
 /**
- * This is a send message box. 
- * 
+ * This is a send message box.
+ *
  * Typing updates are sent from here.
  */
 const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
@@ -59,7 +58,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
         setLoading(true)
 
         const msg = ref.current?.input.value
-        
+
         if (!msg || msg.length === 0 || msg.length > 240) {
             setLoading(false)
             setPrefix(
@@ -72,10 +71,10 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
 
         sendMessage(msg, channel)
 
-        dispatch(messagesOutgoing(msg, channel, Date.now()))
+        dispatch(outgoingMessage({ message: msg, channel, time: Date.now() }))
 
         ref.current?.setValue("")
-        
+
         setLoading(false)
     }
 

@@ -1,7 +1,18 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
 export type Emote = {
     name: string
     url: string
 }
+
+export const emoteSlice = createSlice({
+    name: "emote",
+    initialState: [] as Emote[],
+    reducers: {
+        postEmotes: (state, action: PayloadAction<{ emotes: Emote[] }>) =>
+            [...state, ...action.payload.emotes]
+    }
+})
 
 /**
  * Parse emotes into a body.

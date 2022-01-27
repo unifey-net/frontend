@@ -7,7 +7,7 @@ import { MdNotifications, MdNotificationsOff } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { API } from "../../../api/ApiHandler"
-import { subscribeComm, unSubscribeComm } from "../../../redux/actions/auth.actions"
+import { subscribeCommunity, unSubscribeCommunity } from "../../../api/user/redux/auth.redux"
 
 const CommunityNotificationButton = styled.button`
     background-color: transparent;
@@ -40,7 +40,7 @@ const CommunityNotifications: React.FC<{ community: number }> = ({
             if (request.status !== 200) {
                 toast("There was an issue un-subscribing to notifications.")
             } else {
-                dispatch(unSubscribeComm(community))
+                dispatch(unSubscribeCommunity({ id: community }))
             }
         } else {
             let request = await API.put(`/community/manage/notifications`, form)
@@ -48,7 +48,7 @@ const CommunityNotifications: React.FC<{ community: number }> = ({
             if (request.status !== 200) {
                 toast("There was an issue subscribing to notifications.")
             } else {
-                dispatch(subscribeComm(community))
+                dispatch(subscribeCommunity({ id: community }))
             }
         }
 

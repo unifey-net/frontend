@@ -1,11 +1,99 @@
 import { API } from "./ApiHandler"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
-import { FeedState } from "../redux/reducers/feeds.reducer"
-import { postFeed } from "../redux/actions/feeds.actions"
 import { User } from "./user/User"
 import Vote from "./user/Vote"
 import Status, { COMPLETE, ERROR, LOADING } from "./util/Status"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { useAppSelector } from "../util/Redux"
+
+export const postSlice = createSlice({
+    name: "post",
+    initialState: -1,
+    reducers: {
+        setPost: (state, action: PayloadAction<{ post: number }>) => action.payload.post
+    }
+})
+
+/**
+ * When a post is loaded in an infinite feed.
+ */
+export type PostLoad = {
+    posts: PostResponse[]
+    sort: string
+    id: string
+}
+
+/**
+ * An initial feed import.
+ */
+export type InitialFeed = {
+    feed: Feed
+}
+
+/**
+ * The details for a sort change.
+ */
+export type SortChange = {
+    sort: string
+    id: string
+}
+
+export type FeedState = {
+    feed: Feed
+    posts: PostResponse[]
+    sort: string
+    page: number
+}
+
+export const feedSlice = createSlice({
+    name: "feed",
+    initialState: {} as any,
+    reducers: {
+        loadFeed: (state, action: PayloadAction<{ post: PostLoad }>) => {
+            const { id, posts, sort } = action.payload.post
+
+            state[id] = {
+                ...state[id],
+                sort,
+                posts
+            } as FeedState
+        },
+        postFeed: (state, action: PayloadAction<{ feed: InitialFeed }>) => {
+            const { feed } = action.payload.feed
+
+            state[feed.id] = {
+                feed,
+                posts: [],
+                page: 1
+            }
+        },
+        clearFeed: (state, action: PayloadAction<{ id: string }>) => {
+            state[action.payload.id] = {
+                ...state[action.payload.id],
+                posts: [],
+                page: 1
+            }
+        },
+        changeSort: (state, action: PayloadAction<{ id: string, sort: string }>) => {
+            const { id, sort } = action.payload
+
+            state[id] = {
+                ...state[id],
+                sort
+            }
+        },
+        bumpPage: (state, action: PayloadAction<{ id: string }>) => {
+            const id = action.payload.id
+            state[id] = {
+                ...state[id],
+                page: state[id].page + 1
+            }
+        }
+    }
+})
+
+export const { bumpPage, changeSort, clearFeed, postFeed, loadFeed } = feedSlice.actions
 
 /**
  * A post.
@@ -17,8 +105,8 @@ export type Post = {
     feed: string
     title: string
     content: string
-    upvotes: number
-    downvotes: number
+    upVotes: number
+    downVotes: number
 }
 
 /**
@@ -54,14 +142,16 @@ export const useFeed = (id: string): [FeedState | null, any] => {
         status: LOADING,
     } as Status)
 
-    let storedFeed = useSelector((state: any) => state.feeds[id])
+    let storedFeed = useAppSelector((state) => state.feeds[id])
 
     useEffect(() => {
         const grabFeed = async () => {
             let resp = await getFeed(id)
 
             if (resp.status === 200) {
-                dispatch(postFeed({ feed: resp.data as Feed }))
+                dispatch(postFeed({ feed: {
+                        feed: resp.data as Feed
+                    } }))
 
                 setStatus({
                     status: COMPLETE,

@@ -5,7 +5,6 @@ import DefaultContainer from "../../components/DefaultContainer"
 import Channel from "../../components/messaging/channels/Channel"
 import CreateGroupChat from "../../components/messaging/channels/group/CreateGroupChat"
 import { useMessageSocket } from "../../components/messaging/MessagesSocket"
-import live from "../../redux/reducers/live.reducer"
 
 const Messages = () => {
     const auth = useSelector((state: any) => state.live.authenticated)
@@ -19,7 +18,7 @@ const Messages = () => {
                 window.location.toString()
             ).searchParams.get("open")
 
-            if (queryOpen && queryOpen !== null) {
+            if (queryOpen) {
                 openDirectMessage(+queryOpen)
             }
 
@@ -31,7 +30,7 @@ const Messages = () => {
         <DefaultContainer>
             <h1>Messages</h1>
             <CreateGroupChat/>
-            
+
             {keys.length === 0 ? (
                 <p>No messages :(</p>
             ) : (

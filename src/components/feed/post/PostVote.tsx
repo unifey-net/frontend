@@ -29,7 +29,7 @@ const PostStyle = styled.div<{ hasUpVoted: boolean; hasDownVoted: boolean }>`
 `
 
 const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
-    let [number, setNumber] = useState(post.upvotes - post.downvotes)
+    let [number, setNumber] = useState(post.upVotes - post.downVotes)
 
     let [hasDownVoted, setDownVoted] = useState(false)
     let [hasUpVoted, setUpVoted] = useState(false)

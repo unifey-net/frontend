@@ -6,7 +6,7 @@ import toast from "react-hot-toast"
 import { MdAdd, MdError, MdRemove } from "react-icons/md"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
-import { joinCommunity, leaveCommunity } from "../../../../api/user/User"
+import { apiJoinCommunity, apiLeaveCommunity } from "../../../../api/user/User"
 import { media } from "../../../../api/util/Media"
 
 const JoinCommunityButton = styled.button`
@@ -25,7 +25,7 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         (store: any) => store.auth.member.members
     )
 
-    const member = members ? members.includes(community) : false 
+    const member = members ? members.includes(community) : false
 
     const [symbol, setSymbol] = useState(member ? <MdRemove /> : <MdAdd />)
 
@@ -33,7 +33,7 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         if (member) {
             setSymbol(<Spin indicator={<LoadingOutlined />} />)
 
-            const leaveObj = await leaveCommunity(community)
+            const leaveObj = await apiLeaveCommunity(community)
 
             if (leaveObj.status === 200) {
                 toast.success("Successfully left the community.")
@@ -45,7 +45,7 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         } else {
             setSymbol(<Spin indicator={<LoadingOutlined />} />)
 
-            const leaveObj = await joinCommunity(community)
+            const leaveObj = await apiJoinCommunity(community)
 
             if (leaveObj.status === 200) {
                 toast.success("Successfully joined the community.")
