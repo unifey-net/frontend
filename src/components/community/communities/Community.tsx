@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { media } from "../../../api/util/Media"
 import CommunityNotifications from "./CommunityNotifications"
 
 const CommunityStyle = styled.div<{ useCommunitiesPage: boolean }>`
@@ -11,9 +12,18 @@ const CommunityStyle = styled.div<{ useCommunitiesPage: boolean }>`
     padding: 16px;
     border-radius: 16px;
 
-    ${({ useCommunitiesPage }) => useCommunitiesPage ? `
-    min-width: 600px;
-    ` : ""}
+    ${({ useCommunitiesPage }) =>
+        useCommunitiesPage
+            ? `
+        ${media(
+            "min-width: calc(100vw - 32px);",
+            "min-width: 600px;",
+            "min-width: 600px;"
+        )}
+        margin-right: 16px; 
+        margin-left: 16px;
+    `
+            : ""}
     background-color: ${({ theme }) => theme.primary};
 
     .community-name-notif {

@@ -7,7 +7,7 @@ const NoConnection = () => (
             <p>
                 A connection could not be made to the backend. Please check your
                 internet connection or the{" "}
-                <a href="https://ajkneisl.dev/unifey">status of our backend</a>.
+                <a href="https://unifey.com/status">status of our backend</a>.
             </p>
         }
         code={1006}

@@ -21,7 +21,7 @@ import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production")
-        return "wss://unifeyapi.ajkneisl.dev"
+        return "wss://api.unifey.app"
     else return "ws://localhost:8077"
 }
 

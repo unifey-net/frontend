@@ -10,9 +10,24 @@ export const media = (
     `
 }
 
+export const mediaWithTag = (
+    tag: string,
+    phone: string,
+    tablet: string,
+    desktop: string
+): string => media(`${tag}: ${phone};`, `${tag}: ${tablet};`, `${tag}: ${desktop};`)
+
+export const tinyPhoneMedia = (phone: string) => {
+    return `
+        @media (max-width: 320px) {
+            ${phone}
+        }
+    `
+}
+
 export const phoneMedia = (phone: string) => {
     return `
-        @media (max-width: 768px) {
+        @media (min-width: 320px) and (max-width: 767px) {
             ${phone}
         }
     `

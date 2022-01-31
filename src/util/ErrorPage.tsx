@@ -27,7 +27,7 @@ const ErrorPage: React.FC<{ content: JSX.Element, code: number }> = ({ content, 
 
             <div>
                 <span className="error">UNFY:{code}</span>
-                <a href={`https://ajkneisl.dev/help?code=UNFY:${code}`}>HELP</a>
+                <a href={`https://unifey.com/help?code=UNFY:${code}`}>HELP</a>
             </div>
         </Style>
     )
