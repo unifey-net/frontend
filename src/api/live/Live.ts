@@ -37,18 +37,6 @@ export const useLiveSocket = (): [(action: any) => void] => {
     const isAuthenticated = useAppSelector((state) => state.live.authenticated)
     const pingInterval = 15000
 
-    const ping = () => {
-        if (isAuthenticated) {
-            console.trace("LIVE Socket: Ping")
-            socket.send("ping")
-
-            setTimeout(() => ping(), pingInterval)
-        } else {
-            console.trace("LIVE Socket: Ping delayed, waiting for authorization.")
-            setTimeout(() => ping(), pingInterval)
-        }
-    }
-
     const dispatch = useAppDispatch()
 
     const sendAction = (action: any) => {
@@ -61,10 +49,16 @@ export const useLiveSocket = (): [(action: any) => void] => {
     }
 
     useEffect(() => {
+        const interval = setInterval(() => {
+            socket.send("ping")
+        }, pingInterval)
+
+        return () => clearInterval(interval)
+    }, [])
+
+    useEffect(() => {
         socket.onopen = () => {
             dispatch(connectSocket())
-
-            ping()
 
             if (signedIn()) {
                 socket.send(`bearer ${store.getState().auth.token}`)
