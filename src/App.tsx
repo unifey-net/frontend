@@ -37,11 +37,21 @@ export default function App() {
 
     switch (socketError) {
         case 1008: {
-            return <MultipleInstances />
+            return (
+                <ThemeProvider theme={theme}>
+                    <GlobalStyle />
+                    <MultipleInstances />
+                </ThemeProvider>
+            )
         }
 
         case 1006: {
-            return <NoConnection />
+            return (
+                <ThemeProvider theme={theme}>
+                    <GlobalStyle />
+                    <NoConnection />
+                </ThemeProvider>
+            )
         }
 
         // token has expired

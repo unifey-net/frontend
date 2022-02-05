@@ -9,13 +9,15 @@ const Style = styled.div`
     button {
         color: white;
         cursor: pointer;
-        background-color: transparent;
+        background-color: ${({ theme }) => theme.primary};
+        border-radius: 4px;
+        border: 1px solid black;
     }
 
     .error {
         text-transform: uppercase;
         color: gray;
-        font-size: 12px;        
+        font-size: 12px;
         margin-right: 6px;
     }
 `
