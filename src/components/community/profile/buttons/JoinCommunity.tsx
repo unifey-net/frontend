@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { apiJoinCommunity, apiLeaveCommunity } from "../../../../api/user/User"
 import { media } from "../../../../api/util/Media"
+import { useAppSelector } from "../../../../util/Redux"
 
 const JoinCommunityButton = styled.button`
     background-color: #bf1d48;
@@ -21,11 +22,7 @@ const JoinCommunityButton = styled.button`
  * The join community button found on communities pages.
  */
 const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
-    const members = useSelector(
-        (store: any) => store.auth.member.members
-    )
-
-    const member = members ? members.includes(community) : false
+    const member = useAppSelector(store => store.auth.member.member).includes(community)
 
     const [symbol, setSymbol] = useState(member ? <MdRemove /> : <MdAdd />)
 
@@ -37,7 +34,7 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
 
             if (leaveObj.status === 200) {
                 toast.success("Successfully left the community.")
-                setSymbol(<span>+</span>)
+                setSymbol(<MdAdd />)
             } else {
                 toast.error(leaveObj.data.payload)
                 setSymbol(<MdError />)
@@ -57,11 +54,10 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         }
     }
 
-    const message = `${member ? "Leave" : "Join"}${!mobile ? " Community" : ""}`
-
     return (
         <JoinCommunityButton onClick={onClick}>
-            {symbol} {message}
+            {symbol}{" "}
+            {`${member ? "Leave" : "Join"}${!mobile ? " Community" : ""}`}
         </JoinCommunityButton>
     )
 }

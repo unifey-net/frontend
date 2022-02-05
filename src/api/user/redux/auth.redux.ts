@@ -111,7 +111,7 @@ export const authSlice = createSlice({
             const index = state.member.member.indexOf(action.payload.id)
 
             if (index > -1) {
-                state.member.member = state.member.member.splice(index, 1)
+                state.member.member.splice(index, 1)
             }
         },
         /**
