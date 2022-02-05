@@ -37,21 +37,11 @@ export default function App() {
 
     switch (socketError) {
         case 1008: {
-            return (
-                <ThemeProvider theme={theme}>
-                    <GlobalStyle />
-                    <MultipleInstances />
-                </ThemeProvider>
-            )
+            return <MultipleInstances />
         }
 
         case 1006: {
-            return (
-                <ThemeProvider theme={theme}>
-                    <GlobalStyle />
-                    <NoConnection />
-                </ThemeProvider>
-            )
+            return <NoConnection />
         }
 
         // token has expired
@@ -68,46 +58,36 @@ export default function App() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
+        <Router history={history}>
+            <div className="page-container">
+                <Header />
 
-            <IconContext.Provider
-                value={{ style: { verticalAlign: "middle" } }}
-            >
-                <Router history={history}>
-                    <div className="page-container">
-                        <Header />
+                <Toaster
+                    position="top-right"
+                    toastOptions={{
+                        style: {
+                            borderRadius: "10px",
+                            background: "#333",
+                            color: "#fff",
+                        },
+                    }}
+                />
 
-                        <Toaster
-                            position="top-right"
-                            toastOptions={{
-                                style: {
-                                    borderRadius: "10px",
-                                    background: "#333",
-                                    color: "#fff",
-                                },
-                            }}
-                        />
+                <div className="content-container">
+                    <Switch>
+                        {Pages.map(({ path, component, exact }, index) => (
+                            <Route
+                                key={index}
+                                path={path}
+                                component={component}
+                                exact={exact}
+                            />
+                        ))}
+                    </Switch>
+                </div>
 
-                        <div className="content-container">
-                            <Switch>
-                                {Pages.map(
-                                    ({ path, component, exact }, index) => (
-                                        <Route
-                                            key={index}
-                                            path={path}
-                                            component={component}
-                                            exact={exact}
-                                        />
-                                    )
-                                )}
-                            </Switch>
-                        </div>
-
-                        <Footer />
-                    </div>
-                </Router>
-            </IconContext.Provider>
-        </ThemeProvider>
+                <Footer />
+            </div>
+        </Router>
     )
 }

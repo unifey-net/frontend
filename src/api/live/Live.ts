@@ -6,10 +6,23 @@ import { VERSION } from "../ApiHandler"
 import History from "../History"
 import { Member, Profile, signedIn, User } from "../user/User"
 import { useAppDispatch, useAppSelector } from "../../util/Redux"
-import { authenticateSocket, connectSocket, disconnectSocket, socketResponse } from "./live.redux"
+import {
+    authenticateSocket,
+    connectSocket,
+    disconnectSocket,
+    socketResponse,
+} from "./live.redux"
 import { importUser, logOut } from "../user/redux/auth.redux"
-import { massReceiveNotif, receiveNotif, setUnread } from "../notification/Notifications"
-import { getFriends, setOffline, setOnline } from "../friends/redux/friends.redux"
+import {
+    massReceiveNotif,
+    receiveNotif,
+    setUnread,
+} from "../notification/Notifications"
+import {
+    getFriends,
+    setOffline,
+    setOnline,
+} from "../friends/redux/friends.redux"
 import {
     getChannels,
     incomingMessage,
@@ -20,8 +33,7 @@ import {
 import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
-    if (process.env.NODE_ENV === "production")
-        return "wss://api.unifey.app"
+    if (process.env.NODE_ENV === "production") return "wss://api.unifey.app"
     else return "ws://localhost:8077"
 }
 
@@ -34,7 +46,7 @@ let socket = new WebSocket(`${getUrl()}/live`)
 
 export const useLiveSocket = (): [(action: any) => void] => {
     const [lastPong, setLastPong] = useState(Date.now())
-    const isAuthenticated = useAppSelector((state) => state.live.authenticated)
+    const liveState = useAppSelector(state => state.live)
     const pingInterval = 15000
 
     const dispatch = useAppDispatch()
@@ -64,7 +76,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 socket.send(`bearer ${store.getState().auth.token}`)
 
                 sendAction({
-                    action: "GET_USER"
+                    action: "GET_USER",
                 })
 
                 // get all notifications and unread notifications (for number)
@@ -77,22 +89,26 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 })
 
                 sendAction({
-                    action: "GET_CHANNELS"
+                    action: "GET_CHANNELS",
                 })
 
                 sendAction({
-                    action: "GET_FRIENDS"
+                    action: "GET_FRIENDS",
                 })
             }
         }
 
         socket.onclose = message => {
             console.error(`LIVE Socket Disconnected: %o`, message)
-            dispatch(disconnectSocket({ error: message.code }))
+            
+            if (liveState.error === -1) {
+                dispatch(disconnectSocket({ error: message.code }))
+            } else {
+                dispatch(disconnectSocket({ }))
+            }
         }
 
-        socket.onerror = message => {
-        }
+        socket.onerror = message => {}
 
         socket.onmessage = (message: any) => {
             const { response, type } = JSON.parse(
@@ -115,6 +131,11 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     break
                 }
 
+                case "disconnect": {
+                    dispatch(disconnectSocket({ error: 1008 }))
+                    break
+                }
+
                 case "get_user": {
                     const { user, member, profile } = response as {
                         user: User
@@ -123,7 +144,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     }
 
                     console.log(`LIVE Socket: Hello ${user.username}`)
-                    dispatch(importUser( { user, member, profile }))
+                    dispatch(importUser({ user, member, profile }))
 
                     break
                 }
@@ -176,24 +197,32 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     toast("New message!")
 
                     dispatch(
-                        incomingMessage(
-                            {
-                                channel: response.channel,
-                                message: response.message,
-                                sentFrom: response.sentFrom,
-                            },
-                        )
+                        incomingMessage({
+                            channel: response.channel,
+                            message: response.message,
+                            sentFrom: response.sentFrom,
+                        })
                     )
                     break
                 }
 
                 case "start_typing": {
-                    dispatch(startTyping({ channel: response.channel, user: response.user }))
+                    dispatch(
+                        startTyping({
+                            channel: response.channel,
+                            user: response.user,
+                        })
+                    )
                     break
                 }
 
                 case "stop_typing": {
-                    dispatch(stopTyping({ channel: response.channel, user: response.user }))
+                    dispatch(
+                        stopTyping({
+                            channel: response.channel,
+                            user: response.user,
+                        })
+                    )
 
                     break
                 }
@@ -202,14 +231,12 @@ export const useLiveSocket = (): [(action: any) => void] => {
                     const { channel, page, maxPage, messages } = response
 
                     dispatch(
-                        loadHistory(
-                            {
-                                channel,
-                                page,
-                                maxPage,
-                                messages,
-                            },
-                        )
+                        loadHistory({
+                            channel,
+                            page,
+                            maxPage,
+                            messages,
+                        })
                     )
 
                     break
@@ -217,13 +244,13 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
                 case "channels": {
                     dispatch(
-                        getChannels(
-                            { channels: response.map((ch: any) => ({
-                                    ...ch.channel,
-                                    pageCount: ch.pageCount,
-                                    messageCount: ch.messageCount,
-                                }))}
-                        )
+                        getChannels({
+                            channels: response.map((ch: any) => ({
+                                ...ch.channel,
+                                pageCount: ch.pageCount,
+                                messageCount: ch.messageCount,
+                            })),
+                        })
                     )
                     break
                 }
