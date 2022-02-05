@@ -7,11 +7,10 @@ import { LoadingOutlined } from "@ant-design/icons"
 import { LOADING, COMPLETE, ERROR, DEFAULT_STATUS } from "../../../../api/util/Status"
 import { getCommunityReports } from "../../../../api/Reports"
 import ModeratePage from "../ModeratePage"
-import { useSelector } from "react-redux"
 import styled from "styled-components"
 import { MdRefresh } from "react-icons/md"
 import { addReports, removeReports } from "../../../../api/community/redux/community.redux"
-import { useAppDispatch } from "../../../../util/Redux"
+import { useAppDispatch, useAppSelector } from "../../../../util/Redux"
 
 type Props = {
     community: CommunityRequest
@@ -34,7 +33,7 @@ const Reports = styled.div`
  */
 const CommunityReports: React.FC<Props> = ({ community }) => {
     const dispatch = useAppDispatch()
-    const reports = useSelector((state: any) => state.community[community.community.name].reports)
+    const reports = useAppSelector((state) => state.community[community.community.name].community.reports)
     const [{ status, message }, setStatus] = useState(DEFAULT_STATUS)
 
     const loadReports = async () => {
@@ -80,7 +79,7 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
         )
     }
 
-    return (
+    return reports ? (
         <ModeratePage>
             <ReportControls>
                 <p>There are currently {reports.reportCount} report(s).</p>
@@ -105,6 +104,8 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
                 </Reports>
             )}
         </ModeratePage>
+    ) : (
+        <Spin indicator={<LoadingOutlined/>} />
     )
 }
 
