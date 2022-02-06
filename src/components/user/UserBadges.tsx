@@ -22,7 +22,6 @@ const UserBadges: React.FC<{ badges: any }> = ({ badges }) => {
                             BASE_URL +
                             `/user/cosmetic/viewer?type=${badge.type}&id=${badge.id}`
                         }
-                        height={32}
                         width={32}
                     />
                 </Tooltip>
