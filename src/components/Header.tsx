@@ -4,17 +4,35 @@ import history from "../api/History"
 import Logo from "./logo/Logo"
 import SelfView from "./view/SelfView"
 import styled from "styled-components"
-import { media } from "../api/util/Media"
+import { desktopMedia, media, mediaWithTag, tinyPhoneMedia } from "../api/util/Media"
 
 const HeaderStyle = styled.div`
+    height: 64px;
     display: flex;
-    justify-content: space-evenly;
+    padding-right: 8px;
+    padding-left: 8px;
+
+    ${media(
+        `justify-content: space-between;`,
+        `justify-content: space-between;`,
+        `justify-content: space-evenly;
+        padding: 0;
+        `
+    )}
     margin-bottom: 1rem;
     padding-top: 0.5rem;
     background-color: ${({ theme }) => theme.secondary};
 
     .logo {
-        margin-bottom: 0.5rem;
+        margin-bottom: 8px;
+        display: block;
+        ${tinyPhoneMedia("display: none;")}
+        ${desktopMedia(`margin-top: 8px;`)}
+    }
+
+    .selfView {
+        margin-top: 6px;
+        ${desktopMedia(`margin-top: 8px;`)}
     }
 
     .links {
@@ -24,36 +42,33 @@ const HeaderStyle = styled.div`
             color: #c6f6d5;
         }
 
-        ul {
-            display: flex;
-            flex-direction: row;
-            gap: 1rem;
+        display: flex;
+        flex-direction: row;
+        margin-top: 12px;
+        ${desktopMedia(`margin-top: 16px;`)}
 
-            li {
-                font-size: 0.875rem;
-                line-height: 1.25rem;
-                margin-top: 0.25rem;
-                list-style-type: none;
-
-                a {
-                    ${media(
-                        `
+        a {
+            ${media(
+                `
                     	font-size: 0.875rem;
                         line-height: 1.25rem;
                     `,
-                        `
-                        font-size: 1rem;
+                `
+                        font-size: 1.2rem;
                         line-height: 1.5rem;
                     `,
-                        `
-                        font-size: 1.125rem;
+                `
+                        font-size: 1.5rem;
                         line-height: 1.75rem;
-                        margin-top: 0;
                     `
-                    )}
-                }
-            }
+            )}
         }
+    }
+`
+
+const HeaderLink = styled.div<{ isLast: boolean }>`
+    a {
+        ${({ isLast }) => (isLast ? "" : mediaWithTag("margin-right", "6px", "6px", "16px"))}
     }
 `
 
@@ -70,8 +85,8 @@ const Header: React.FC = () => {
 
     let pages = [
         {
-            name: "Home",
-            location: "/",
+            name: "Beta",
+            location: "/beta",
         },
         {
             name: "About",
@@ -91,28 +106,21 @@ const Header: React.FC = () => {
                 </Link>
             </div>
             <div className="links">
-                <ul>
-                    {pages.map((obj, index) => (
-                        <li
+                {pages.map((obj, index) => (
+                    <HeaderLink isLast={pages.length === (index + 1)}>
+                        <Link
                             key={index}
+                            className={page === obj.location ? "active" : ""}
+                            to={obj.location}
                         >
-                            {page === obj.location && (
-                                <Link
-                                    className="active"
-                                    to={obj.location}
-                                >
-                                    {obj.name}
-                                </Link>
-                            )}
-
-                            {page !== obj.location && (
-                                <Link to={obj.location}>{obj.name}</Link>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                            {obj.name}
+                        </Link>
+                    </HeaderLink>
+                ))}
             </div>
-            <SelfView />
+            <div className="selfView">
+                <SelfView />
+            </div>
         </HeaderStyle>
     )
 }

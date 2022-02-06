@@ -2,17 +2,20 @@ import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, Alert } from "antd"
+import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
 import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
-import { logIn } from "../../redux/actions/auth.actions"
 import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
+import GoogleLogin from "react-google-login"
+import { API } from "../../api/ApiHandler"
+import { useForm } from "antd/lib/form/Form"
+import { logIn } from "../../api/user/redux/auth.redux"
 
 const LoginForm = styled.div`
     .error {
@@ -32,6 +35,7 @@ const LoginForm = styled.div`
 const Login = () => {
     const dispatch = useDispatch()
 
+    const [form] = useForm()
     const [ref, setRef] = useState<ReCAPTCHA>()
 
     let [captcha, setCaptcha] = useState("")
@@ -53,17 +57,39 @@ const Login = () => {
         if (status.status === COMPLETE) {
             const { token } = data
 
-            dispatch(logIn(token.token))
+            dispatch(logIn({ token: token.token }))
 
             history.push("/")
             window.location.reload()
         } else {
             ref?.reset()
+            form.setFieldsValue({ password: "" })
+
             setError(
                 status.message === undefined
                     ? "There was an issue logging in."
                     : status.message
             )
+        }
+
+        setLoading(false)
+    }
+
+    const loginGoogle = async (obj: any) => {
+        setLoading(true)
+        const formData = new FormData()
+
+        formData.set("token", obj.accessToken)
+
+        const request = await API.post("/authenticate/connections/google", formData)
+
+        if (request.status === 200) {
+            dispatch(logIn(request.data.token.token))
+
+            history.push("/")
+            window.location.reload()
+        } else {
+            setError(request.data.payload)
         }
 
         setLoading(false)
@@ -86,6 +112,7 @@ const Login = () => {
                 )}
 
                 <Form
+                    form={form}
                     name="basic"
                     initialValues={{
                         remember: false,
@@ -155,10 +182,29 @@ const Login = () => {
                             </div>
                         </Form.Item>
 
-                        <p>or <Link to={"/register"}>register</Link>.</p>
+                        <p>
+                            or <Link to={"/register"}>register</Link>.
+                        </p>
                     </div>
                 </Form>
+
+                <Divider />
             </LoginForm>
+
+            <div>
+                <GoogleLogin
+                    clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
+                    buttonText="Login with Google"
+                    onSuccess={loginGoogle}
+                    onFailure={() =>
+                        setError(
+                            "There was an issue trying to login with Google."
+                        )
+                    }
+                    cookiePolicy={"single_host_origin"}
+                    theme="dark"
+                />
+            </div>
         </DefaultContainer>
     )
 }

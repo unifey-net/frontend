@@ -1,14 +1,14 @@
 import { useRouteMatch } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 
-import { getUserByName, signedIn, getImageUrl } from "../../api/user/User"
+import { getUserByName, signedIn, getImageUrl, User } from "../../api/user/User"
 
 import { Empty, Spin } from "antd"
 import Avatar from "antd/es/avatar"
 
 import { LoadingOutlined } from "@ant-design/icons"
 
-import { getBadges } from "../../api/user/Cosmetics"
+import { getBadges, Cosmetic } from "../../api/user/Cosmetics"
 import UserProfile from "../../components/user/profile/UserProfile"
 import UserBadges from "../../components/user/UserBadges"
 import { useDefaultEmotes } from "../../api/community/useEmotes"
@@ -17,6 +17,7 @@ import FocusedPost from "../../components/feed/post/FocusedPost"
 import styled from "styled-components"
 import DefaultContainer from "../../components/DefaultContainer"
 import { desktopMedia, media } from "../../api/util/Media"
+import { UserResponse } from "../../components/user/UserResponse"
 
 const UserStyle = styled.div`
     display: flex;
@@ -56,7 +57,7 @@ type MatchParams = {
     post: string
 }
 
-const User = () => {
+const UserView = () => {
     const {
         params: { name, post },
     } = useRouteMatch<MatchParams>()
@@ -65,7 +66,8 @@ const User = () => {
 
     useDefaultEmotes()
 
-    let [user, setUser] = useState({} as any)
+    let [{ user, member, profile }, setUser] = useState({} as UserResponse)
+    let [badges, setBadges] = useState([] as Cosmetic[])
     let [loaded, setLoaded] = useState({
         error: false,
         loaded: false,
@@ -82,13 +84,7 @@ const User = () => {
                 })
             } else {
                 setUser(response.data)
-
-                setUser((prevState: any) => {
-                    return {
-                        ...prevState,
-                        badges: getBadges(prevState.profile.cosmetics),
-                    }
-                })
+                setBadges(response.data.profile.cosmetics)
 
                 setLoaded({
                     error: false,
@@ -121,7 +117,7 @@ const User = () => {
                 <h1>
                     {user.username}{" "}
                     <Avatar size={64} src={getImageUrl(user.username)} />
-                    <UserBadges badges={user.badges} />
+                    <UserBadges badges={badges} />
                 </h1>
 
                 <div className="mobile-profile">
@@ -149,11 +145,11 @@ export default [
     {
         path: "/u/:name/:post",
         exact: true,
-        component: User,
+        component: UserView,
     },
     {
         path: "/u/:name",
         exact: true,
-        component: User,
+        component: UserView,
     },
 ]

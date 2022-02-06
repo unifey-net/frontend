@@ -1,28 +1,37 @@
 import { BASE_URL, API } from "../ApiHandler"
-import { logOut } from "../../redux/actions/auth.actions"
 import store from "../../redux/store"
-import { joinComm, leaveComm } from "../../redux/actions/auth.actions"
 import Status, { COMPLETE, ERROR } from "../util/Status"
 import { Cosmetic } from "./Cosmetics"
+import { useAppDispatch } from "../../util/Redux"
+import { joinCommunity, leaveCommunity, logOut } from "./redux/auth.redux"
 
+/**
+ * A general user. Email is granted through a specific endpoint.
+ */
 export type User = {
     id: number
     username: string
     role: number
     verified: boolean
     createdAt: number
-    profile: Profile
-    member: Member
 }
 
+/**
+ * A user's profile.
+ */
 export type Profile = {
+    id: number
     description: string
     discord: string
     location: string
     cosmetics: Cosmetic[]
 }
 
+/**
+ * A user's information about what communities they're in and what communities they have notifications for.
+ */
 export type Member = {
+    id: number
     member: number[]
     notifications: number[]
 }
@@ -95,18 +104,9 @@ export const getExpire = () => store.getState().auth.expire
 export const isExpired = () => {
     let expired = getExpire() !== -1 && new Date().getTime() >= getExpire()
 
-    if (expired) logout()
+    if (expired) store.dispatch(logOut())
 
     return expired
-}
-
-/**
- * Logout
- *
- * @returns {*}
- */
-export const logout = () => {
-    store.dispatch(logOut())
 }
 
 /**
@@ -120,7 +120,7 @@ export const signedIn = () => getToken() != null && !isExpired()
  * Leave a community.
  * @param {*} id
  */
-export const leaveCommunity = async (id: number) => {
+export const apiLeaveCommunity = async (id: number) => {
     let form = new FormData()
 
     form.append("id", `${id}`)
@@ -131,7 +131,7 @@ export const leaveCommunity = async (id: number) => {
     })
 
     if (request.status === 200) {
-        store.dispatch(leaveComm(id))
+        store.dispatch(leaveCommunity({ id }))
 
         return request
     } else {
@@ -143,7 +143,7 @@ export const leaveCommunity = async (id: number) => {
  * Join a community.
  * @param {*} id
  */
-export const joinCommunity = async (id: number) => {
+export const apiJoinCommunity = async (id: number) => {
     let form = new FormData()
 
     form.append("id", `${id}`)
@@ -151,7 +151,7 @@ export const joinCommunity = async (id: number) => {
     let request = await API.put("/community/manage", form)
 
     if (request.status === 200) {
-        store.dispatch(joinComm(id))
+        await store.dispatch(joinCommunity({ id }))
 
         return request
     } else {

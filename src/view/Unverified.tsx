@@ -12,6 +12,11 @@ const UnverifiedStyle = styled.div`
     }
 `
 
+/**
+ * TODO: Change this to something other than it's own page.
+ *
+ * Gives details about what it means to be unverified.
+ */
 const Unverified = () => {
     return (
         <UnverifiedStyle>

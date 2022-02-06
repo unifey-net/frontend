@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import React, { useEffect } from "react"
 import { MdClose } from "react-icons/md"
 import { useState } from "react"
-import { notifDelete, notifSetReadStatus } from "../../redux/actions/notifications.actions"
 import { useNotificationActions } from "../../api/notification/NotificationsSocket"
+import { deleteAllNotifications, deleteNotification, setReadStatus } from "../../api/notification/Notifications"
 
 const notificationToastTheme = {
     className: "toast-notification",
@@ -13,17 +13,17 @@ const notificationToastTheme = {
 
 const useNotificationPopUp = () => {
     const dispatch = useDispatch()
-    const { deleteNotification, readNotification } = useNotificationActions()
+    const { deleteNotification: socketDeleteNotification, readNotification } = useNotificationActions()
 
     const notifications = useSelector((store: any) => store.notifications.notifications)
     const [oldSize, setOldSize] = useState(notifications.length)
 
     const closeNotification = (toastId: string, notifId: number) => {
         toast.dismiss(toastId)
-        deleteNotification(notifId)
-        dispatch(notifDelete(notifId))
+        socketDeleteNotification(notifId)
+        dispatch(deleteNotification({ id: notifId }))
     }
-    
+
     if (notifications.length > oldSize) {
         setOldSize(notifications.length)
         const notif = notifications[notifications.length - 1]
@@ -32,7 +32,7 @@ const useNotificationPopUp = () => {
 
         if (!notif.read) {
             readNotification(notif.id)
-            dispatch(notifSetReadStatus(notif.id, true))
+            dispatch(setReadStatus({ id: notif.id, read: true }))
 
             const toastId = toast(
                 <div>

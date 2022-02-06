@@ -4,6 +4,11 @@ import React, { useState } from "react"
 import Messages from "./Messages"
 import SendMessage from "./SendMessage"
 
+/**
+ * A messaging modal. 
+ * 
+ * This is where you send and receive messages from others.
+ */
 const useMessagingModal = (
     channel: number,
     friendName: string

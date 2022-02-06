@@ -89,7 +89,6 @@ export default createGlobalStyle<{ theme: ThemeType }>`
         font-family:  "Poppins", sans-serif !important;
         font-size: 1rem;
         line-height: 1.5rem;
-        color: #969696;
     }
 
     .ant-btn {

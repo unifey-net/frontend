@@ -7,7 +7,8 @@ import { Link } from "react-router-dom"
 import { API } from "../../../../api/ApiHandler"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { removeCommunityReport } from "../../../../redux/actions/community.actions"
+import { useAppDispatch } from "../../../../util/Redux"
+import { removeReport } from "../../../../api/community/redux/community.redux"
 
 type Props = {
     index: number
@@ -41,7 +42,7 @@ const Report = styled.div`
  */
 const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: Props) => {
     const { report, data } = reportRequest
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [extended, setExtended] = useState(false)
     const [deleteLoading, setDeleteLoading] = useState(false)
@@ -57,7 +58,7 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
         )
 
         if (request.status === 200) {
-            dispatch(removeCommunityReport(community.community.id, report.id))
+            dispatch(removeReport({ community: community.community.id, report: report.id}))
             message.success("Successfully deleted report.")
         } else {
             message.error(request.data.payload)

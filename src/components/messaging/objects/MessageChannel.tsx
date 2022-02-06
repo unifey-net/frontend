@@ -2,7 +2,7 @@ import ChannelType from "./ChannelType";
 
 type MessageChannel = {
     id: number,
-    type: ChannelType
+    channelType: ChannelType
 }
 
 export default MessageChannel

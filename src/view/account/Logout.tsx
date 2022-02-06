@@ -1,14 +1,18 @@
 import React from "react"
-import { signedIn, logout } from "../../api/user/User"
+import { signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
+import { useAppDispatch } from "../../util/Redux"
+import { logOut } from "../../api/user/redux/auth.redux"
 
 /**
  * The /logout page.
  */
 const Logout = () => {
+    const dispatch = useAppDispatch()
+
     if (!signedIn()) return <Redirect to="/login" />
 
-    logout()
+    dispatch(logOut())
 
     window.location.reload()
 

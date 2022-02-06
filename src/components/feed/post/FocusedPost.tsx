@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from "react"
 import { Spin, Button } from "antd"
-import { LoadingOutlined, ArrowLeftOutlined } from "@ant-design/icons"
+import { LoadingOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux"
 import History from "../../../api/History"
-import { updatePost } from "../../../redux/actions/post.actions"
 import Post from "./Post"
 import { API } from "../../../api/ApiHandler"
 import styled from "styled-components"
 import PostComments from "./comments/PostComments"
 import PostReply from "./PostReply"
 import useSortChanger from "../SortChanger"
+import { MdArrowLeft } from "react-icons/md"
+import { postSlice } from "../../../api/Feeds"
 
 const FocusedPostStyle = styled.div`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    background-color: ${({ theme }) => theme.primary};
+    border-radius: 32px;
+
+    .focused-post-options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+    }
 `
 
 /**
  * A fullscreen post.
  */
-const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed })  => {
+const FocusedPost: React.FC<{ postId: number; feed: string }> = ({
+    postId,
+    feed,
+}) => {
     const dispatch = useDispatch()
 
     const [sort, button] = useSortChanger("TOP")
@@ -32,7 +45,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed 
             let req = await API.get(`/feeds/${feed}/post/${postId}`)
 
             if (req.status === 200) {
-                dispatch(updatePost(postId))
+                dispatch(postSlice.actions.setPost({ post: postId }))
                 setPost(req.data)
             }
 
@@ -48,31 +61,33 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({ postId, feed 
 
     return (
         <FocusedPostStyle>
-            <Button ghost onClick={() => History.go(-1)}>
-                <ArrowLeftOutlined />
-            </Button>
+            <Post
+                postResponse={post}
+                focusChange={false}
+                disableBottomBorderRadius={true}
+            />
 
-            <Post postResponse={post} focusChange={false} />
+            <div className="focused-post-options">
+                <Button ghost onClick={() => History.go(-1)}>
+                    <MdArrowLeft />
+                </Button>
 
-            <div>
                 <PostReply
                     post={postId}
                     id={postId}
                     level={0}
                     feed={feed}
+                    isOnComment={false}
                 />
 
-                {button}
+                <button onClick={button}>
+                    Sort by {sort}
+                </button>
             </div>
 
-            <PostComments
-                feed={feed}
-                id={postId}
-                sort={sort}
-                data={null}
-            />
+            <PostComments feed={feed} id={postId} sort={sort} data={null} />
         </FocusedPostStyle>
     )
 }
 
-export default FocusedPost;
+export default FocusedPost

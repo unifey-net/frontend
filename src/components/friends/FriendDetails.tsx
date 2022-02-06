@@ -1,9 +1,10 @@
 import Modal from "antd/lib/modal/Modal";
 import React, { useState } from "react"
 import toast from "react-hot-toast";
-import { MdRemove } from "react-icons/md";
+import { MdMessage, MdRemove } from "react-icons/md";
 import styled from "styled-components";
 import { API } from "../../api/ApiHandler";
+import History from "../../api/History";
 import { Friend } from "../../api/user/Friends";
 import Messages from "../messaging/Messages";
 import useMessagingModal from "../messaging/MessagingModal";
@@ -54,6 +55,10 @@ const FriendDetails: React.FC<{ friend: Friend, refetch: () => void }> = ({ frie
         }
     }
 
+    const openMessage = async () => {
+        History.push(`/messages?open=${friend.friend}`)
+    }
+
     return (
         <FriendStyle>
             <p>{friend.friendDetails.username}</p>
@@ -61,6 +66,10 @@ const FriendDetails: React.FC<{ friend: Friend, refetch: () => void }> = ({ frie
             <div className="controls">
                 <button onClick={() => removeFriend()}>
                     <MdRemove  />
+                </button>
+
+                <button onClick={() => openMessage()}>
+                    <MdMessage/>
                 </button>
             </div>
         </FriendStyle>

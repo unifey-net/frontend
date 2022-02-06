@@ -1,10 +1,9 @@
 import React, { useEffect } from "react"
 import toast from "react-hot-toast"
-import History from "../api/History"
 import { signedIn } from "../api/user/User"
-import DefaultHome from "../components/home/DefaultHome"
 import LoggedInHome from "../components/home/LoggedInHome"
 import Snake from "../components/snake/Snake"
+import { Redirect } from "react-router-dom"
 
 const Home = () => {
     useEffect(() => {
@@ -20,10 +19,14 @@ const Home = () => {
         }
     }, [])
 
+    if (!signedIn()) {
+        return <Redirect to="/login" />
+    }
+
     return (
         <>
-            { signedIn() ? <LoggedInHome/> : <DefaultHome/> }
-            <Snake/>
+            <LoggedInHome />
+            <Snake />
         </>
     )
 }

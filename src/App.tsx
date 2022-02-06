@@ -9,7 +9,6 @@ import Footer from "./components/Footer"
 
 import { useDispatch, useSelector } from "react-redux"
 import { isExpired } from "./api/user/User"
-import { logOut } from "./redux/actions/auth.actions"
 import toast, { Toaster } from "react-hot-toast"
 import { ThemeProvider } from "styled-components"
 import GlobalStyle from "./util/GlobalStyle"
@@ -21,14 +20,16 @@ import { useLiveSocket } from "./api/live/Live"
 import MultipleInstances from "./util/MultipleInstances"
 import NoConnection from "./util/NoConnection"
 import { Redirect } from "react-router-dom"
+import { useAppDispatch } from "./util/Redux"
+import { logOut } from "./api/user/redux/auth.redux"
 
 export default function App() {
     useLiveSocket()
     useNotificationPopUp()
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    console.log(useSelector((store: any) => store.auth.expire));
+    console.log(useSelector((store: any) => store.auth.expire))
 
     if (isExpired()) dispatch(logOut())
 
@@ -40,60 +41,53 @@ export default function App() {
         }
 
         case 1006: {
-            return <NoConnection/>
+            return <NoConnection />
         }
 
         // token has expired
         case 4011: {
             dispatch(logOut())
-            
-            window.location.reload()
 
             toast.error("Your token has expired!")
 
-            return <Redirect to="/login" />
+            window.location.reload()
+
+            history.push("")
+            break;
         }
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
+        <Router history={history}>
+            <div className="page-container">
+                <Header />
 
-            <IconContext.Provider
-                value={{ style: { verticalAlign: "middle" } }}
-            >
-                <Router history={history}>
-                    <div className="page-container">
-                        <Header />
+                <Toaster
+                    position="top-right"
+                    toastOptions={{
+                        style: {
+                            borderRadius: "10px",
+                            background: "#333",
+                            color: "#fff",
+                        },
+                    }}
+                />
 
-                        <Toaster
-                            position="top-right"
-                            toastOptions={{
-                                style: {
-                                    borderRadius: "10px",
-                                    background: "#333",
-                                    color: "#fff",
-                                },
-                            }}
-                        />
+                <div className="content-container">
+                    <Switch>
+                        {Pages.map(({ path, component, exact }, index) => (
+                            <Route
+                                key={index}
+                                path={path}
+                                component={component}
+                                exact={exact}
+                            />
+                        ))}
+                    </Switch>
+                </div>
 
-                        <div className="content-container">
-                            <Switch>
-                                {Pages.map(({ path, component, exact }, index) => (
-                                    <Route
-                                        key={index}
-                                        path={path}
-                                        component={component}
-                                        exact={exact}
-                                    />
-                                ))}
-                            </Switch>
-                        </div>
-
-                        <Footer />
-                    </div>
-                </Router>
-            </IconContext.Provider>
-        </ThemeProvider>
+                <Footer />
+            </div>
+        </Router>
     )
 }

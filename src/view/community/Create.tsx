@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
-import { login, signedIn } from "../../api/user/User"
+import { signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
@@ -8,12 +8,11 @@ import { Link } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
-import { logIn } from "../../redux/actions/auth.actions"
-import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import { API } from "../../api/ApiHandler"
 import toast from "react-hot-toast"
+import { useAppDispatch } from "../../util/Redux"
 
 const CreateForm = styled.div`
     min-width: 300px;
@@ -28,7 +27,7 @@ const CreateForm = styled.div`
  * The /create page.
  */
 const Create = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 

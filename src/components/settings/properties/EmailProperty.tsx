@@ -1,25 +1,26 @@
-import React, { Ref, useEffect, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useEffect, useRef, useState } from "react"
+import { useSelector } from "react-redux"
 import { Button, Input, Spin, Tooltip } from "antd"
 import { MdCheck, MdWarning } from "react-icons/md"
 import { getEmail } from "../../../api/user/Email"
 import { API } from "../../../api/ApiHandler"
 import toast from "react-hot-toast"
-import { verifyAccount } from "../../../redux/actions/auth.actions"
 import Property from "./Property"
+import { useAppDispatch } from "../../../util/Redux"
+import { verifyAccount } from "../../../api/user/redux/auth.redux"
 
 const EmailProperty: React.FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const ref = useRef<Input>(null) 
+    const ref = useRef<Input>(null)
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [email, setEmail] = useState("")
-    
+
     const onClick = async () => {
         setLoading(true);
-        
+
         let email = ref.current?.input.value
 
         if (!email)
@@ -36,7 +37,7 @@ const EmailProperty: React.FC = () => {
                 "Your email has been updated. A verification request has been sent."
             )
 
-            dispatch(verifyAccount(false))
+            dispatch(verifyAccount({ status: false}))
             setEmail(email)
         } else {
             toast.error("There was an issue updating your email.")

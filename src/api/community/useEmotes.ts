@@ -1,7 +1,6 @@
-import { Emote } from "../Emotes"
+import { Emote, emoteSlice } from "../Emotes"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { postEmotes } from "../../redux/actions/emotes.actions"
 import { API } from "../ApiHandler"
 import { message } from "antd"
 
@@ -16,7 +15,7 @@ export const useCommunityEmotes = (emotes: Emote[]) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(postEmotes(emotes))
+        dispatch(emoteSlice.actions.postEmotes({ emotes }))
     }, [dispatch, emotes])
 }
 
@@ -30,7 +29,7 @@ export const useDefaultEmotes = () => {
             if (request.status !== 200) {
                 message.error("There was an issue loading emotes.")
             } else {
-                dispatch(postEmotes(request.data))
+                dispatch(emoteSlice.actions.postEmotes({ emotes: request.data }))
             }
         }
 

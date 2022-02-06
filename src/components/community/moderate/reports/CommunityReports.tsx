@@ -7,10 +7,10 @@ import { LoadingOutlined } from "@ant-design/icons"
 import { LOADING, COMPLETE, ERROR, DEFAULT_STATUS } from "../../../../api/util/Status"
 import { getCommunityReports } from "../../../../api/Reports"
 import ModeratePage from "../ModeratePage"
-import { addCommunityReports, removeCommunityReports } from "../../../../redux/actions/community.actions"
-import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { MdRefresh } from "react-icons/md"
+import { addReports, removeReports } from "../../../../api/community/redux/community.redux"
+import { useAppDispatch, useAppSelector } from "../../../../util/Redux"
 
 type Props = {
     community: CommunityRequest
@@ -32,22 +32,22 @@ const Reports = styled.div`
  * A communities reports.
  */
 const CommunityReports: React.FC<Props> = ({ community }) => {
-    const dispatch = useDispatch()
-    const reports = useSelector((state: any) => state.community[community.community.name].reports)
+    const dispatch = useAppDispatch()
+    const reports = useAppSelector((state) => state.community[community.community.name].community.reports)
     const [{ status, message }, setStatus] = useState(DEFAULT_STATUS)
 
     const loadReports = async () => {
-        if (reports && reports.length > 0) 
-            dispatch(removeCommunityReports(community.community.id))
-        
+        if (reports && reports.length > 0)
+            dispatch(removeReports({ community: community.community.id }))
+
         setStatus({ message, status: LOADING })
-        
+
         let request = await getCommunityReports(community.community.id)
 
         if (request.status !== 200) {
             setStatus({ message: request.data.payload, status: ERROR })
         } else {
-            dispatch(addCommunityReports(community.community.id, request.data))
+            dispatch(addReports({ community: community.community.id, reports: request.data }))
 
             setStatus({ message: "", status: COMPLETE })
         }
@@ -79,7 +79,7 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
         )
     }
 
-    return (
+    return reports ? (
         <ModeratePage>
             <ReportControls>
                 <p>There are currently {reports.reportCount} report(s).</p>
@@ -104,6 +104,8 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
                 </Reports>
             )}
         </ModeratePage>
+    ) : (
+        <Spin indicator={<LoadingOutlined/>} />
     )
 }
 

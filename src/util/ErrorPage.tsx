@@ -1,34 +1,70 @@
 import React from "react"
 import { useDispatch } from "react-redux"
 import styled from "styled-components"
-import { logOut } from "../redux/actions/auth.actions"
+import { media } from "../api/util/Media"
 
 const Style = styled.div`
     text-align: center;
-    margin-top: 2rem;
+    padding-top: 15vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     button {
         color: white;
         cursor: pointer;
-        background-color: transparent;
+        background-color: ${({ theme }) => theme.primary};
+        border-radius: 4px;
+        border: 1px solid black;
     }
 
     .error {
         text-transform: uppercase;
         color: gray;
-        font-size: 12px;        
+        font-size: 12px;
         margin-right: 6px;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: column;
+        button {
+            max-width: 200px;
+        }
+
+        ${media(
+            "",
+            `
+            flex-direction: row;
+            button {
+                margin-right: 4px;
+            }
+        `,
+            `flex-direction: row;
+             
+            button {
+                margin-right: 4px;
+            }`
+        )}
     }
 `
 
-const ErrorPage: React.FC<{ content: JSX.Element, code: number }> = ({ content, code }) => {
+const ErrorPage: React.FC<{ content: JSX.Element; code: number }> = ({
+    content,
+    code,
+}) => {
     return (
         <Style>
-            {content}
-
             <div>
-                <span className="error">UNFY:{code}</span>
-                <a href={`https://ajkneisl.dev/help?code=UNFY:${code}`}>HELP</a>
+                {content}
+
+                <div>
+                    <span className="error">UNFY:{code}</span>
+                    <a href={`https://unifey.com/help?code=UNFY:${code}`}>
+                        HELP
+                    </a>
+                </div>
             </div>
         </Style>
     )

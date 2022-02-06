@@ -6,8 +6,9 @@ import toast from "react-hot-toast"
 import { MdAdd, MdError, MdRemove } from "react-icons/md"
 import { useSelector } from "react-redux"
 import styled from "styled-components"
-import { joinCommunity, leaveCommunity } from "../../../../api/user/User"
+import { apiJoinCommunity, apiLeaveCommunity } from "../../../../api/user/User"
 import { media } from "../../../../api/util/Media"
+import { useAppSelector } from "../../../../util/Redux"
 
 const JoinCommunityButton = styled.button`
     background-color: #bf1d48;
@@ -21,9 +22,7 @@ const JoinCommunityButton = styled.button`
  * The join community button found on communities pages.
  */
 const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
-    const member = useSelector(
-        (store: any) => store.auth.user.member.member
-    ).includes(community)
+    const member = useAppSelector(store => store.auth.member.member).includes(community)
 
     const [symbol, setSymbol] = useState(member ? <MdRemove /> : <MdAdd />)
 
@@ -31,11 +30,11 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         if (member) {
             setSymbol(<Spin indicator={<LoadingOutlined />} />)
 
-            const leaveObj = await leaveCommunity(community)
+            const leaveObj = await apiLeaveCommunity(community)
 
             if (leaveObj.status === 200) {
                 toast.success("Successfully left the community.")
-                setSymbol(<span>+</span>)
+                setSymbol(<MdAdd />)
             } else {
                 toast.error(leaveObj.data.payload)
                 setSymbol(<MdError />)
@@ -43,7 +42,7 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         } else {
             setSymbol(<Spin indicator={<LoadingOutlined />} />)
 
-            const leaveObj = await joinCommunity(community)
+            const leaveObj = await apiJoinCommunity(community)
 
             if (leaveObj.status === 200) {
                 toast.success("Successfully joined the community.")
@@ -55,11 +54,10 @@ const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ commu
         }
     }
 
-    const message = `${member ? "Leave" : "Join"}${!mobile ? " Community" : ""}`
-
     return (
         <JoinCommunityButton onClick={onClick}>
-            {symbol} {message}
+            {symbol}{" "}
+            {`${member ? "Leave" : "Join"}${!mobile ? " Community" : ""}`}
         </JoinCommunityButton>
     )
 }

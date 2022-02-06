@@ -2,9 +2,10 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Input, message } from "antd"
 import { Rule } from "./CommunityRules"
-import { removeRule } from "../../../../redux/actions/community.actions"
 import { deleteCommunityRule, updateCommunityRuleBody, updateCommunityRuleTitle } from "../../../../api/community/Rules"
 import LinkButton from "../../../LinkButton"
+import { useAppDispatch } from "../../../../util/Redux"
+import { removeRule } from "../../../../api/community/redux/community.redux"
 
 type Props = {
     rule: Rule
@@ -17,7 +18,7 @@ type Props = {
  * An individual rule for a community.
  */
 const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
-    let dispatch = useDispatch()
+    let dispatch = useAppDispatch()
 
     let bodyRef = React.createRef<Input>()
     let titleRef = React.createRef<Input>()
@@ -72,7 +73,7 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
         if (request.status !== 200) {
             message.error(request.data.payload)
         } else {
-            dispatch(removeRule(community, id))
+            dispatch(removeRule({ community, id }))
             message.success("Rule has been successfully deleted.")
         }
 

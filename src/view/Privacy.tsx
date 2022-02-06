@@ -27,6 +27,9 @@ const PrivacyStyle = styled.div`
     }
 `
 
+/**
+ * The page's privacy page.
+ */
 const Privacy = () => {
     return (
         <PrivacyStyle>

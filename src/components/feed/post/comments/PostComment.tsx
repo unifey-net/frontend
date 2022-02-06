@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Avatar, Comment, Button, message } from "antd"
+import React, { useEffect, useRef, useState } from "react"
+import { Avatar, Button, Input, message } from "antd"
 import { Link } from "react-router-dom"
 import { getImageUrl } from "../../../../api/user/User"
 import PostVote from "../PostVote"
@@ -8,32 +8,66 @@ import { useSelector, useDispatch } from "react-redux"
 import PostAbout from "../PostAbout"
 import PostManagement from "../PostManagement"
 import { useEditingStatus, updateCommentContent } from "../../../../api/Feeds"
-import TextArea from "antd/lib/input/TextArea"
-import { stopEditing } from "../../../../redux/actions/editor.actions"
 import { parseBody } from "../../../../api/Emotes"
 import useEmotes from "../../../../api/community/useEmotes"
+import styled from "styled-components"
+import { useAppDispatch } from "../../../../util/Redux"
+import { stopEditing } from "../../../../redux/editor.redux"
+
+const Comment = styled.div<{ indent: number }>`
+    margin-left: ${({ indent }) => (indent - 1) * 50}px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    .edit-button {
+        margin-top: 8px;
+    }
+
+    .comment-footer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .comment-head {
+        .comment-user {
+            a {
+                margin-right: 6px;
+            }
+        }
+        display: flex;
+        gap: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+`
 
 /**
  * Post comments.
  */
 const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
     const [content, setContent] = useState(comment.comment.content)
+    const [loading, setLoading] = useState(false)
+
+    const textAreaRef = React.createRef<Input>()
+
     const post = useSelector((state: any) => state.post)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     let emotes = useEmotes()
 
     const editing = useEditingStatus(comment.comment.id)
 
     const updateContent = async () => {
-        dispatch(stopEditing())
+        setLoading(true)
 
         let element = document.getElementById(
             `${comment.comment.id}_content`
         ) as HTMLTextAreaElement
-        let value = element.value
+        let value = element?.value
 
-        if (content === value || value === "") {
+        if (value === null || !value || content === value || value === "") {
+            setLoading(false)
             return
         }
 
@@ -47,22 +81,62 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
         if (request.status !== 200) {
             message.error(request.data.payload)
             return
+        } else {
+            message.success("Comment has been successfully updated!")
+            setContent(value)
+            dispatch(stopEditing())
         }
 
-        message.success("Comment has been successfully updated!")
-
-        setContent(value)
+        setLoading(false)
     }
 
     return (
-        <Comment
-            actions={[
-                <PostVote
-                    postType="comment"
-                    post={comment.comment}
-                    vote={comment.vote}
-                />,
-                <div className="mx-2">
+        <>
+            <Comment indent={comment.comment.level}>
+                <div className="comment-head">
+                    <div className="comment-user">
+                        <Link
+                            className="mr-2"
+                            to={`/u/${comment.author.username}`}
+                        >
+                            {comment.author.username}
+                        </Link>
+
+                        <Avatar
+                            src={getImageUrl(comment.author.username)}
+                            alt={`Profile Picture`}
+                        />
+                    </div>
+                    <p>-</p>
+                    <PostAbout date={comment.comment.createdAt} />
+                </div>
+                <div className="comment-body">
+                    {editing && (
+                        <>
+                            <Input.TextArea
+                                ref={textAreaRef}
+                                id={`${comment.comment.id}_content`}
+                            />
+                            <Button onClick={updateContent} className="edit-button" loading={loading}>
+                                Done
+                            </Button>
+                        </>
+                    )}
+
+                    {!editing && (
+                        <p
+                            dangerouslySetInnerHTML={{
+                                __html: parseBody(content, emotes),
+                            }}
+                        />
+                    )}
+                </div>
+                <div className="comment-footer">
+                    <PostVote
+                        postType="comment"
+                        post={comment.comment}
+                        vote={comment.vote}
+                    />
                     <PostReply
                         level={1}
                         post={post}
@@ -72,53 +146,13 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
                                 ? comment.comment.id
                                 : comment.comment.parent
                         }
+                        isOnComment={true}
                     />
-                </div>,
-                <PostManagement type="comment" object={comment.comment} />,
-            ]}
-            author={
-                <>
-                    <Link className="mr-2" to={`/u/${comment.author.username}`}>
-                        {comment.author.username}
-                    </Link>
-                    <PostAbout date={comment.comment.createdAt} />
-                </>
-            }
-            avatar={
-                <Avatar
-                    src={getImageUrl(comment.author.username)}
-                    alt={`Profile Picture`}
-                />
-            }
-            content={
-                <>
-                    {!editing && (
-                        <p
-                            dangerouslySetInnerHTML={{
-                                __html: parseBody(content, emotes),
-                            }}
-                        />
-                    )}
-
-                    {editing && (
-                        <>
-                            <TextArea
-                                id={`${comment.comment.id}_content`}
-                                defaultValue={comment.comment.content}
-                                style={{
-                                    marginBottom: ".5rem",
-                                }}
-                            />
-                            <Button onClick={() => updateContent()}>
-                                Done
-                            </Button>
-                        </>
-                    )}
-                </>
-            }
-        >
+                    <PostManagement type="comment" object={comment.comment} />
+                </div>
+            </Comment>
             {children}
-        </Comment>
+        </>
     )
 }
 

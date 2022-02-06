@@ -9,7 +9,7 @@ import store from "../redux/store"
  */
 const BASE_URL: string =
     process.env.NODE_ENV === "production"
-        ? "https://unifeyapi.ajkneisl.dev"
+        ? "https://api.unifey.app"
         : "http://localhost:8077"
 
 /**
@@ -34,6 +34,6 @@ export const useApi = makeUseAxios({
 /**
  * The version, manually kept up to date :(
  */
-const VERSION = "0.7.0"
+const VERSION = "0.8.0"
 
 export { VERSION, API, BASE_URL }

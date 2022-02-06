@@ -2,11 +2,13 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Menu, Dropdown, Button, Avatar, Badge, Spin } from "antd"
 import { Link } from "react-router-dom"
-import { getImageUrl } from "../../api/user/User"
+import { getImageUrl, User } from "../../api/user/User"
 import styled from "styled-components"
 import UnreadNotificationCount from "../notifications/UnreadNotificationCount"
 import History from "../../api/History"
 import { MdAccountCircle } from "react-icons/md"
+import { AuthState } from "../../api/user/redux/auth.redux"
+import { useAppSelector } from "../../util/Redux"
 
 const NotificationShelf = styled.div`
     display: flex;
@@ -32,8 +34,8 @@ const SelfViewLink = styled.div`
 `
 
 const SelfView: React.FC = () => {
-    let self = useSelector((store: any) => store.auth)
-    
+    let self = useAppSelector((store) => store.auth) as AuthState
+
     const onlineCount = useSelector((store: any) => store.friends.online).length
     const unreadCount = useSelector((store: any) => store.notifications.unread)
 

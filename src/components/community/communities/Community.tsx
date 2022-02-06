@@ -1,23 +1,37 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { media } from "../../../api/util/Media"
 import CommunityNotifications from "./CommunityNotifications"
 
-const CommunityStyle = styled.div`
+const CommunityStyle = styled.div<{ useCommunitiesPage: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 16px;
     padding: 16px;
     border-radius: 16px;
+
+    ${({ useCommunitiesPage }) =>
+        useCommunitiesPage
+            ? `
+        ${media(
+            "min-width: calc(100vw - 32px);",
+            "min-width: 600px;",
+            "min-width: 600px;"
+        )}
+        margin-right: 16px; 
+        margin-left: 16px;
+    `
+            : ""}
     background-color: ${({ theme }) => theme.primary};
 
     .community-name-notif {
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-between;
-    } 
-    
+    }
+
     .member-count {
         display: flex;
         flex-direction: row;
@@ -37,7 +51,7 @@ const Community: React.FC<{
     useNotifications: boolean
 }> = ({ community, index, useNotifications }) => {
     return (
-        <CommunityStyle>
+        <CommunityStyle useCommunitiesPage={index !== undefined}>
             {index !== undefined && (
                 <div className="member-count">
                     <span>

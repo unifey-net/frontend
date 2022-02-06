@@ -15,6 +15,7 @@ import JoinCommunity from "../../../components/community/profile/buttons/JoinCom
 import { media } from "../../../api/util/Media"
 import { useState } from "react"
 import ModerateCommunity from "../../../components/community/profile/buttons/ModerateCommunity"
+import DebugCommunity from "../../../components/community/DebugCommunity"
 
 const CommunityStyle = styled.div<{ mobileSection: number }>`
     display: flex;
@@ -170,7 +171,7 @@ const Community = () => {
         community?.emotes === undefined ? [] : community?.emotes!!
     )
 
-    if (community && community.community.viewRole > community.selfRole)
+    if (community && community.community.permissions.viewRole > community.selfRole)
         return (
             <Empty description="You don't have permission to view this community." />
         )
@@ -178,14 +179,14 @@ const Community = () => {
     if (status === LOADING)
         return (
             <DefaultContainer>
-                <Spin indicator={<LoadingOutlined />}></Spin>
+                <Spin indicator={<LoadingOutlined />}/>
             </DefaultContainer>
         )
 
     if (status === ERROR || community == null)
         return (
             <DefaultContainer>
-                <Empty description={message} />
+                <Empty description={`Error: ${(message ? message : "There was an issue loading that community.")}`} />
             </DefaultContainer>
         )
 
@@ -202,6 +203,7 @@ const Community = () => {
                                 community={community.community.id}
                                 mobile={false}
                             />
+                            <DebugCommunity community={community.community.name}/>
                         </div>
                     </div>
                     <h6 className="community-link">
@@ -218,7 +220,7 @@ const Community = () => {
                                 id={`cf_${community.community.id}`}
                                 usePostbox={
                                     community.selfRole >=
-                                    community.community.postRole
+                                    community.community.permissions.postRole
                                 }
                             />
                         )}

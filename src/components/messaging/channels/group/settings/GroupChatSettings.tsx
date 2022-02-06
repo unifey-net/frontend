@@ -6,23 +6,20 @@ import { useSelector } from "react-redux"
 import { useMessageSocket } from "../../../MessagesSocket"
 import GroupMessageChannel from "../../../objects/GroupMessageChannel"
 import GroupChatMember from "./GroupChatMember"
-import { useDispatch } from "react-redux"
-import {
-    changeGroupChatDescription,
-    changeGroupChatName,
-} from "../../../redux/messages.actions"
 import toast from "react-hot-toast"
+import { groupChangeDescription, groupChangeName } from "../../../redux/messages"
+import { useAppDispatch } from "../../../../../util/Redux"
 
 const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
     channel,
 }) => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const name = React.createRef<Input>()
     const description = React.createRef<Input>()
 
     const {
-        groupChatSettings: { changeName, changeDescription },
+        groupChats: { changeName, changeDescription },
     } = useMessageSocket()
 
     const [loading, setLoading] = useState(false)
@@ -42,23 +39,23 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
 
         if (newDesc !== channel.description) {
             changeDescription(channel.id, newDesc)
-            dispatch(changeGroupChatDescription(channel, newDesc))
+            dispatch(groupChangeDescription({ channel, description: newDesc }))
         }
 
         if (newDesc !== channel.description || newName !== channel.name) {
             if (newDesc !== channel.description) {
                 changeDescription(channel.id, newDesc)
-                dispatch(changeGroupChatDescription(channel, newDesc))
+                dispatch(groupChangeDescription({ channel, description: newDesc }))
             }
 
             if (newName !== channel.name) {
                 changeName(channel.id, newName)
-                dispatch(changeGroupChatName(channel, newName))
+                dispatch(groupChangeName({ channel, name: newName }))
             }
 
             setLoading(false)
             setVisible(false)
-            
+
             toast.success("Successfully updated group chat!")
         } else {
             setAlert(<Alert message="Nothing changed!" type="error" />)
