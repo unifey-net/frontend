@@ -6,6 +6,11 @@ const AboutStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+
+    .biglogo {
+        margin-bottom: 32px;
+    }
 `
 
 /**
@@ -14,9 +19,10 @@ const AboutStyle = styled.div`
 const About = () => {
     return (
         <AboutStyle>
+            <div className="biglogo">
+                <img src="/homepage.png" alt="Large Unifey Logo" />
+            </div>
             <div>
-                <h1>About Unifey</h1>
-
                 <div>
                     <h2>What is Unifey?</h2>
                     <p>
