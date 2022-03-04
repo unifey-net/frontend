@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import history from "../api/History"
-import Logo from "./logo/Logo"
+import Logo from "./Logo/Logo"
 import SelfView from "./view/SelfView"
 import styled from "styled-components"
 import { desktopMedia, media, mediaWithTag, tinyPhoneMedia } from "../api/util/Media"
