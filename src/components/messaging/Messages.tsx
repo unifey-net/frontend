@@ -46,7 +46,6 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
     const [page, setPage] = useState(1)
 
     const loadMore = () => {
-        console.log("wanting to load some more :)")
         loadMessageHistory(id, page)
         setPage(prev => prev + 1)
     }

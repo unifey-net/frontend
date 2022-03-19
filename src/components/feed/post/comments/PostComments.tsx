@@ -71,7 +71,6 @@ const PostComments: React.FC<Props> = ({ id, feed, data, comment, sort }) => {
 
     useEffect(() => {
         if (sort !== initialSort && sort) {
-            console.log("updating sort")
             setInitialSort(sort)
 
             setPage(1)

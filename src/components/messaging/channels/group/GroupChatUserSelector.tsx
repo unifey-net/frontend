@@ -61,8 +61,6 @@ interface UserValue {
 }
 
 async function fetchUserList(username: string): Promise<UserValue[]> {
-    console.log("fetching user", username)
-
     return API.get("/user/friends/search?name=" + username)
         .then(body => body.data.payload.map((user: any) => ({ label: user.username, value: user.id })))
 }

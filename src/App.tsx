@@ -24,8 +24,6 @@ export default function App() {
 
     const dispatch = useAppDispatch()
 
-    console.log(useSelector((store: any) => store.auth.expire))
-
     if (isExpired()) dispatch(logOut())
 
     const socketError = useSelector((store: any) => store.live.error)

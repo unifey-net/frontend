@@ -13,12 +13,7 @@ import { Toaster } from "react-hot-toast"
 import { IconContext } from "react-icons/lib"
 
 console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV})`)
-
-console.log(`%cSTOP!`, "color:red;font-size:64px")
-console.log(
-    "%cPasting anything here can give users full access to your account.",
-    "color:red;font-size:28px;"
-)
+console.log("DO NOT PASTE ANYTHING IN THE CONSOLE.")
 
 ReactDOM.render(
     <Provider store={store}>
