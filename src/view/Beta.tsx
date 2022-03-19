@@ -3,29 +3,26 @@ import { useForm } from "antd/lib/form/Form"
 import { Store } from "antd/lib/form/interface"
 import React, { createRef, useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { useSelector } from "react-redux"
 import { API } from "../api/ApiHandler"
-import History from "../api/History"
 import DefaultContainer from "../components/DefaultContainer"
+import { useAppSelector } from "../util/Redux"
 
 const Beta = () => {
-    const { isSignedIn, user: { username } } = useSelector((state: any) => state.auth)
+    const { isLoggedIn, user: { username } } = useAppSelector(state => state.auth)
 
     const input = createRef<InputRef>()
-    const [disabled, setDisabled] = useState(false)
     const [form] = useForm()
 
     useEffect(() => {
-        if (username && username !== "") {
-            input.current!!.input!!.innerText = ""
-            setDisabled(true)
+        if (isLoggedIn && username && username !== "") {
+            input.current!!.input!!.value = username
         }
     }, [username, input])
 
     const onFinish = async (results: Store) => {
         const formData = new FormData()
 
-        if (!isSignedIn)
+        if (!isLoggedIn)
             formData.set("name", results.username)
         
         formData.set("type", results.type)
@@ -65,7 +62,7 @@ const Beta = () => {
                     label="Username"
                     name="username"
                     rules={
-                        disabled
+                        isLoggedIn
                             ? []
                             : [
                                   {
@@ -75,7 +72,7 @@ const Beta = () => {
                               ]
                     }
                 >
-                    <Input ref={input} disabled={disabled} />
+                    <Input ref={input} disabled={isLoggedIn} />
                 </Form.Item>
 
                 <Form.Item
