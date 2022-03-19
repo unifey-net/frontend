@@ -29,7 +29,6 @@ import {
     startTyping,
     stopTyping,
 } from "../../components/messaging/redux/messages"
-import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production") return "wss://api.unifey.app/v1"
@@ -60,16 +59,12 @@ export const useLiveSocket = (): [(action: any) => void] => {
     }
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            socket.send("ping")
-        }, pingInterval)
-
-        return () => clearInterval(interval)
-    }, [])
-
-    useEffect(() => {
         socket.onopen = () => {
             dispatch(connectSocket())
+            setInterval(() => {
+                console.log("Live: Ping")
+                socket.send("ping")
+            }, pingInterval)
 
             if (signedIn()) {
                 socket.send(`bearer ${store.getState().auth.token}`)

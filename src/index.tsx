@@ -5,14 +5,14 @@ import * as serviceWorker from "./serviceWorker"
 import { Provider } from "react-redux"
 import App from "./App"
 import store from "./redux/store"
-import { VERSION } from "./api/ApiHandler"
+import { BASE_URL, VERSION } from "./api/ApiHandler"
 import { ThemeProvider } from "styled-components"
 import theme from "./util/Theme"
 import GlobalStyle from "./util/GlobalStyle"
 import { Toaster } from "react-hot-toast"
 import { IconContext } from "react-icons/lib"
 
-console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV})`)
+console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV}, base url: ${BASE_URL})`)
 console.log("DO NOT PASTE ANYTHING IN THE CONSOLE.")
 
 ReactDOM.render(

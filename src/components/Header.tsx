@@ -107,7 +107,7 @@ const Header: React.FC = () => {
             </div>
             <div className="links">
                 {pages.map((obj, index) => (
-                    <HeaderLink isLast={pages.length === (index + 1)}>
+                    <HeaderLink isLast={pages.length === (index + 1)} key={index}>
                         <Link
                             key={index}
                             className={page === obj.location ? "active" : ""}

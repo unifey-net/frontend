@@ -7,7 +7,7 @@ import history from "./api/History"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { isExpired } from "./api/user/User"
 import toast, { Toaster } from "react-hot-toast"
 import useNotificationPopUp from "./components/notifications/NotificationPopUp"
