@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import Vote from "../../../api/user/Vote"
 import { Post } from "../../../api/Feeds"
 import styled from "styled-components"
+import toast from "react-hot-toast"
 
 type Props = {
     vote: Vote | null
@@ -80,6 +81,7 @@ const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
 
     const upVote = () => {
         if (!signedIn()) {
+            toast.error("You must be signed in for this!")
             return
         }
 
@@ -104,6 +106,7 @@ const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
 
     const downVote = () => {
         if (!signedIn()) {
+            toast.error("You must be signed in for this!")
             return
         }
 
