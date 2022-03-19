@@ -2,7 +2,6 @@ import { BASE_URL, API } from "../ApiHandler"
 import store from "../../redux/store"
 import Status, { COMPLETE, ERROR } from "../util/Status"
 import { Cosmetic } from "./Cosmetics"
-import { useAppDispatch } from "../../util/Redux"
 import { joinCommunity, leaveCommunity, logOut } from "./redux/auth.redux"
 
 /**

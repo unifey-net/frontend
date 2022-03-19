@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { Input, message } from "antd"
+import { InputRef, message } from "antd"
 import { Rule } from "./CommunityRules"
 import { deleteCommunityRule, updateCommunityRuleBody, updateCommunityRuleTitle } from "../../../../api/community/Rules"
 import LinkButton from "../../../LinkButton"
 import { useAppDispatch } from "../../../../util/Redux"
 import { removeRule } from "../../../../api/community/redux/community.redux"
+import Input from "rc-input"
 
 type Props = {
     rule: Rule
@@ -20,8 +21,8 @@ type Props = {
 const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
     let dispatch = useAppDispatch()
 
-    let bodyRef = React.createRef<Input>()
-    let titleRef = React.createRef<Input>()
+    let bodyRef = React.createRef<InputRef>()
+    let titleRef = React.createRef<InputRef>()
 
     const { id } = rule
 
@@ -37,8 +38,8 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
     const save = async () => {
         setLoading(true)
 
-        let bodyValue = bodyRef.current!!.state.value
-        let titleValue = titleRef.current!!.state.value
+        let bodyValue = bodyRef.current!!.input!!.value
+        let titleValue = titleRef.current!!.input!!.value
 
         if (body !== bodyValue) {
             let request = await updateCommunityRuleBody(community, id, bodyValue)
@@ -82,17 +83,14 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
 
     return (
         <li>
-            <div
-                className={`p-4 border-black mb-2 rounded accent flex flex-row justify-between`}
-            >
-                <div className="flex flex-row gap-2 -mb-4">
+            <div>
+                <div>
                     <p className="">
                         <b>#{index + 1}.</b>
                     </p>
 
                     {manage && (
                         <Input
-                            size="small"
                             ref={titleRef}
                             defaultValue={title}
                         />
@@ -107,15 +105,13 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
 
                     {manage && (
                         <Input
-                            size="small"
-                            className="-py-4"
                             ref={bodyRef}
                             defaultValue={body}
                         />
                     )}
                 </div>
 
-                <div className={`flex flex-row gap-2`}>
+                <div>
                     <LinkButton onClick={() => setManage(prev => !prev)}>
                         Edit
                     </LinkButton>

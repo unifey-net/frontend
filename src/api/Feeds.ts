@@ -64,15 +64,15 @@ export const feedSlice = createSlice({
 
             state[feed.id] = {
                 feed,
-                posts: [],
+                posts: [] as Post[],
                 page: 1
             }
         },
         clearFeed: (state, action: PayloadAction<{ id: string }>) => {
             state[action.payload.id] = {
                 ...state[action.payload.id],
-                posts: [],
-                page: 1
+                posts: [] as Post[],
+                page: 1,
             }
         },
         changeSort: (state, action: PayloadAction<{ id: string, sort: string }>) => {

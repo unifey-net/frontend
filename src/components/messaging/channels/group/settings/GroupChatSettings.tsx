@@ -1,4 +1,4 @@
-import { Alert, Button, Input } from "antd"
+import { Alert, Button, Input, InputRef } from "antd"
 import Modal from "antd/lib/modal/Modal"
 import React, { useState } from "react"
 import { MdSettings } from "react-icons/md"
@@ -15,8 +15,8 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
 }) => {
     const dispatch = useAppDispatch()
 
-    const name = React.createRef<Input>()
-    const description = React.createRef<Input>()
+    const name = React.createRef<InputRef>()
+    const description = React.createRef<InputRef>()
 
     const {
         groupChats: { changeName, changeDescription },
@@ -34,8 +34,8 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
     const save = async () => {
         setLoading(true)
 
-        const newDesc = description.current?.state.value!!
-        const newName = name.current?.state.value!!
+        const newDesc = description.current!!.input!!.value!!
+        const newName = name.current!!.input!!.value!!
 
         if (newDesc !== channel.description) {
             changeDescription(channel.id, newDesc)

@@ -81,7 +81,10 @@ const Login = () => {
 
         formData.set("token", obj.accessToken)
 
-        const request = await API.post("/authenticate/connections/google", formData)
+        const request = await API.post(
+            "/authenticate/connections/google",
+            formData
+        )
 
         if (request.status === 200) {
             dispatch(logIn(request.data.token.token))
@@ -196,11 +199,16 @@ const Login = () => {
                     clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
                     buttonText="Login with Google"
                     onSuccess={loginGoogle}
-                    onFailure={() =>
-                        setError(
-                            "There was an issue trying to login with Google."
+                    onFailure={err => {
+                        console.error(
+                            "Google Login Error: " + JSON.stringify(err)
                         )
-                    }
+
+                        if (err.error !== "idpiframe_initialization_failed")
+                            setError(
+                                "There was an issue trying to login with Google."
+                            )
+                    }}
                     cookiePolicy={"single_host_origin"}
                     theme="dark"
                 />

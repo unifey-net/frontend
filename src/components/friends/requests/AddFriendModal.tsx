@@ -7,16 +7,15 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const ref = React.createRef<Input>()
+    const [user, setUser] = useState("")
 
     const addUser = async () => {
         setLoading(true)
 
-        const user = ref.current?.state.value
-
-        if (user === "") {
+        if (user === "" || !user) {
             setError("Username can't be blank!")
             setLoading(false)
+            return
         }
 
         const form = new FormData()
@@ -28,7 +27,7 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
             setError(response.data.payload)
         } else {
             setVisible(false)
-            ref.current?.setState({ })
+            setUser("")
             toast.success("Sent a friend request!")
             onAdd()
         }
@@ -45,7 +44,7 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
             onOk={addUser}
         >
             <h3>Username</h3>
-            <Input ref={ref}></Input>
+            <Input value={user} onChange={input => setUser(input.currentTarget.value)}/>
 
             {error !== "" && (
                 <Alert showIcon={true} message={error} type="error"></Alert>

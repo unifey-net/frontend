@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Input, Button, Alert } from "antd"
+import { Input, Button, Alert, InputRef } from "antd"
 import { API } from "../../api/ApiHandler"
 import useForgotModal from "../../components/settings/hooks/useForgotModal"
 
@@ -16,7 +16,7 @@ const Forgot = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const input = React.createRef<Input>()
+    const input = React.createRef<InputRef>()
 
     useEffect(() => {
         let verify = new URL(window.location.toString()).searchParams.get(
@@ -29,9 +29,9 @@ const Forgot = () => {
     }, [toggle])
 
     const resetPassword = async () => {
-        let value = input.current!!.state.value
+        let value = input.current?.input?.value
 
-        if (value === "") {
+        if (value === "" || !value) {
             setError("Please insert an email or username?")
             return
         }
@@ -54,10 +54,10 @@ const Forgot = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div>
             {modal}
 
-            <h1 className="text-6xl">Forgot Password</h1>
+            <h1>Forgot Password</h1>
             <p>Enter the username or email of the account.</p>
 
             <div>

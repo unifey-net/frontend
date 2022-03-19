@@ -1,4 +1,4 @@
-import { Button, Input, Tooltip } from "antd"
+import { Button, Input, InputRef, Tooltip } from "antd"
 import React, { useEffect, useState } from "react"
 import { MdError } from "react-icons/md"
 import { useDispatch } from "react-redux"
@@ -29,7 +29,7 @@ const SendBox = styled.div`
  * Typing updates are sent from here.
  */
 const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
-    const ref = React.createRef<Input>()
+    const ref = React.createRef<InputRef>()
 
     const { typing: { startTyping, stopTyping }, messages: { sendMessage }} = useMessageSocket()
 
@@ -57,7 +57,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
         setPrefix(<></>)
         setLoading(true)
 
-        const msg = ref.current?.input.value
+        const msg = ref.current?.input?.value
 
         if (!msg || msg.length === 0 || msg.length > 240) {
             setLoading(false)
@@ -73,7 +73,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
 
         dispatch(outgoingMessage({ message: msg, channel, time: Date.now() }))
 
-        ref.current?.setValue("")
+        ref.current!!.input!!.innerText = ""
 
         setLoading(false)
     }

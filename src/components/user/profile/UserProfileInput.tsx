@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from "react"
-import { Input, Button } from "antd"
+import { Input, Button, InputRef } from "antd"
 import Text from "antd/lib/typography/Text"
 
 type Props = {
@@ -17,10 +17,10 @@ const UserProfileInput: React.FC<Props> = ({
     editing,
     hideTitle,
 }) => {
-    let input = React.createRef<Input>()
-
     // if the value is changed, that becomes the new initial value.
     let [initValue, setInitValue] = useState(initialValue)
+
+    let input = React.createRef<InputRef>()
 
     let [value, setValue] = useState(initialValue)
     let [creating, setCreating] = useState(false)
@@ -30,7 +30,7 @@ const UserProfileInput: React.FC<Props> = ({
     let updateValue = async () => {
         setLoading(true)
 
-        const newString = input.current!!.state.value as string
+        const newString = input.current!!.input!!.value as string
 
         setInitValue(newString)
 

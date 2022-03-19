@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import Message from "../../components/messaging/objects/Message"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
 import History from "../History"
@@ -33,8 +32,8 @@ import {
 import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
-    if (process.env.NODE_ENV === "production") return "wss://api.unifey.app"
-    else return "ws://localhost:8077"
+    if (process.env.NODE_ENV === "production") return "wss://api.unifey.app/v1"
+    else return "ws://localhost:8077/v1"
 }
 
 export type SocketResponse = {
@@ -100,11 +99,11 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
         socket.onclose = message => {
             console.error(`LIVE Socket Disconnected: %o`, message)
-            
+
             if (liveState.error === -1) {
                 dispatch(disconnectSocket({ error: message.code }))
             } else {
-                dispatch(disconnectSocket({ }))
+                dispatch(disconnectSocket({}))
             }
         }
 

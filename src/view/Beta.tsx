@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio } from "antd"
+import { Button, Form, Input, InputRef, Radio } from "antd"
 import { useForm } from "antd/lib/form/Form"
 import { Store } from "antd/lib/form/interface"
 import React, { createRef, useEffect, useState } from "react"
@@ -11,13 +11,13 @@ import DefaultContainer from "../components/DefaultContainer"
 const Beta = () => {
     const { isSignedIn, user: { username } } = useSelector((state: any) => state.auth)
 
-    const input = createRef<Input>()
+    const input = createRef<InputRef>()
     const [disabled, setDisabled] = useState(false)
     const [form] = useForm()
 
     useEffect(() => {
         if (username && username !== "") {
-            input.current?.setValue(username)
+            input.current!!.input!!.innerText = ""
             setDisabled(true)
         }
     }, [username, input])

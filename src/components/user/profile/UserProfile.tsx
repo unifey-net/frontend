@@ -12,7 +12,7 @@ import { desktopMedia } from "../../../api/util/Media"
 const UserProfileStyle = styled.div<{ mobile: boolean }>`
     padding: 1rem;
     border-radius: 0.25rem;
-    height: min-content:
+    height: min-content;
     max-width: 200px;
 
     .username-container {

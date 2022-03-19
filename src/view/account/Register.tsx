@@ -2,13 +2,11 @@ import React, { useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Redirect } from "react-router-dom"
-import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
+import { Form, Input, Button, Checkbox, Alert, Divider, InputRef } from "antd"
 import history from "../../api/History"
 import { Link } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
-import { connect, useDispatch } from "react-redux"
-import { COMPLETE } from "../../api/util/Status"
 import DefaultContainer from "../../components/DefaultContainer"
 import styled from "styled-components"
 import { API } from "../../api/ApiHandler"
@@ -45,8 +43,8 @@ const Register = () => {
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
-    const [usernameRef, setUsernameRef] = useState<Input>()
-    const [emailRef, setEmailRef] = useState<Input>()
+    const usernameRef = React.createRef<InputRef>()
+    const emailRef = React.createRef<InputRef>()
 
     const [
         { connected, authToken, type, email: connectionEmail },
@@ -57,8 +55,6 @@ const Register = () => {
         type: "",
         email: "",
     } as ConnectionState)
-
-    console.log(emailRef?.state)
 
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
@@ -71,9 +67,9 @@ const Register = () => {
         setConnection({ connected: true, authToken: obj.accessToken, type: "GOOGLE", email })
 
         const name = obj.profileObj.name.replace(" ", "")
-        usernameRef?.setValue(name)
 
-        emailRef?.setValue(email)
+        usernameRef.current!!.input!!.innerText = name
+        emailRef.current!!.input!!.innerText = email
 
         setLoading(false)
     }
@@ -155,14 +151,12 @@ const Register = () => {
                             {
                                 min: 3,
                                 max: 16,
-                                message: "A name must be between 3 and 16 characters!"
-                            }
+                                message:
+                                    "A name must be between 3 and 16 characters!",
+                            },
                         ]}
                     >
-                        <Input
-                            ref={(obj: Input) => setUsernameRef(obj)}
-                            id="username"
-                        />
+                        <Input ref={usernameRef} id="username" />
                     </Form.Item>
 
                     <Form.Item
@@ -178,10 +172,7 @@ const Register = () => {
                             },
                         ]}
                     >
-                        <Input
-                            ref={(obj: Input) => setEmailRef(obj)}
-                            disabled={connected}
-                        />
+                        <Input ref={emailRef} disabled={connected} />
                     </Form.Item>
 
                     <Form.Item
@@ -300,11 +291,14 @@ const Register = () => {
                     clientId="947582734339-etrjdvbs4vvnibji6hp07v36evlitanu.apps.googleusercontent.com"
                     buttonText="Login with Google"
                     onSuccess={handleGoogle}
-                    onFailure={() =>
-                        setError(
-                            "There was an issue trying to login with Google."
-                        )
-                    }
+                    onFailure={err => {
+                        console.error("Google Login Error: " + JSON.stringify(err))
+
+                        if (err.error !== "idpiframe_initialization_failed")
+                            setError(
+                                "There was an issue trying to register with Google."
+                            )
+                    }}
                     cookiePolicy={"single_host_origin"}
                     theme="dark"
                     disabled={connected}

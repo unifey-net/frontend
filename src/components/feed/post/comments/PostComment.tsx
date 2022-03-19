@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { Avatar, Button, Input, message } from "antd"
+import { Avatar, Button, Input, InputRef, message } from "antd"
 import { Link } from "react-router-dom"
 import { getImageUrl } from "../../../../api/user/User"
 import PostVote from "../PostVote"
@@ -49,7 +49,7 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
     const [content, setContent] = useState(comment.comment.content)
     const [loading, setLoading] = useState(false)
 
-    const textAreaRef = React.createRef<Input>()
+    const textAreaRef = React.createRef<InputRef>()
 
     const post = useSelector((state: any) => state.post)
     const dispatch = useAppDispatch()
@@ -96,7 +96,6 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
                 <div className="comment-head">
                     <div className="comment-user">
                         <Link
-                            className="mr-2"
                             to={`/u/${comment.author.username}`}
                         >
                             {comment.author.username}

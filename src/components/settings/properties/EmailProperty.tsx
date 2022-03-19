@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
-import { Button, Input, Spin, Tooltip } from "antd"
+import { Button, Input, InputRef, Spin, Tooltip } from "antd"
 import { MdCheck, MdWarning } from "react-icons/md"
 import { getEmail } from "../../../api/user/Email"
 import { API } from "../../../api/ApiHandler"
@@ -12,7 +12,7 @@ import { verifyAccount } from "../../../api/user/redux/auth.redux"
 const EmailProperty: React.FC = () => {
     const dispatch = useAppDispatch()
 
-    const ref = useRef<Input>(null)
+    const ref = useRef<InputRef>(null)
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
@@ -21,7 +21,7 @@ const EmailProperty: React.FC = () => {
     const onClick = async () => {
         setLoading(true);
 
-        let email = ref.current?.input.value
+        let email = ref.current!!.input!!.value
 
         if (!email)
             email = ""
@@ -94,7 +94,7 @@ const EmailProperty: React.FC = () => {
                             ghost
                             loading={loading}
                             onClick={onClick}
-                            disabled={!self.verified || ref.current?.input.value === email}
+                            disabled={!self.verified || ref.current?.input?.value === email}
                         >
                             Update Email
                         </Button>
