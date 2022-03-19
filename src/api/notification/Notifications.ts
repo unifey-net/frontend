@@ -75,21 +75,14 @@ export const notificationsSlice = createSlice({
         deleteNotification: (state, action: PayloadAction<{ id: number }>) => {
             let { id } = action.payload
 
-            let deleteIndex = -1
-
-            state.notifications.filter((obj: any, index: number) => {
+            state.notifications = state.notifications.filter(obj => {
                 if (obj.id === id) {
-                    deleteIndex = index
-                    return true
+                    state.notificationCount -= 1;
+                    return false
                 }
 
-                return false
+                return true
             })
-
-            if (deleteIndex !== -1) {
-                state.notifications = state.notifications.splice(deleteIndex, 1)
-                state.notificationCount -= 1
-            }
         },
         setUnread: (state, action: PayloadAction<{ unread: number }>) => {
             state.unread = action.payload.unread
