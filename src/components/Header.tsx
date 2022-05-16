@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import history from "../api/History"
-import Logo from "./logo/Logo"
 import SelfView from "./view/SelfView"
 import styled from "styled-components"
 import { desktopMedia, media, mediaWithTag, tinyPhoneMedia } from "../api/util/Media"
+import Logo from "./Logo/Logo"
 
 const HeaderStyle = styled.div`
     height: 64px;
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
 
     useEffect(() => {
         history.listen(path => {
-            setPage(path.pathname)
+            setPage(path.location.pathname)
         })
 
         return () => {}

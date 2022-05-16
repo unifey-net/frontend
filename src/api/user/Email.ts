@@ -25,7 +25,7 @@ export const resend = async (type: number): Promise<number> => {
     const request = await API.post("/email/resend", form)
 
     if (request.status === 429) {
-        return request.headers["x-rate-limit-reset"]      
+        return +request.headers["x-rate-limit-reset"]     
     } else return 0
 }
 

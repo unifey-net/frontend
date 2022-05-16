@@ -7,7 +7,10 @@ import { useMessageSocket } from "../../../MessagesSocket"
 import GroupMessageChannel from "../../../objects/GroupMessageChannel"
 import GroupChatMember from "./GroupChatMember"
 import toast from "react-hot-toast"
-import { groupChangeDescription, groupChangeName } from "../../../redux/messages"
+import {
+    groupChangeDescription,
+    groupChangeName,
+} from "../../../redux/messages"
 import { useAppDispatch } from "../../../../../util/Redux"
 
 const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
@@ -15,8 +18,8 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
 }) => {
     const dispatch = useAppDispatch()
 
-    const name = React.createRef<Input>()
-    const description = React.createRef<Input>()
+    const [name, setName] = useState("")
+    const [description, setDescription] = useState("")
 
     const {
         groupChats: { changeName, changeDescription },
@@ -34,23 +37,15 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
     const save = async () => {
         setLoading(true)
 
-        const newDesc = description.current?.state.value!!
-        const newName = name.current?.state.value!!
-
-        if (newDesc !== channel.description) {
-            changeDescription(channel.id, newDesc)
-            dispatch(groupChangeDescription({ channel, description: newDesc }))
-        }
-
-        if (newDesc !== channel.description || newName !== channel.name) {
-            if (newDesc !== channel.description) {
-                changeDescription(channel.id, newDesc)
-                dispatch(groupChangeDescription({ channel, description: newDesc }))
+        if (description !== channel.description || name !== channel.name) {
+            if (description !== channel.description) {
+                changeDescription(channel.id, description)
+                dispatch(groupChangeDescription({ channel, description }))
             }
 
-            if (newName !== channel.name) {
-                changeName(channel.id, newName)
-                dispatch(groupChangeName({ channel, name: newName }))
+            if (name !== channel.name) {
+                changeName(channel.id, name)
+                dispatch(groupChangeName({ channel, name: name }))
             }
 
             setLoading(false)
@@ -81,10 +76,18 @@ const GroupChatSettings: React.FC<{ channel: GroupMessageChannel }> = ({
                 {alert && <>{alert}</>}
 
                 <h2>Name</h2>
-                <Input ref={name} defaultValue={channel.name} />
+                <Input
+                    value={name}
+                    onChange={val => setName(val.target.value)}
+                    defaultValue={channel.name}
+                />
 
                 <h2>Description</h2>
-                <Input ref={description} defaultValue={channel.description} />
+                <Input
+                    value={description}
+                    onChange={val => setDescription(val.target.value)}
+                    defaultValue={channel.description}
+                />
 
                 <h2>Members</h2>
                 <ul>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import { Avatar, Button, Input, message } from "antd"
 import { Link } from "react-router-dom"
 import { getImageUrl } from "../../../../api/user/User"
@@ -45,11 +45,11 @@ const Comment = styled.div<{ indent: number }>`
 /**
  * Post comments.
  */
-const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
+const PostComment: React.FC<{ comment: any, children?: React.ReactNode }> = ({ comment, children }) => {
     const [content, setContent] = useState(comment.comment.content)
     const [loading, setLoading] = useState(false)
 
-    const textAreaRef = React.createRef<Input>()
+    const [commentValue, setCommentValue] = React.useState("")
 
     const post = useSelector((state: any) => state.post)
     const dispatch = useAppDispatch()
@@ -114,7 +114,8 @@ const PostComment: React.FC<{ comment: any }> = ({ comment, children }) => {
                     {editing && (
                         <>
                             <Input.TextArea
-                                ref={textAreaRef}
+                                value={commentValue}
+                                onChange={val => setCommentValue(val.target.value)}
                                 id={`${comment.comment.id}_content`}
                             />
                             <Button onClick={updateContent} className="edit-button" loading={loading}>

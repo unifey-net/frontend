@@ -11,13 +11,13 @@ import DefaultContainer from "../components/DefaultContainer"
 const Beta = () => {
     const { isSignedIn, user: { username } } = useSelector((state: any) => state.auth)
 
-    const input = createRef<Input>()
+    const [input, setInput] = useState("")
     const [disabled, setDisabled] = useState(false)
     const [form] = useForm()
 
     useEffect(() => {
         if (username && username !== "") {
-            input.current?.setValue(username)
+            setInput(username)
             setDisabled(true)
         }
     }, [username, input])
@@ -75,7 +75,7 @@ const Beta = () => {
                               ]
                     }
                 >
-                    <Input ref={input} disabled={disabled} />
+                    <Input value={input} onChange={val => setInput(val.target.value)} disabled={disabled} />
                 </Form.Item>
 
                 <Form.Item

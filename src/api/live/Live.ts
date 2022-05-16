@@ -30,7 +30,6 @@ import {
     startTyping,
     stopTyping,
 } from "../../components/messaging/redux/messages"
-import { DefaultRootState, useSelector } from "react-redux"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production") return "wss://api.unifey.app"

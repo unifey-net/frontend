@@ -17,8 +17,6 @@ const UserProfileInput: React.FC<Props> = ({
     editing,
     hideTitle,
 }) => {
-    let input = React.createRef<Input>()
-
     // if the value is changed, that becomes the new initial value.
     let [initValue, setInitValue] = useState(initialValue)
 
@@ -30,11 +28,9 @@ const UserProfileInput: React.FC<Props> = ({
     let updateValue = async () => {
         setLoading(true)
 
-        const newString = input.current!!.state.value as string
+        setInitValue(value)
 
-        setInitValue(newString)
-
-        await update(newString)
+        await update(value)
 
         setLoading(false)
         setDisabled(true) // manually update it since onChange doesn't update after save
@@ -47,7 +43,6 @@ const UserProfileInput: React.FC<Props> = ({
                     {!hideTitle && <h2 className="text-lg">{type}</h2>}
 
                     <Input
-                        ref={input}
                         value={value}
                         onChange={(
                             inputValue: ChangeEvent<HTMLInputElement>

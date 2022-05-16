@@ -16,7 +16,7 @@ const Forgot = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const input = React.createRef<Input>()
+    const [input, setInput] = useState("")
 
     useEffect(() => {
         let verify = new URL(window.location.toString()).searchParams.get(
@@ -29,16 +29,14 @@ const Forgot = () => {
     }, [toggle])
 
     const resetPassword = async () => {
-        let value = input.current!!.state.value
-
-        if (value === "") {
+        if (input === "") {
             setError("Please insert an email or username?")
             return
         }
 
         const form = new FormData()
 
-        form.append("input", value)
+        form.append("input", input)
 
         setLoading(true)
 
@@ -97,7 +95,8 @@ const Forgot = () => {
             </div>
 
             <Input
-                ref={input}
+                value={input}
+                onChange={inp => setInput(inp.target.value)}
                 placeholder="Username or email."
                 style={{ width: "15%" }}
                 id="email"

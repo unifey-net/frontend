@@ -12,19 +12,18 @@ import { verifyAccount } from "../../../api/user/redux/auth.redux"
 const EmailProperty: React.FC = () => {
     const dispatch = useAppDispatch()
 
-    const ref = useRef<Input>(null)
+    const [input, setInput] = useState("")
 
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [email, setEmail] = useState("")
 
     const onClick = async () => {
-        setLoading(true);
+        setLoading(true)
 
-        let email = ref.current?.input.value
+        let email = input
 
-        if (!email)
-            email = ""
+        if (!email) email = ""
 
         let form = new FormData()
 
@@ -37,7 +36,7 @@ const EmailProperty: React.FC = () => {
                 "Your email has been updated. A verification request has been sent."
             )
 
-            dispatch(verifyAccount({ status: false}))
+            dispatch(verifyAccount({ status: false }))
             setEmail(email)
         } else {
             toast.error("There was an issue updating your email.")
@@ -83,7 +82,8 @@ const EmailProperty: React.FC = () => {
                 {email !== "" && (
                     <>
                         <Input
-                            ref={ref!!}
+                            value={input}
+                            onChange={val => setInput(val.target.value)}
                             addonAfter={emailVerified}
                             defaultValue={email}
                             id="email"
@@ -94,7 +94,10 @@ const EmailProperty: React.FC = () => {
                             ghost
                             loading={loading}
                             onClick={onClick}
-                            disabled={!self.verified || ref.current?.input.value === email}
+                            disabled={
+                                !self.verified ||
+                                input === email
+                            }
                         >
                             Update Email
                         </Button>

@@ -45,8 +45,8 @@ const Register = () => {
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
-    const [usernameRef, setUsernameRef] = useState<Input>()
-    const [emailRef, setEmailRef] = useState<Input>()
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
 
     const [
         { connected, authToken, type, email: connectionEmail },
@@ -58,8 +58,6 @@ const Register = () => {
         email: "",
     } as ConnectionState)
 
-    console.log(emailRef?.state)
-
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState("")
@@ -68,12 +66,17 @@ const Register = () => {
         setLoading(true)
         const email = obj.profileObj.email
 
-        setConnection({ connected: true, authToken: obj.accessToken, type: "GOOGLE", email })
+        setConnection({
+            connected: true,
+            authToken: obj.accessToken,
+            type: "GOOGLE",
+            email,
+        })
 
         const name = obj.profileObj.name.replace(" ", "")
-        usernameRef?.setValue(name)
 
-        emailRef?.setValue(email)
+        setUsername(name)
+        setEmail(email)
 
         setLoading(false)
     }
@@ -107,9 +110,7 @@ const Register = () => {
             window.location.reload()
         } else {
             ref?.reset()
-            setError(
-                response.data.payload
-            )
+            setError(response.data.payload)
         }
 
         setLoading(false)
@@ -155,12 +156,14 @@ const Register = () => {
                             {
                                 min: 3,
                                 max: 16,
-                                message: "A name must be between 3 and 16 characters!"
-                            }
+                                message:
+                                    "A name must be between 3 and 16 characters!",
+                            },
                         ]}
                     >
                         <Input
-                            ref={(obj: Input) => setUsernameRef(obj)}
+                            value={username}
+                            onChange={val => setUsername(val.target.value)}
                             id="username"
                         />
                     </Form.Item>
@@ -179,7 +182,8 @@ const Register = () => {
                         ]}
                     >
                         <Input
-                            ref={(obj: Input) => setEmailRef(obj)}
+                            value={email}
+                            onChange={val => setEmail(val.target.value)}
                             disabled={connected}
                         />
                     </Form.Item>

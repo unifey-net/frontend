@@ -5,6 +5,7 @@ import React from "react"
 type ButtonProps = {
     onClick?: () => void
     loading?: boolean
+    children?: React.ReactNode
 }
 
 const LinkButton: React.FC<ButtonProps> = ({ children, onClick, loading }) => {

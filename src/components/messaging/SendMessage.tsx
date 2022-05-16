@@ -29,8 +29,6 @@ const SendBox = styled.div`
  * Typing updates are sent from here.
  */
 const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
-    const ref = React.createRef<Input>()
-
     const { typing: { startTyping, stopTyping }, messages: { sendMessage }} = useMessageSocket()
 
     const [content, setContent] = useState("")
@@ -57,9 +55,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
         setPrefix(<></>)
         setLoading(true)
 
-        const msg = ref.current?.input.value
-
-        if (!msg || msg.length === 0 || msg.length > 240) {
+        if (!content || content.length === 0 || content.length > 240) {
             setLoading(false)
             setPrefix(
                 <Tooltip overlay={<p>Invalid message!</p>}>
@@ -69,11 +65,11 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
             return
         }
 
-        sendMessage(msg, channel)
+        sendMessage(content, channel)
 
-        dispatch(outgoingMessage({ message: msg, channel, time: Date.now() }))
+        dispatch(outgoingMessage({ message: content, channel, time: Date.now() }))
 
-        ref.current?.setValue("")
+        setContent("")
 
         setLoading(false)
     }
@@ -84,7 +80,7 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
                 id="msgbox"
                 prefix={prefix}
                 onChange={ev => setContent(ev.target.value)}
-                ref={ref}
+                value={content}
                 onPressEnter={createMessage}
             />
 

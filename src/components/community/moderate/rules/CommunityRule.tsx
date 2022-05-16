@@ -2,7 +2,11 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { Input, message } from "antd"
 import { Rule } from "./CommunityRules"
-import { deleteCommunityRule, updateCommunityRuleBody, updateCommunityRuleTitle } from "../../../../api/community/Rules"
+import {
+    deleteCommunityRule,
+    updateCommunityRuleBody,
+    updateCommunityRuleTitle,
+} from "../../../../api/community/Rules"
 import LinkButton from "../../../LinkButton"
 import { useAppDispatch } from "../../../../util/Redux"
 import { removeRule } from "../../../../api/community/redux/community.redux"
@@ -20,8 +24,8 @@ type Props = {
 const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
     let dispatch = useAppDispatch()
 
-    let bodyRef = React.createRef<Input>()
-    let titleRef = React.createRef<Input>()
+    let [bodyState, setBodyState] = React.useState("")
+    let [titleState, setTitleState] = React.useState("")
 
     const { id } = rule
 
@@ -37,26 +41,31 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
     const save = async () => {
         setLoading(true)
 
-        let bodyValue = bodyRef.current!!.state.value
-        let titleValue = titleRef.current!!.state.value
-
-        if (body !== bodyValue) {
-            let request = await updateCommunityRuleBody(community, id, bodyValue)
+        if (body !== bodyState) {
+            let request = await updateCommunityRuleBody(
+                community,
+                id,
+                bodyState
+            )
 
             if (request.status !== 200) {
                 message.error(request.data.payload)
             } else {
-                setBody(bodyValue)
+                setBody(bodyState)
             }
         }
 
-        if (title !== titleValue) {
-            let request = await updateCommunityRuleTitle(community, id, titleValue)
+        if (title !== titleState) {
+            let request = await updateCommunityRuleTitle(
+                community,
+                id,
+                titleState
+            )
 
             if (request.status !== 200) {
                 message.error(request.data.payload)
             } else {
-                setTitle(titleValue)
+                setTitle(titleState)
             }
         }
 
@@ -93,7 +102,8 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
                     {manage && (
                         <Input
                             size="small"
-                            ref={titleRef}
+                            onChange={val => setBodyState(val.target.value)}
+                            value={bodyState}
                             defaultValue={title}
                         />
                     )}
@@ -108,8 +118,8 @@ const CommunityRule: React.FC<Props> = ({ rule, community, index, update }) => {
                     {manage && (
                         <Input
                             size="small"
-                            className="-py-4"
-                            ref={bodyRef}
+                            onChange={val => setBodyState(val.target.value)}
+                            value={bodyState}
                             defaultValue={body}
                         />
                     )}

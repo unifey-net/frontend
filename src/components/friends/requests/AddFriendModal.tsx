@@ -7,20 +7,18 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
     const [visible, setVisible] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const ref = React.createRef<Input>()
+    const [usernameValue, setUsernameValue] = React.useState("")
 
     const addUser = async () => {
         setLoading(true)
 
-        const user = ref.current?.state.value
-
-        if (user === "") {
+        if (usernameValue === "") {
             setError("Username can't be blank!")
             setLoading(false)
         }
 
         const form = new FormData()
-        form.append("name", user)
+        form.append("name", usernameValue)
 
         const response = await API.put("/user/friends/name", form)
 
@@ -28,7 +26,7 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
             setError(response.data.payload)
         } else {
             setVisible(false)
-            ref.current?.setState({ })
+            setUsernameValue("")
             toast.success("Sent a friend request!")
             onAdd()
         }
@@ -45,7 +43,7 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
             onOk={addUser}
         >
             <h3>Username</h3>
-            <Input ref={ref}></Input>
+            <Input value={usernameValue} onChange={val => setUsernameValue(val.target.value)}/>
 
             {error !== "" && (
                 <Alert showIcon={true} message={error} type="error"></Alert>
