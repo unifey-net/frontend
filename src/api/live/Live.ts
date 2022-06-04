@@ -41,7 +41,7 @@ export type SocketResponse = {
     type: string
 }
 
-let socket = new WebSocket(`${getUrl()}/live`)
+let socket = new WebSocket(`${getUrl()}/v1/live`)
 
 export const useLiveSocket = (): [(action: any) => void] => {
     const [lastPong, setLastPong] = useState(Date.now())
