@@ -32,7 +32,7 @@ import {
 } from "../../components/messaging/redux/messages"
 
 const getUrl = (): string => {
-    if (process.env.NODE_ENV === "production") return "wss://api.unifey.app"
+    if (process.env.NODE_ENV === "production") return "wss://api.ajkn.us/unifey"
     else return "ws://localhost:8077"
 }
 

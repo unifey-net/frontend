@@ -9,7 +9,7 @@ import store from "../redux/store"
  */
 const BASE_URL: string =
     process.env.NODE_ENV === "production"
-        ? "https://api.unifey.app"
+        ? "https://api.ajkn.us/unifey"
         : "http://localhost:8077"
 
 /**
