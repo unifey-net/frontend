@@ -21,8 +21,13 @@ const JoinCommunityButton = styled.button`
 /**
  * The join community button found on communities pages.
  */
-const JoinCommunity: React.FC<{ community: number, mobile: boolean }> = ({ community, mobile }) => {
-    const member = useAppSelector(store => store.auth.member.member).includes(community)
+const JoinCommunity: React.FC<{ community: number; mobile: boolean }> = ({
+    community,
+    mobile,
+}) => {
+    const member = useAppSelector(store => store.auth.member.member).includes(
+        community
+    )
 
     const [symbol, setSymbol] = useState(member ? <MdRemove /> : <MdAdd />)
 

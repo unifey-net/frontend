@@ -7,7 +7,10 @@ import { MdNotifications, MdNotificationsOff } from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { API } from "../../../api/ApiHandler"
-import { subscribeCommunity, unSubscribeCommunity } from "../../../api/user/redux/auth.redux"
+import {
+    subscribeCommunity,
+    unSubscribeCommunity,
+} from "../../../api/user/redux/auth.redux"
 
 const CommunityNotificationButton = styled.button`
     background-color: transparent;
@@ -55,10 +58,13 @@ const CommunityNotifications: React.FC<{ community: number }> = ({
         setLoading(false)
     }
 
-    return <CommunityNotificationButton onClick={onClick}>
-        { loading && <Spin indicator={<LoadingOutlined/>}/> }
-        { !loading && (notifications ? <MdNotifications/> : <MdNotificationsOff/> )}
-    </CommunityNotificationButton>
+    return (
+        <CommunityNotificationButton onClick={onClick}>
+            {loading && <Spin indicator={<LoadingOutlined />} />}
+            {!loading &&
+                (notifications ? <MdNotifications /> : <MdNotificationsOff />)}
+        </CommunityNotificationButton>
+    )
 }
 
 export default CommunityNotifications

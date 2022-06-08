@@ -1,13 +1,13 @@
-import Modal from "antd/lib/modal/Modal";
+import Modal from "antd/lib/modal/Modal"
 import React, { useState } from "react"
-import toast from "react-hot-toast";
-import { MdMessage, MdRemove } from "react-icons/md";
-import styled from "styled-components";
-import { API } from "../../api/ApiHandler";
-import History from "../../api/History";
-import { Friend } from "../../api/user/Friends";
-import Messages from "../messaging/Messages";
-import useMessagingModal from "../messaging/MessagingModal";
+import toast from "react-hot-toast"
+import { MdMessage, MdRemove } from "react-icons/md"
+import { useNavigate } from "react-router-dom"
+import styled from "styled-components"
+import { API } from "../../api/ApiHandler"
+import { Friend } from "../../api/user/Friends"
+import Messages from "../messaging/Messages"
+import useMessagingModal from "../messaging/MessagingModal"
 
 const FriendStyle = styled.div`
     display: flex;
@@ -23,7 +23,7 @@ const FriendStyle = styled.div`
     padding: 8px;
     margin-bottom: 8px;
 
-    button { 
+    button {
         border: none;
         background-color: transparent;
         cursor: pointer;
@@ -43,7 +43,12 @@ const FriendStyle = styled.div`
     }
 `
 
-const FriendDetails: React.FC<{ friend: Friend, refetch: () => void }> = ({ friend, refetch }) => {
+const FriendDetails: React.FC<{ friend: Friend; refetch: () => void }> = ({
+    friend,
+    refetch,
+}) => {
+    const nav = useNavigate()
+
     const removeFriend = async () => {
         let response = await API.delete(`/user/friends/${friend.friend}`)
 
@@ -56,7 +61,7 @@ const FriendDetails: React.FC<{ friend: Friend, refetch: () => void }> = ({ frie
     }
 
     const openMessage = async () => {
-        History.push(`/messages?open=${friend.friend}`)
+        nav(`/messages?open=${friend.friend}`)
     }
 
     return (
@@ -65,11 +70,11 @@ const FriendDetails: React.FC<{ friend: Friend, refetch: () => void }> = ({ frie
 
             <div className="controls">
                 <button onClick={() => removeFriend()}>
-                    <MdRemove  />
+                    <MdRemove />
                 </button>
 
                 <button onClick={() => openMessage()}>
-                    <MdMessage/>
+                    <MdMessage />
                 </button>
             </div>
         </FriendStyle>

@@ -21,7 +21,7 @@ const Report = styled.div`
     padding: 8px;
     border-radius: 4px;
 
-    .report-header{
+    .report-header {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -32,7 +32,7 @@ const Report = styled.div`
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
-            margin-top: 8px;  
+            margin-top: 8px;
         }
     }
 `
@@ -40,7 +40,11 @@ const Report = styled.div`
 /**
  * A community report.
  */
-const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: Props) => {
+const CommunityReport: React.FC<Props> = ({
+    index,
+    reportRequest,
+    community,
+}: Props) => {
     const { report, data } = reportRequest
     const dispatch = useAppDispatch()
 
@@ -58,7 +62,12 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
         )
 
         if (request.status === 200) {
-            dispatch(removeReport({ community: community.community.id, report: report.id}))
+            dispatch(
+                removeReport({
+                    community: community.community.id,
+                    report: report.id,
+                })
+            )
             message.success("Successfully deleted report.")
         } else {
             message.error(request.data.payload)
@@ -114,4 +123,4 @@ const CommunityReport: React.FC<Props> = ({ index, reportRequest, community }: P
     )
 }
 
-export default CommunityReport;
+export default CommunityReport

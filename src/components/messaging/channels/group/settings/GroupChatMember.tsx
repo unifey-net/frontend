@@ -6,7 +6,7 @@ import GroupMessageChannel from "../../../objects/GroupMessageChannel"
 
 const Member = styled.div<{ owner: boolean }>`
     p {
-        ${({owner}) => owner && "color: yellow;"}
+        ${({ owner }) => owner && "color: yellow;"}
     }
 
     display: flex;
@@ -25,7 +25,10 @@ const Member = styled.div<{ owner: boolean }>`
     }
 `
 
-const GroupChatMember: React.FC<{ user: number; channel: GroupMessageChannel }> = ({user, channel}) => {
+const GroupChatMember: React.FC<{
+    user: number
+    channel: GroupMessageChannel
+}> = ({ user, channel }) => {
     const {
         groupChats: { removeGroupChatMember },
     } = useMessageSocket()
@@ -35,12 +38,15 @@ const GroupChatMember: React.FC<{ user: number; channel: GroupMessageChannel }> 
             content: "Are you sure you want to kick " + user + "?",
             onOk: () => {
                 removeGroupChatMember(user, channel.id)
-            }
+            },
         })
     }
-    return <Member owner={channel.owner === user}>
-        <p>{user}</p> { channel.owner !== user && <button onClick={onKick}>Kick</button>}
-    </Member>
+    return (
+        <Member owner={channel.owner === user}>
+            <p>{user}</p>{" "}
+            {channel.owner !== user && <button onClick={onKick}>Kick</button>}
+        </Member>
+    )
 }
 
 export default GroupChatMember

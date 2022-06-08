@@ -4,7 +4,10 @@ import { createPost } from "../../api/Feeds"
 
 const { TextArea } = Input
 
-const useCreatePost= (feed: string, onComplete: () => void): [JSX.Element, () => void] => {
+const useCreatePost = (
+    feed: string,
+    onComplete: () => void
+): [JSX.Element, () => void] => {
     let [visible, setVisible] = useState(false)
     let [loading, setLoading] = useState(false)
 
@@ -19,10 +22,9 @@ const useCreatePost= (feed: string, onComplete: () => void): [JSX.Element, () =>
         let content = document.querySelector("#content") as HTMLInputElement
 
         if (title.value === "" || content.value === "") {
-            ;(document.querySelector(
-                "#status"
-            ) as HTMLParagraphElement).textContent =
-                "You are missing a title or body!"
+            ;(
+                document.querySelector("#status") as HTMLParagraphElement
+            ).textContent = "You are missing a title or body!"
             setLoading(false)
             return
         }
@@ -81,7 +83,7 @@ const useCreatePost= (feed: string, onComplete: () => void): [JSX.Element, () =>
 
             <p id="status" />
         </Modal>,
-        showModal
+        showModal,
     ]
 }
 

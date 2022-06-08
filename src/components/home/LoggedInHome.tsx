@@ -44,7 +44,7 @@ const LoggedInHomeStyle = styled.div`
 `
 
 const LoggedInHome: React.FC = () => {
-    const [sendAction] = useLiveSocket();
+    const [sendAction] = useLiveSocket()
 
     const [communities, setCommunities] = useState([] as any[])
     let members = useSelector((store: any) => store.auth.member.members)
@@ -79,7 +79,11 @@ const LoggedInHome: React.FC = () => {
                     <div>
                         <div className="side-community-bar">
                             {communities.map((community, index) => (
-                                <Community community={community} key={index} useNotifications={true} />
+                                <Community
+                                    community={community}
+                                    key={index}
+                                    useNotifications={true}
+                                />
                             ))}
                         </div>
                     </div>

@@ -9,7 +9,9 @@ import toast from "react-hot-toast"
 
 const { TextArea } = Input
 
-const usePostReport = (post: Post | CommentObject): [() => void, JSX.Element] => {
+const usePostReport = (
+    post: Post | CommentObject
+): [() => void, JSX.Element] => {
     const [visible, setVisible] = useState(false)
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [error, setError] = useState("")

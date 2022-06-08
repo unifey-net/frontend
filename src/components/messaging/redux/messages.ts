@@ -16,7 +16,12 @@ export const messageSlices = createSlice({
         /**
          * When channels are uploaded.
          */
-        getChannels: (state, action: PayloadAction<{ channels: (DirectMessageChannel | GroupMessageChannel)[] }>) => {
+        getChannels: (
+            state,
+            action: PayloadAction<{
+                channels: (DirectMessageChannel | GroupMessageChannel)[]
+            }>
+        ) => {
             const channels = action.payload.channels
 
             for (let i = 0; channels.length > i; i++) {
@@ -33,15 +38,32 @@ export const messageSlices = createSlice({
         /**
          * When a message comes in from the socket.
          */
-        incomingMessage: (state, action: PayloadAction<{ message: Message, channel: (DirectMessageChannel | GroupMessageChannel), sentFrom: { first: number, second: string } }>) => {
+        incomingMessage: (
+            state,
+            action: PayloadAction<{
+                message: Message
+                channel: DirectMessageChannel | GroupMessageChannel
+                sentFrom: { first: number; second: string }
+            }>
+        ) => {
             const { message, channel } = action.payload
 
-            state[channel.id].messages = [...state[message.channel], action.payload]
+            state[channel.id].messages = [
+                ...state[message.channel],
+                action.payload,
+            ]
         },
         /**
          * When a message is sent.
          */
-        outgoingMessage: (state, action: PayloadAction<{ message: string, channel: number, time: number }>) => {
+        outgoingMessage: (
+            state,
+            action: PayloadAction<{
+                message: string
+                channel: number
+                time: number
+            }>
+        ) => {
             const { channel } = action.payload
 
             state[channel].messages = [...state[channel], action.payload]
@@ -49,15 +71,29 @@ export const messageSlices = createSlice({
         /**
          * Remove someone from a group chat.
          */
-        groupRemoveMember: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), user: number }>) => {
+        groupRemoveMember: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                user: number
+            }>
+        ) => {
             const { channel, user } = action.payload
 
-            state[channel.id].members = state[channel.id].members.filter((channelUser: number) => channelUser !== user)
+            state[channel.id].members = state[channel.id].members.filter(
+                (channelUser: number) => channelUser !== user
+            )
         },
         /**
          * Change a group chat's name.
          */
-        groupChangeName: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), name: string }>) => {
+        groupChangeName: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                name: string
+            }>
+        ) => {
             const { channel, name } = action.payload
 
             state[channel.id].name = name
@@ -65,7 +101,13 @@ export const messageSlices = createSlice({
         /**
          * Change a group chat's description.
          */
-        groupChangeDescription: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), description: string }>) => {
+        groupChangeDescription: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                description: string
+            }>
+        ) => {
             const { channel, description } = action.payload
 
             state[channel.id].description = description
@@ -75,7 +117,15 @@ export const messageSlices = createSlice({
          * @param state
          * @param action
          */
-        loadHistory: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), page: number, maxPage: number, messages: Message[] }>) => {
+        loadHistory: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                page: number
+                maxPage: number
+                messages: Message[]
+            }>
+        ) => {
             const { channel, page, maxPage, messages } = action.payload
 
             state[channel.id] = {
@@ -88,30 +138,56 @@ export const messageSlices = createSlice({
         /**
          * When a user stops typing.
          */
-        stopTyping: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), user: { username: string, id: number } }>) => {
-            const { user: { id }, channel } = action.payload
+        stopTyping: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                user: { username: string; id: number }
+            }>
+        ) => {
+            const {
+                user: { id },
+                channel,
+            } = action.payload
 
             state[channel.id].typing = state[channel.id].typing.filter(
-                (filterUser: { id: number, username: string }) => filterUser.id !== id,
+                (filterUser: { id: number; username: string }) =>
+                    filterUser.id !== id
             )
         },
         /**
          * When a user starts typing.
          */
-        startTyping: (state, action: PayloadAction<{ channel: (DirectMessageChannel | GroupMessageChannel), user: { username: string, id: number } }>) => {
+        startTyping: (
+            state,
+            action: PayloadAction<{
+                channel: DirectMessageChannel | GroupMessageChannel
+                user: { username: string; id: number }
+            }>
+        ) => {
             const { user, channel } = action.payload
 
             if (
                 state[channel.id].typing.filter(
-                    (filterUser: { id: number }) => user.id === filterUser.id,
+                    (filterUser: { id: number }) => user.id === filterUser.id
                 ).length > 0
             ) {
                 return state
             } else {
                 state[channel.id].typing = [...state[channel.id].typing, user]
             }
-        }
+        },
     },
 })
 
-export const { startTyping, stopTyping, outgoingMessage, incomingMessage, groupChangeDescription, groupChangeName, groupRemoveMember, loadHistory, getChannels } = messageSlices.actions
+export const {
+    startTyping,
+    stopTyping,
+    outgoingMessage,
+    incomingMessage,
+    groupChangeDescription,
+    groupChangeName,
+    groupRemoveMember,
+    loadHistory,
+    getChannels,
+} = messageSlices.actions

@@ -15,7 +15,8 @@ export const mediaWithTag = (
     phone: string,
     tablet: string,
     desktop: string
-): string => media(`${tag}: ${phone};`, `${tag}: ${tablet};`, `${tag}: ${desktop};`)
+): string =>
+    media(`${tag}: ${phone};`, `${tag}: ${tablet};`, `${tag}: ${desktop};`)
 
 export const tinyPhoneMedia = (phone: string) => {
     return `

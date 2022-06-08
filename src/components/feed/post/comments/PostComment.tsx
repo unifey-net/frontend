@@ -45,7 +45,10 @@ const Comment = styled.div<{ indent: number }>`
 /**
  * Post comments.
  */
-const PostComment: React.FC<{ comment: any, children?: React.ReactNode }> = ({ comment, children }) => {
+const PostComment: React.FC<{ comment: any; children?: React.ReactNode }> = ({
+    comment,
+    children,
+}) => {
     const [content, setContent] = useState(comment.comment.content)
     const [loading, setLoading] = useState(false)
 
@@ -115,10 +118,16 @@ const PostComment: React.FC<{ comment: any, children?: React.ReactNode }> = ({ c
                         <>
                             <Input.TextArea
                                 value={commentValue}
-                                onChange={val => setCommentValue(val.target.value)}
+                                onChange={val =>
+                                    setCommentValue(val.target.value)
+                                }
                                 id={`${comment.comment.id}_content`}
                             />
-                            <Button onClick={updateContent} className="edit-button" loading={loading}>
+                            <Button
+                                onClick={updateContent}
+                                className="edit-button"
+                                loading={loading}
+                            >
                                 Done
                             </Button>
                         </>

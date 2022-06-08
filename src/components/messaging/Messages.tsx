@@ -36,9 +36,11 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
     const endRef = useRef<HTMLDivElement>(null)
     const { loadMessageHistory } = useMessageSocket()
 
-    const { messages, pageCount: maxPage, typing } = useSelector(
-        (state: any) => state.messages
-    )[`${id}`]
+    const {
+        messages,
+        pageCount: maxPage,
+        typing,
+    } = useSelector((state: any) => state.messages)[`${id}`]
     const { username: selfUsername, id: selfId } = useSelector(
         (state: any) => state.auth.user
     )
@@ -82,9 +84,9 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
                         Scroll to Bottom
                     </button>
 
-                    { page <= maxPage && <button onClick={loadMore}>
-                        Force Load More
-                    </button>}
+                    {page <= maxPage && (
+                        <button onClick={loadMore}>Force Load More</button>
+                    )}
                 </div>
                 {messages.map((message: Message | IncomingMessageResponse) => {
                     // incoming message
@@ -104,7 +106,11 @@ const Messages: React.FC<{ id: number }> = ({ id }) => {
                         // outgoing
                         const { time, message: content } = message
                         return (
-                            <MessageJsx user={selfUsername} message={content} time={new Date(time)} />
+                            <MessageJsx
+                                user={selfUsername}
+                                message={content}
+                                time={new Date(time)}
+                            />
                         )
                     }
                 })}

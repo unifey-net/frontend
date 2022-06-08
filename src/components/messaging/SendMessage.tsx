@@ -29,7 +29,10 @@ const SendBox = styled.div`
  * Typing updates are sent from here.
  */
 const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
-    const { typing: { startTyping, stopTyping }, messages: { sendMessage }} = useMessageSocket()
+    const {
+        typing: { startTyping, stopTyping },
+        messages: { sendMessage },
+    } = useMessageSocket()
 
     const [content, setContent] = useState("")
     const [lastTypingUpdate, setLastTypingUpdate] = useState(0)
@@ -67,7 +70,9 @@ const SendMessage: React.FC<{ channel: number }> = ({ channel }) => {
 
         sendMessage(content, channel)
 
-        dispatch(outgoingMessage({ message: content, channel, time: Date.now() }))
+        dispatch(
+            outgoingMessage({ message: content, channel, time: Date.now() })
+        )
 
         setContent("")
 

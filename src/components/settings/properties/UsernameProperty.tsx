@@ -38,7 +38,9 @@ const UsernameProperty: React.FC = () => {
                 const retryWhen = request.headers["x-rate-limit-reset"]
                 const date = new Date(+retryWhen)
 
-                setError(`You can change your name at ${date.toLocaleString()}.`)
+                setError(
+                    `You can change your name at ${date.toLocaleString()}.`
+                )
 
                 setDisabled(true)
 
@@ -47,7 +49,7 @@ const UsernameProperty: React.FC = () => {
 
             default: {
                 setError(request.data.payload)
-                break;
+                break
             }
         }
 

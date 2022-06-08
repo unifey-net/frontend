@@ -34,7 +34,12 @@ const Role = styled.div`
 /**
  * A community role.
  */
-const CommunityRole: React.FC<Props> = ({ index, userRole, selfRole, community }) => {
+const CommunityRole: React.FC<Props> = ({
+    index,
+    userRole,
+    selfRole,
+    community,
+}) => {
     const { name, id } = userRole
 
     const [role, setRole] = useState(userRole.role)

@@ -9,10 +9,10 @@ import {
 } from "../../../api/community/CustomFeed"
 import Status, { COMPLETE, ERROR, LOADING } from "../../../api/util/Status"
 import FeedSkeleton from "../FeedSkeleton"
-import History from "../../../api/History"
 import { API } from "../../../api/ApiHandler"
 import toast from "react-hot-toast"
 import { CommunityRequest } from "../../../api/community/CommunityUtil"
+import { useNavigate } from "react-router-dom"
 
 type Props = {
     url: string
@@ -24,6 +24,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     const [page, setPage] = useState(1)
     const [maxPage, setMaxPage] = useState(-1)
     const [posts, setPosts] = useState([] as PostResponse[])
+    const nav = useNavigate()
 
     const [sort, changeSort] = useSortChanger("NEW", sort => {
         console.debug(`Feed (SELF): Sort has changed to ${sort}`)
@@ -38,7 +39,11 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
      * Load another post.
      */
     const loadMore = async (sortChanged: boolean = false) => {
-        if ((maxPage === 0 || (maxPage !== -1 && page > maxPage)) && !sortChanged) return
+        if (
+            (maxPage === 0 || (maxPage !== -1 && page > maxPage)) &&
+            !sortChanged
+        )
+            return
 
         let requestingPage = sortChanged ? 1 : page
 
@@ -67,7 +72,7 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
     }, [])
 
     if (status.status === LOADING) {
-        return <Spin indicator={<LoadingOutlined/>} />
+        return <Spin indicator={<LoadingOutlined />} />
     }
 
     return (
@@ -78,20 +83,22 @@ const CustomFeed: React.FC<Props> = ({ focus, url }) => {
             currentSort={sort}
             changeSort={changeSort}
             posts={posts}
-            focusChange={async (post) => {
-                // focusing on community post requires more effort 
+            focusChange={async post => {
+                // focusing on community post requires more effort
                 if (post.post.feed.startsWith("cf_")) {
-                    let response = await API.get(`/community/${post.post.feed.replace("cf_", "")}`)
-                    
+                    let response = await API.get(
+                        `/community/${post.post.feed.replace("cf_", "")}`
+                    )
+
                     if (response.status !== 200) {
                         toast.error("There was an issue focusing on that post!")
                     } else {
                         const community = response.data as CommunityRequest
 
-                        History.push(`/c/${community.community.name}/${post.post.id}`)
+                        nav(`/c/${community.community.name}/${post.post.id}`)
                     }
                 } else {
-                    History.push(`/u/${post.author.username}/${post.post.id}`)   
+                    nav(`/u/${post.author.username}/${post.post.id}`)
                 }
             }}
         />

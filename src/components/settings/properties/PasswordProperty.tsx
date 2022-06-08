@@ -43,14 +43,16 @@ const PasswordProperty: React.FC = () => {
             <h3>Password</h3>
 
             {error !== "" && (
-                <Alert style={{maxWidth: "550px"}} className="error" type="error" message={error} />
+                <Alert
+                    style={{ maxWidth: "550px" }}
+                    className="error"
+                    type="error"
+                    message={error}
+                />
             )}
 
             <div className="input">
-                <Input.Password
-                    id="password"
-                    disabled={!self.verified}
-                />
+                <Input.Password id="password" disabled={!self.verified} />
 
                 <Button
                     ghost

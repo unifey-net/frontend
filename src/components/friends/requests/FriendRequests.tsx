@@ -30,7 +30,7 @@ export const FriendRequestsStyle = styled.div`
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        
+
         background-color: ${({ theme }) => theme.primary};
 
         padding: 8px;

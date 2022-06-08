@@ -43,7 +43,10 @@ const useAddFriendModal = (onAdd: () => void): [JSX.Element, () => void] => {
             onOk={addUser}
         >
             <h3>Username</h3>
-            <Input value={usernameValue} onChange={val => setUsernameValue(val.target.value)}/>
+            <Input
+                value={usernameValue}
+                onChange={val => setUsernameValue(val.target.value)}
+            />
 
             {error !== "" && (
                 <Alert showIcon={true} message={error} type="error"></Alert>

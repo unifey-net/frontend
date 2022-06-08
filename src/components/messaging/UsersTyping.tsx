@@ -22,7 +22,6 @@ export const Dot = styled.span`
 const UsersTyping: React.FC<{ channel: number }> = ({ channel }) => {
     const { typing } = useSelector((state: any) => state.messages)[`${channel}`]
 
-
     return (
         <div>
             {typing.map(

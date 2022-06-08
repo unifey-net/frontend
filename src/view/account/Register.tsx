@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
-import history from "../../api/History"
 import { Link, useNavigate } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
@@ -44,8 +43,7 @@ const Register = () => {
     const nav = useNavigate()
 
     useEffect(() => {
-        if (signedIn())
-            nav("/")
+        if (signedIn()) nav("/")
     }, [])
 
     const [ref, setRef] = useState<ReCAPTCHA>()
@@ -111,7 +109,7 @@ const Register = () => {
         if (response.status === 200) {
             dispatch(logIn({ token: response.data.token }))
 
-            history.push("/")
+            nav("/")
             window.location.reload()
         } else {
             ref?.reset()

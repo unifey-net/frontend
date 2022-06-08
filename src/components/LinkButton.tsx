@@ -1,5 +1,4 @@
-
-import { Spin } from "antd";
+import { Spin } from "antd"
 import React from "react"
 
 type ButtonProps = {
@@ -11,13 +10,11 @@ type ButtonProps = {
 const LinkButton: React.FC<ButtonProps> = ({ children, onClick, loading }) => {
     return (
         <button
-            onClick={onClick === undefined ? () => { } : onClick}
+            onClick={onClick === undefined ? () => {} : onClick}
             className="cursor-pointer hover:text-gray-300 text-white background-transparent px-3 py-1 outline-none focus:outline-none mr-1 mb-1"
         >
-            {children} 
-            { loading &&
-                <Spin/>
-            }
+            {children}
+            {loading && <Spin />}
         </button>
     )
 }

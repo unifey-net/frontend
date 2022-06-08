@@ -1,9 +1,6 @@
 import React from "react"
 import PostVote from "./PostVote"
-import History from "../../../api/History"
-import {
-    PostResponse,
-} from "../../../api/Feeds"
+import { PostResponse } from "../../../api/Feeds"
 import { parseBody } from "../../../api/Emotes"
 import PostAbout from "./PostAbout"
 import PostManagement from "./PostManagement"
@@ -11,6 +8,7 @@ import useEmotes from "../../../api/community/useEmotes"
 import styled from "styled-components"
 import PostTag from "./PostTag"
 import { media } from "../../../api/util/Media"
+import { useNavigate } from "react-router-dom"
 
 type Props = {
     postResponse: PostResponse
@@ -18,7 +16,10 @@ type Props = {
     disableBottomBorderRadius: boolean
 }
 
-const PostStyle = styled.div<{ allowFocusChange: boolean, disableBottomBorderRadius: boolean }>`
+const PostStyle = styled.div<{
+    allowFocusChange: boolean
+    disableBottomBorderRadius: boolean
+}>`
     background-color: ${({ theme }) => theme.primary};
     ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
     border-radius: 32px;
@@ -34,7 +35,8 @@ const PostStyle = styled.div<{ allowFocusChange: boolean, disableBottomBorderRad
 
         .post-title {
             color: white;
-            cursor: ${({ allowFocusChange }) => allowFocusChange ? "pointer" : "inherit"};
+            cursor: ${({ allowFocusChange }) =>
+                allowFocusChange ? "pointer" : "inherit"};
         }
 
         .user-view {
@@ -67,30 +69,40 @@ const PostStyle = styled.div<{ allowFocusChange: boolean, disableBottomBorderRad
         display: flex;
         flex-direction: row;
         background-color: ${({ theme }) => theme.secondary};
-        border-radius: ${({ disableBottomBorderRadius }) => disableBottomBorderRadius ? "0" : "0 0 32px 32px;"};
+        border-radius: ${({ disableBottomBorderRadius }) =>
+            disableBottomBorderRadius ? "0" : "0 0 32px 32px;"};
     }
 `
 
 /**
  * A post
  */
-const Post = ({ postResponse, focusChange, disableBottomBorderRadius }: Props) => {
+const Post = ({
+    postResponse,
+    focusChange,
+    disableBottomBorderRadius,
+}: Props) => {
     const { post, vote, author } = postResponse
     let emotes = useEmotes()
+    const nav = useNavigate()
 
     /**
      * Update focus.
      */
     const updateFocus = () => {
-        if (focusChange === true)
-            History.push(`${window.location.pathname}/${post.id}`)
+        if (focusChange === true) nav(`${window.location.pathname}/${post.id}`)
         else if (typeof focusChange === "function") {
             focusChange()
         }
     }
 
     return (
-        <PostStyle allowFocusChange={focusChange === true || typeof focusChange === "function"} disableBottomBorderRadius={disableBottomBorderRadius}>
+        <PostStyle
+            allowFocusChange={
+                focusChange === true || typeof focusChange === "function"
+            }
+            disableBottomBorderRadius={disableBottomBorderRadius}
+        >
             <div className="post-header">
                 <div className="user-view">
                     <p>{author.username}</p>

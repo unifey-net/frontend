@@ -1,23 +1,18 @@
 import React from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
 
 import "antd/dist/antd.dark.css"
 
-import history from "./api/History"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { isExpired } from "./api/user/User"
 import toast, { Toaster } from "react-hot-toast"
-import { ThemeProvider } from "styled-components"
-import GlobalStyle from "./util/GlobalStyle"
-import theme from "./util/Theme"
 import useNotificationPopUp from "./components/notifications/NotificationPopUp"
 import { useLiveSocket } from "./api/live/Live"
 import MultipleInstances from "./util/MultipleInstances"
 import NoConnection from "./util/NoConnection"
-import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "./util/Redux"
 import { logOut } from "./api/user/redux/auth.redux"
 import Home from "./view/Home"
@@ -38,12 +33,13 @@ import Privacy from "./view/Privacy"
 import Friends from "./view/account/Friends"
 import Register from "./view/account/Register"
 import NotFound from "./view/NotFound"
-import UserView from "./components/view/UserView"
 import Create from "./view/community/Create"
 import ModerateCommunityPage from "./view/community/community/ModerateCommunityPage"
 import About from "./view/about/About"
 
 export default function App() {
+    const nav = useNavigate()
+
     useLiveSocket()
     useNotificationPopUp()
 
@@ -68,11 +64,10 @@ export default function App() {
         case 4011: {
             dispatch(logOut())
 
+            window.location.reload()
+            nav("/login")
             toast.error("Your token has expired!")
 
-            window.location.reload()
-
-            history.push("")
             break
         }
     }
@@ -96,7 +91,7 @@ export default function App() {
                 <div className="content-container">
                     <Routes>
                         <Route path="/">
-                            <Route index element={<Home />}/>
+                            <Route index element={<Home />} />
                             <Route path="c">
                                 <Route index element={<Communities />} />
                                 <Route path="/create" element={<Create />} />
@@ -106,10 +101,11 @@ export default function App() {
                                     element={<ModerateCommunityPage />}
                                 />
                             </Route>
-                            <Route
-                                path="u"
-                            >
-                                <Route index element={<>user list... coming soon :)</>} />
+                            <Route path="u">
+                                <Route
+                                    index
+                                    element={<>user list... coming soon :)</>}
+                                />
                                 <Route path=":name" element={<User />} />
                             </Route>
                             <Route path="/tos" element={<Tos />} />
@@ -131,7 +127,7 @@ export default function App() {
                             <Route path="/privacy" element={<Privacy />} />
                             <Route path="/friends" element={<Friends />} />
                             <Route path="/register" element={<Register />} />
-                            <Route path="/about" element={<About/>} />
+                            <Route path="/about" element={<About />} />
                             <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
-import history from "../../api/History"
 import { Link, useNavigate } from "react-router-dom"
 
 import FormItem from "antd/lib/form/FormItem"
@@ -44,8 +43,7 @@ const Login = () => {
     let [error, setError] = useState("")
 
     useEffect(() => {
-        if (signedIn())
-            nav("/")
+        if (signedIn()) nav("/")
     }, [])
 
     const loginForm = async (values: Store) => {
@@ -65,7 +63,7 @@ const Login = () => {
 
             dispatch(logIn({ token: token.token }))
 
-            history.push("/")
+            nav("/")
             window.location.reload()
         } else {
             ref?.reset()
@@ -87,12 +85,15 @@ const Login = () => {
 
         formData.set("token", obj.accessToken)
 
-        const request = await API.post("/authenticate/connections/google", formData)
+        const request = await API.post(
+            "/authenticate/connections/google",
+            formData
+        )
 
         if (request.status === 200) {
             dispatch(logIn(request.data.token.token))
 
-            history.push("/")
+            nav("/")
             window.location.reload()
         } else {
             setError(request.data.payload)

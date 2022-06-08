@@ -36,13 +36,16 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
 
     const storedCommunity = useSelector(
         (state: any) =>
-            state.community[getNameById(state.community, +object.feed.substring(3))]
+            state.community[
+                getNameById(state.community, +object.feed.substring(3))
+            ]
     )
 
     const editing = useEditingStatus(object.id)
     const dispatch = useDispatch()
 
-    const isModerator = storedCommunity !== undefined && storedCommunity.selfRole >= 2
+    const isModerator =
+        storedCommunity !== undefined && storedCommunity.selfRole >= 2
     const isOwner = self.id === object.authorId
 
     const toggleEditing = () => {
@@ -50,7 +53,9 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
             dispatch(stopEditing())
         } else {
             dispatch(
-                startEditing({ id: object.id, type: type === "comment" ? "comment" : "post"
+                startEditing({
+                    id: object.id,
+                    type: type === "comment" ? "comment" : "post",
                 })
             )
         }
@@ -111,12 +116,10 @@ const PostManagement: React.FC<Props> = ({ object, type }) => {
     )
 
     return (
-        <Dropdown
-            overlay={menu}
-        >
+        <Dropdown overlay={menu}>
             <CaretDownFilled className="hover:text-blue-600 cursor-pointer" />
         </Dropdown>
     )
 }
 
-export default PostManagement;
+export default PostManagement

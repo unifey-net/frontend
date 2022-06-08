@@ -23,9 +23,13 @@ export type CustomFeedResponse = {
 
 /**
  * Get a custom feed.
- * 
+ *
  * @param url Something like /feeds/self.
  */
-export const getCustomFeed = async (url: string, sort: string, page: number) => {
+export const getCustomFeed = async (
+    url: string,
+    sort: string,
+    page: number
+) => {
     return API.get(`${url}?page=${page}&sort=${sort}`)
 }

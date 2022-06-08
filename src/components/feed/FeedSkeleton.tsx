@@ -10,7 +10,6 @@ import DefaultContainer from "../DefaultContainer"
 import { media } from "../../api/util/Media"
 
 const LinksStyle = styled.div`
-
     ${media("max-width: 500px;", "width: 500px;", "width: 500px;")}
     display: flex;
     flex-direction: row;
@@ -42,7 +41,7 @@ const LinksStyle = styled.div`
 const LinksSkeleton: React.FC<{
     onReload: () => void
     createPost?: () => void | undefined
-    changeSort: () => void 
+    changeSort: () => void
     currentSort: string
 }> = ({ onReload, createPost, changeSort, currentSort }) => {
     return (
@@ -71,7 +70,7 @@ const LinksSkeleton: React.FC<{
 
 /**
  * Props for FeedSkeleton
- * 
+ *
  */
 type Props = {
     posts: PostResponse[]
@@ -107,7 +106,7 @@ const FeedSkeleton: React.FC<Props> = ({
     changeSort,
     currentSort,
     isFeedEmpty,
-    focusChange
+    focusChange,
 }) => {
     if (isFeedEmpty || posts.length === 0) {
         return (

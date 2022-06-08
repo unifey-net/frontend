@@ -4,12 +4,20 @@ import { ReportRequest } from "../../../../api/Reports"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import { Alert, Button, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
-import { LOADING, COMPLETE, ERROR, DEFAULT_STATUS } from "../../../../api/util/Status"
+import {
+    LOADING,
+    COMPLETE,
+    ERROR,
+    DEFAULT_STATUS,
+} from "../../../../api/util/Status"
 import { getCommunityReports } from "../../../../api/Reports"
 import ModeratePage from "../ModeratePage"
 import styled from "styled-components"
 import { MdRefresh } from "react-icons/md"
-import { addReports, removeReports } from "../../../../api/community/redux/community.redux"
+import {
+    addReports,
+    removeReports,
+} from "../../../../api/community/redux/community.redux"
 import { useAppDispatch, useAppSelector } from "../../../../util/Redux"
 
 type Props = {
@@ -33,7 +41,9 @@ const Reports = styled.div`
  */
 const CommunityReports: React.FC<Props> = ({ community }) => {
     const dispatch = useAppDispatch()
-    const reports = useAppSelector((state) => state.community[community.community.name].community.reports)
+    const reports = useAppSelector(
+        state => state.community[community.community.name].community.reports
+    )
     const [{ status, message }, setStatus] = useState(DEFAULT_STATUS)
 
     const loadReports = async () => {
@@ -47,7 +57,12 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
         if (request.status !== 200) {
             setStatus({ message: request.data.payload, status: ERROR })
         } else {
-            dispatch(addReports({ community: community.community.id, reports: request.data }))
+            dispatch(
+                addReports({
+                    community: community.community.id,
+                    reports: request.data,
+                })
+            )
 
             setStatus({ message: "", status: COMPLETE })
         }
@@ -105,7 +120,7 @@ const CommunityReports: React.FC<Props> = ({ community }) => {
             )}
         </ModeratePage>
     ) : (
-        <Spin indicator={<LoadingOutlined/>} />
+        <Spin indicator={<LoadingOutlined />} />
     )
 }
 

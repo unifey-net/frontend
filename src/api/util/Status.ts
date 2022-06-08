@@ -31,5 +31,5 @@ export const ERROR = -1
  */
 export const DEFAULT_STATUS = {
     status: LOADING,
-    message: ""
+    message: "",
 } as Status

@@ -11,8 +11,9 @@ export const postSlice = createSlice({
     name: "post",
     initialState: -1,
     reducers: {
-        setPost: (state, action: PayloadAction<{ post: number }>) => action.payload.post
-    }
+        setPost: (state, action: PayloadAction<{ post: number }>) =>
+            action.payload.post,
+    },
 })
 
 /**
@@ -56,7 +57,7 @@ export const feedSlice = createSlice({
             state[id] = {
                 ...state[id],
                 sort,
-                posts
+                posts,
             } as FeedState
         },
         postFeed: (state, action: PayloadAction<{ feed: InitialFeed }>) => {
@@ -65,35 +66,39 @@ export const feedSlice = createSlice({
             state[feed.id] = {
                 feed,
                 posts: [],
-                page: 1
+                page: 1,
             }
         },
         clearFeed: (state, action: PayloadAction<{ id: string }>) => {
             state[action.payload.id] = {
                 ...state[action.payload.id],
                 posts: [],
-                page: 1
+                page: 1,
             }
         },
-        changeSort: (state, action: PayloadAction<{ id: string, sort: string }>) => {
+        changeSort: (
+            state,
+            action: PayloadAction<{ id: string; sort: string }>
+        ) => {
             const { id, sort } = action.payload
 
             state[id] = {
                 ...state[id],
-                sort
+                sort,
             }
         },
         bumpPage: (state, action: PayloadAction<{ id: string }>) => {
             const id = action.payload.id
             state[id] = {
                 ...state[id],
-                page: state[id].page + 1
+                page: state[id].page + 1,
             }
-        }
-    }
+        },
+    },
 })
 
-export const { bumpPage, changeSort, clearFeed, postFeed, loadFeed } = feedSlice.actions
+export const { bumpPage, changeSort, clearFeed, postFeed, loadFeed } =
+    feedSlice.actions
 
 /**
  * A post.
@@ -142,16 +147,20 @@ export const useFeed = (id: string): [FeedState | null, any] => {
         status: LOADING,
     } as Status)
 
-    let storedFeed = useAppSelector((state) => state.feeds[id])
+    let storedFeed = useAppSelector(state => state.feeds[id])
 
     useEffect(() => {
         const grabFeed = async () => {
             let resp = await getFeed(id)
 
             if (resp.status === 200) {
-                dispatch(postFeed({ feed: {
-                        feed: resp.data as Feed
-                    } }))
+                dispatch(
+                    postFeed({
+                        feed: {
+                            feed: resp.data as Feed,
+                        },
+                    })
+                )
 
                 setStatus({
                     status: COMPLETE,
@@ -361,7 +370,8 @@ export const createComment = async (
             )
         }
 
-        default: { // case 0
+        default: {
+            // case 0
             return await API.put(`/feeds/${feed}/post/${post}/comments`, form)
         }
     }

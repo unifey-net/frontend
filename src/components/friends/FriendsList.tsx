@@ -14,8 +14,8 @@ const ListStyle = styled.div``
 const FriendsList: React.FC = () => {
     const [{ data, loading, error }, refetch] = useApi("/user/friends")
 
-    if (loading) return <Spin/>
-    if (error) return <Empty/>
+    if (loading) return <Spin />
+    if (error) return <Empty />
 
     return (
         <ListStyle>
@@ -25,7 +25,7 @@ const FriendsList: React.FC = () => {
                 </div>
             ))}
 
-            { data.length === 0 && <Empty description="You have no friends." /> }
+            {data.length === 0 && <Empty description="You have no friends." />}
         </ListStyle>
     )
 }

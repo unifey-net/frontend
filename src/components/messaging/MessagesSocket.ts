@@ -4,7 +4,7 @@ import { useLiveSocket } from "../../api/live/Live"
  * All of the available actions through the messaging modal.
  */
 type MessagesSocket = {
-    createGroupChat: (users: number[]) => void,
+    createGroupChat: (users: number[]) => void
     loadMessageHistory: (channel: number, page: number) => void
     openDirectMessage: (user: number) => void
     groupChats: GroupChats
@@ -16,8 +16,8 @@ type MessagesSocket = {
  * Manage group chats.
  */
 type GroupChats = {
-    removeGroupChatMember: (user: number, channel: number) => void,
-    changeName: (channel: number, name: string) => void,
+    removeGroupChatMember: (user: number, channel: number) => void
+    changeName: (channel: number, name: string) => void
     changeDescription: (channel: number, description: string) => void
 }
 
@@ -25,7 +25,7 @@ type GroupChats = {
  * Manage messages.
  */
 type Messages = {
-    deleteMessage: (id: number) => void,
+    deleteMessage: (id: number) => void
     sendMessage: (message: string, channel: number) => void
 }
 
@@ -33,7 +33,7 @@ type Messages = {
  * Manage typing.
  */
 type Typing = {
-    startTyping: (channel: number) => void,
+    startTyping: (channel: number) => void
     stopTyping: (channel: number) => void
 }
 
@@ -44,10 +44,10 @@ export const useMessageSocket = (): MessagesSocket => {
     const [sendAction] = useLiveSocket()
 
     return {
-        openDirectMessage: (user) => {
+        openDirectMessage: user => {
             sendAction({
                 action: "OPEN_DIRECT_MESSAGE",
-                receiver: user
+                receiver: user,
             })
         },
         loadMessageHistory: (channel, page) => {
@@ -64,33 +64,33 @@ export const useMessageSocket = (): MessagesSocket => {
             })
         },
         messages: {
-            deleteMessage: (id) => {
+            deleteMessage: id => {
                 sendAction({
                     action: "DELETE_MESSAGE",
-                    id
+                    id,
                 })
             },
             sendMessage: (message, channel) => {
                 sendAction({
                     action: "SEND_MESSAGE",
                     message,
-                    channel
+                    channel,
                 })
-            }
+            },
         },
         typing: {
             startTyping: (channel: number) => {
                 sendAction({
                     action: "START_TYPING",
-                    channel
+                    channel,
                 })
             },
             stopTyping: (channel: number) => {
                 sendAction({
                     action: "STOP_TYPING",
-                    channel
+                    channel,
                 })
-            }
+            },
         },
         groupChats: {
             removeGroupChatMember: (user, channel) => {
@@ -98,7 +98,7 @@ export const useMessageSocket = (): MessagesSocket => {
                     action: "MODIFY_GROUP_CHAT",
                     type: "REMOVE_MEMBER",
                     user,
-                    channel
+                    channel,
                 })
             },
             changeName: (channel, name) => {
@@ -106,7 +106,7 @@ export const useMessageSocket = (): MessagesSocket => {
                     action: "MODIFY_GROUP_CHAT",
                     type: "CHANGE_NAME",
                     channel,
-                    name
+                    name,
                 })
             },
             changeDescription: (channel, description) => {
@@ -114,9 +114,9 @@ export const useMessageSocket = (): MessagesSocket => {
                     action: "MODIFY_GROUP_CHAT",
                     type: "CHANGE_DESCRIPTION",
                     channel,
-                    description
+                    description,
                 })
-            }
-        }
+            },
+        },
     }
 }

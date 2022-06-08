@@ -28,7 +28,7 @@ const API = axios.create({
 })
 
 export const useApi = makeUseAxios({
-    axios: API
+    axios: API,
 })
 
 /**

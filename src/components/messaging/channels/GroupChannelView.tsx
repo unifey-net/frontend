@@ -13,9 +13,7 @@ export const GroupChannelView: React.FC<{
 
     return (
         <ChannelStyle>
-            <button onClick={() => visible()}>
-                {channel.name}
-            </button>
+            <button onClick={() => visible()}>{channel.name}</button>
 
             {selfId === channel.owner && (
                 <GroupChatSettings channel={channel} />

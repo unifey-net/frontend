@@ -20,13 +20,16 @@ const MessageStyle = styled.div`
     }
 `
 
-const Message: React.FC<{ message: string, user: string, time: Date }> = ({ message, user, time }) => {
+const Message: React.FC<{ message: string; user: string; time: Date }> = ({
+    message,
+    user,
+    time,
+}) => {
     return (
         <MessageStyle>
             <Avatar size={16} src={getImageUrl(user)} />
             <p>
-                {time.toLocaleTimeString()}:
-                {user} - {message}
+                {time.toLocaleTimeString()}:{user} - {message}
             </p>
         </MessageStyle>
     )

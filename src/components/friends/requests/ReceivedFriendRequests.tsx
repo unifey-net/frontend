@@ -1,7 +1,14 @@
 import { Empty, Spin } from "antd"
 import React, { useState } from "react"
 import toast from "react-hot-toast"
-import { MdArrowDownward, MdArrowForward, MdCancel, MdCheckCircle, MdRefresh, MdSchedule } from "react-icons/md"
+import {
+    MdArrowDownward,
+    MdArrowForward,
+    MdCancel,
+    MdCheckCircle,
+    MdRefresh,
+    MdSchedule,
+} from "react-icons/md"
 import { API, useApi } from "../../../api/ApiHandler"
 import { FriendRequestsStyle } from "./FriendRequests"
 
@@ -11,7 +18,7 @@ const ReceivedFriendRequests: React.FC = () => {
     /**
      * Deny the friend request
      */
-    const denyRequest  = async (id: number) => {
+    const denyRequest = async (id: number) => {
         let response = await API.delete(`/user/friends/requests/${id}`)
 
         if (response.status === 200) {
@@ -31,7 +38,7 @@ const ReceivedFriendRequests: React.FC = () => {
         form.append("id", `${id}`)
 
         let response = await API.put(`/user/friends/requests`, form)
-        
+
         if (response.status === 200) {
             toast.success("Successfully accepted request.")
             refetch()

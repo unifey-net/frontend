@@ -31,7 +31,9 @@ const MobileCommunityProfileStyle = styled.div`
 /**
  * A community profile for mobile.
  */
-const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ community }) => {
+const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({
+    community,
+}) => {
     return (
         <MobileCommunityProfileStyle>
             <div>
@@ -68,4 +70,4 @@ const MobileCommunityProfile: React.FC<{ community: CommunityRequest }> = ({ com
     )
 }
 
-export default MobileCommunityProfile;
+export default MobileCommunityProfile

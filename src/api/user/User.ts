@@ -197,7 +197,7 @@ export const login = async (
             {
                 status: ERROR,
                 message: request.data.payload,
-            }
+            },
         ]
     }
 }

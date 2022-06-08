@@ -29,9 +29,7 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
         )
 
         if (request.status !== 200) {
-            toast.error(
-                "There was an issue updating the permissions."
-            )
+            toast.error("There was an issue updating the permissions.")
         }
     }
 
@@ -64,7 +62,9 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
                     />
 
                     <CommunityPermission
-                        initialValue={community.community.permissions.commentRole}
+                        initialValue={
+                            community.community.permissions.commentRole
+                        }
                         title="Comment Level"
                         desc="This is what level a user must be to be able to comment
                         on posts."
@@ -88,4 +88,4 @@ const GeneralSettings: React.FC<Props> = ({ community }) => {
     )
 }
 
-export default GeneralSettings;
+export default GeneralSettings

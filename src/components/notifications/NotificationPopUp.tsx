@@ -4,7 +4,11 @@ import React, { useEffect } from "react"
 import { MdClose } from "react-icons/md"
 import { useState } from "react"
 import { useNotificationActions } from "../../api/notification/NotificationsSocket"
-import { deleteAllNotifications, deleteNotification, setReadStatus } from "../../api/notification/Notifications"
+import {
+    deleteAllNotifications,
+    deleteNotification,
+    setReadStatus,
+} from "../../api/notification/Notifications"
 
 const notificationToastTheme = {
     className: "toast-notification",
@@ -13,9 +17,12 @@ const notificationToastTheme = {
 
 const useNotificationPopUp = () => {
     const dispatch = useDispatch()
-    const { deleteNotification: socketDeleteNotification, readNotification } = useNotificationActions()
+    const { deleteNotification: socketDeleteNotification, readNotification } =
+        useNotificationActions()
 
-    const notifications = useSelector((store: any) => store.notifications.notifications)
+    const notifications = useSelector(
+        (store: any) => store.notifications.notifications
+    )
     const [oldSize, setOldSize] = useState(notifications.length)
 
     const closeNotification = (toastId: string, notifId: number) => {

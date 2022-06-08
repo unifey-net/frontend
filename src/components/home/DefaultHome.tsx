@@ -3,33 +3,37 @@ import styled from "styled-components"
 import { desktopMedia, media } from "../../api/util/Media"
 
 const Home = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  img {
-    ${media("transform: scale(0.5);", "transform: scale(0.75);", "transform: scale(1.0);")}
-  }
-
-  .questions {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    gap: 2rem;
-    
-    ${media("", "flex-direction: row;", "flex-direction: row;")}
-    
-    div {
-      max-width: 150px;
-      padding-left: 16px;
-      padding-right: 16px;
+
+    img {
+        ${media(
+            "transform: scale(0.5);",
+            "transform: scale(0.75);",
+            "transform: scale(1.0);"
+        )}
     }
 
-    p {
-      overflow-wrap: break-word;
-      max-width: 20rem;
+    .questions {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        ${media("", "flex-direction: row;", "flex-direction: row;")}
+
+        div {
+            max-width: 150px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        p {
+            overflow-wrap: break-word;
+            max-width: 20rem;
+        }
     }
-  }
 `
 
 const DefaultHome: React.FC = () => {

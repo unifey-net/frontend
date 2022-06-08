@@ -45,14 +45,12 @@ export default (community: number): [() => void, JSX.Element] => {
             )
         } else {
             dispatch(
-                addRule(
-                    {
-                        community,
-                        body: values.body,
-                        title: values.title,
-                        id: request.data.payload,
-                    },
-                )
+                addRule({
+                    community,
+                    body: values.body,
+                    title: values.title,
+                    id: request.data.payload,
+                })
             )
             setVisible(false)
         }

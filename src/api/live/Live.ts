@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import Message from "../../components/messaging/objects/Message"
 import store from "../../redux/store"
 import { VERSION } from "../ApiHandler"
-import History from "../History"
 import { Member, Profile, signedIn, User } from "../user/User"
 import { useAppDispatch, useAppSelector } from "../../util/Redux"
 import {
@@ -30,6 +28,7 @@ import {
     startTyping,
     stopTyping,
 } from "../../components/messaging/redux/messages"
+import { useNavigate } from "react-router-dom"
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production") return "wss://api.ajkn.us/unifey"
@@ -47,6 +46,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
     const [lastPong, setLastPong] = useState(Date.now())
     const liveState = useAppSelector(state => state.live)
     const pingInterval = 15000
+    const nav = useNavigate()
 
     const dispatch = useAppDispatch()
 
@@ -99,11 +99,11 @@ export const useLiveSocket = (): [(action: any) => void] => {
 
         socket.onclose = message => {
             console.error(`LIVE Socket Disconnected: %o`, message)
-            
+
             if (liveState.error === -1) {
                 dispatch(disconnectSocket({ error: message.code }))
             } else {
-                dispatch(disconnectSocket({ }))
+                dispatch(disconnectSocket({}))
             }
         }
 
@@ -260,7 +260,7 @@ export const useLiveSocket = (): [(action: any) => void] => {
                 }
 
                 case "sign_out": {
-                    History.push("/?msg=pswd")
+                    nav("/?msg=pswd")
                     dispatch(logOut())
                     window.location.reload()
                     break

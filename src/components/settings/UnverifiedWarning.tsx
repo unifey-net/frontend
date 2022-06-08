@@ -17,7 +17,11 @@ const UnverifiedWarning: React.FC = () => {
         if (request === 0) {
             message.success("Email has been sent! Check your inbox.", 2.5)
         } else {
-            message.error(`You must wait til ${new Date(+request).toLocaleString()} before requesting another resend!`)
+            message.error(
+                `You must wait til ${new Date(
+                    +request
+                ).toLocaleString()} before requesting another resend!`
+            )
         }
 
         setLoading(false)

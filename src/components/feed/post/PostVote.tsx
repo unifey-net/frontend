@@ -24,7 +24,8 @@ const PostStyle = styled.div<{ hasUpVoted: boolean; hasDownVoted: boolean }>`
     }
 
     .downvote {
-        color: ${({ hasDownVoted }) => (hasDownVoted ? "#d9a521;" : "inherit;")};
+        color: ${({ hasDownVoted }) =>
+            hasDownVoted ? "#d9a521;" : "inherit;"};
     }
 `
 
@@ -148,4 +149,4 @@ const PostVote: React.FC<Props> = ({ vote, post, postType }) => {
     )
 }
 
-export default PostVote;
+export default PostVote

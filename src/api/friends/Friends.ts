@@ -9,7 +9,7 @@ import { useAppSelector } from "../../util/Redux"
  * @param id The ID of the friend.
  */
 export const useFriend = (id: number) => {
-    const friends = useAppSelector((state) => state.friends.friends)
+    const friends = useAppSelector(state => state.friends.friends)
     const filter = friends.filter((fr: Friend) => fr.id === id)
 
     if (filter.length > 0) return filter[0]

@@ -1,7 +1,7 @@
-import ChannelType from "./ChannelType";
+import ChannelType from "./ChannelType"
 
 type MessageChannel = {
-    id: number,
+    id: number
     channelType: ChannelType
 }
 

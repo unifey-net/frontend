@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import history from "../api/History"
 import SelfView from "./view/SelfView"
 import styled from "styled-components"
-import { desktopMedia, media, mediaWithTag, tinyPhoneMedia } from "../api/util/Media"
+import {
+    desktopMedia,
+    media,
+    mediaWithTag,
+    tinyPhoneMedia,
+} from "../api/util/Media"
 import Logo from "./Logo/Logo"
 
 const HeaderStyle = styled.div`
@@ -68,7 +72,8 @@ const HeaderStyle = styled.div`
 
 const HeaderLink = styled.div<{ isLast: boolean }>`
     a {
-        ${({ isLast }) => (isLast ? "" : mediaWithTag("margin-right", "6px", "6px", "16px"))}
+        ${({ isLast }) =>
+            isLast ? "" : mediaWithTag("margin-right", "6px", "6px", "16px")}
     }
 `
 
@@ -99,10 +104,14 @@ const Header: React.FC = () => {
             </div>
             <div className="links">
                 {pages.map((obj, index) => (
-                    <HeaderLink isLast={pages.length === (index + 1)}>
+                    <HeaderLink isLast={pages.length === index + 1}>
                         <Link
                             key={index}
-                            className={location.pathname === obj.location ? "active" : ""}
+                            className={
+                                location.pathname === obj.location
+                                    ? "active"
+                                    : ""
+                            }
                             to={obj.location}
                         >
                             {obj.name}

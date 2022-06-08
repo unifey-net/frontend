@@ -16,39 +16,49 @@ export const liveSlice = createSlice({
         authenticated: false,
         lastUsed: -1,
         lastMessage: { type: "NONE", response: {} },
-        error: -1
+        error: -1,
     } as LiveState,
     reducers: {
         /**
          * When the sockets authenticated. Starts at the beginning of connection (usually)
          */
-        authenticateSocket: (state) => {
+        authenticateSocket: state => {
             state.authenticated = true
         },
         /**
          * When the socket initially connects
          */
-        connectSocket: (state) => {
+        connectSocket: state => {
             state.connected = true
         },
         /**
          * When the socket disconnects.
          * Becomes unauthenticated and disconnected
          */
-        disconnectSocket: (state, action: PayloadAction<{ error?: number }>) => {
+        disconnectSocket: (
+            state,
+            action: PayloadAction<{ error?: number }>
+        ) => {
             state.connected = false
             state.authenticated = false
 
-            if (action.payload.error)
-                state.error = action.payload.error
+            if (action.payload.error) state.error = action.payload.error
         },
         /**
          * When a new message comes into the socket.
          */
-        socketResponse: (state, action: PayloadAction<{ response: SocketResponse }>) => {
+        socketResponse: (
+            state,
+            action: PayloadAction<{ response: SocketResponse }>
+        ) => {
             state.lastMessage = action.payload.response
-        }
-    }
+        },
+    },
 })
 
-export const { disconnectSocket, authenticateSocket, socketResponse, connectSocket } = liveSlice.actions
+export const {
+    disconnectSocket,
+    authenticateSocket,
+    socketResponse,
+    connectSocket,
+} = liveSlice.actions

@@ -54,4 +54,4 @@ const useInputModal = (
     ]
 }
 
-export default useInputModal;
+export default useInputModal

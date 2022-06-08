@@ -94,10 +94,7 @@ const EmailProperty: React.FC = () => {
                             ghost
                             loading={loading}
                             onClick={onClick}
-                            disabled={
-                                !self.verified ||
-                                input === email
-                            }
+                            disabled={!self.verified || input === email}
                         >
                             Update Email
                         </Button>

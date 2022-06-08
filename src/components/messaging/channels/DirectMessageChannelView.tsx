@@ -11,7 +11,7 @@ export const DirectMessageChannelView: React.FC<{
     channel: DirectMessageChannel
     modal: JSX.Element
 }> = ({ visible, channel, modal }) => {
-console.error(channel)
+    console.error(channel)
 
     const selfId = useSelector((state: any) => state.auth.user.id)
     const friend = useFriend(getOtherUser(selfId, channel))

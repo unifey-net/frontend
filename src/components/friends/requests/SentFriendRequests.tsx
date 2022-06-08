@@ -7,7 +7,7 @@ import {
     MdArrowForward,
     MdCancel,
     MdRefresh,
-    MdSchedule
+    MdSchedule,
 } from "react-icons/md"
 import { API, useApi } from "../../../api/ApiHandler"
 import useAddFriendModal from "./AddFriendModal"
@@ -69,7 +69,13 @@ const SentFriendRequests: React.FC = () => {
                             {data.map((data: any, index: number) => (
                                 <div className="request" key={index}>
                                     <p>
-                                        <button onClick={() => deleteRequest(data.friendRequest.sentTo)}>
+                                        <button
+                                            onClick={() =>
+                                                deleteRequest(
+                                                    data.friendRequest.sentTo
+                                                )
+                                            }
+                                        >
                                             <MdCancel />
                                         </button>
                                     </p>

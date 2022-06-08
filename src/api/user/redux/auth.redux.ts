@@ -72,14 +72,21 @@ export const authSlice = createSlice({
         /**
          * When the user logs out.
          */
-        logOut: (state) => {
+        logOut: state => {
             Object.assign(state, defaultState())
             saveState("")
         },
         /**
          * When a user object is grabbed from the websocket.
          */
-        importUser: (state, action: PayloadAction<{ user: User, member: Member, profile: Profile }>) => {
+        importUser: (
+            state,
+            action: PayloadAction<{
+                user: User
+                member: Member
+                profile: Profile
+            }>
+        ) => {
             const { member, user, profile } = action.payload
 
             state.member = member
@@ -118,19 +125,38 @@ export const authSlice = createSlice({
          * When a user subscribes to a communities notifications.
          */
         subscribeCommunity: (state, action: PayloadAction<{ id: number }>) => {
-            state.member.notifications = [...state.member.notifications, action.payload.id]
+            state.member.notifications = [
+                ...state.member.notifications,
+                action.payload.id,
+            ]
         },
         /**
          * When a user unsubscribes from a communities notifications.
          */
-        unSubscribeCommunity: (state, action: PayloadAction<{ id: number }>) => {
+        unSubscribeCommunity: (
+            state,
+            action: PayloadAction<{ id: number }>
+        ) => {
             const index = state.member.notifications.indexOf(action.payload.id)
 
             if (index > -1) {
-                state.member.notifications = state.member.notifications.splice(index, 1)
+                state.member.notifications = state.member.notifications.splice(
+                    index,
+                    1
+                )
             }
-        }
-    }
+        },
+    },
 })
 
-export const { unSubscribeCommunity, subscribeCommunity, leaveCommunity, joinCommunity, verifyAccount, updateName, importUser, logOut, logIn} = authSlice.actions
+export const {
+    unSubscribeCommunity,
+    subscribeCommunity,
+    leaveCommunity,
+    joinCommunity,
+    verifyAccount,
+    updateName,
+    importUser,
+    logOut,
+    logIn,
+} = authSlice.actions

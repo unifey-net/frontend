@@ -9,9 +9,11 @@ export const emoteSlice = createSlice({
     name: "emote",
     initialState: [] as Emote[],
     reducers: {
-        postEmotes: (state, action: PayloadAction<{ emotes: Emote[] }>) =>
-            [...state, ...action.payload.emotes]
-    }
+        postEmotes: (state, action: PayloadAction<{ emotes: Emote[] }>) => [
+            ...state,
+            ...action.payload.emotes,
+        ],
+    },
 })
 
 /**

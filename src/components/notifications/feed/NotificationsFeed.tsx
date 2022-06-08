@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 import { useNotificationActions } from "../../../api/notification/NotificationsSocket"
 import FeedNotification from "./SingleNotification"
-import { deleteAllNotifications, setAllReadStatus } from "../../../api/notification/Notifications"
+import {
+    deleteAllNotifications,
+    setAllReadStatus,
+} from "../../../api/notification/Notifications"
 
 const FeedStyle = styled.div`
     display: flex;
@@ -36,11 +39,14 @@ const NotificationsFeed: React.FC = () => {
     )
     const unreadCount = useSelector((store: any) => store.notifications.unread)
     // to make sure page updates on delete
-    const notificationCount = useSelector((store: any) => store.notifications.notificationCount)
+    const notificationCount = useSelector(
+        (store: any) => store.notifications.notificationCount
+    )
 
     const dispatch = useDispatch()
 
-    const { readAllNotification, deleteAllNotificiation } = useNotificationActions()
+    const { readAllNotification, deleteAllNotificiation } =
+        useNotificationActions()
 
     const markAllAsRead = () => {
         readAllNotification()

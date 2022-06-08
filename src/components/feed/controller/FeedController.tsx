@@ -2,12 +2,21 @@ import React from "react"
 import { useCallback, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { API } from "../../../api/ApiHandler"
-import { bumpPage, changeSort, clearFeed, loadFeed, useFeed } from "../../../api/Feeds"
+import {
+    bumpPage,
+    changeSort,
+    clearFeed,
+    loadFeed,
+    useFeed,
+} from "../../../api/Feeds"
 import FeedSkeleton from "../FeedSkeleton"
 import useSortChanger from "../SortChanger"
 import useCreatePost from "../useCreatePost"
 
-const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, usePostbox }) => {
+const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({
+    id,
+    usePostbox,
+}) => {
     let dispatch = useDispatch()
 
     let [feed, status] = useFeed(id)
@@ -57,7 +66,9 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
             `Feed (${id}): Requesting page NO.${feed!!.page} with sort ${sort}`
         )
 
-        let resp = await API.get(`/feeds/${id}/posts?page=${feed!!.page}&sort=${sort}`)
+        let resp = await API.get(
+            `/feeds/${id}/posts?page=${feed!!.page}&sort=${sort}`
+        )
         dispatch(bumpPage({ id }))
 
         switch (resp.status) {
@@ -70,7 +81,7 @@ const FeedController: React.FC<{ id: string; usePostbox: boolean }> = ({ id, use
                             posts,
                             sort,
                             id,
-                        }
+                        },
                     })
                 )
 

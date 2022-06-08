@@ -85,7 +85,7 @@ export const updateUserRole = async (
 
 /**
  * Get a communities roles.
- * 
+ *
  * @param id The community
  */
 export const getRoles = async (id: number) => {

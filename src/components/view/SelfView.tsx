@@ -1,11 +1,10 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Menu, Dropdown, Button, Avatar, Badge, Spin } from "antd"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { getImageUrl, User } from "../../api/user/User"
 import styled from "styled-components"
 import UnreadNotificationCount from "../notifications/UnreadNotificationCount"
-import History from "../../api/History"
 import { MdAccountCircle } from "react-icons/md"
 import { AuthState } from "../../api/user/redux/auth.redux"
 import { useAppSelector } from "../../util/Redux"
@@ -34,7 +33,8 @@ const SelfViewLink = styled.div`
 `
 
 const SelfView: React.FC = () => {
-    let self = useAppSelector((store) => store.auth) as AuthState
+    const nav = useNavigate()
+    let self = useAppSelector(store => store.auth) as AuthState
 
     const onlineCount = useSelector((store: any) => store.friends.online).length
     const unreadCount = useSelector((store: any) => store.notifications.unread)
@@ -51,9 +51,7 @@ const SelfView: React.FC = () => {
                     <Link to={`/settings`}>Settings</Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <NotificationShelf
-                        onClick={() => History.push("/notifications")}
-                    >
+                    <NotificationShelf onClick={() => nav("/notifications")}>
                         <span>Notifications</span>
                         <UnreadNotificationCount
                             count={unreadCount}
@@ -62,7 +60,7 @@ const SelfView: React.FC = () => {
                     </NotificationShelf>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <NotificationShelf onClick={() => History.push("/friends")}>
+                    <NotificationShelf onClick={() => nav("/friends")}>
                         <span>Friends</span>
                         <UnreadNotificationCount
                             count={onlineCount}
@@ -90,7 +88,10 @@ const SelfView: React.FC = () => {
                         onClick={e => e.preventDefault()}
                         type="link"
                     >
-                        <Badge count={unreadCount === -1 ? undefined : unreadCount} overflowCount={9}>
+                        <Badge
+                            count={unreadCount === -1 ? undefined : unreadCount}
+                            overflowCount={9}
+                        >
                             {name === "" ? (
                                 <Spin />
                             ) : (

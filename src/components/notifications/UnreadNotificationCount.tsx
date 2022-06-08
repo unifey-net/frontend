@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 import React from "react"
 
 const UnreadNotificationStyle = styled.span`
@@ -9,10 +9,15 @@ const UnreadNotificationStyle = styled.span`
     color: white;
 `
 
-const UnreadNotificationCount: React.FC<{ count: number, overflow?: number }> = ({ count, overflow }) => {
-    return <UnreadNotificationStyle>
-        { overflow && count > overflow ? `{overflow}+` : count }
-    </UnreadNotificationStyle>
+const UnreadNotificationCount: React.FC<{
+    count: number
+    overflow?: number
+}> = ({ count, overflow }) => {
+    return (
+        <UnreadNotificationStyle>
+            {overflow && count > overflow ? `{overflow}+` : count}
+        </UnreadNotificationStyle>
+    )
 }
 
 export default UnreadNotificationCount

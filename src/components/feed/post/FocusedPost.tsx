@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 import { Spin, Button } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import { useDispatch } from "react-redux"
-import History from "../../../api/History"
 import Post from "./Post"
 import { API } from "../../../api/ApiHandler"
 import styled from "styled-components"
@@ -11,6 +10,7 @@ import PostReply from "./PostReply"
 import useSortChanger from "../SortChanger"
 import { MdArrowLeft } from "react-icons/md"
 import { postSlice } from "../../../api/Feeds"
+import { useNavigate } from "react-router-dom"
 
 const FocusedPostStyle = styled.div`
     display: flex;
@@ -34,6 +34,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({
     postId,
     feed,
 }) => {
+    const nav = useNavigate()
     const dispatch = useDispatch()
 
     const [sort, button] = useSortChanger("TOP")
@@ -68,7 +69,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({
             />
 
             <div className="focused-post-options">
-                <Button ghost onClick={() => History.go(-1)}>
+                <Button ghost onClick={() => nav(-1)}>
                     <MdArrowLeft />
                 </Button>
 
@@ -80,9 +81,7 @@ const FocusedPost: React.FC<{ postId: number; feed: string }> = ({
                     isOnComment={false}
                 />
 
-                <button onClick={button}>
-                    Sort by {sort}
-                </button>
+                <button onClick={button}>Sort by {sort}</button>
             </div>
 
             <PostComments feed={feed} id={postId} sort={sort} data={null} />

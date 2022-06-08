@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { signedIn } from "../../api/user/User"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
-import history from "../../api/History"
 import { Link, useNavigate } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
@@ -58,7 +57,7 @@ const Create = () => {
         const response = await API.put("/community", form)
 
         if (response.status === 200) {
-            history.push(`/c/${name}`)
+            nav(`/c/${name}`)
             toast.success("Welcome to your new community!")
         } else {
             ref?.reset()

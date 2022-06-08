@@ -10,7 +10,7 @@ type Props = {
     community: CommunityRequest
 }
 
-const ChangeCommunityName: React.FC<Props> =  ({ community }) => {
+const ChangeCommunityName: React.FC<Props> = ({ community }) => {
     const [cooldown, setCooldown] = useState(-1)
 
     const onOk = async (store: Store) => {
@@ -28,7 +28,9 @@ const ChangeCommunityName: React.FC<Props> =  ({ community }) => {
 
         switch (request.status) {
             case 200: {
-                toast.success("The communites name has successfully been changed!")
+                toast.success(
+                    "The communites name has successfully been changed!"
+                )
                 return ""
             }
 

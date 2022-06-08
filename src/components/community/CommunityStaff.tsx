@@ -50,7 +50,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 case 401: {
                     setStatus(prev => ({
                         ...prev,
-                        status: -2
+                        status: -2,
                     }))
 
                     break
@@ -60,7 +60,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                     setStatus(prev => ({
                         ...prev,
                         status: -1,
-                        message: request.data.payload
+                        message: request.data.payload,
                     }))
 
                     break
@@ -79,8 +79,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
                 <ul className="flex flex-col">
                     {staff.length > 0 &&
                         staff.map(({ role, user }, index) => {
-                            let color =
-                                role === 2 ? "green" : "red"
+                            let color = role === 2 ? "green" : "red"
 
                             return (
                                 <li key={index}>
@@ -101,11 +100,7 @@ const CommunityStaff: React.FC<{ id: number }> = ({ id }) => {
             )}
 
             {status === ERROR && (
-                <Alert
-                    message={message}
-                    type="error"
-                    showIcon
-                />
+                <Alert message={message} type="error" showIcon />
             )}
 
             {status === -2 && (

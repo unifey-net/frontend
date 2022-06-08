@@ -11,12 +11,18 @@ export const communitySlice = createSlice({
         /**
          * When a community is fetched through any method.
          */
-        postCommunity: (state, action: PayloadAction<{ community: CommunityRequest }>) => {
+        postCommunity: (
+            state,
+            action: PayloadAction<{ community: CommunityRequest }>
+        ) => {
             const community = action.payload.community
 
             state[community.community.name] = community
         },
-        addReports: (state, action: PayloadAction<{ community: number, reports: Report[] }>) => {
+        addReports: (
+            state,
+            action: PayloadAction<{ community: number; reports: Report[] }>
+        ) => {
             const key = getNameById(state, action.payload.community)
 
             state[key].community.reports = {
@@ -24,29 +30,47 @@ export const communitySlice = createSlice({
                 reportCount: action.payload.reports.length,
             }
         },
-        removeReports: (state, action: PayloadAction<{ community: number }>) => {
+        removeReports: (
+            state,
+            action: PayloadAction<{ community: number }>
+        ) => {
             const key = getNameById(state, action.payload.community)
 
             state[key].community.reports = {
                 reports: [],
-                reportCount: 0
+                reportCount: 0,
             }
         },
-        removeReport: (state, action: PayloadAction<{ community: number, report: number }>) => {
+        removeReport: (
+            state,
+            action: PayloadAction<{ community: number; report: number }>
+        ) => {
             const key = getNameById(state, action.payload.community)
             let removeIndex = -1
 
-            state[key].community.report.reports.forEach((object: ReportRequest, index: number) => {
-                if (object.report.id === action.payload.report)
-                    removeIndex = index
-            })
+            state[key].community.report.reports.forEach(
+                (object: ReportRequest, index: number) => {
+                    if (object.report.id === action.payload.report)
+                        removeIndex = index
+                }
+            )
 
             if (removeIndex !== -1) {
-                state[key].community.reports.reports = state[key].reports.reports.splice(removeIndex, 1)
+                state[key].community.reports.reports = state[
+                    key
+                ].reports.reports.splice(removeIndex, 1)
                 state[key].community.reports.reportCount -= 1
             }
         },
-        addRule: (state, action: PayloadAction<{ community: number, body: string, title: string, id: number }>) => {
+        addRule: (
+            state,
+            action: PayloadAction<{
+                community: number
+                body: string
+                title: string
+                id: number
+            }>
+        ) => {
             const { body, title, id } = action.payload
 
             const key = getNameById(state, action.payload.community)
@@ -54,23 +78,30 @@ export const communitySlice = createSlice({
             state[key].community.rules.push({
                 title,
                 body,
-                id
+                id,
             })
         },
-        removeRule: (state, action: PayloadAction<{ community: number, id: number }>) => {
+        removeRule: (
+            state,
+            action: PayloadAction<{ community: number; id: number }>
+        ) => {
             const key = getNameById(state, action.payload.community)
             let removeIndex = -1
 
-            state[key].community.rules.forEach((object: CommunityRule, index: number) => {
-                if (object.id === action.payload.id)
-                    removeIndex = index
-            })
+            state[key].community.rules.forEach(
+                (object: CommunityRule, index: number) => {
+                    if (object.id === action.payload.id) removeIndex = index
+                }
+            )
 
             if (removeIndex === -1) {
-                state[key].community.rules = state[key].community.rules.splice(removeIndex, 1)
+                state[key].community.rules = state[key].community.rules.splice(
+                    removeIndex,
+                    1
+                )
             }
-        }
-    }
+        },
+    },
 })
 
 export const getNameById = (state: any, id: number): string => {
@@ -86,4 +117,11 @@ export const getNameById = (state: any, id: number): string => {
     return ""
 }
 
-export const { removeRule, addRule, removeReport, removeReports, addReports, postCommunity } = communitySlice.actions
+export const {
+    removeRule,
+    addRule,
+    removeReport,
+    removeReports,
+    addReports,
+    postCommunity,
+} = communitySlice.actions

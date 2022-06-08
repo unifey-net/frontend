@@ -2,13 +2,13 @@ import { Friend } from "../objects/Friend"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 type FriendsState = {
-    online: number[],
+    online: number[]
     friends: Friend[]
 }
 
 const defaultState = {
     online: [],
-    friends: []
+    friends: [],
 } as FriendsState
 
 export const friendsSlice = createSlice({
@@ -21,10 +21,9 @@ export const friendsSlice = createSlice({
         setOnline: (state, action: PayloadAction<{ id: number }>) => {
             const { id } = action.payload
 
-            const index = state.online.findIndex((friend) => friend === id)
+            const index = state.online.findIndex(friend => friend === id)
 
-            if (index !== -1)
-                return state
+            if (index !== -1) return state
 
             state.online = [...state.online, id]
         },
@@ -34,10 +33,9 @@ export const friendsSlice = createSlice({
         setOffline: (state, action: PayloadAction<{ id: number }>) => {
             const { id } = action.payload
 
-            const index = state.online.findIndex((friend) => friend === id)
+            const index = state.online.findIndex(friend => friend === id)
 
-            if (index !== -1)
-                state.online = state.online.splice(index, 1)
+            if (index !== -1) state.online = state.online.splice(index, 1)
         },
         /**
          * Upload friends.
@@ -50,8 +48,9 @@ export const friendsSlice = createSlice({
          */
         addFriend: (state, action: PayloadAction<{ friend: Friend }>) => {
             state.friends = [...state.friends, action.payload.friend]
-        }
-    }
+        },
+    },
 })
 
-export const { addFriend, setOffline, setOnline, getFriends } = friendsSlice.actions
+export const { addFriend, setOffline, setOnline, getFriends } =
+    friendsSlice.actions

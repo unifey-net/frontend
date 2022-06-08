@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 type NotificationsAuthenticationState = {
-    authenticated: boolean,
+    authenticated: boolean
     tokenExpires: number
 }
 
 type NotificationsState = {
-    connected: boolean,
-    authenticated: NotificationsAuthenticationState,
-    notifications: any[],
+    connected: boolean
+    authenticated: NotificationsAuthenticationState
+    notifications: any[]
     // so redux updates
-    notificationCount: number,
+    notificationCount: number
     unread: number
 }
 
@@ -20,27 +20,44 @@ export const notificationsSlice = createSlice({
         connected: false,
         authenticated: {
             authenticated: false,
-            tokenExpires: -1
+            tokenExpires: -1,
         },
         notifications: [],
         notificationCount: 0,
-        unread: -1
+        unread: -1,
     } as NotificationsState,
     reducers: {
-        receiveNotif: (state, action: PayloadAction<{ id: number, message: string, date: number }>) => {
+        receiveNotif: (
+            state,
+            action: PayloadAction<{ id: number; message: string; date: number }>
+        ) => {
             const { id, message, date } = action.payload
 
-            state.notifications = [...state.notifications, { id, message, date }]
+            state.notifications = [
+                ...state.notifications,
+                { id, message, date },
+            ]
             state.notificationCount++
         },
-        massReceiveNotif: (state, action: PayloadAction<{ notifications: any[] }>) => {
-            state.notifications = [...state.notifications, ...action.payload.notifications]
+        massReceiveNotif: (
+            state,
+            action: PayloadAction<{ notifications: any[] }>
+        ) => {
+            state.notifications = [
+                ...state.notifications,
+                ...action.payload.notifications,
+            ]
             state.notificationCount += action.payload.notifications.length
         },
-        setAllReadStatus: (state) => {
-            state.notifications = state.notifications.map((notif) => notif.read = true)
+        setAllReadStatus: state => {
+            state.notifications = state.notifications.map(
+                notif => (notif.read = true)
+            )
         },
-        setReadStatus: (state, action: PayloadAction<{ id: number, read: boolean}>) => {
+        setReadStatus: (
+            state,
+            action: PayloadAction<{ id: number; read: boolean }>
+        ) => {
             const { id, read } = action.payload
 
             let notifIndex = -1
@@ -67,7 +84,7 @@ export const notificationsSlice = createSlice({
                 }
             }
         },
-        deleteAllNotifications: (state) => {
+        deleteAllNotifications: state => {
             state.notifications = []
             state.notificationCount = 0
             state.unread = 0
@@ -93,8 +110,16 @@ export const notificationsSlice = createSlice({
         },
         setUnread: (state, action: PayloadAction<{ unread: number }>) => {
             state.unread = action.payload.unread
-        }
-    }
+        },
+    },
 })
 
-export const { setUnread, deleteNotification, deleteAllNotifications, massReceiveNotif, receiveNotif, setAllReadStatus, setReadStatus } = notificationsSlice.actions
+export const {
+    setUnread,
+    deleteNotification,
+    deleteAllNotifications,
+    massReceiveNotif,
+    receiveNotif,
+    setAllReadStatus,
+    setReadStatus,
+} = notificationsSlice.actions

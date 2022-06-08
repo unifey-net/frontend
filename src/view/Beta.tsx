@@ -5,11 +5,13 @@ import React, { createRef, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
 import { API } from "../api/ApiHandler"
-import History from "../api/History"
 import DefaultContainer from "../components/DefaultContainer"
 
 const Beta = () => {
-    const { isSignedIn, user: { username } } = useSelector((state: any) => state.auth)
+    const {
+        isSignedIn,
+        user: { username },
+    } = useSelector((state: any) => state.auth)
 
     const [input, setInput] = useState("")
     const [disabled, setDisabled] = useState(false)
@@ -25,9 +27,8 @@ const Beta = () => {
     const onFinish = async (results: Store) => {
         const formData = new FormData()
 
-        if (!isSignedIn)
-            formData.set("name", results.username)
-        
+        if (!isSignedIn) formData.set("name", results.username)
+
         formData.set("type", results.type)
         formData.set("message", results.message)
 
@@ -40,7 +41,7 @@ const Beta = () => {
             form.resetFields()
         }
     }
-    
+
     return (
         <DefaultContainer>
             <h1>Unifey Beta</h1>
@@ -75,7 +76,11 @@ const Beta = () => {
                               ]
                     }
                 >
-                    <Input value={input} onChange={val => setInput(val.target.value)} disabled={disabled} />
+                    <Input
+                        value={input}
+                        onChange={val => setInput(val.target.value)}
+                        disabled={disabled}
+                    />
                 </Form.Item>
 
                 <Form.Item

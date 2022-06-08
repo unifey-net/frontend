@@ -11,13 +11,19 @@ import { UserRole } from "../../../../../api/community/Roles"
  *
  * target? is undefined-able because you don't need to set on
  */
-export default (community: CommunityRequest): [JSX.Element, () => void, UserRole] => {
+export default (
+    community: CommunityRequest
+): [JSX.Element, () => void, UserRole] => {
     let [form] = Form.useForm()
 
     const [visible, setVisible] = useState(false) // modal visibility
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
-    const [newRole, setNewRole] = useState({ id: -1, name: "", role: -1 } as UserRole) 
+    const [newRole, setNewRole] = useState({
+        id: -1,
+        name: "",
+        role: -1,
+    } as UserRole)
 
     const verifyName = async (name: string): Promise<number> => {
         const request = await API.get(
@@ -60,9 +66,9 @@ export default (community: CommunityRequest): [JSX.Element, () => void, UserRole
             setNewRole({
                 name,
                 role: +role,
-                id: +id
+                id: +id,
             })
-            
+
             setVisible(false)
             form.resetFields()
             message.success("Successfully updated roles!")
@@ -117,6 +123,6 @@ export default (community: CommunityRequest): [JSX.Element, () => void, UserRole
         () => {
             setVisible(prev => !prev)
         },
-        newRole
+        newRole,
     ]
 }

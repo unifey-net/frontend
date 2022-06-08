@@ -29,7 +29,9 @@ export const useDefaultEmotes = () => {
             if (request.status !== 200) {
                 message.error("There was an issue loading emotes.")
             } else {
-                dispatch(emoteSlice.actions.postEmotes({ emotes: request.data }))
+                dispatch(
+                    emoteSlice.actions.postEmotes({ emotes: request.data })
+                )
             }
         }
 
