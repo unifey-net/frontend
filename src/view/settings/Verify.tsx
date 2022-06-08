@@ -60,8 +60,4 @@ const Verify = () => {
     return <Spin indicator={<LoadingOutlined />} />
 }
 
-export default {
-    exact: true,
-    path: "/settings/verify",
-    component: Verify,
-}
+export default Verify

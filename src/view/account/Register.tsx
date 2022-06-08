@@ -1,10 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
-import { Redirect } from "react-router-dom"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
 import { connect, useDispatch } from "react-redux"
@@ -42,6 +41,12 @@ type ConnectionState = {
  */
 const Register = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
+
+    useEffect(() => {
+        if (signedIn())
+            nav("/")
+    }, [])
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
@@ -115,8 +120,6 @@ const Register = () => {
 
         setLoading(false)
     }
-
-    if (signedIn()) return <Redirect to="/" />
 
     return (
         <DefaultContainer>
@@ -318,8 +321,4 @@ const Register = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/register",
-    component: Register,
-}
+export default Register

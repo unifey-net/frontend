@@ -1,4 +1,4 @@
-import { useRouteMatch } from "react-router-dom"
+import { Route, Routes, useMatch } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 
 import { getUserByName, signedIn, getImageUrl, User } from "../../api/user/User"
@@ -18,6 +18,7 @@ import styled from "styled-components"
 import DefaultContainer from "../../components/DefaultContainer"
 import { desktopMedia, media } from "../../api/util/Media"
 import { UserResponse } from "../../components/user/UserResponse"
+import useQueryParameterTabs from "../../components/useQueryParameterTabs"
 
 const UserStyle = styled.div`
     display: flex;
@@ -58,11 +59,8 @@ type MatchParams = {
 }
 
 const UserView = () => {
-    const {
-        params: { name, post },
-    } = useRouteMatch<MatchParams>()
-
-    const postId = +post
+    const match = useMatch("/u/:name")
+    const name = match?.params.name
 
     useDefaultEmotes()
 
@@ -75,21 +73,23 @@ const UserView = () => {
 
     useEffect(() => {
         const loadUser = async () => {
-            let response = await getUserByName(name)
+            if (name != null) {
+                let response = await getUserByName(name)
 
-            if (response == null || response.status !== 200) {
-                setLoaded({
-                    error: true,
-                    loaded: true,
-                })
-            } else {
-                setUser(response.data)
-                setBadges(response.data.profile.cosmetics)
+                if (response == null || response.status !== 200) {
+                    setLoaded({
+                        error: true,
+                        loaded: true,
+                    })
+                } else {
+                    setUser(response.data)
+                    setBadges(response.data.profile.cosmetics)
 
-                setLoaded({
-                    error: false,
-                    loaded: true,
-                })
+                    setLoaded({
+                        error: false,
+                        loaded: true,
+                    })
+                }
             }
         }
 
@@ -126,14 +126,14 @@ const UserView = () => {
             </div>
 
             <div className="row-two">
-                {!post && (
+                {/* {!post && (
                     <FeedController
                         id={`uf_${user.id}`}
                         usePostbox={signedIn()}
                     />
                 )}
 
-                {post && <FocusedPost postId={postId} feed={`uf_${user.id}`} />}
+                {post && <FocusedPost postId={postId} feed={`uf_${user.id}`} />} */}
 
                 <UserProfile user={user} />
             </div>
@@ -141,15 +141,4 @@ const UserView = () => {
     )
 }
 
-export default [
-    {
-        path: "/u/:name/:post",
-        exact: true,
-        component: UserView,
-    },
-    {
-        path: "/u/:name",
-        exact: true,
-        component: UserView,
-    },
-]
+export default UserView

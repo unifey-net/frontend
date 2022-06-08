@@ -241,8 +241,4 @@ const Tos = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/tos",
-    component: Tos,
-}
+export default Tos

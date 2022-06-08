@@ -1,10 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { signedIn } from "../../api/user/User"
-import { Redirect } from "react-router-dom"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { Store } from "antd/lib/form/interface"
 import { useDispatch } from "react-redux"
@@ -28,12 +27,20 @@ const CreateForm = styled.div`
  */
 const Create = () => {
     const dispatch = useAppDispatch()
+    const nav = useNavigate()
 
     const [ref, setRef] = useState<ReCAPTCHA>()
 
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState("")
+
+    useEffect(() => {
+        if (!signedIn()) {
+            nav("/")
+            toast.error("You must be signed in for this!")
+        }
+    }, [])
 
     const loginForm = async (values: Store) => {
         setLoading(true)
@@ -60,9 +67,6 @@ const Create = () => {
 
         setLoading(false)
     }
-
-    if (!signedIn()) return <Redirect to="/" />
-
     return (
         <DefaultContainer>
             <h1>Create</h1>
@@ -187,8 +191,4 @@ const Create = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/create",
-    component: Create,
-}
+export default Create

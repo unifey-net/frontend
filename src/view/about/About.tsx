@@ -11,6 +11,10 @@ const AboutStyle = styled.div`
     .biglogo {
         margin-bottom: 32px;
     }
+
+    div {
+        max-width: 520px;
+    }
 `
 
 /**
@@ -28,9 +32,6 @@ const About = () => {
                     <p>
                         Unifey is an open-source social media platform dedicated
                         to free speech and privacy.
-                        <br />
-                        We're currently running on a React Redux frontend with a
-                        Ktor Kotlin backend.
                     </p>
                 </div>
 
@@ -51,7 +52,7 @@ const About = () => {
                     <p>
                         We're currently not looking for outside contributors.
                         However, we're always looking for suggestions in our{" "}
-                        <ExternalLink link="https://unifey.net/discord">
+                        <ExternalLink link="https://discord.gg/QMVA8FWNbc">
                             Discord
                         </ExternalLink>
                         !
@@ -63,12 +64,16 @@ const About = () => {
                         If I have an issue or need help where can I find help?
                     </h2>
                     <p>
-                        You can view Unifey's source code on our{" "}
-                        <ExternalLink link="https://github.com/unifey-net">
-                            GitHub
+                        If you need assistance with anything Unifey related, you
+                        can always send a message in the{" "}
+                        <ExternalLink link="https://discord.gg/QMVA8FWNbc">
+                            Discord
                         </ExternalLink>
-                        . This contains our frontend as well as our backend's
-                        code.
+                        . For more serious inquieries, you can email AJ at{" "}
+                        <ExternalLink link="mailto:aj@ajkneisl.dev">
+                            aj@ajkneisl.dev
+                        </ExternalLink>
+                        .
                     </p>
                 </div>
             </div>
@@ -76,8 +81,4 @@ const About = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/about",
-    component: About,
-}
+export default About

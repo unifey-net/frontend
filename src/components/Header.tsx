@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import history from "../api/History"
 import SelfView from "./view/SelfView"
 import styled from "styled-components"
@@ -73,15 +73,7 @@ const HeaderLink = styled.div<{ isLast: boolean }>`
 `
 
 const Header: React.FC = () => {
-    let [page, setPage] = useState(window.location.pathname)
-
-    useEffect(() => {
-        history.listen(path => {
-            setPage(path.location.pathname)
-        })
-
-        return () => {}
-    }, [])
+    const location = useLocation()
 
     let pages = [
         {
@@ -94,7 +86,7 @@ const Header: React.FC = () => {
         },
         {
             name: "Communities",
-            location: "/communities",
+            location: "/c",
         },
     ]
 
@@ -110,7 +102,7 @@ const Header: React.FC = () => {
                     <HeaderLink isLast={pages.length === (index + 1)}>
                         <Link
                             key={index}
-                            className={page === obj.location ? "active" : ""}
+                            className={location.pathname === obj.location ? "active" : ""}
                             to={obj.location}
                         >
                             {obj.name}

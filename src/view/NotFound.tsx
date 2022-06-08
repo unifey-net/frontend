@@ -19,6 +19,4 @@ const NotFound = (): JSX.Element => {
     )
 }
 
-export default {
-    component: NotFound,
-}
+export default NotFound

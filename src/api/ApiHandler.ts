@@ -9,8 +9,8 @@ import store from "../redux/store"
  */
 const BASE_URL: string =
     process.env.NODE_ENV === "production"
-        ? "https://api.ajkn.us/unifey"
-        : "http://localhost:8077"
+        ? "https://api.ajkn.us/unifey/v1"
+        : "http://localhost:8077/unifey/v1"
 
 /**
  * The Axios API.
@@ -34,6 +34,6 @@ export const useApi = makeUseAxios({
 /**
  * The version, manually kept up to date :(
  */
-const VERSION = "0.8.0"
+const VERSION = "0.9.0"
 
 export { VERSION, API, BASE_URL }

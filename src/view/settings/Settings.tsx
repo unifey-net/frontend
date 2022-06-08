@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { signedIn } from "../../api/user/User"
 import { useDispatch, useSelector } from "react-redux"
-import history from "../../api/History"
 import { Input, Divider, Tooltip, message, Spin } from "antd"
 import UnverifiedWarning from "../../components/settings/UnverifiedWarning"
 import styled from "styled-components"
 import UsernameProperty from "../../components/settings/properties/UsernameProperty"
 import PasswordProperty from "../../components/settings/properties/PasswordProperty"
 import EmailProperty from "../../components/settings/properties/EmailProperty"
+import { useNavigate } from "react-router-dom"
 
 const SettingsStyle = styled.div`
     display: flex;
@@ -17,12 +17,12 @@ const SettingsStyle = styled.div`
 `
 
 const Settings = () => {
+    const nav = useNavigate()
     let self = useSelector((state: any) => state.auth.user)
 
     if (!signedIn()) {
-        history.push("/")
+        nav("/")
         message.error("You aren't signed in!")
-        return
     }
 
     return (
@@ -47,8 +47,4 @@ const Settings = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/settings",
-    component: Settings,
-}
+export default Settings

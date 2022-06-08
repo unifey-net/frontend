@@ -15,8 +15,4 @@ const Friends = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/friends",
-    component: Friends,
-}
+export default Friends

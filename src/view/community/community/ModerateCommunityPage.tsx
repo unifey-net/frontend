@@ -33,13 +33,13 @@ const ModerateCommunityStyle = styled.div`
     }
 `
 
-const ModerateCommunity = () => {
+const ModerateCommunityPage = () => {
     const { name } = useParams() as UrlProps
 
     let [community, status] = useCommunity(name)
     let [activeTab, setActiveTab] = useQueryParameterTabs()
 
-    if (community && 3 > community.selfRole) return NotFound.component()
+    if (community && 3 > community.selfRole) return NotFound()
 
     if (status.status === LOADING) {
         return (
@@ -62,9 +62,7 @@ const ModerateCommunity = () => {
 
     return (
         <ModerateCommunityStyle>
-            <h1>
-                {community.community.name}
-            </h1>
+            <h1>{community.community.name}</h1>
 
             <div className="moderate-container">
                 <div>
@@ -92,8 +90,4 @@ const ModerateCommunity = () => {
     )
 }
 
-export default {
-    path: "/c/:name/moderate",
-    component: ModerateCommunity,
-    exact: true,
-}
+export default ModerateCommunityPage

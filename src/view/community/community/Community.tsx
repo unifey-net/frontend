@@ -1,4 +1,4 @@
-import { useRouteMatch } from "react-router-dom"
+import { Route, Routes, useMatch } from "react-router-dom"
 import React from "react"
 import { Empty, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
@@ -16,6 +16,8 @@ import { media } from "../../../api/util/Media"
 import { useState } from "react"
 import ModerateCommunity from "../../../components/community/profile/buttons/ModerateCommunity"
 import DebugCommunity from "../../../components/community/DebugCommunity"
+import ModerateCommunityPage from "./ModerateCommunityPage"
+import Create from "../Create"
 
 const CommunityStyle = styled.div<{ mobileSection: number }>`
     display: flex;
@@ -158,20 +160,20 @@ type MatchParams = {
  * @param {*} props
  */
 const Community = () => {
-    const {
-        params: { name, post },
-    } = useRouteMatch<MatchParams>()
-
-    const postId = +post
+    const match = useMatch("/c/:name")
+    const name = match?.params.name
 
     let [mobileSection, setMobileSection] = useState(0)
-    let [community, { status, message }] = useCommunity(name)
+    let [community, { status, message }] = useCommunity(name || "")
 
     useCommunityEmotes(
         community?.emotes === undefined ? [] : community?.emotes!!
     )
 
-    if (community && community.community.permissions.viewRole > community.selfRole)
+    if (
+        community &&
+        community.community.permissions.viewRole > community.selfRole
+    )
         return (
             <Empty description="You don't have permission to view this community." />
         )
@@ -179,14 +181,20 @@ const Community = () => {
     if (status === LOADING)
         return (
             <DefaultContainer>
-                <Spin indicator={<LoadingOutlined />}/>
+                <Spin indicator={<LoadingOutlined />} />
             </DefaultContainer>
         )
 
     if (status === ERROR || community == null)
         return (
             <DefaultContainer>
-                <Empty description={`Error: ${(message ? message : "There was an issue loading that community.")}`} />
+                <Empty
+                    description={`Error: ${
+                        message
+                            ? message
+                            : "There was an issue loading that community."
+                    }`}
+                />
             </DefaultContainer>
         )
 
@@ -198,12 +206,17 @@ const Community = () => {
                         <h1>{community.community.name}</h1>
 
                         <div className="community-buttons">
-                            <JoinCommunity community={community.community.id} mobile={false} />
+                            <JoinCommunity
+                                community={community.community.id}
+                                mobile={false}
+                            />
                             <ModerateCommunity
                                 community={community.community.id}
                                 mobile={false}
                             />
-                            <DebugCommunity community={community.community.name}/>
+                            <DebugCommunity
+                                community={community.community.name}
+                            />
                         </div>
                     </div>
                     <h6 className="community-link">
@@ -215,22 +228,20 @@ const Community = () => {
 
                 <div className="feed-details-container">
                     <div className="feed-section">
-                        {!post && (
-                            <FeedController
-                                id={`cf_${community.community.id}`}
-                                usePostbox={
-                                    community.selfRole >=
-                                    community.community.permissions.postRole
-                                }
-                            />
-                        )}
+                        <FeedController
+                            id={`cf_${community.community.id}`}
+                            usePostbox={
+                                community.selfRole >=
+                                community.community.permissions.postRole
+                            }
+                        />
 
-                        {post && (
+                        {/* {post && (
                             <FocusedPost
                                 postId={postId}
                                 feed={community.feed.id}
                             />
-                        )}
+                        )} */}
                     </div>
 
                     <div className="mobile-about-section">
@@ -248,8 +259,14 @@ const Community = () => {
                         <button onClick={() => setMobileSection(1)}>
                             About
                         </button>
-                        <JoinCommunity community={community.community.id} mobile={true} />
-                        <ModerateCommunity community={community.community.id} mobile={true} />
+                        <JoinCommunity
+                            community={community.community.id}
+                            mobile={true}
+                        />
+                        <ModerateCommunity
+                            community={community.community.id}
+                            mobile={true}
+                        />
                     </div>
                 </div>
             </>
@@ -257,15 +274,4 @@ const Community = () => {
     )
 }
 
-export default [
-    {
-        path: "/c/:name/:post",
-        component: Community,
-        exact: true,
-    },
-    {
-        path: "/c/:name",
-        exact: true,
-        component: Community,
-    },
-]
+export default Community

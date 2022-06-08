@@ -1,10 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { login, signedIn } from "../../api/user/User"
-import { Redirect } from "react-router-dom"
 import { Form, Input, Button, Checkbox, Alert, Divider } from "antd"
 import history from "../../api/History"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import FormItem from "antd/lib/form/FormItem"
 import { Store } from "antd/lib/form/interface"
@@ -33,6 +32,8 @@ const LoginForm = styled.div`
  * The /login page.
  */
 const Login = () => {
+    const nav = useNavigate()
+
     const dispatch = useDispatch()
 
     const [form] = useForm()
@@ -41,6 +42,11 @@ const Login = () => {
     let [captcha, setCaptcha] = useState("")
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState("")
+
+    useEffect(() => {
+        if (signedIn())
+            nav("/")
+    }, [])
 
     const loginForm = async (values: Store) => {
         setLoading(true)
@@ -94,8 +100,6 @@ const Login = () => {
 
         setLoading(false)
     }
-
-    if (signedIn()) return <Redirect to="/" />
 
     return (
         <DefaultContainer>
@@ -209,8 +213,4 @@ const Login = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/login",
-    component: Login,
-}
+export default Login

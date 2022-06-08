@@ -117,8 +117,4 @@ const Beta = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/beta",
-    component: Beta,
-}
+export default Beta

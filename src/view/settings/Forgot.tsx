@@ -111,8 +111,4 @@ const Forgot = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/settings/forgot",
-    component: Forgot,
-}
+export default Forgot

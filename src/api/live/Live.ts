@@ -33,7 +33,7 @@ import {
 
 const getUrl = (): string => {
     if (process.env.NODE_ENV === "production") return "wss://api.ajkn.us/unifey"
-    else return "ws://localhost:8077"
+    else return "ws://localhost:8077/unifey"
 }
 
 export type SocketResponse = {

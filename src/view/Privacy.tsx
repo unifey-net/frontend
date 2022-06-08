@@ -425,8 +425,4 @@ const Privacy = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/privacy",
-    component: Privacy,
-}
+export default Privacy

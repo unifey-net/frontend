@@ -11,8 +11,4 @@ const Notifications = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/notifications",
-    component: Notifications,
-}
+export default Notifications

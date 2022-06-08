@@ -40,8 +40,4 @@ const Messages = () => {
     )
 }
 
-export default {
-    exact: true,
-    path: "/messages",
-    component: Messages,
-}
+export default Messages
