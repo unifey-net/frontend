@@ -16,7 +16,13 @@ export const editorSlice = createSlice({
          * - post
          * - comment
          */
-        startEditing: (state, action: PayloadAction<{ id: number, type: "community" | "comment" | "post" }>) => {
+        startEditing: (
+            state,
+            action: PayloadAction<{
+                id: number
+                type: "community" | "comment" | "post"
+            }>
+        ) => {
             state.isEditing = true
             state.id = action.payload.id
             state.type = action.payload.type
@@ -24,12 +30,12 @@ export const editorSlice = createSlice({
         /**
          * Stop editing
          */
-        stopEditing: (state) => {
+        stopEditing: state => {
             state.isEditing = true
             state.id = undefined
             state.type = undefined
-        }
-    }
+        },
+    },
 })
 
 export const { stopEditing, startEditing } = editorSlice.actions

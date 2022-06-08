@@ -25,7 +25,9 @@ const MultipleInstances = () => {
         const req = await API.delete("/manage-live/logout")
 
         if (req.status === 200) {
-            toast.loading("Successfully exited other session, reloading in 3 seconds...")
+            toast.loading(
+                "Successfully exited other session, reloading in 3 seconds..."
+            )
 
             setTimeout(() => window.location.reload(), 3000)
         } else {

@@ -55,9 +55,11 @@ const Communities = () => {
     }, [])
 
     if (!loaded) {
-        return <DefaultContainer>
-            <Spin indicator={<LoadingOutlined />} />
-        </DefaultContainer>
+        return (
+            <DefaultContainer>
+                <Spin indicator={<LoadingOutlined />} />
+            </DefaultContainer>
+        )
     }
 
     return (
@@ -71,7 +73,12 @@ const Communities = () => {
             {communities.length !== 0 && loaded && (
                 <div className="communities">
                     {communities.map((community, index) => (
-                        <Community key={index} index={index} community={community} useNotifications={false} />
+                        <Community
+                            key={index}
+                            index={index}
+                            community={community}
+                            useNotifications={false}
+                        />
                     ))}
                 </div>
             )}

@@ -38,7 +38,7 @@ ReactDOM.render(
             <IconContext.Provider
                 value={{ style: { verticalAlign: "middle" } }}
             >
-                <App/>
+                <App />
             </IconContext.Provider>
         </ThemeProvider>
     </Provider>,

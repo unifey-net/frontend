@@ -8,9 +8,9 @@ const Friends = () => {
     return (
         <DefaultContainer>
             <h1>Friends</h1>
-            <OnlineFriendCount/>
-            <FriendRequests/>
-            <FriendsList/>
+            <OnlineFriendCount />
+            <FriendRequests />
+            <FriendsList />
         </DefaultContainer>
     )
 }

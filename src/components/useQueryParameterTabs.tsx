@@ -8,12 +8,17 @@ const useQueryParameterTabs = (
     defaultTab: string = "1"
 ): [string, (tab: string) => void] => {
     const [searchParams, setSearchParams] = useSearchParams()
-    const [activeTab, setActiveTab] = useState(searchParams.get("tab") || defaultTab)
+    const [activeTab, setActiveTab] = useState(
+        searchParams.get("tab") || defaultTab
+    )
 
-    return [activeTab, (tab: string) => {
-        setActiveTab(tab)
-        setSearchParams({ tab })
-    }]
+    return [
+        activeTab,
+        (tab: string) => {
+            setActiveTab(tab)
+            setSearchParams({ tab })
+        },
+    ]
 }
 
 export default useQueryParameterTabs

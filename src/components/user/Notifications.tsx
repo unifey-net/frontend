@@ -10,12 +10,18 @@ const Notifications = () => {
     const unreadCount = useSelector((store: any) => store.notifications.unread)
 
     if (unreadCount === -1) {
-        return <Spin indicator={<LoadingOutlined/>} />
+        return <Spin indicator={<LoadingOutlined />} />
     }
 
-    return <NotificationStyle>
-        { unreadCount === 0 ? <p>You have no unread notifications.</p> : <p>You have {unreadCount} unread notifications!</p> }
-    </NotificationStyle>
+    return (
+        <NotificationStyle>
+            {unreadCount === 0 ? (
+                <p>You have no unread notifications.</p>
+            ) : (
+                <p>You have {unreadCount} unread notifications!</p>
+            )}
+        </NotificationStyle>
+    )
 }
 
 export default Notifications

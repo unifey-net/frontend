@@ -25,7 +25,7 @@ const Unverified = () => {
                 An unverified account is an account that has not verified their
                 email. This means they cannon post in feeds or add friends.
                 <br />
-                <br/>
+                <br />
                 You can verify your account using the link you were sent when
                 you made your account. If you did not receive this, you can
                 <Link to="/settings"> go to your settings</Link> and click

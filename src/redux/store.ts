@@ -20,9 +20,9 @@ const store = configureStore({
         notifications: notificationsSlice.reducer,
         friends: friendsSlice.reducer,
         feeds: feedSlice.reducer,
-        messages: messageSlices.reducer
+        messages: messageSlices.reducer,
     },
-    devTools: true
+    devTools: true,
 })
 
 export default store

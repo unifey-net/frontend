@@ -31,7 +31,10 @@ const UserProfileStyle = styled.div<{ mobile: boolean }>`
             : `visibility: visible; ${desktopMedia("visiblity: hidden;")}`}
 `
 
-const UserProfile: React.FC<{ user: User, type?: "mobile" }> = ({ user, type }) => {
+const UserProfile: React.FC<{ user: User; type?: "mobile" }> = ({
+    user,
+    type,
+}) => {
     let [editing, setEditing] = useState(false)
     let auth = useSelector((state: any) => state.auth)
 

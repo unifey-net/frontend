@@ -27,9 +27,7 @@ const Settings = () => {
 
     return (
         <SettingsStyle>
-            {!self.verified && (
-                <UnverifiedWarning />
-            )}
+            {!self.verified && <UnverifiedWarning />}
 
             <div>
                 <h1>Account Settings</h1>
@@ -37,11 +35,11 @@ const Settings = () => {
 
                 <br />
 
-                <EmailProperty/>
+                <EmailProperty />
                 <Divider />
-                <PasswordProperty/>
+                <PasswordProperty />
                 <Divider />
-                <UsernameProperty/>
+                <UsernameProperty />
             </div>
         </SettingsStyle>
     )

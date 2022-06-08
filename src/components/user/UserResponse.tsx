@@ -1,7 +1,7 @@
-import { Member, Profile, User } from "../../api/user/User";
+import { Member, Profile, User } from "../../api/user/User"
 
 export type UserResponse = {
-    user: User,
-    member: Member,
+    user: User
+    member: Member
     profile: Profile
 }

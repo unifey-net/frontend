@@ -9,8 +9,7 @@ const Home = () => {
     const nav = useNavigate()
 
     useEffect(() => {
-        if (!signedIn())
-            nav("/login")
+        if (!signedIn()) nav("/login")
 
         const message = new URL(window.location.toString()).searchParams.get(
             "msg"

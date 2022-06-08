@@ -126,9 +126,7 @@ const Privacy = () => {
                 </li>
             </ul>
             <Divider />
-            <h2>
-                Collecting and Using Your Personal Data
-            </h2>
+            <h2>Collecting and Using Your Personal Data</h2>
             <h3>Google Analytics</h3>
             We use Google Analytics on the Website. To find out more about how
             Google Analytics handles your data, visit{" "}

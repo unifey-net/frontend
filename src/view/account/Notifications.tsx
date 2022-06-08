@@ -6,7 +6,7 @@ const Notifications = () => {
     return (
         <DefaultContainer>
             <h1>Notifications</h1>
-            <NotificationsFeed/>            
+            <NotificationsFeed />
         </DefaultContainer>
     )
 }
