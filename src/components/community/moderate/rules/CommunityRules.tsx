@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import useRuleModal from "./useRuleModal"
-import CommunityRule from "./CommunityRule"
 import { CommunityRequest } from "../../../../api/community/CommunityUtil"
 import ModeratePage from "../ModeratePage"
+import CommunityRule from "./CommunityRule"
 
 /**
  * A communities' rule.
@@ -43,9 +43,10 @@ const CommunityRules: React.FC<Props> = ({ community, type }) => {
 
             <ol>
                 {rules.length !== 0 &&
-                    rules
+                    Object.keys(rules)
                         .slice(0, showing)
-                        .map(({ body, title, id }, index: number) => {
+                        .map((key, index: number) => {
+                            const { body, title, id } = rules[key]
                             return (
                                 <CommunityRule
                                     rule={{ title, body, id }}
@@ -56,7 +57,7 @@ const CommunityRules: React.FC<Props> = ({ community, type }) => {
                             )
                         })}
 
-                {rules.length === 0 && (
+                {Object.keys(rules).length === 0 && (
                     <p>There are no rules in this community.</p>
                 )}
             </ol>

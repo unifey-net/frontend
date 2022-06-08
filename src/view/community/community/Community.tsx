@@ -150,11 +150,6 @@ const CommunityStyle = styled.div<{ mobileSection: number }>`
     }
 `
 
-type MatchParams = {
-    name: string
-    post: string
-}
-
 /**
  * A community viewer.
  * @param {*} props

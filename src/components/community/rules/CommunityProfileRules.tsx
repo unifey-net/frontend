@@ -47,9 +47,10 @@ export default ({ community }: Props) => {
         <CommunityRulesStyles>
             <div className="rules">
                 {rules.length !== 0 &&
-                    rules
+                    Object.keys(rules)
                         .slice(0, showing)
-                        .map(({ body, title, id }: Rule, index: number) => {
+                        .map((key, index: number) => {
+                            const { body, title, id } = rules[key]
                             return (
                                 <CommunityRule
                                     rule={{ title, body, id }}
@@ -59,7 +60,7 @@ export default ({ community }: Props) => {
                             )
                         })}
 
-                {rules.length === 0 && (
+                {Object.keys(rules).length === 0 && (
                     <p>There are no rules in this community.</p>
                 )}
             </div>

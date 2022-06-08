@@ -25,7 +25,7 @@ export type Community = {
     permissions: CommunityPermissions
     name: string
     description: string
-    rules: CommunityRule[]
+    rules: any
 }
 
 /**

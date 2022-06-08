@@ -45,8 +45,6 @@ export default function App() {
 
     const dispatch = useAppDispatch()
 
-    console.log(useSelector((store: any) => store.auth.expire))
-
     if (isExpired()) dispatch(logOut())
 
     const socketError = useSelector((store: any) => store.live.error)
@@ -73,68 +71,63 @@ export default function App() {
     }
 
     return (
-        <BrowserRouter>
-            <div className="page-container">
-                <Header />
+        <div className="page-container">
+            <Header />
 
-                <Toaster
-                    position="top-right"
-                    toastOptions={{
-                        style: {
-                            borderRadius: "10px",
-                            background: "#333",
-                            color: "#fff",
-                        },
-                    }}
-                />
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    style: {
+                        borderRadius: "10px",
+                        background: "#333",
+                        color: "#fff",
+                    },
+                }}
+            />
 
-                <div className="content-container">
-                    <Routes>
-                        <Route path="/">
-                            <Route index element={<Home />} />
-                            <Route path="c">
-                                <Route index element={<Communities />} />
-                                <Route path="/create" element={<Create />} />
-                                <Route path=":name" element={<Community />} />
-                                <Route
-                                    path=":name/moderate"
-                                    element={<ModerateCommunityPage />}
-                                />
-                            </Route>
-                            <Route path="u">
-                                <Route
-                                    index
-                                    element={<>user list... coming soon :)</>}
-                                />
-                                <Route path=":name" element={<User />} />
-                            </Route>
-                            <Route path="/tos" element={<Tos />} />
-                            <Route path="/beta" element={<Beta />} />
-                            <Route path="/messages" element={<Messages />} />
+            <div className="content-container">
+                <Routes>
+                    <Route path="/">
+                        <Route index element={<Home />} />
+                        <Route path="c">
+                            <Route index element={<Communities />} />
+                            <Route path="create" element={<Create />} />
+                            <Route path=":name" element={<Community />} />
                             <Route
-                                path="/unsubscribe"
-                                element={<Unsubscribed />}
+                                path=":name/moderate"
+                                element={<ModerateCommunityPage />}
                             />
-                            <Route path="/settings" element={<Settings />} />
-                            <Route path="/forgot" element={<Forgot />} />
-                            <Route path="/verify" element={<Verify />} />
-                            <Route
-                                path="/notifications"
-                                element={<Notifications />}
-                            />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/logout" element={<Logout />} />
-                            <Route path="/privacy" element={<Privacy />} />
-                            <Route path="/friends" element={<Friends />} />
-                            <Route path="/register" element={<Register />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="*" element={<NotFound />} />
                         </Route>
-                    </Routes>
-                </div>
-
-                <Footer />
+                        <Route path="u">
+                            <Route
+                                index
+                                element={<>user list... coming soon :)</>}
+                            />
+                            <Route path=":name" element={<User />} />
+                        </Route>
+                        <Route path="/tos" element={<Tos />} />
+                        <Route path="/beta" element={<Beta />} />
+                        <Route path="/messages" element={<Messages />} />
+                        <Route path="/unsubscribe" element={<Unsubscribed />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/forgot" element={<Forgot />} />
+                        <Route path="/verify" element={<Verify />} />
+                        <Route
+                            path="/notifications"
+                            element={<Notifications />}
+                        />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/logout" element={<Logout />} />
+                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/friends" element={<Friends />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
+                </Routes>
             </div>
-        </BrowserRouter>
+
+            <Footer />
+        </div>
     )
 }

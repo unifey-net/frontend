@@ -11,6 +11,8 @@ import theme from "./util/Theme"
 import GlobalStyle from "./util/GlobalStyle"
 import { Toaster } from "react-hot-toast"
 import { IconContext } from "react-icons/lib"
+import { createRoot } from "react-dom/client"
+import { BrowserRouter } from "react-router-dom"
 
 console.log(`Unifey ${VERSION} (env: ${process.env.NODE_ENV})`)
 
@@ -20,7 +22,9 @@ console.log(
     "color:red;font-size:28px;"
 )
 
-ReactDOM.render(
+const container = document.getElementById("root")
+const root = createRoot(container!)
+root.render(
     <Provider store={store}>
         <ThemeProvider theme={theme}>
             <GlobalStyle />
@@ -38,11 +42,12 @@ ReactDOM.render(
             <IconContext.Provider
                 value={{ style: { verticalAlign: "middle" } }}
             >
-                <App />
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
             </IconContext.Provider>
         </ThemeProvider>
-    </Provider>,
-    document.getElementById("root")
+    </Provider>
 )
 
 // If you want your app to work offline and load faster, you can change
